@@ -1,4 +1,4 @@
-## Welcome to (unnamed): Browser Extension
+## Welcome to Willow
 
 This is the webpage of our Senior Design Project. 
 
