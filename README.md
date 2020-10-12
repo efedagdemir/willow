@@ -1,2 +1,2 @@
-# browser-extension
-Unnamed Browser Extension - Bilkent CS Senior Design Project
+# Willow
+Willow - Bilkent CS Senior Design Project
