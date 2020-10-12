@@ -16,4 +16,4 @@ This is the webpage of our Senior Design Project.
 
 ### Project Reports
 
-- [Project Specification Report](willow/gh-pages/Willow_Requirements_Specification_Report.pdf)
+- [Project Specification Report](https://efedagdemir.github.io/willow/pdf/willow-project-specification-report.pdf)
