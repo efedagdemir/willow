@@ -1,0 +1,12 @@
+{
+    "name": "Hello World in New Tab",
+    "version": "1.0",
+    "description": "Exploring",
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+    "browser_action": {
+    },
+    "manifest_version": 2
+}
