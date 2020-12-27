@@ -17,4 +17,5 @@ Willow is a browser extension that could help to ease the process of browsing vi
 ### Project Reports
 
 - [Project Specification Report](https://efedagdemir.github.io/willow/pdf/willow-project-specification-report.pdf)
-- [Project Analysis Report](https://efedagdemir.github.io/willow/pdf/Willow.Analysis.Report.Fall2020.pdf)
+- [Analysis Report](https://efedagdemir.github.io/willow/pdf/Willow.Analysis.Report.Fall2020.pdf)
+- [High-Level Design Report](https://efedagdemir.github.io/willow/pdf/Willow-High-Level-Design-Report.pdf)
