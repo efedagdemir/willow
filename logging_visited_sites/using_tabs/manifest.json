@@ -2,7 +2,7 @@
     "name": "Navigation Logger",
     "version": "1.0",
     "description": "Exploring",
-    "permissions": ["tabs", "storage"],
+    "permissions": ["tabs", "storage", "history"],
     "background": {
         "scripts": ["background.js"],
         "persistent": false
