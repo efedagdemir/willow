@@ -2,8 +2,12 @@ let tabs = new Map();
 
 chrome.runtime.onInstalled.addListener(function () {
     chrome.storage.local.set({ visitedPages: [] });
+    
+    //Added an option of seeing the overlay to right click
+    chrome.contextMenus.create(
+    {id: "overlayW", title: "See Overlay"});
 
-
+        /*
     chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         if (changeInfo.url != undefined) {
             // a tab switched to a new URL
@@ -100,7 +104,21 @@ chrome.runtime.onInstalled.addListener(function () {
             // });
         }
 
-    });
+    });*/
+});
+
+
+chrome.contextMenus.onClicked.addListener(function(info, tab) {
+    //info {editable,frameId, menuItemId, pageUrl}
+    // tab {active,audible,autoDiscardable,discarded,favIconUrl,height,highlighted,id,
+    //      incognito,index,mutedInfo,pinned,selected,status,title,url,width,windowId}
+    if (info.menuItemId == "overlayW") {
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, {overlaymsg: "displayOverlay", node: chrome.storage.local.get("visitedPages", function(){ alert("callback") })}, function(response) {
+              alert(response.farewell);
+            });
+          });
+    }
 });
 
 class SessionNode {
