@@ -1,0 +1,15 @@
+{
+    "name": "Wilow Side Panel",
+    "version": "1.0",
+    "manifest_version": 2,
+    "content_scripts": [
+        {
+          "matches": ["<all_urls>"],
+          "js": ["side_panel_ContentScript.js"],
+          "match_about_blank": true
+        }
+    ],
+    "web_accessible_resources": [
+        "side_panel.html"
+    ]
+}
