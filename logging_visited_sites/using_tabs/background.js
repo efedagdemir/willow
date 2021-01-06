@@ -1,16 +1,18 @@
 let tabs = new Map();
+console.log("helo");
 
 chrome.runtime.onInstalled.addListener(function () {
     chrome.storage.local.set({ visitedPages: [] });
 
 
-    chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-        if (changeInfo.url != undefined) {
+    chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
+        if (changeInfo.url) {
             // a tab switched to a new URL
 
             // if the url is already in the graph, how the page was visited does not matter.
             //  we don't create a new node and only change the tab.
-            // make a recursive search to find node.
+            
+            // make a DFT to find the node.
             let exists = false;
             chrome.storage.local.get("visitedPages", function (res) {
                 for (root in res.visitedPages) {
@@ -35,11 +37,13 @@ chrome.runtime.onInstalled.addListener(function () {
                 if (exists) {
                     console.log("This url already is in the graph");
                     tabs.set(tabId, tab.url);
+
                 } else {
                     // determine how the page was visited.
                     chrome.history.getVisits({ url: tab.url }, function (visitItems) {
+
                         // if the new url is last visited by typing, the new page's node is a root.
-                        if (visitItems[0].transition == "typed") {
+                        if (visitItems[visitItems.length -1].transition == "typed") {
                             // add the page as a root.
                             console.log("Adding ", tab.url, " as a root.");
     
@@ -49,11 +53,10 @@ chrome.runtime.onInstalled.addListener(function () {
                                 res.visitedPages.push(new SessionNode(changeInfo.url));
                                 chrome.storage.local.set({ visitedPages: res.visitedPages });
                             });
-    
                         }
     
                         // if the new url is last visited by a link, the new page's node is a child of the node this tab is at.
-                        if (visitItems[0].transition == "link") {
+                        if (visitItems[visitItems.length -1].transition == "link") {
                             let parent = tabs.get(tabId);
                             console.log("Adding ", tab.url, " with parent: ", parent);
     
