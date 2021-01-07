@@ -1,15 +1,38 @@
+<!DOCTYPE html>
+<html>
 <head>
   <link rel="stylesheet" href="side_panel.css">
+  
 </head>
-<body>
 
+<style>
+  #cy {
+        width: 100%;
+        height: 90%;
+        position: absolute;
+        z-index: 1000;
+        background-color:rgba(241, 243, 142, 0.993);
+        top: 10%;
+        left: 0px;
+    }
+</style>
+
+<body>
+<script src="cytoscape.min.js"></script>
 <div id="mySidepanel" class="sidepanel">
-  <a id="closebtnInst" class="closebtn">&times;</a>
+  <div>
+    <a href ="#">Willow</a>
+    <a id="closebtnInst" class="closebtn">&times;</a>
+  </div>
+  
+  <div id = "cy"></div>
   <a href ="#" id="textArea"></a>
-    <script src="popup.js"></script>
+  <script src="popup.js"></script>
+  
 </div>
 
 <img id="openbtnInst" src="willowIcon_50x50.jpeg">
 <script src="side_panel.js"></script>
 
 </body>
+</html>
