@@ -17,5 +17,13 @@ function closeNav() {
     document.getElementById("mySidepanel").style.width = "0px";
 } 
 
+chrome.storage.local.get("sidePanelOpen", function (res) {
+    if (res.sidePanelOpen) { 
+        document.getElementById("mySidepanel").style.width = panelWidth;
+    } else {
+        document.getElementById("mySidepanel").style.width = 0;
+    }
+});
+
 document.getElementById("openbtnInst").onclick = openNav;
 document.getElementById("closebtnInst").onclick = closeNav;
