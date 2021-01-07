@@ -8,9 +8,19 @@ chrome.runtime.onInstalled.addListener(function () {
 
     chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         console.log(tab.title);
+
         if(!changeInfo.url) {
-            urlTitles.set(tab.url, tab.title);
-            
+            urlTitles.set(tab.url, tab.title); // bunlar önce firelarsa ok
+
+            chrome.storage.local.get("sessionGraph", function (res) {
+                let sessionGraph = res.sessionGraph;
+                let node = search(sessionGraph, tab.id);
+                if(node != null) {
+                    node.title = tab.title;
+                    chrome.storage.local.set({ sessionGraph: sessionGraph });
+                    console.log("az daha sıçıyoduk");
+                }
+            });
         }
 
         if (changeInfo.url && changeInfo.url != "chrome://newtab/") {
