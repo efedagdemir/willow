@@ -1,6 +1,6 @@
 let panelWidth = "400px";
-let iconWidth = "66px";
-let iconHeight = "66px";
+let iconWidth = "70px";
+let iconHeight = "70px";
 
 var iframe  = document.createElement ('iframe');
 iframe.src  = chrome.runtime.getURL('side_panel.html');
