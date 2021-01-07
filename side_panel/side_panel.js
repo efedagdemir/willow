@@ -18,8 +18,13 @@ function closeNav() {
 } 
 
 chrome.storage.local.get("sidePanelOpen", function (res) {
-    if (res.sidePanelOpen) { 
+    if (res.sidePanelOpen) {
+        let sidePanel = document.getElementById("mySidepanel");
+        // Trying to disable transition animation. Does not work right now.
+        let tmp = sidePanel.style.transition;
+        sidePanel.style.transition = "0s";
         document.getElementById("mySidepanel").style.width = panelWidth;
+        sidePanel.style.transition = tmp;
     } else {
         document.getElementById("mySidepanel").style.width = 0;
     }
