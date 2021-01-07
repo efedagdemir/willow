@@ -1,10 +1,18 @@
 let tabURLs = new Map();
 console.log("helo");
 
+let urlTitles = new Map();
+
 chrome.runtime.onInstalled.addListener(function () {
     chrome.storage.local.set({ sessionGraph: [] });
 
     chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+        console.log(tab.title);
+        if(!changeInfo.url) {
+            urlTitles.set(tab.url, tab.title);
+            
+        }
+
         if (changeInfo.url && changeInfo.url != "chrome://newtab/") {
 
             console.log(changeInfo.url);
@@ -43,12 +51,13 @@ chrome.runtime.onInstalled.addListener(function () {
 
                             if(parentNode != null) {
                                 console.log("found the parent!")
-                                parentNode.children.push(new SessionNode(changeInfo.url, tab.title, true));
+                                parentNode.children.push(new SessionNode(changeInfo.url, urlTitles.get(changeInfo.url), true));
+                                console.log(tab.title);
                                 parentNode.openTabCount--;
                             } else {
                                 // add the page as a root.
                                 console.log("Adding ", tab.url, " as a root.");
-                                sessionGraph.push(new SessionNode(changeInfo.url, tab.title,1));
+                                sessionGraph.push(new SessionNode(changeInfo.url, urlTitles.get(changeInfo.url),1));
                             }
                         } else {
                             let oldNode = search(sessionGraph, tabURLs.get(tabId));
@@ -56,7 +65,7 @@ chrome.runtime.onInstalled.addListener(function () {
                                 oldNode.openTabCount ++;
                             // add the page as a root.
                             console.log("Adding ", tab.url, " as a root.");
-                            sessionGraph.push(new SessionNode(changeInfo.url,tab.title,1));
+                            sessionGraph.push(new SessionNode(changeInfo.url, urlTitles.get(changeInfo.url),1));
                         }
                         chrome.storage.local.set({ sessionGraph: sessionGraph });
                         tabURLs.set(tabId, tab.url);
@@ -64,29 +73,29 @@ chrome.runtime.onInstalled.addListener(function () {
                 }
             });
 
-            function search(sessionGraph, url) {
-                for (let i = 0; i < sessionGraph.length; i++) {
-                    let res = search_helper(url, sessionGraph[i]);
-                    if (res != undefined)
-                        return res;
-                }
-                return null;
-
-                function search_helper(url, node) {
-                    if (node.url == url)
-                        return node;
-                    else {
-                        for (child in node.children) {
-                            result = search_helper(url, node.children[child]);
-                            if (result != null)
-                                return result;
-                        }
-                    }
-                }
-            }
         }
 
     });
+    function search(sessionGraph, url) {
+        for (let i = 0; i < sessionGraph.length; i++) {
+            let res = search_helper(url, sessionGraph[i]);
+            if (res != undefined)
+                return res;
+        }
+        return null;
+
+        function search_helper(url, node) {
+            if (node.url == url)
+                return node;
+            else {
+                for (child in node.children) {
+                    result = search_helper(url, node.children[child]);
+                    if (result != null)
+                        return result;
+                }
+            }
+        }
+    }
 });
 
 class SessionNode {
