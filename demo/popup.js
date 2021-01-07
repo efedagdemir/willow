@@ -40,6 +40,8 @@ chrome.storage.local.get("sessionGraph", function(result) {
 });
 
 function treePrint(node, prefix) {
+    if(node.openTabCount > 0)
+        document.getElementById("textArea").innerHTML = document.getElementById("textArea").innerHTML + "OPEN";
     document.getElementById("textArea").innerHTML = document.getElementById("textArea").innerHTML + prefix + node.url + "<br>";
     
     nodes.push({

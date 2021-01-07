@@ -16,9 +16,17 @@ chrome.runtime.onInstalled.addListener(function () {
                 
                 // if the url is already in the graph, how the page is visited does not matter.
                 //  we don't create a new node and only change the tab.
-                if (search(sessionGraph, changeInfo.url)) {
+                let newNode = search(sessionGraph, changeInfo.url);
+                if (newNode) {
                     console.log("This url already is in the graph");
-                    tabURLs.set(tabId, tab.url);       
+                    let oldNode = search(sessionGraph, tabURLs.get(tabId));
+                    if(oldNode != null)
+                        oldNode.openTabCount --;
+                    
+                    newNode.openTabCount ++;
+
+                    chrome.storage.local.set({ sessionGraph: sessionGraph });
+                    tabURLs.set(tabId, tab.url); 
                 } else {
                     // determine how the page was visited.
                     chrome.history.getVisits({ url: tab.url }, function (visitItems) {
@@ -35,16 +43,20 @@ chrome.runtime.onInstalled.addListener(function () {
 
                             if(parentNode != null) {
                                 console.log("found the parent!")
-                                parentNode.children.push(new SessionNode(changeInfo.url));
+                                parentNode.children.push(new SessionNode(changeInfo.url, tab.title, true));
+                                parentNode.openTabCount--;
                             } else {
                                 // add the page as a root.
                                 console.log("Adding ", tab.url, " as a root.");
-                                sessionGraph.push(new SessionNode(changeInfo.url));
+                                sessionGraph.push(new SessionNode(changeInfo.url, tab.title,1));
                             }
                         } else {
+                            let oldNode = search(sessionGraph, tabURLs.get(tabId));
+                            if(oldNode)
+                                oldNode.openTabCount ++;
                             // add the page as a root.
                             console.log("Adding ", tab.url, " as a root.");
-                            sessionGraph.push(new SessionNode(changeInfo.url));
+                            sessionGraph.push(new SessionNode(changeInfo.url,tab.title,1));
                         }
                         chrome.storage.local.set({ sessionGraph: sessionGraph });
                         tabURLs.set(tabId, tab.url);
@@ -81,7 +93,9 @@ class SessionNode {
     /**
      * @param {String} url 
      */
-    constructor(url) {
+    constructor(url, title, openTabCount) {
+        this.openTabCount = openTabCount;
+        this.title = title;
         this.url = url;
         this.children = [];
     }
