@@ -1,5 +1,5 @@
-chrome.storage.local.get("visitedPages", function(result) {
-    result.visitedPages.forEach(node => {
+chrome.storage.local.get("sessionGraph", function(result) {
+    result.sessionGraph.forEach(node => {
         treePrint(node,"");
     });
 });

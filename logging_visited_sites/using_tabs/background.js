@@ -4,9 +4,9 @@ console.log("helo");
 chrome.runtime.onInstalled.addListener(function () {
     chrome.storage.local.set({ sessionGraph: [] });
 
-
     chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-        if (changeInfo.url) {
+        if (changeInfo.url && changeInfo.url != "chrome://newtab/") {
+
             console.log(changeInfo.url);
             // a tab switched to a new URL
 
@@ -22,23 +22,29 @@ chrome.runtime.onInstalled.addListener(function () {
                 } else {
                     // determine how the page was visited.
                     chrome.history.getVisits({ url: tab.url }, function (visitItems) {
-                        console.log(visitItems.length);
-
-                        // if the new url is last visited by typing, the new page's node is a root.
-                        if (visitItems[visitItems.length - 1].transition == "typed") {
-                            // add the page as a root.
-                            console.log("Adding ", tab.url, " as a root.");
-                            sessionGraph.push(new SessionNode(changeInfo.url));
-                        }
+                        console.log("The page was visited ", visitItems.length, " times.");
+                        console.log("Last transition type is ", visitItems[visitItems.length - 1].transition);
                         // if the new url is last visited by a link, the new page's node is a child of the node this tab is at.
-                        else if (visitItems[visitItems.length - 1].transition == "link") {
+                        if (visitItems[visitItems.length - 1].transition == "link" ||
+                            visitItems[visitItems.length - 1].transition == "form_submit") {
                             let parentURL = tabURLs.get(tabId);
                             console.log("Adding ", tab.url, " with parent: ", parentURL);
 
                             // make a recursive search to find the parent.
                             let parentNode = search(sessionGraph, parentURL);
 
-                            parentNode.children.push(new SessionNode(changeInfo.url));
+                            if(parentNode != null) {
+                                console.log("found the parent!")
+                                parentNode.children.push(new SessionNode(changeInfo.url));
+                            } else {
+                                // add the page as a root.
+                                console.log("Adding ", tab.url, " as a root.");
+                                sessionGraph.push(new SessionNode(changeInfo.url));
+                            }
+                        } else {
+                            // add the page as a root.
+                            console.log("Adding ", tab.url, " as a root.");
+                            sessionGraph.push(new SessionNode(changeInfo.url));
                         }
                         chrome.storage.local.set({ sessionGraph: sessionGraph });
                         tabURLs.set(tabId, tab.url);
@@ -49,7 +55,7 @@ chrome.runtime.onInstalled.addListener(function () {
             function search(sessionGraph, url) {
                 for (let i = 0; i < sessionGraph.length; i++) {
                     let res = search_helper(url, sessionGraph[i]);
-                    if (res)
+                    if (res != undefined)
                         return res;
                 }
                 return null;
@@ -59,8 +65,8 @@ chrome.runtime.onInstalled.addListener(function () {
                         return node;
                     else {
                         for (child in node.children) {
-                            result = search(url, node.children[child]);
-                            if (result)
+                            result = search_helper(url, node.children[child]);
+                            if (result != null)
                                 return result;
                         }
                     }
