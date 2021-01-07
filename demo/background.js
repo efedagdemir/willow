@@ -51,7 +51,7 @@ chrome.runtime.onInstalled.addListener(function () {
 
                             if(parentNode != null) {
                                 console.log("found the parent!")
-                                parentNode.children.push(new SessionNode(changeInfo.url, urlTitles.get(changeInfo.url), true));
+                                parentNode.children.push(new SessionNode(changeInfo.url, urlTitles.get(changeInfo.url), 1));
                                 console.log(tab.title);
                                 parentNode.openTabCount--;
                             } else {
@@ -96,6 +96,17 @@ chrome.runtime.onInstalled.addListener(function () {
             }
         }
     }
+
+    chrome.tabs.onRemoved.addListener( function( tabId, removeInfo) {
+        chrome.storage.local.get("sessionGraph", function (res) {
+            let sessionGraph = res.sessionGraph;
+            let node = search(sessionGraph, tabURLs.get(tabId));
+            if(node){
+                node.openTabCount --;
+                chrome.storage.local.set({ sessionGraph: sessionGraph });
+            }
+        });
+    });
 });
 
 class SessionNode {
