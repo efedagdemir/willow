@@ -1,6 +1,6 @@
 let panelWidth = "400px";
-let iconWidth = "60x";
-let iconHeight = "70px";
+let iconWidth = "66px";
+let iconHeight = "66px";
 
 var openBtn = document.createElement('button');
 openBtn.style.position = 'fixed';
