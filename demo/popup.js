@@ -61,7 +61,7 @@ function treePrint(node, prefix) {
 
 function initGraph(nodes,edges){   
     var cy = cytoscape({
-        container: document.getElementById("mySidepanel"),
+        container: document.getElementById("cy"),
         elements: {
             nodes: nodes,
             edges: edges
