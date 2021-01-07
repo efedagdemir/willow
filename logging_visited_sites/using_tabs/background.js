@@ -18,7 +18,7 @@ chrome.runtime.onInstalled.addListener(function () {
                 //  we don't create a new node and only change the tab.
                 if (search(sessionGraph, changeInfo.url)) {
                     console.log("This url already is in the graph");
-
+                    tabURLs.set(tabId, tab.url);
                 } else {
                     // determine how the page was visited.
                     chrome.history.getVisits({ url: tab.url }, function (visitItems) {
