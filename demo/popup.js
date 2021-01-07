@@ -125,7 +125,8 @@ function initGraph(nodes,edges){
             {
               selector: 'node',
               style: {
-                'label': 'data(name)'
+                'label': 'data(name)',
+                'background-color': 'green'
               }
             },
 
@@ -133,8 +134,8 @@ function initGraph(nodes,edges){
                 selector: 'edge',
                 style: {
                   'width': 3,
-                  'line-color': '#ccc',
-                  'target-arrow-color': '#ccc',
+                  'line-color': 'red',
+                  'target-arrow-color': 'red',
                   'target-arrow-shape': 'triangle',
                   'curve-style': 'bezier'
                 }
@@ -142,6 +143,11 @@ function initGraph(nodes,edges){
           ]
       });
       console.log(cy);
+
+      cy.nodes().on('click', function(e){
+        var clickedNode = e.target;
+        chrome.tabs.update({url: clickedNode.id()}, () =>{});
+      });
 }
 
 /*
