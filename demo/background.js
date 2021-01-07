@@ -14,7 +14,7 @@ chrome.runtime.onInstalled.addListener(function () {
 
             chrome.storage.local.get("sessionGraph", function (res) {
                 let sessionGraph = res.sessionGraph;
-                let node = search(sessionGraph, tab.id);
+                let node = search(sessionGraph, tab.url);
                 if(node != null) {
                     node.title = tab.title;
                     chrome.storage.local.set({ sessionGraph: sessionGraph });

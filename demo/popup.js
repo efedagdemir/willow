@@ -44,15 +44,15 @@ function treePrint(node, prefix) {
     
     nodes.push({
         data: {
-            id: node.title ? node.title : "NA",
-            //name: node.url
+            id: node.url,
+            name: node.title ? node.title : node.url
         }
     })
     node.children.forEach( child => {
         edges.push({
             data:{
-                source: node.title ? node.title : "NA",
-                target: child.title ? child.title : "NA"
+                source: node.url,
+                target: child.url
             }
         })
         treePrint(child, prefix + ".....");    
@@ -101,7 +101,7 @@ function initGraph(nodes,edges){
             {
               selector: 'node',
               style: {
-                'label': 'data(id)'
+                'label': 'data(name)'
               }
             }
           ]
