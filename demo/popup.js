@@ -5,8 +5,8 @@ chrome.storage.local.get("sessionGraph", function(result) {
 });
 
 function treePrint(node, prefix) {
-    document.write(prefix + node.url);
-    document.write("<br>");
+    document.getElementById("textArea").innerHTML = document.getElementById("textArea").innerHTML + prefix + node.url + "<br>";
+    
     node.children.forEach( child => {
         treePrint(child, prefix + ".....");
     });
