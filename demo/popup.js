@@ -48,15 +48,15 @@ function treePrint(node, prefix) {
     
     nodes.push({
         data: {
-            id: node.title,
+            id: node.title ? node.title : "NA",
             //name: node.url
         }
     })
     node.children.forEach( child => {
         edges.push({
             data:{
-                source: node.title,
-                target: child.title
+                source: node.title ? node.title : "NA",
+                target: child.title ? child.title : "NA"
             }
         })
         treePrint(child, prefix + ".....");    
