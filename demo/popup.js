@@ -126,7 +126,7 @@ function initGraph(nodes,edges){
               selector: 'node',
               style: {
                 'label': 'data(name)',
-                'background-color': 'green'
+                'background-color': '#50b46e'
               }
             },
 
@@ -134,8 +134,8 @@ function initGraph(nodes,edges){
                 selector: 'edge',
                 style: {
                   'width': 3,
-                  'line-color': 'red',
-                  'target-arrow-color': 'red',
+                  'line-color': 'grey',
+                  'target-arrow-color': 'grey',
                   'target-arrow-shape': 'triangle',
                   'curve-style': 'bezier'
                 }
