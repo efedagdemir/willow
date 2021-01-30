@@ -14,11 +14,11 @@
 
 /* The sidepanel links */
 .sidepanel a {
-  padding: 8px 8px 8px 32px;
+  /*padding: 8px 8px 8px 32px;*/
   text-decoration: none;
   font-size: 35px;
   color: #f04116;
-  display: block;
+ /* display: block;*/
   transition: 0.3s;
   font-family:'Gabriola'
 }

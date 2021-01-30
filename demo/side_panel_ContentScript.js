@@ -32,6 +32,77 @@ chrome.runtime.onMessage.addListener(
             iframe.style.width = iconWidth;
             iframe.style.height = iconHeight;
             chrome.storage.local.set({ sidePanelOpen: false });
+        } else if (request.command == "undock") {
+            iframe.style.height = "86%";
+            iframe.style.top = "2%";
+            iframe.style.left = "15px";
+            enableDragging();
         }
     }
   );
+
+// ----------------------------------- //
+// Undocking and dragging              //
+// ----------------------------------- //
+
+function enableDragging() {
+    window.addEventListener('message', evt => {
+        const data = evt.data
+        switch (data.msg) {
+          case 'WILLOW_DRAG_START':
+            handleDragStart(data.mouseX, data.mouseY)
+            break
+          case 'WILLOW_DRAG_MOUSEMOVE':
+            handleFrameMousemove(data.offsetX, data.offsetY)
+            break
+          case 'WILLOW_DRAG_END':
+            handleDragEnd()
+            break
+        }
+      })
+      frameTop = parseInt(iframe.style.top);
+      frameLeft = parseInt(iframe.style.left);
+}
+
+// The code below is based on the tutorial at https://blog.crimx.com/2017/04/06/position-and-drag-iframe-en/
+
+var pageMouseX, pageMouseY
+
+var frameTop;
+var frameLeft;
+
+function handleDragStart (mouseX, mouseY) {
+  // get the coordinates within the upper frame
+  pageMouseX = frameLeft + mouseX
+  pageMouseY = frameTop + mouseY
+
+  document.addEventListener('mouseup', handleDragEnd)
+  document.addEventListener('mousemove', handlePageMousemove)
+}
+
+function handleDragEnd () {
+  document.removeEventListener('mouseup', handleDragEnd)
+  document.removeEventListener('mousemove', handlePageMousemove)
+}
+
+function handleFrameMousemove (offsetX, offsetY) {
+  frameTop += offsetY
+  frameLeft += offsetX
+  console.log("frameLeft: " + frameLeft);
+  iframe.style.top = frameTop + 'px'
+  iframe.style.left = frameLeft + 'px'
+
+  // Add the missing coordinates
+  pageMouseX += offsetX
+  pageMouseY += offsetY
+}
+
+function handlePageMousemove (evt) {
+  frameLeft += evt.clientX - pageMouseX
+  frameTop += evt.clientY - pageMouseY
+  iframe.style.top = frameTop + 'px'
+  iframe.style.left = frameLeft + 'px'
+
+  pageMouseX = evt.clientX
+  pageMouseY = evt.clientY
+}
