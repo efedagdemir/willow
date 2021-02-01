@@ -61,13 +61,15 @@ chrome.runtime.onInstalled.addListener(function () {
 
                             if(parentNode != null) {
                                 console.log("found the parent!")
-                                parentNode.children.push(new SessionNode(changeInfo.url, urlTitles.get(changeInfo.url), 1));
+                                let favIconUrl = "chrome://favicon/size/64@1x/" + changeInfo.url;
+                                parentNode.children.push(new SessionNode(changeInfo.url, urlTitles.get(changeInfo.url), 1, favIconUrl));
                                 console.log(tab.title);
                                 parentNode.openTabCount--;
                             } else {
                                 // add the page as a root.
                                 console.log("Adding ", tab.url, " as a root.");
-                                sessionGraph.push(new SessionNode(changeInfo.url, urlTitles.get(changeInfo.url),1));
+                                let favIconUrl = "chrome://favicon/size/64@1x/" + changeInfo.url;
+                                sessionGraph.push(new SessionNode(changeInfo.url, urlTitles.get(changeInfo.url), 1, favIconUrl));
                             }
                         } else {
                             let oldNode = search(sessionGraph, tabURLs.get(tabId));
@@ -75,7 +77,8 @@ chrome.runtime.onInstalled.addListener(function () {
                                 oldNode.openTabCount ++;
                             // add the page as a root.
                             console.log("Adding ", tab.url, " as a root.");
-                            sessionGraph.push(new SessionNode(changeInfo.url, urlTitles.get(changeInfo.url),1));
+                            let favIconUrl = "chrome://favicon/size/64@1x/" + changeInfo.url;
+                            sessionGraph.push(new SessionNode(changeInfo.url, urlTitles.get(changeInfo.url), 1, favIconUrl));
                         }
                         chrome.storage.local.set({ sessionGraph: sessionGraph });
                         tabURLs.set(tabId, tab.url);
@@ -123,10 +126,11 @@ class SessionNode {
     /**
      * @param {String} url 
      */
-    constructor(url, title, openTabCount) {
+    constructor(url, title, openTabCount, iconURL) {
         this.openTabCount = openTabCount;
         this.title = title;
         this.url = url;
         this.children = [];
+        this.iconURL = iconURL;
     }
 } 

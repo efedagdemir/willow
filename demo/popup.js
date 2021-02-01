@@ -41,11 +41,13 @@ chrome.storage.local.get("sessionGraph", function(result) {
 
 function treePrint(node, prefix) {
     console.log(node.title);
+    console.log("icon url " + node.iconURL);
     
     nodes.push({
         data: {
             id: node.url,
-            name: node.title ? node.title : node.url
+            name: node.title ? node.title : node.url,
+            iconURL: node.iconURL
         }
     })
     node.children.forEach( child => {
@@ -59,7 +61,7 @@ function treePrint(node, prefix) {
     });
 }
 
-function initGraph(nodes,edges){   
+function initGraph(nodes,edges){
     var cy = cytoscape({
         container: document.getElementById("cy"),
         elements: {
@@ -120,13 +122,19 @@ function initGraph(nodes,edges){
             transform: function (node, position ){ return position; } // transform a given node position. Useful for changing flow direction in discrete layouts
             */
         },
-          // so we can see the ids
+          // so we can see the ids 
+          // function(node){ console.log( node.data("iconURL")); return `${node.data("iconURL")}`}
         style: [
             {
               selector: 'node',
               style: {
                 'label': 'data(name)',
-                'background-color': '#50b46e'
+                'background-color': '#50b46e',
+                'background-image': 'data(iconURL)',
+                'background-image-opacity': 0.5,
+                'background-opacity': 0,
+                'background-fit': 'contain',
+                'background-clip': 'node'
               }
             },
 
