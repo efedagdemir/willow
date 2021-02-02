@@ -3,39 +3,26 @@
 <head>
   <link rel="stylesheet" href="side_panel.css">
   
-
   <script src="cytoscape.min.js"></script>
   <script src="node_modules/dagre/dist/dagre.min.js"></script>
   <script src="node_modules/cytoscape-dagre/cytoscape-dagre.js"></script>
 </head>
 
-<style>
-  #cy {
-        width: 400px;
-        height: 90%;
-        position: absolute;
-        z-index: 1000;
-        background-color:rgba(235, 236, 171, 0.993);
-        top: 10%;
-        left: 0px;
-    }
-</style>
-
 <body>
 
-<div id="mySidepanel" class="sidepanel" contextmenu="mymenu">
-  <div id= panelHeader>
-    <a id = willowLabel href = "#">DRAG HERE</a>
-    <a id = dragLabel href = "#">aaaa</a>
-    <a id="closebtnInst" class="closebtn" contextmenu="mymenu">&times;</a>
+<div id="sidePanel">
+  <div id="panelHeader">
+    <a id="willowLabel">Willow</a>
+    <a id="undockBtn">Undock</a>
+    <a id="closeBtn">Close</a>
   </div>
-  <div id = "cy"></div>
+  <div id="panelBody">
+  </div> 
   <script src = "popup.js"> </script>
-
 </div>
 
 
-<img id="openbtnInst" src="willowIcon_50x50.jpeg">
+<img id="openBtn" src="willowIcon_50x50.jpeg">
 <script src="side_panel.js"></script>
 
 </body>

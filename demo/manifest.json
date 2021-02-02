@@ -7,7 +7,7 @@
     "content_scripts": [
         {
           "matches": ["<all_urls>"],
-          "js": ["side_panel_ContentScript.js"],
+          "js": ["sidePanel_injector.js"],
           "run_at": "document_end",
           "match_about_blank": true
         }

@@ -1,52 +1,38 @@
- /* The sidepanel menu */
- .sidepanel {
-  height: 100%; /* Specify a height */
-  /* width: 0; /* 0 width - change this with JavaScript */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Stay on top */
-  top: 0;
+#sidePanel {
+  height: 100%; /* covers whole iframe */
+  position: fixed;
+  width: 0; /* initially 0 so that we do not see a glimpse of it when loading */
+  top: 0;;
   left: 0;
-  background-color: rgba(25, 3, 77, 0.993); /* Black*/
-  overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 5px; /* Place content 60px from the top */
-  transition: 0.5s; /* 0.5 second transition effect to slide in the sidepanel */
+  overflow-x: hidden;
+  background-color: rgba(20, 77, 3, 0.993);
 }
 
-/* The sidepanel links */
-.sidepanel a {
+#panelHeader {
+  height: 70px;
+  width: 400px; /* there probably is a way to automatically make this as large as the parent div*/
+  background-color: rgba(3, 72, 77, 0.993);
+}
+
+#panelHeader a {
   /*padding: 8px 8px 8px 32px;*/
   text-decoration: none;
-  font-size: 35px;
-  color: #f04116;
- /* display: block;*/
+  font-size: 20px;
+  color: #16f095;
   transition: 0.3s;
-  font-family:'Gabriola'
+  font-family:'Gabriola';
+  z-index: 9999;
 }
 
-/* When you mouse over the navigation links, change their color */
-.sidepanel a:hover {
+#panelHeader a:hover {
   color: #f1f1f1;
 }
 
-/* Position and style the close button (top right corner) */
-.sidepanel .closebtn {
+#panelBody {
   position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
+  top: 70px;
+  bottom: 0%;
+  left: 0;
+  width: 400px; /* there probably is a way to automatically make this as large as the parent div*/
+  background-color: rgba(77, 3, 3, 0.993);
 }
-
-/* Style the button that is used to open the sidepanel */
-.openbtn {
-  font-size: 20px;
-  cursor: pointer;
-  background-color: #111;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-}
-
-.openbtn:hover {
-  background-color: #444;
-} 
