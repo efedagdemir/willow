@@ -1,5 +1,5 @@
 #sidePanel {
-  height: 100%; /* covers whole iframe */
+  height: 100%;
   position: fixed;
   width: 0; /* initially 0 so that we do not see a glimpse of it when loading */
   top: 0;;
@@ -35,4 +35,10 @@
   left: 0;
   width: 400px; /* there probably is a way to automatically make this as large as the parent div*/
   background-color: rgba(77, 3, 3, 0.993);
+}
+
+#openBtn {
+  position: fixed;
+  top: 5px;
+  left: 5px;
 }

@@ -20,6 +20,9 @@
         "default_popup": "popup.html"
     },
     "web_accessible_resources": [
-        "side_panel.html"
+        "side_panel.html",
+        "side_panel.css",
+        "side_panel.js",
+        "willowIcon_50x50.jpeg"
     ]
 }
