@@ -2,12 +2,12 @@
 //        CONSANTS        //
 //------------------------//
 var HEADER_HEIGHT = "70px";
-var ICON_WIDTH    = "70px";
-var ICON_HEIGHT   = "70px";
+var ICON_WIDTH = "70px";
+var ICON_HEIGHT = "70px";
 
-var UNDOCK_DEFAULT_OFFSET_TOP   = "10px";
-var UNDOCK_DEFAULT_OFFSET_LEFT  = "10px";
-var UNDOCK_HEIGHT               = "80%";
+var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
+var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
+var UNDOCK_HEIGHT = "80%";
 
 var DOCKED_RESIZE_MIN_WIDTH = 200;  // in px
 
@@ -45,10 +45,8 @@ var sidePanelHTML = `
 //------------------------//
 //        VARIABLES       //
 //------------------------//
-var sidePanel;  // the HTML div that is the side panel.
-var openBtn;    // the injected Willow icon that opens the side panel
-
-var panelWidth;
+var sidePanel;  // the HTML div that is the side panel. Saved here to avoid getting it from the document each time it's needed.
+var panelWidth; // the docked width of the panel. Initialized according to the stored state.
 
 
 //------------------------//
@@ -70,14 +68,23 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
 });
 
 // register event handlers
-document.getElementById("openBtn").onclick   = openSidePanel;
-document.getElementById("closeBtn").onclick  = closeSidePanel;
-document.getElementById("undockBtn").onclick = undockSidePanel;
-document.getElementById("dockBtn").onclick = dockSidePanel;
+document.getElementById("openBtn").onclick    = () => openSidePanel(true);
+document.getElementById("closeBtn").onclick   = () => closeSidePanel(true);
+document.getElementById("undockBtn").onclick  = () => undockSidePanel(null, true);
+document.getElementById("dockBtn").onclick    = () => dockSidePanel(true);
 
 enableDockedResizing();
 
-// end of script
+// listen for sidePanel sync requests
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.message != "WILLOW_SP_SYNC_REQUEST") {
+        return;
+    }
+    handleSPSyncRequest(request);
+  }
+);
+// -- end of script
 
 
 //------------------------//
@@ -86,14 +93,13 @@ enableDockedResizing();
 
 // Create and insert sidePanel
 function injectSidePanel() {
-  var panelWrapper  = document.createElement ('div');
+  var panelWrapper = document.createElement('div');
   panelWrapper.id = "willowPanelWrapper";
   panelWrapper.innerHTML = sidePanelHTML;
   document.body.append(panelWrapper); // TODO: consider removing panelWrapper and inserting sidePanel only.
 
-  // save the following two elements as global variables for the other functions
+  // save sidePanel
   sidePanel = document.getElementById("sidePanel");
-  openBtn = document.getElementById("openBtn");
 
   document.body.zIndex = -1;
   sidePanel.style.zIndex = 1000; // how to choose this number? (to see the problem, set this to 1 and do a google search.)
@@ -104,20 +110,45 @@ function injectSidePanel() {
 // Opening and closing the side panel  //
 // ----------------------------------- //
 
-function openSidePanel() {
+/**
+ * isOrigin indicates whether this page has originated the opening event.
+ * It is true if openSidePanel called in reaction to a user action and
+ * false if it is reacting to async request.
+ */ 
+function openSidePanel(isOrigin) {
   sidePanel.style.width = panelWidth;
-  openBtn.style.display = "none";
-  chrome.storage.local.set({WILLOW_SP_OPEN: true});
+  document.getElementById("openBtn").style.display = "none";
+
+  if (isOrigin) {
+    // set global state
+    chrome.storage.local.set({ WILLOW_SP_OPEN: true });
+    // notify other tabs with a sync request
+    chrome.runtime.sendMessage({ 
+      message: "WILLOW_SP_SYNC_REQUEST",
+      action: "WILLOW_SP_SYNC_OPEN",
+    });
+  }
 }
 
-function closeSidePanel() {
-  openBtn.style.display = "";  // default
+/**
+ * isOrigin has the meaning identical to that in openSidePanel
+ */ 
+function closeSidePanel(isOrigin) {
+  document.getElementById("openBtn").style.display = "";  // default
   sidePanel.style.width = "0px";
-  chrome.storage.local.set({WILLOW_SP_OPEN: false});
+  
+  if (isOrigin) {
+    // set global state
+    chrome.storage.local.set({ WILLOW_SP_OPEN: false });
+    // notify other tabs with a sync request
+    chrome.runtime.sendMessage({ 
+      message: "WILLOW_SP_SYNC_REQUEST",
+      action: "WILLOW_SP_SYNC_CLOSE",
+    });
+  }
 }
 
-function undockSidePanel(undockedLoc) {
-  console.log(undockedLoc);
+function undockSidePanel(undockedLoc, isOrigin) {
   if (!(undockedLoc && undockedLoc.left && undockedLoc.top)) { // if called without proper input (sometimes intentionally)
     // "pop" the panel 
     sidePanel.style.top = UNDOCK_DEFAULT_OFFSET_TOP;
@@ -131,19 +162,25 @@ function undockSidePanel(undockedLoc) {
   document.getElementById("undockBtn").style.display = "none";
   document.getElementById("dockBtn").style.display = "";  // default
 
-  // update panel state
-  chrome.storage.local.set({
-    WILLOW_SP_UNDOCKED: true,
-    WILLOW_SP_UNDOCKED_LOC: {
-      top: sidePanel.style.top,
-      left: sidePanel.style.left
-    }   
-  });
-
   enableDragging();
+  if (isOrigin) {
+    // update panel state
+    chrome.storage.local.set({
+      WILLOW_SP_UNDOCKED: true,
+      WILLOW_SP_UNDOCKED_LOC: {
+        top: sidePanel.style.top,
+        left: sidePanel.style.left
+      }
+    });
+    // notify other tabs with a sync request
+    chrome.runtime.sendMessage({ 
+      message: "WILLOW_SP_SYNC_REQUEST",
+      action: "WILLOW_SP_SYNC_UNDOCK",
+    });
+  }
 }
 
-function dockSidePanel() {
+function dockSidePanel(isOrigin) {
   // put the panel back in its place
   sidePanel.style.top = "0px";
   sidePanel.style.left = "0px";
@@ -152,12 +189,18 @@ function dockSidePanel() {
   document.getElementById("dockBtn").style.display = "none";
   document.getElementById("undockBtn").style.display = "";  // default
 
-  // update panel state
-  chrome.storage.local.set({
-    WILLOW_SP_UNDOCKED: false
-  });
-
   disableDragging();
+  if (isOrigin) {
+    // update panel state
+    chrome.storage.local.set({
+      WILLOW_SP_UNDOCKED: false
+    });
+    // notify other tabs with a sync request
+    chrome.runtime.sendMessage({ 
+      message: "WILLOW_SP_SYNC_REQUEST",
+      action: "WILLOW_SP_SYNC_DOCK",
+    });
+  }
 }
 
 function disableDragging() {
@@ -199,7 +242,16 @@ function enableDragging() {
       WILLOW_SP_UNDOCKED_LOC: {
         top: sidePanel.style.top,
         left: sidePanel.style.left
-      }   
+      }
+    });
+    // notify other tabs with a sync request
+    chrome.runtime.sendMessage({ 
+      message: "WILLOW_SP_SYNC_REQUEST",
+      action: "WILLOW_SP_SYNC_DRAG",
+      newPos: {
+        top: sidePanel.style.top,
+        left: sidePanel.style.left
+      }
     });
   }
 }
@@ -222,7 +274,7 @@ function enableDockedResizing() {
     e.preventDefault();
     deltaX = e.clientX - lastX;
     lastX = e.clientX;
-  
+
     var curWidth = parseInt(sidePanel.style.width, 10);
     if (curWidth + deltaX >= DOCKED_RESIZE_MIN_WIDTH) {
       sidePanel.style.width = (parseInt(sidePanel.style.width, 10) + deltaX) + "px";
@@ -235,10 +287,24 @@ function enableDockedResizing() {
     document.onmousemove = null;
 
     // save new undocked panel location
-    
     chrome.storage.local.set({
       WILLOW_SP_WIDTH: sidePanel.style.width
     });
   }
+}
+
+function handleSPSyncRequest(request) {
+  if (request.action == "WILLOW_SP_SYNC_OPEN") {
+    openSidePanel(false);
+  } else if (request.action == "WILLOW_SP_SYNC_CLOSE") {
+    closeSidePanel(false);    
+  } else if (request.action == "WILLOW_SP_SYNC_UNDOCK") {
+    undockSidePanel(null, false);    
+  } else if (request.action == "WILLOW_SP_SYNC_DOCK") {
+    dockSidePanel(false);    
+  } else if (request.action == "WILLOW_SP_SYNC_DRAG") {
+    sidePanel.style.top = request.newPos.top;   
+    sidePanel.style.left = request.newPos.left; 
+  } 
 }
 

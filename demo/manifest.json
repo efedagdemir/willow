@@ -13,7 +13,7 @@
         }
     ],
     "background": {
-        "scripts": ["background.js"],
+        "scripts": ["background.js", "sidePanel_background.js"],
         "persistent": false
     },
     "browser_action": {
