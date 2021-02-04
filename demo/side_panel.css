@@ -1,3 +1,7 @@
+/*
+ * TODO: Consider simplifying this file using CSS classes
+ */
+
 #sidePanel {
   height: 100%;
   position: fixed;
@@ -6,22 +10,43 @@
   left: 0;
   overflow-x: hidden;
   background-color: rgba(20, 77, 3, 0.993);
+  /* resize: horizontal; */
 }
 
 #panelHeader {
   height: 70px;
-  width: 400px; /* there probably is a way to automatically make this as large as the parent div*/
+  width: 100%; /* there probably is a way to automatically make this as large as the parent div */
   background-color: rgba(3, 72, 77, 0.993);
+  text-align: center;
 }
 
-#panelHeader a {
-  /*padding: 8px 8px 8px 32px;*/
+#panelHeader a {  /* applies to the Willow label, the undock button and the close button */
+  padding: 0px 16px 0px 16px;
   text-decoration: none;
-  font-size: 20px;
+  margin: 0 auto;
+  font-size: 48px;
   color: #16f095;
-  transition: 0.3s;
+  line-height: 70px;  /* has to be the same as #panelHeader's height for the text to be vertically centered */
   font-family:'Gabriola';
-  z-index: 9999;
+}
+
+#closeBtn {
+  position: absolute;  /* absolute positions are relative to the parent container */
+  right: 0px; /* place on the right, the padding inherited from #panelHeader a ensures margin */
+}
+#undockBtn {
+  position: absolute;  /* absolute positions are relative to the parent container */
+  right: 40px; /* TODO: how to place this near closeBtn respecting the margins? */
+  float: right;
+}
+#dockBtn {
+  position: absolute;  /* absolute positions are relative to the parent container */
+  right: 40px; /* TODO: how to place this near closeBtn respecting the margins? */
+  float: right;
+}
+#willowLabel {
+  position: absolute;  /* absolute positions are relative to the parent container */
+  left: 0px; /* place on the left, the padding inherited from #panelHeader a ensures margin */
 }
 
 #panelHeader a:hover {
@@ -33,7 +58,7 @@
   top: 70px;
   bottom: 0%;
   left: 0;
-  width: 400px; /* there probably is a way to automatically make this as large as the parent div*/
+  width: 100%; /* there probably is a way to automatically make this as large as the parent div*/
   background-color: rgba(77, 3, 3, 0.993);
 }
 
@@ -41,4 +66,14 @@
   position: fixed;
   top: 5px;
   left: 5px;
+}
+
+#panelBorder {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  right: 0;
+  width: 5px;
+  cursor: ew-resize;
+  background-color: rgba(1, 49, 53, 0.993);
 }
