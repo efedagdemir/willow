@@ -4,7 +4,7 @@ console.log("helo");
 let urlTitles = new Map();
 
 chrome.runtime.onInstalled.addListener(function () {
-    chrome.storage.local.set({ sessionGraph: [] });
+    chrome.storage.local.set({ sessionGraph: [] , WILLOW_SP_OPEN: false});  // I've put this here for test purposes -Can.
 
     chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         console.log(tab.title);
