@@ -10,7 +10,7 @@
   left: 0;
   overflow-x: hidden;
   background-color: rgba(20, 77, 3, 0.993);
-  /* resize: horizontal; */
+  /*transition: all 2s ease-out; */
 }
 
 #panelHeader {
@@ -28,6 +28,7 @@
   color: #16f095;
   line-height: 70px;  /* has to be the same as #panelHeader's height for the text to be vertically centered */
   font-family:'Gabriola';
+  /* transition: all 4s; */
 }
 
 #closeBtn {

@@ -60,10 +60,10 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
   console.log("panelWidth: " + panelWidth);
   // The pannel is closed and docked by default. Update based on the stored state.
   if (res.WILLOW_SP_OPEN) {
-    openSidePanel();
+    openSidePanel(false);
   }
   if (res.WILLOW_SP_UNDOCKED) {
-    undockSidePanel(res.WILLOW_SP_UNDOCKED_LOC);
+    undockSidePanel(res.WILLOW_SP_UNDOCKED_LOC, false);
   }
 });
 
@@ -116,10 +116,18 @@ function injectSidePanel() {
  * false if it is reacting to async request.
  */ 
 function openSidePanel(isOrigin) {
+  /*
+  if (isOrigin) {
+    sidePanel.style.transition = "all 0.5s";
+  } else {
+    sidePanel.style.transition = "all 0s";
+  } */
+
   sidePanel.style.width = panelWidth;
   document.getElementById("openBtn").style.display = "none";
 
   if (isOrigin) {
+
     // set global state
     chrome.storage.local.set({ WILLOW_SP_OPEN: true });
     // notify other tabs with a sync request
@@ -134,6 +142,13 @@ function openSidePanel(isOrigin) {
  * isOrigin has the meaning identical to that in openSidePanel
  */ 
 function closeSidePanel(isOrigin) {
+  /*
+  if (isOrigin) {
+    sidePanel.style.transition = "all 0.5s";
+  } else {
+    sidePanel.style.transition = "all 0s";
+  }*/
+
   document.getElementById("openBtn").style.display = "";  // default
   sidePanel.style.width = "0px";
   
@@ -149,6 +164,8 @@ function closeSidePanel(isOrigin) {
 }
 
 function undockSidePanel(undockedLoc, isOrigin) {
+  //sidePanel.style.transition = "all 0s";
+
   if (!(undockedLoc && undockedLoc.left && undockedLoc.top)) { // if called without proper input (sometimes intentionally)
     // "pop" the panel 
     sidePanel.style.top = UNDOCK_DEFAULT_OFFSET_TOP;
@@ -286,9 +303,16 @@ function enableDockedResizing() {
     document.onmouseup = null;
     document.onmousemove = null;
 
-    // save new undocked panel location
+    // save new panel Width
     chrome.storage.local.set({
       WILLOW_SP_WIDTH: sidePanel.style.width
+    });
+
+    // notify other tabs with a sync request
+    chrome.runtime.sendMessage({ 
+      message: "WILLOW_SP_SYNC_REQUEST",
+      action: "WILLOW_SP_SYNC_DOCKED_RESIZE",
+      newWidth: sidePanel.style.width
     });
   }
 }
@@ -305,6 +329,8 @@ function handleSPSyncRequest(request) {
   } else if (request.action == "WILLOW_SP_SYNC_DRAG") {
     sidePanel.style.top = request.newPos.top;   
     sidePanel.style.left = request.newPos.left; 
+  } else if (request.action == "WILLOW_SP_SYNC_DOCKED_RESIZE") {
+    sidePanel.style.width = request.newWidth;
   } 
 }
 
