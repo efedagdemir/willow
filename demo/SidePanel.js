@@ -1,3 +1,14 @@
+/**
+ * This file contains the implementation of both SidePanel and SidePanelSyncer.
+ * We want these two objects to be able to access each other's functions without 
+ * having to pass messages. As fas as my current knowledge extends, the only way
+ * to enable this is to put them in the same file.
+ */
+
+/*****************************************************************************
+**********************    Implementation of SidePanel   ********************** 
+*****************************************************************************/
+
 //------------------------//
 //        CONSANTS        //
 //------------------------//
@@ -75,15 +86,6 @@ document.getElementById("dockBtn").onclick    = () => dockSidePanel(true);
 
 enableDockedResizing();
 
-// listen for sidePanel sync requests
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if (request.message != "WILLOW_SP_SYNC_REQUEST") {
-        return;
-    }
-    handleSPSyncRequest(request);
-  }
-);
 // -- end of script
 
 
@@ -317,7 +319,21 @@ function enableDockedResizing() {
   }
 }
 
-function handleSPSyncRequest(request) {
+/*****************************************************************************
+*******************    Implementation of SidePanelSyncer   ******************* 
+*****************************************************************************/
+
+// listen for sidePanel sync requests
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.message != "WILLOW_SP_SYNC_REQUEST") {
+        return;
+    }
+    handleSPSyncRequest(request);
+  }
+);
+
+function handleSyncRequest(request) {
   if (request.action == "WILLOW_SP_SYNC_OPEN") {
     openSidePanel(false);
   } else if (request.action == "WILLOW_SP_SYNC_CLOSE") {
@@ -334,3 +350,8 @@ function handleSPSyncRequest(request) {
   } 
 }
 
+/**
+ * The low level design report includes the function sendSyncRequest() in SidePanelSyncer.
+ * This function is currently ditched. There does not seem to be much to be abstracted.
+ * SidePanel sends the requests directly.
+ */
