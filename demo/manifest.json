@@ -10,10 +10,22 @@
           "js": ["sidePanel_injector.js"],
           "run_at": "document_end",
           "match_about_blank": true
+        },
+        {
+            "matches": ["<all_urls>"],
+            "js": ["cytoscape.min.js"],
+            "run_at": "document_end",
+            "match_about_blank": true
+        },
+        {
+            "matches": ["<all_urls>"],
+            "js": ["graphDrawer.js"],
+            "run_at": "document_end",
+            "match_about_blank": true
         }
     ],
     "background": {
-        "scripts": ["background.js"],
+        "scripts": ["cytoscape.min.js","background.js"], 
         "persistent": false
     },
     "browser_action": {
