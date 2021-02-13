@@ -25,7 +25,7 @@
         }
     ],
     "background": {
-        "scripts": ["cytoscape.min.js","background.js"], 
+        "scripts": ["cytoscape.min.js", "background.js", "sidePanel_background.js"], 
         "persistent": false
     },
     "browser_action": {
