@@ -31,8 +31,12 @@ function tabUpdated(tabId, changeInfo, tab) {
         urlLoaded(tabId, tab.url);
     }
     else if(changeInfo.title) {
-        if(sessionGraph.get(tab.url))
-            setTimeout( () => {sessionGraph.get(tab.url).title = changeInfo.title}, 30);
+        let node = cy.getElementById(tab.url);
+        if(node.length>0)
+            setTimeout( () => {
+                ////sessionGraph.get(tab.url).title = changeInfo.title;
+                node.data("title", changeInfo.title);
+            }, 30);
         /*
          * ChangeInfo contains a title on two different triggers: when the URL changes and when the page's actual title loads.
          * by doing this in the "else", we guarantee that we will get the actual title and not the URL.
@@ -43,9 +47,12 @@ function tabUpdated(tabId, changeInfo, tab) {
 
 function tabRemoved( tabId, removeInfo) {
     // the page isn't open in that tab anymore
-    let node = sessionGraph.get(tabURLs.get(tabId));
-    if(node)
-        node.openTabCount--;
+    ////let node = sessionGraph.get(tabURLs.get(tabId));
+    let node = cy.getElementById(tabURLs.get(tabId));
+
+    if(node.length > 0) //! Sketchy
+        node.data( "openTabCount", node.data("openTabCount") - 1); // decrement the openTabCount of the node.
+        ////node.openTabCount--;
 
     tabURLs.delete(tabId);
 }
@@ -56,28 +63,36 @@ function tabRemoved( tabId, removeInfo) {
  * @param {string} url      The URL of the page.
  */
 async function urlLoaded(tabId, url) {
-    let node = sessionGraph.get(url);
+    ////let node = sessionGraph.get(url);
+    let node = cy.getElementById(url);
 
-    if (node) {
+    if (node.length > 0) { //! Sketchy
         // the url was opened before, there is a node in the graph with this url.
         // ? If we're going to keep track of all visits (ditch the session tree), the link needs to be added here.
         
         //update the open tab count
-        node.openTabCount++;
-        
+        ////node.openTabCount++;
+        node.data( "openTabCount", node.data("openTabCount") + 1); // increment the openTabCount of the node.
     } else {
-        node = new SessionNode(url, "no titles yet", 1);
-        sessionGraph.set(url, node); // add the node to the graph
+        ////node = new SessionNode(url, "no titles yet", 1);
+        ////sessionGraph.set(url, node); // add the node to the graph
+
+        let node = cy.add({// add the node to the cy graph
+            group: 'nodes',
+            data: {id: url, title: "title not loaded :(", openTabCount:1},
+            position: { x: 200, y: 200 }
+        });
 
         chrome.tabs.get(tabId , function(tab){
             node.title = tab.title; // this is asyncronous but that should be ok.
         });
 
         if ( await lastVisitIsEdge(url)) {
-            let sourceNode =  await findActiveNode();
-            if(sourceNode) {
+            let sourceURL =  await findActiveNodeURL();
+            if(sourceURL) {
                 // add the new node as a child.
-                sourceNode.outNeighbours.push(node);
+                ////sourceNode.outNeighbours.push(node);
+                cy.add({ group: 'edges', data: {source: sourceURL, target: url} });
             } else {
                 console.warn( "The parent of the newly loaded page is not in the session graph.");
             }
@@ -86,25 +101,27 @@ async function urlLoaded(tabId, url) {
 
     // the tab does not contain the old page anymore.
     let oldURL = tabURLs.get(tabId);
-    if(oldURL)
-        sessionGraph.get(oldURL).openTabCount --;
+    if(oldURL) {
+        let oldURLNode = cy.getElementById(oldURL); // decrement the old page's node's open tab count.
+        oldURLNode.data("openTabCount", oldURLNode.data("openTabCount") - 1);
+    }
     
     // update the URL open in the tab.
     tabURLs.set(tabId, url);
 
     return null;
+
     //--------------------------- helper functions --------------------------------
     /**
-     * @returns {SessionNode} The node open in the active tab.
+     * @returns {URL} The node open in the active tab.
      */
-    async function findActiveNode() {
+    async function findActiveNodeURL() {
         return new Promise ( function (resolve, reject) {
             // request the active tab. 
             chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
                 // find the corresponding node.
                 let URL = tabURLs.get(tabs[0].id);
-                sourceNode = sessionGraph.get(URL);
-                resolve (sourceNode);
+                resolve (URL);
             });
         });
     }
@@ -129,25 +146,6 @@ async function urlLoaded(tabId, url) {
 /**
  * This is just here for experimentation purposes.
  */
-var elesJson = {
-    nodes: [
-        { data: { id: 'a', foo: 3, bar: 5, baz: 7 } },
-        { data: { id: 'b', foo: 7, bar: 1, baz: 3 } },
-        { data: { id: 'c', foo: 2, bar: 7, baz: 6 } },
-        { data: { id: 'd', foo: 9, bar: 5, baz: 2 } },
-        { data: { id: 'e', foo: 2, bar: 4, baz: 5 } }
-    ],
-
-    edges: [
-        { data: { id: 'ae', weight: 1, source: 'a', target: 'e' } },
-        { data: { id: 'ab', weight: 3, source: 'a', target: 'b' } },
-        { data: { id: 'be', weight: 4, source: 'b', target: 'e' } },
-        { data: { id: 'bc', weight: 5, source: 'b', target: 'c' } },
-        { data: { id: 'ce', weight: 6, source: 'c', target: 'e' } },
-        { data: { id: 'cd', weight: 2, source: 'c', target: 'd' } },
-        { data: { id: 'de', weight: 7, source: 'd', target: 'e' } }
-    ]
-};
 
 let container = document.createElement("div");
 container.style.width = container.style.height = 200;
@@ -159,9 +157,9 @@ let cy = cytoscape({
         .selector('node')
         .css({
             'background-color': '#B3767E',
-            'width': 'mapData(baz, 0, 10, 10, 40)',
-            'height': 'mapData(baz, 0, 10, 10, 40)',
-            'content': 'data(id)'
+            'width': '20',
+            'height': '30',
+            'content': 'data(title)'
         })
         .selector('edge')
         .css({
@@ -185,23 +183,10 @@ let cy = cytoscape({
             'text-opacity': 0
         }),
 
-    elements: elesJson,
-
-    layout: {
-        name: 'circle',
-        padding: 10
-    },
-
     ready: function () {
         // ready 1
     }
 });
-
-cy.add([
-    { group: 'nodes', data: { id: 'n0' }, position: { x: 100, y: 100 } },
-    { group: 'nodes', data: { id: 'n1' }/*, position: { x: 200, y: 200 } */},
-    { group: 'edges', data: { id: 'e0', source: 'n0', target: 'n1' } }
-]);
 
 function getCytoscapeJSON(){
     return cy.json(true);

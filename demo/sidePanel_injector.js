@@ -85,7 +85,7 @@ function injectSidePanel() {
     }
   });
   document.body.zIndex = -1;
-  sidePanel.style.zIndex = 1000; // how to choose this number? (to see the problem, set this to 1 and do a google search.)
+  sidePanel.style.zIndex = 2147483647; // how to choose this number? (to see the problem, set this to 1 and do a google search.)
   //document.body.append(sidePanel); // part of upper TODO
 }
 
