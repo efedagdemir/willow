@@ -82,6 +82,11 @@ async function urlLoaded(tabId, url) {
             data: {id: url, title: "title not loaded :(", openTabCount:1},
             position: { x: 200, y: 200 }
         });
+        // apply layout after adding the new node.
+        var layout = cy.elements().layout({
+            name: 'circle'
+        });
+        layout.run();
 
         chrome.tabs.get(tabId , function(tab){
             node.title = tab.title; // this is asyncronous but that should be ok.
@@ -158,7 +163,7 @@ let cy = cytoscape({
         .css({
             'background-color': '#B3767E',
             'width': '20',
-            'height': '30',
+            'height': '20',
             'content': 'data(title)'
         })
         .selector('edge')
@@ -166,7 +171,8 @@ let cy = cytoscape({
             'line-color': '#F2B1BA',
             'target-arrow-color': '#F2B1BA',
             'width': 2,
-            'target-arrow-shape': 'circle',
+            'target-arrow-shape': 'triangle-backcurve',
+            'curve-style': 'bezier',    // the default curve style does not support arrows
             'opacity': 0.8
         })
         .selector(':selected')
