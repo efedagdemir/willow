@@ -1,4 +1,5 @@
 // initalize stored state
+// ! THIS DOES NOT BELONG HERE
 chrome.runtime.onInstalled.addListener(function () {
     chrome.storage.local.set({  
         WILLOW_SP_OPEN: false, 
