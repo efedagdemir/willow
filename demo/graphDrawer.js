@@ -9,6 +9,10 @@ chrome.runtime.sendMessage( {type : "getCytoscapeJSON"}, function (response) {
 });
 
 cy.on('dragfree', 'node', function(evt){
-    console.log( 'DF: ', evt.target.position());
-    chrome.runtime.sendMessage( {type: "updateNodePosition"})
+    console.log( 'DF: ', evt.target.id(), evt.target.position());
+    chrome.runtime.sendMessage( {
+        message: "WILLOW_UPDATE_NODE_POS",
+        nodeId: evt.target.id(),
+        newPos: evt.target.position()
+    })
 });

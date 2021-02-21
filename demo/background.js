@@ -14,7 +14,8 @@ chrome.runtime.onInstalled.addListener(function () { // runs when the extension 
     // adds the listeners to relevant chrome events.
     function addListeners() {
         chrome.tabs.onUpdated.addListener(tabUpdated);
-        chrome.tabs.onRemoved.addListener(tabRemoved);        
+        chrome.tabs.onRemoved.addListener(tabRemoved);  
+        chrome.runtime.onMessage.addListener(messageReceived);
     }
 });
 
@@ -74,11 +75,13 @@ async function urlLoaded(tabId, url) {
 
         // TEST PURPOSE ---------------
         // apply layout after adding the new node.
+        /*
         var layout = cy.elements().layout({
             name: 'circle'
         });
         layout.run();
-        // -----------------------------
+        */
+        // ----------------------------- 
         
         chrome.tabs.get(tabId , function(tab){
             node.title = tab.title; // this is asyncronous but that should be ok.
@@ -199,12 +202,15 @@ function getCytoscapeJSON(){
     return cy.json(true);
 }
 
-chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
-        console.log(sender.tab ?
-                    "from a content script:" + sender.tab.url :
-                    "from the extension");
-        if (request.type == "getCytoscapeJSON") {
-            sendResponse(this.getCytoscapeJSON());
-        }
+function updateNodePosition(nodeId, newPos) {
+    console.log("UPDATING", nodeId);
+    cy.getElementById(nodeId).position(newPos);
+}
+
+function messageReceived(request, sender, sendResponse) {
+    if (request.type == "getCytoscapeJSON") {
+        sendResponse(this.getCytoscapeJSON());
+    } else if (request.message == "WILLOW_UPDATE_NODE_POS") {
+        updateNodePosition(request.nodeId, request.newPos);
     }
-);
+}
