@@ -35,6 +35,10 @@ function tabUpdated(tabId, changeInfo, tab) {
         if(node.length>0)
             setTimeout( () => {
                 node.data("title", changeInfo.title);
+
+                // ! This seems like the correct place for this. Might need to move somewhere else
+                // Notify all tabs of the newly inserted node
+                broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
             }, 30);
         /*
          * ChangeInfo contains a title on two different triggers: when the URL changes and when the page's actual title loads.
@@ -210,7 +214,7 @@ function updateNodePosition(nodeId, newPos) {
 function messageReceived(request, sender, sendResponse) {
     if (request.type == "getCytoscapeJSON") {
         sendResponse(this.getCytoscapeJSON());
-    } else if (request.message == "WILLOW_UPDATE_NODE_POS") {
+    } else if (request.message == "WILLOW_BACKGROUND_UPDATE_NODE_POS") {
         updateNodePosition(request.nodeId, request.newPos);
     }
 }

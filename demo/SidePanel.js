@@ -329,7 +329,7 @@ chrome.runtime.onMessage.addListener(
     if (request.message != "WILLOW_SP_SYNC_REQUEST") {
         return;
     }
-    handleSPSyncRequest(request);
+    handleSyncRequest(request);
   }
 );
 
