@@ -50,6 +50,7 @@ chrome.runtime.onInstalled.addListener(function () {
                     chrome.history.getVisits({ url: tab.url }, function (visitItems) {
                         console.log("The page was visited ", visitItems.length, " times.");
                         console.log("Last transition type is ", visitItems[visitItems.length - 1].transition);
+                        var favIconUrl = "chrome://favicon/size/64@1x/" + changeInfo.url;
                         // if the new url is last visited by a link, the new page's node is a child of the node this tab is at.
                         if (visitItems[visitItems.length - 1].transition == "link" ||
                             visitItems[visitItems.length - 1].transition == "form_submit") {
@@ -61,14 +62,12 @@ chrome.runtime.onInstalled.addListener(function () {
 
                             if(parentNode != null) {
                                 console.log("found the parent!")
-                                let favIconUrl = "chrome://favicon/size/64@1x/" + changeInfo.url;
                                 parentNode.children.push(new SessionNode(changeInfo.url, urlTitles.get(changeInfo.url), 1, favIconUrl));
                                 console.log(tab.title);
                                 parentNode.openTabCount--;
                             } else {
                                 // add the page as a root.
                                 console.log("Adding ", tab.url, " as a root.");
-                                let favIconUrl = "chrome://favicon/size/64@1x/" + changeInfo.url;
                                 sessionGraph.push(new SessionNode(changeInfo.url, urlTitles.get(changeInfo.url), 1, favIconUrl));
                             }
                         } else {
@@ -77,7 +76,6 @@ chrome.runtime.onInstalled.addListener(function () {
                                 oldNode.openTabCount ++;
                             // add the page as a root.
                             console.log("Adding ", tab.url, " as a root.");
-                            let favIconUrl = "chrome://favicon/size/64@1x/" + changeInfo.url;
                             sessionGraph.push(new SessionNode(changeInfo.url, urlTitles.get(changeInfo.url), 1, favIconUrl));
                         }
                         chrome.storage.local.set({ sessionGraph: sessionGraph });
