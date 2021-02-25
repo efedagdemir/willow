@@ -4,39 +4,9 @@ let edges = [];
 chrome.storage.local.get("sessionGraph", function(result) {
     result.sessionGraph.forEach(node => {
        treePrint(node,"");
-         //initGraph(node);
     });
     initGraph(nodes,edges);
-    
-    
-    /*result.sessionGraph.forEach(node =>{
-        nodes.push({
-            data: {
-                id: node.url,
-                //name: node.url
-            }
-        })
-        treePrint(node,"");
-        console.log("nodee ",node.url);
-        node.children.forEach(child =>{
-            console.log("child ",child.url);
-            nodes.push({
-                data: {
-                    id: child.url,
-                    //name: child.url
-                }
-            })
-            edges.push({
-                data:{
-                    source: node.url,
-                    target: child.url
-                }
-            })
-        })
-    })*/
-    console.log(nodes);
-    console.log(edges);
-    initGraph(nodes,edges);
+
 });
 
 function treePrint(node, prefix) {
@@ -45,7 +15,9 @@ function treePrint(node, prefix) {
     nodes.push({
         data: {
             id: node.url,
-            name: node.title ? node.title : node.url
+            name: node.title ? node.title : node.url,
+            validTitle: node.title ? 1 : 0,
+            openTab : node.openTabCount
         }
     })
     node.children.forEach( child => {
@@ -59,7 +31,8 @@ function treePrint(node, prefix) {
     });
 }
 
-function initGraph(nodes,edges){   
+function initGraph(nodes,edges){  
+    
     var cy = cytoscape({
         container: document.getElementById("cy"),
         elements: {
@@ -68,8 +41,7 @@ function initGraph(nodes,edges){
         },
         layout: {
             name: 'dagre',
-
-            // dagre algo options, uses default value on undefined
+            //dagre algo options, uses default value on undefined
             nodeSep: undefined, // the separation between adjacent nodes in the same rank
             edgeSep: undefined, // the separation between adjacent edges in the same rank
             rankSep: undefined, // the separation between each rank in the layout
@@ -124,33 +96,115 @@ function initGraph(nodes,edges){
         style: [
             {
               selector: 'node',
-              style: {
-                'label': 'data(name)',
-                'background-color': '#50b46e'
-              }
+              css: { //new css according to color-change of active nodes. TT
+                
+                'text-wrap': 'wrap',
+                'text-max-width': '170px',
+                'text-justification':'center',
+                'font-family': 'serif',
+                'background-color': function(node) {
+                    
+                        if (node.data("openTab") > 0)   
+                            return '#50b46e';
+                        else 
+                            return '#808080';
+                },
+                'background-opacity': 0,
+                'border-width': 3, //added border for icons
+                'border-opacity': 0,
+                'border-color': function(node) {
+                    if (node.data("openTab") > 0)   
+                       return '#50b46e';
+                   else 
+                       return '#808080';
+                 },
+                }
             },
 
             {
                 selector: 'edge',
                 style: {
                   'width': 3,
+                  'opacity': 0,
                   'line-color': 'grey',
                   'target-arrow-color': 'grey',
                   'target-arrow-shape': 'triangle',
                   'curve-style': 'bezier'
                 }
               }
-          ]
+          ],minZoom:1
       });
-      console.log(cy);
+    
+    /*In order to fit and center the graph, it is first drawn with visibility zero in 
+    above css styling. Then inside this timeout, the graph is made visible. 
+    This is not a solution. For now it works without a problem but a better option should br found. TT*/  
+    setTimeout(() => { 
+        cy.style()
+         
+          .selector('node')
+            .style('label',  function(node) {
+                   
+                if (node.data("validTitle") ){  
+                     return `${node.data("name")}`;
+                 }
+                 else {
+                     var modUrl = modifyUrl(node.data("name"));
+                     return `${modUrl}`
+                 
+                 }
+           })
+            .style( 'background-opacity', 1)
+            .style('border-opacity', 1)
+            .selector('edge')
+            .style('opacity', 1)
+            .update();
+            cy.fit()
+        
+    },500); 
 
-      cy.nodes().on('click', function(e){
+    /*Is a callback function which operated when the graph is ready (after initialization)
+    Couldn't make it work like above setTimeout function, even though the code inside is the same,
+    output is different. I put it here in comment, so that we don't forget and make it work in future. TT */
+    /*
+    cy.ready(function() {
+        console.log("ready");
+        cy.center()
+        cy.fit(cy.$('#layer0-selectbox'))
+    });*/
+     
+    
+     cy.nodes().on('click', function(e){
         var clickedNode = e.target;
         chrome.tabs.update({url: clickedNode.id()}, () =>{});
       });
+      
+     
 }
 
-/*
 
-  
-    <script src="popup.js"></script>*/ 
+
+/*If a title does not have any whitespaces to be divided from, 
+then this function divides it by 20 words a line. TT*/
+function modifyUrl(url){
+    
+    var modifiedUrl = "";
+    var len = url.length;
+    var count =  Math.ceil(len / 20);
+    if (len < 20)
+        return url;
+    
+    for (i = 0; i < count; i++){
+        if (i*20 < len) {
+            if (len - (i*20+20) >= 3 )
+                modifiedUrl = modifiedUrl + url.substring(i*20, i*20+20) + "\n";
+            else {
+                modifiedUrl = modifiedUrl + url.substring(i*20, len);
+                break;
+            }
+        }
+        
+    }
+
+    return modifiedUrl;
+
+}

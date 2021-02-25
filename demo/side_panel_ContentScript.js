@@ -28,10 +28,14 @@ chrome.runtime.onMessage.addListener(
             iframe.style.height = "100%"
             iframe.style.width = panelWidth;
             chrome.storage.local.set({ sidePanelOpen: true });
+                       
         } else if (request.command == "close") {
             iframe.style.width = iconWidth;
             iframe.style.height = iconHeight;
             chrome.storage.local.set({ sidePanelOpen: false });
         }
+        
     }
   );
+
+ 

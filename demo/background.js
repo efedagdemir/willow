@@ -117,6 +117,7 @@ chrome.runtime.onInstalled.addListener(function () {
             }
         });
     });
+        
 });
 
 class SessionNode {
