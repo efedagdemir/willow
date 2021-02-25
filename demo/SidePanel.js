@@ -1,3 +1,14 @@
+/**
+ * This file contains the implementation of both SidePanel and SidePanelSyncer.
+ * We want these two objects to be able to access each other's functions without 
+ * having to pass messages. As fas as my current knowledge extends, the only way
+ * to enable this is to put them in the same file.
+ */
+
+/*****************************************************************************
+**********************    Implementation of SidePanel   ********************** 
+*****************************************************************************/
+
 //------------------------//
 //        CONSANTS        //
 //------------------------//
@@ -60,10 +71,10 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
   console.log("panelWidth: " + panelWidth);
   // The pannel is closed and docked by default. Update based on the stored state.
   if (res.WILLOW_SP_OPEN) {
-    openSidePanel();
+    openSidePanel(false);
   }
   if (res.WILLOW_SP_UNDOCKED) {
-    undockSidePanel(res.WILLOW_SP_UNDOCKED_LOC);
+    undockSidePanel(res.WILLOW_SP_UNDOCKED_LOC, false);
   }
 });
 
@@ -75,15 +86,6 @@ document.getElementById("dockBtn").onclick    = () => dockSidePanel(true);
 
 enableDockedResizing();
 
-// listen for sidePanel sync requests
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if (request.message != "WILLOW_SP_SYNC_REQUEST") {
-        return;
-    }
-    handleSPSyncRequest(request);
-  }
-);
 // -- end of script
 
 
@@ -102,7 +104,7 @@ function injectSidePanel() {
   sidePanel = document.getElementById("sidePanel");
 
   document.body.zIndex = -1;
-  sidePanel.style.zIndex = 1000; // how to choose this number? (to see the problem, set this to 1 and do a google search.)
+  sidePanel.style.zIndex = 2147483647; // how to choose this number? (to see the problem, set this to 1 and do a google search.)
   //document.body.append(sidePanel); // part of upper TODO
 }
 
@@ -116,10 +118,18 @@ function injectSidePanel() {
  * false if it is reacting to async request.
  */ 
 function openSidePanel(isOrigin) {
+  /*
+  if (isOrigin) {
+    sidePanel.style.transition = "all 0.5s";
+  } else {
+    sidePanel.style.transition = "all 0s";
+  } */
+
   sidePanel.style.width = panelWidth;
   document.getElementById("openBtn").style.display = "none";
 
   if (isOrigin) {
+
     // set global state
     chrome.storage.local.set({ WILLOW_SP_OPEN: true });
     // notify other tabs with a sync request
@@ -134,6 +144,13 @@ function openSidePanel(isOrigin) {
  * isOrigin has the meaning identical to that in openSidePanel
  */ 
 function closeSidePanel(isOrigin) {
+  /*
+  if (isOrigin) {
+    sidePanel.style.transition = "all 0.5s";
+  } else {
+    sidePanel.style.transition = "all 0s";
+  }*/
+
   document.getElementById("openBtn").style.display = "";  // default
   sidePanel.style.width = "0px";
   
@@ -149,6 +166,8 @@ function closeSidePanel(isOrigin) {
 }
 
 function undockSidePanel(undockedLoc, isOrigin) {
+  //sidePanel.style.transition = "all 0s";
+
   if (!(undockedLoc && undockedLoc.left && undockedLoc.top)) { // if called without proper input (sometimes intentionally)
     // "pop" the panel 
     sidePanel.style.top = UNDOCK_DEFAULT_OFFSET_TOP;
@@ -286,14 +305,35 @@ function enableDockedResizing() {
     document.onmouseup = null;
     document.onmousemove = null;
 
-    // save new undocked panel location
+    // save new panel Width
     chrome.storage.local.set({
       WILLOW_SP_WIDTH: sidePanel.style.width
+    });
+
+    // notify other tabs with a sync request
+    chrome.runtime.sendMessage({ 
+      message: "WILLOW_SP_SYNC_REQUEST",
+      action: "WILLOW_SP_SYNC_DOCKED_RESIZE",
+      newWidth: sidePanel.style.width
     });
   }
 }
 
-function handleSPSyncRequest(request) {
+/*****************************************************************************
+*******************    Implementation of SidePanelSyncer   ******************* 
+*****************************************************************************/
+
+// listen for sidePanel sync requests
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.message != "WILLOW_SP_SYNC_REQUEST") {
+        return;
+    }
+    handleSyncRequest(request);
+  }
+);
+
+function handleSyncRequest(request) {
   if (request.action == "WILLOW_SP_SYNC_OPEN") {
     openSidePanel(false);
   } else if (request.action == "WILLOW_SP_SYNC_CLOSE") {
@@ -305,6 +345,13 @@ function handleSPSyncRequest(request) {
   } else if (request.action == "WILLOW_SP_SYNC_DRAG") {
     sidePanel.style.top = request.newPos.top;   
     sidePanel.style.left = request.newPos.left; 
+  } else if (request.action == "WILLOW_SP_SYNC_DOCKED_RESIZE") {
+    sidePanel.style.width = request.newWidth;
   } 
 }
 
+/**
+ * The low level design report includes the function sendSyncRequest() in SidePanelSyncer.
+ * This function is currently ditched. There does not seem to be much to be abstracted.
+ * SidePanel sends the requests directly.
+ */
