@@ -7,13 +7,25 @@
     "content_scripts": [
         {
           "matches": ["<all_urls>"],
-          "js": ["sidePanel_injector.js"],
+          "js": ["SidePanel.js"],
           "run_at": "document_end",
           "match_about_blank": true
+        },
+        {
+            "matches": ["<all_urls>"],
+            "js": ["cytoscape.min.js"],
+            "run_at": "document_end",
+            "match_about_blank": true
+        },
+        {
+            "matches": ["<all_urls>"],
+            "js": ["graphDrawer.js"],
+            "run_at": "document_end",
+            "match_about_blank": true
         }
     ],
     "background": {
-        "scripts": ["background.js", "sidePanel_background.js"],
+        "scripts": ["cytoscape.min.js", "background.js", "SyncBroadcaster.js"], 
         "persistent": false
     },
     "browser_action": {
