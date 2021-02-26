@@ -165,6 +165,14 @@ function closeSidePanel(isOrigin) {
   }
 }
 
+function toggleSidePanel(isOrigin) {
+  if (sidePanel.style.width == panelWidth) {
+    closeSidePanel(isOrigin);
+  } else {
+    openSidePanel(isOrigin);
+  }
+}
+
 function undockSidePanel(undockedLoc, isOrigin) {
   //sidePanel.style.transition = "all 0s";
 
@@ -338,6 +346,8 @@ function handleSPSyncRequest(request) {
     openSidePanel(false);
   } else if (request.action == "WILLOW_SP_SYNC_CLOSE") {
     closeSidePanel(false);    
+  } else if (request.action == "WILLOW_SP_SYNC_TOGGLE") {
+    toggleSidePanel(false);
   } else if (request.action == "WILLOW_SP_SYNC_UNDOCK") {
     undockSidePanel(null, false);    
   } else if (request.action == "WILLOW_SP_SYNC_DOCK") {

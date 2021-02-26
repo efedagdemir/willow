@@ -16,7 +16,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     // notify tabs through the broadcaster
     broadcastSyncRequest({
         message: "WILLOW_SP_SYNC_REQUEST",
-        action: "WILLOW_SP_SYNC_OPEN",
+        action: "WILLOW_SP_SYNC_TOGGLE",
         notifyActiveTab: true
     });
 });
