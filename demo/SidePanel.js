@@ -23,7 +23,8 @@ var ICON_HEIGHT = "70px";
 
 var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
 var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
-var UNDOCK_HEIGHT = "400px";
+var UNDOCK_DEFAULT_HEIGHT = "600px";
+var UNDOCK_DEFAULT_WIDTH = "400px";
 
 var RESIZE_MIN_WIDTH = 200;  // in px
 var RESIZE_MIN_HEIGHT = 200;  // in px
@@ -182,13 +183,14 @@ function undockSidePanel(undockedLoc, isOrigin) {
 
   if (!(undockedLoc && undockedLoc.left && undockedLoc.top)) { // if called without proper input (sometimes intentionally)
     // "pop" the panel 
-    sidePanel.style.top = UNDOCK_DEFAULT_OFFSET_TOP;
-    sidePanel.style.left = UNDOCK_DEFAULT_OFFSET_LEFT;
+    sidePanel.style.top   = UNDOCK_DEFAULT_OFFSET_TOP;
+    sidePanel.style.left  = UNDOCK_DEFAULT_OFFSET_LEFT;
   } else {
-    sidePanel.style.top = undockedLoc.top;
-    sidePanel.style.left = undockedLoc.left;
+    sidePanel.style.top   = undockedLoc.top;
+    sidePanel.style.left  = undockedLoc.left;
   }
-  sidePanel.style.height = UNDOCK_HEIGHT;
+  sidePanel.style.height = UNDOCK_DEFAULT_HEIGHT;
+  sidePanel.style.width  = UNDOCK_DEFAULT_WIDTH;
 
   document.getElementById("undockBtn").style.display = "none";
   document.getElementById("dockBtn").style.display = "";  // default
