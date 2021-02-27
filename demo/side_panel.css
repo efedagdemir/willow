@@ -23,6 +23,7 @@
 #panelHeader a {  /* applies to the Willow label, the undock button and the close button */
   padding: 0px 16px 0px 16px;
   text-decoration: none;
+  cursor: pointer;
   margin: 0 auto;
   font-size: 48px;
   color: #16f095;
