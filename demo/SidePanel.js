@@ -23,9 +23,10 @@ var ICON_HEIGHT = "70px";
 
 var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
 var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
-var UNDOCK_HEIGHT = "80%";
+var UNDOCK_HEIGHT = "400px";
 
-var DOCKED_RESIZE_MIN_WIDTH = 200;  // in px
+var RESIZE_MIN_WIDTH = 200;  // in px
+var RESIZE_MIN_HEIGHT = 200;  // in px
 
 var sidePanelHTML = `
 <!DOCTYPE html>
@@ -48,7 +49,10 @@ var sidePanelHTML = `
   </div>
   <div id="panelBody">
   </div>
-  <div id="panelBorder"></div>
+  <div id="leftBorder"></div>
+  <div id="rightBorder"></div>
+  <div id="topBorder"></div>
+  <div id="bottomBorder"></div>
 </div>
 </body>
 </html>
@@ -86,7 +90,7 @@ document.getElementById("closeBtn").onclick   = () => closeSidePanel(true);
 document.getElementById("undockBtn").onclick  = () => undockSidePanel(null, true);
 document.getElementById("dockBtn").onclick    = () => dockSidePanel(true);
 
-enableDockedResizing();
+enableResizing(rightBorderOnly = true);
 
 // -- end of script
 
@@ -190,6 +194,7 @@ function undockSidePanel(undockedLoc, isOrigin) {
   document.getElementById("dockBtn").style.display = "";  // default
 
   enableDragging();
+  enableResizing(rightBorderOnly = false);
   if (isOrigin) {
     // update panel state
     chrome.storage.local.set({
@@ -217,6 +222,7 @@ function dockSidePanel(isOrigin) {
   document.getElementById("undockBtn").style.display = "";  // default
 
   disableDragging();
+  enableResizing(rightBorderOnly = true);
   if (isOrigin) {
     // update panel state
     chrome.storage.local.set({
@@ -283,14 +289,37 @@ function enableDragging() {
   }
 }
 
-function enableDockedResizing() {
-  var deltaX = 0, lastX = 0;
-  document.getElementById("panelBorder").onmousedown = resizeMouseDown;
+function enableResizing(rightBorderOnly) {
+  var deltaX = 0, lastX = 0, deltaY = 0, lastY = 0;
+  var heldBorder = "";
 
-  function resizeMouseDown(e) {
+  document.getElementById("rightBorder").onmousedown  = (e) => resizeMouseDown(e, "right" );
+
+  if (rightBorderOnly) {
+    document.getElementById("leftBorder").onmousedown   = null;
+    document.getElementById("topBorder").onmousedown    = null;
+    document.getElementById("bottomBorder").onmousedown = null;
+
+    document.getElementById("leftBorder").style.cursor    = "";
+    document.getElementById("topBorder").style.cursor     = "";
+    document.getElementById("bottomBorder").style.cursor  = "";
+  } else {
+    document.getElementById("leftBorder").onmousedown   = (e) => resizeMouseDown(e, "left"  );
+    document.getElementById("topBorder").onmousedown    = (e) => resizeMouseDown(e, "top"   );
+    document.getElementById("bottomBorder").onmousedown = (e) => resizeMouseDown(e, "bottom");
+
+    document.getElementById("leftBorder").style.cursor    = "ew-resize";
+    document.getElementById("topBorder").style.cursor     = "ns-resize";
+    document.getElementById("bottomBorder").style.cursor  = "ns-resize";
+  }
+  
+  function resizeMouseDown(e, border) {
     e = e || window.event;
     e.preventDefault();
+
     lastX = e.clientX;
+    lastY = e.clientY;
+    heldBorder = border;
 
     document.onmouseup = resizeMouseUp;
     document.onmousemove = resizeMouseMove;
@@ -299,13 +328,34 @@ function enableDockedResizing() {
   function resizeMouseMove(e) {
     e = e || window.event;
     e.preventDefault();
+
     deltaX = e.clientX - lastX;
     lastX = e.clientX;
-
+    deltaY = e.clientY - lastY;
+    lastY = e.clientY;
     var curWidth = parseInt(sidePanel.style.width, 10);
-    if (curWidth + deltaX >= DOCKED_RESIZE_MIN_WIDTH) {
-      sidePanel.style.width = (parseInt(sidePanel.style.width, 10) + deltaX) + "px";
+    var curHeight = parseInt(sidePanel.style.height, 10);
+
+    if (heldBorder == "right") {
+      if (curWidth + deltaX >= RESIZE_MIN_WIDTH) {
+        sidePanel.style.width = (curWidth + deltaX) + "px";
+      }
+    } else if (heldBorder == "left") {
+      if (curWidth - deltaX >= RESIZE_MIN_WIDTH) {
+        sidePanel.style.width = (curWidth - deltaX) + "px";
+        sidePanel.style.left = (parseInt(sidePanel.style.left, 10) + deltaX) + "px";
+      }
+    } else if (heldBorder == "top") {
+      if (curWidth - deltaX >= RESIZE_MIN_WIDTH) {
+        sidePanel.style.height = (curHeight - deltaY) + "px";
+        sidePanel.style.top = (parseInt(sidePanel.style.top, 10) + deltaY) + "px";
+      }
+    } else if (heldBorder == "bottom") {
+      if (curWidth - deltaX >= RESIZE_MIN_WIDTH) {
+        sidePanel.style.height = (curHeight + deltaY) + "px";
+      }
     }
+    
   }
 
   function resizeMouseUp() {
@@ -316,6 +366,7 @@ function enableDockedResizing() {
     // save new panel Width
     chrome.storage.local.set({
       WILLOW_SP_WIDTH: sidePanel.style.width
+      // ! also set height
     });
 
     // notify other tabs with a sync request
