@@ -59,7 +59,12 @@ function applyStyle(){
             'content': 'data(title)',
             'text-wrap': 'wrap',
             'text-max-width': '170px',
-            'text-justification':'center'
+            'text-justification':'center',
+            'background-image': 'data(iconURL)',
+            'background-image-opacity': '1',
+            'background-opacity': '0',
+            'background-fit': 'contain',
+            'background-clip': 'node'
         })
         .selector('edge')
         .style({
