@@ -71,9 +71,10 @@ async function urlLoaded(tabId, url) {
         //update the open tab count
         node.data( "openTabCount", node.data("openTabCount") + 1); // increment the openTabCount of the node.
     } else {
+        let favIconUrl = "chrome://favicon/size/64@1x/" + url;
         let node = cy.add({// add the node to the cy graph
             group: 'nodes',
-            data: {id: url, title: "title not loaded :(", openTabCount:1},
+            data: {id: url, title: "title not loaded :(", openTabCount:1, iconURL: favIconUrl},
             position: { x: 200, y: 200 }
         });
 
@@ -170,7 +171,12 @@ let cy = cytoscape({
             'background-color': '#B3767E',
             'width': '20',
             'height': '20',
-            'content': 'data(title)'
+            'content': 'data(title)',
+            'background-image': 'data(iconURL)',
+            'background-image-opacity': '1',
+            'background-opacity': '0',
+            'background-fit': 'contain',
+            'background-clip': 'node'
         })
         .selector('edge')
         .css({
