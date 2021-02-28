@@ -1,14 +1,3 @@
-// initalize stored state
-// ! THIS DOES NOT BELONG HERE
-chrome.runtime.onInstalled.addListener(function () {
-    chrome.storage.local.set({  
-        WILLOW_SP_OPEN: false, 
-        WILLOW_SP_UNDOCKED: false,  
-        WILLOW_SP_UNDOCKED_LOC: null,
-        WILLOW_SP_WIDTH: "400px" 
-    });
-});
-
 // add a listener for sync requests
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
@@ -22,8 +11,19 @@ chrome.runtime.onMessage.addListener(
 
 // broadcast received message to the inactive tabs in the current window.
 function broadcastSyncRequest(request) {
-    chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
+    /**
+     * notifyActiveTab is a quick fix to handle some exceptional cases.
+     * By default, the active tab is not notified
+     */
+    let selector = {currentWindow: true};
+    if (!request.notifyActiveTab) {
+        selector.active = false;
+        console.log("DONT NOTIFY ACTIVE TAB");
+    }
+    chrome.tabs.query(selector, function(tabs) {
+        console.log("Query returned");
         for (let tab of tabs) {
+            console.log("Sending message");
             chrome.tabs.sendMessage(tab.id, request);
         }    
     });

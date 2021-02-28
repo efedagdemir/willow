@@ -13,8 +13,13 @@
 //        CONSANTS        //
 //------------------------//
 var HEADER_HEIGHT = "70px";
+
+/**
+ * The icon is removed
 var ICON_WIDTH = "70px";
 var ICON_HEIGHT = "70px";
+ */
+
 
 var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
 var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
@@ -45,8 +50,6 @@ var sidePanelHTML = `
   </div>
   <div id="panelBorder"></div>
 </div>
-
-<img id="openBtn" src="${chrome.runtime.getURL("willowIcon_50x50.jpeg")}">
 </body>
 </html>
 `
@@ -79,7 +82,6 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
 });
 
 // register event handlers
-document.getElementById("openBtn").onclick    = () => openSidePanel(true);
 document.getElementById("closeBtn").onclick   = () => closeSidePanel(true);
 document.getElementById("undockBtn").onclick  = () => undockSidePanel(null, true);
 document.getElementById("dockBtn").onclick    = () => dockSidePanel(true);
@@ -126,7 +128,6 @@ function openSidePanel(isOrigin) {
   } */
 
   sidePanel.style.width = panelWidth;
-  document.getElementById("openBtn").style.display = "none";
 
   if (isOrigin) {
 
@@ -151,7 +152,6 @@ function closeSidePanel(isOrigin) {
     sidePanel.style.transition = "all 0s";
   }*/
 
-  document.getElementById("openBtn").style.display = "";  // default
   sidePanel.style.width = "0px";
   
   if (isOrigin) {
@@ -162,6 +162,14 @@ function closeSidePanel(isOrigin) {
       message: "WILLOW_SP_SYNC_REQUEST",
       action: "WILLOW_SP_SYNC_CLOSE",
     });
+  }
+}
+
+function toggleSidePanel(isOrigin) {
+  if (sidePanel.style.width == panelWidth) {
+    closeSidePanel(isOrigin);
+  } else {
+    openSidePanel(isOrigin);
   }
 }
 
@@ -329,15 +337,17 @@ chrome.runtime.onMessage.addListener(
     if (request.message != "WILLOW_SP_SYNC_REQUEST") {
         return;
     }
-    handleSyncRequest(request);
+    handleSPSyncRequest(request);
   }
 );
 
-function handleSyncRequest(request) {
+function handleSPSyncRequest(request) {
   if (request.action == "WILLOW_SP_SYNC_OPEN") {
     openSidePanel(false);
   } else if (request.action == "WILLOW_SP_SYNC_CLOSE") {
     closeSidePanel(false);    
+  } else if (request.action == "WILLOW_SP_SYNC_TOGGLE") {
+    toggleSidePanel(false);
   } else if (request.action == "WILLOW_SP_SYNC_UNDOCK") {
     undockSidePanel(null, false);    
   } else if (request.action == "WILLOW_SP_SYNC_DOCK") {
