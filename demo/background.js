@@ -8,7 +8,6 @@ chrome.runtime.onInstalled.addListener(function () { // runs when the extension 
     // initializes the data structures of this background page.
     function initialize() {
         tabURLs = new Map();
-        sessionGraph = new Map();
     }
 
     // adds the listeners to relevant chrome events.

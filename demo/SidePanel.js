@@ -77,7 +77,7 @@ injectSidePanel();
 chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UNDOCKED_LOC", "WILLOW_SP_WIDTH"], function (res) {
   panelWidth = res.WILLOW_SP_WIDTH;
   console.log("panelWidth: " + panelWidth);
-  // The pannel is closed and docked by default. Update based on the stored state.
+  // The panel is closed and docked by default. Update based on the stored state.
   if (res.WILLOW_SP_OPEN) {
     openSidePanel(false);
   }
