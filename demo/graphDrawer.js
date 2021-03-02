@@ -28,9 +28,68 @@ function updateCytoscape() {
         console.log(response);
         cy.mount(canvas);
         cy.json(response);
+        
+        applyStyle();
     });
+    
 }
 
+function applyStyle(){
+    cy.style()       
+      .selector('node')
+      .style({
+            'background-color': 
+                function(ele) {      
+                    if (ele.data('openTabCount') > 0)   
+                        return '#50b46e';
+                    else 
+                        return '#808080';
+                },
+            'border-width': 3, //added border for icons
+            'border-opacity': 1,
+            'border-color': 
+                function(ele) {
+                    if (ele.data('openTabCount') > 0)   
+                        return '#50b46e';
+                    else 
+                        return '#808080';
+                },
+            'width': '20',
+            'height': '20',
+            'content': 'data(title)',
+            'text-wrap': 'wrap',
+            'text-max-width': '170px',
+            'text-justification':'center',
+            'background-image': 'data(iconURL)',
+            'background-image-opacity': '1',
+            'background-opacity': '0',
+            'background-fit': 'contain',
+            'background-clip': 'node'
+        })
+        .selector('edge')
+        .style({
+            'line-color': '#F2B1BA',
+            'target-arrow-color': '#F2B1BA',
+            'width': 2,
+            'target-arrow-shape': 'triangle-backcurve',
+            'curve-style': 'bezier',    // the default curve style does not support arrows
+            'opacity': 0.8
+        })
+        .selector(':selected')
+        .style({
+            'background-color': 'black',
+            'line-color': 'black',
+            'target-arrow-color': 'black',
+            'source-arrow-color': 'black',
+            'opacity': 1
+        })
+        .selector('.faded')
+        .css({
+            'opacity': 0.25,
+            'text-opacity': 0
+        })
+        .update();
+}
 
 /*****************************************************************************
 *******************    Implementation of GraphSyncer   ******************* 
