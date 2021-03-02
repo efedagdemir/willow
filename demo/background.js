@@ -8,7 +8,6 @@ chrome.runtime.onInstalled.addListener(function () { // runs when the extension 
     // initializes the data structures of this background page.
     function initialize() {
         tabURLs = new Map();
-        sessionGraph = new Map();
     }
 
     // adds the listeners to relevant chrome events.
@@ -71,9 +70,10 @@ async function urlLoaded(tabId, url) {
         //update the open tab count
         node.data( "openTabCount", node.data("openTabCount") + 1); // increment the openTabCount of the node.
     } else {
+        let favIconUrl = "chrome://favicon/size/64@1x/" + url;
         let node = cy.add({// add the node to the cy graph
             group: 'nodes',
-            data: {id: url, title: "title not loaded :(", openTabCount:1},
+            data: {id: url, title: "title not loaded :(", openTabCount:1, iconURL: favIconUrl},
             position: { x: 200, y: 200 }
         });
 
@@ -164,43 +164,10 @@ document.body.appendChild(container);
 
 let cy = cytoscape({
     container: container,
-    style: cytoscape.stylesheet()
-        .selector('node')
-        .css({
-            'background-color': '#B3767E',
-            'width': '20',
-            'height': '20',
-            'content': 'data(title)'
-        })
-        .selector('edge')
-        .css({
-            'line-color': '#F2B1BA',
-            'target-arrow-color': '#F2B1BA',
-            'width': 2,
-            'target-arrow-shape': 'triangle-backcurve',
-            'curve-style': 'bezier',    // the default curve style does not support arrows
-            'opacity': 0.8
-        })
-        .selector(':selected')
-        .css({
-            'background-color': 'black',
-            'line-color': 'black',
-            'target-arrow-color': 'black',
-            'source-arrow-color': 'black',
-            'opacity': 1
-        })
-        .selector('.faded')
-        .css({
-            'opacity': 0.25,
-            'text-opacity': 0
-        }),
-
     ready: function () {
         // ready 1
     }
 });
-
-
 
 function getCytoscapeJSON(){
     return cy.json(true);
