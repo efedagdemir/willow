@@ -16,13 +16,8 @@
             "js": ["cytoscape.min.js"],
             "run_at": "document_end",
             "match_about_blank": true
-        },
-        {
-            "matches": ["<all_urls>"],
-            "js": ["graphDrawer.js"],
-            "run_at": "document_end",
-            "match_about_blank": true
         }
+
     ],
     "background": {
         "scripts": ["cytoscape.min.js", 
@@ -40,6 +35,7 @@
         "side_panel.html",
         "side_panel.css",
         "side_panel.js",
-        "willowIcon_50x50.jpeg"
+        "willowIcon_50x50.jpeg",
+        "GraphDrawer.html"
     ]
 }

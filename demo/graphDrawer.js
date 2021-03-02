@@ -1,4 +1,4 @@
-let canvas = document.getElementById("panelBody"); // This assumes some content script injects a div with id "panelBody" before this script runs.
+let canvas = document.getElementById("canvas");
 
 let cy = cytoscape();
 

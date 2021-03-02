@@ -49,6 +49,8 @@ var sidePanelHTML = `
     <a id="closeBtn">&times;</a>
   </div>
   <div id="panelBody">
+    <iframe id="graphFrame" src="${chrome.runtime.getURL("GraphDrawer.html")}"></iframe>
+    <div id="graphInvisLayer"></div>
   </div>
   <div id="leftBorder"></div>
   <div id="rightBorder"></div>
@@ -323,6 +325,8 @@ function enableResizing(rightBorderOnly) {
     lastY = e.clientY;
     heldBorder = border;
 
+    document.getElementById("graphInvisLayer").style.zIndex = 1;
+
     document.onmouseup = resizeMouseUp;
     document.onmousemove = resizeMouseMove;
   }
@@ -361,6 +365,8 @@ function enableResizing(rightBorderOnly) {
   }
 
   function resizeMouseUp() {
+    document.getElementById("graphInvisLayer").style.zIndex = -1;
+
     // end of drag. remove handlers.
     document.onmouseup = null;
     document.onmousemove = null;
