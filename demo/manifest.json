@@ -21,9 +21,11 @@
     ],
     "background": {
         "scripts": ["cytoscape.min.js", 
-                    "background.js", 
                     "SyncBroadcaster.js",
-                    "SidePanel_background.js"], 
+                    "SidePanel_background.js",
+                    "SessionGraph.js",
+                    "History.js",
+                    "Monitor.js"],
         "persistent": false
     },
     "browser_action": {
