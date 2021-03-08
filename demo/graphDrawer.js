@@ -28,7 +28,8 @@ function updateCytoscape() {
         console.log(response);
         cy.mount(canvas);
         cy.json(response);
-        
+
+        applyContextMenu();
         applyStyle();
     });
     
@@ -89,6 +90,44 @@ function applyStyle(){
             'text-opacity': 0
         })
         .update();
+}
+
+function applyContextMenu(){
+    var contextMenu = cy.contextMenus({
+        menuItems: [
+            {
+                id: 'remove',
+                content: 'remove',
+                tooltipText: 'remove',
+                selector: 'node',
+                submenu: [
+                    {
+                        id: 'deneme',
+                        content: 'deneme',
+                        tooltipText: 'deneme',
+                        onClickFunction: function (){
+                            console.log('calisiyor mu deneme bir iki');
+                        }
+                    }
+                ],
+                onClickFunction: function (event) {
+                    console.log('calisiyor mu deneme');
+                    var target = event.target || event.cyTarget;
+                    removed = cy.remove(target);
+                    console.log(removed + "is removed");
+                    chrome.runtime.sendMessage({ message: "WILLOW_GRAPH_SYNC_REQUEST"});
+                },
+                show: true,
+                coreAsWell: true
+            }
+        ],
+        submenuIndicator: { src: 'node_modules/cytoscape-context-menus/assets/submenu-indicator-default.svg', width: 12, height: 12 }
+
+    });
+    
+    cy.on('cxttap', function() {
+        contextMenu.showMenuItem('remove');
+    });
 }
 
 /*****************************************************************************
