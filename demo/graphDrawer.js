@@ -89,6 +89,28 @@ function applyStyle(){
             'text-opacity': 0
         })
         .update();
+        
+        let layout = cy.layout({
+            name: 'fcose',
+            quality: "proof",
+            fit: true, //??
+            padding: 30,
+            animate: false,
+            randomize: false,
+            nodeDimensionsIncludeLabels: true,
+           
+            //contraints
+            fixedNodeConstraint: fixedResponse,
+            alignmentConstraint: undefined,
+            relativePlacementConstraint: undefined,
+
+            ready: () => {},
+            stop: () => {
+               this.fit = true; //??
+            }                 
+        });
+            
+        layout.run();
 }
 
 /*****************************************************************************
