@@ -75,7 +75,7 @@ async function urlLoaded(tabId, url) {
         let node = cy.add({// add the node to the cy graph
             group: 'nodes',
             data: {id: url, title: "title not loaded :(", openTabCount:1, iconURL: favIconUrl},
-            position: { x: 200, y: 200 }
+            //position: { x: 200, y: 200 }
         });
 
         // TEST PURPOSE ---------------
