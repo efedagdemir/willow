@@ -1,5 +1,6 @@
 
 var cy = null; // The variable that holds the cytoscape object.
+var fixedCon = []; // The variable that holds fixed node positions
 
 /**
  * Initalizes the session graph as a cytoscape object with no elements.
@@ -33,12 +34,31 @@ function getCytoscapeJSON(){
 
 function updateNodePosition(nodeId, newPos) {
     console.log("UPDATING", nodeId);
+    let found = 0;
     cy.getElementById(nodeId).position(newPos);
+    fixedCon.forEach(function (item) {
+        if (item.nodeId == nodeId)
+        {
+            found = 1;
+            item.nodeId = nodeId;
+            item.position.x = newPos.x;
+            item.position.y = newPos.y;
+        }
+
+    });
+    if (found == 0){
+        var fixedNode = {
+            nodeId : nodeId,
+            position: {x: newPos.x, y: newPos.y}
+        };
+       fixedCon.push(fixedNode);
+    }
 }
 
 function messageReceived(request, sender, sendResponse) {
     if (request.type == "getCytoscapeJSON") {
-        sendResponse(this.getCytoscapeJSON());
+        var arr = [this.getCytoscapeJSON(), fixedCon];
+        sendResponse(arr);
     } else if (request.message == "WILLOW_BACKGROUND_UPDATE_NODE_POS") {
         updateNodePosition(request.nodeId, request.newPos);
     }
