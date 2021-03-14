@@ -27,14 +27,14 @@ function updateCytoscape() {
     chrome.runtime.sendMessage( {type : "getCytoscapeJSON"}, function (response) {
         console.log(response);
         cy.mount(canvas);
-        cy.json(response);
-        
-        applyStyle();
+        cy.json(response[0]);
+      
+        applyStyle(response[1]);
     });
     
 }
 
-function applyStyle(){
+function applyStyle(fixedResponse){
     cy.style()       
       .selector('node')
       .style({
