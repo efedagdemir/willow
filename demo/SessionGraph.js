@@ -36,10 +36,40 @@ function updateNodePosition(nodeId, newPos) {
     cy.getElementById(nodeId).position(newPos);
 }
 
+function removeNode(nodeId) {
+    /*
+    console.log("DELETING NODE");
+    let node = cy.getElementById(nodeId);
+    cy.remove(node);
+    */
+   return true;
+}
+
+function openPage(nodeId) {
+   return true;
+}
+
+function openPageInNewTab(nodeId) {
+   return true;
+}
+
+function removeEdge(nodeId) {
+    return true;
+}
+
 function messageReceived(request, sender, sendResponse) {
     if (request.type == "getCytoscapeJSON") {
         sendResponse(this.getCytoscapeJSON());
     } else if (request.message == "WILLOW_BACKGROUND_UPDATE_NODE_POS") {
         updateNodePosition(request.nodeId, request.newPos);
-    }
+    } else if (request.message == "WILLOW_BACKGROUND_REMOVE_NODE") {
+        removeNode(request.nodeId);
+    } else if (request.message == "WILLOW_BACKGROUND_OPEN_PAGE") {
+        openPage(request.nodeId);
+    } else if (request.message == "WILLOW_BACKGROUND_OPEN_PAGE_IN_NEW_TAB") {
+        openPageInNewTab(request.nodeId);
+    } else if (request.message == "WILLOW_BACKGROUND_REMOVE_EDGE") {
+        removeEdge(request.nodeId);
+    } 
+
 }
