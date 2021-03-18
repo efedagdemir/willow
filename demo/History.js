@@ -1,0 +1,2 @@
+initializeSG();
+console.log("alo");
