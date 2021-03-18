@@ -27,14 +27,14 @@ function updateCytoscape() {
     chrome.runtime.sendMessage( {type : "getCytoscapeJSON"}, function (response) {
         console.log(response);
         cy.mount(canvas);
-        cy.json(response[0]);
+        cy.json(response);
       
-        applyStyle(response[1]);
+        applyStyle();
     });
     
 }
 
-function applyStyle(fixedResponse){
+function applyStyle(){
     cy.style()       
       .selector('node')
       .style({
@@ -89,28 +89,6 @@ function applyStyle(fixedResponse){
             'text-opacity': 0
         })
         .update();
-        
-        let layout = cy.layout({
-            name: 'fcose',
-            quality: "proof",
-            fit: true, //??
-            padding: 30,
-            animate: false,
-            randomize: false,
-            nodeDimensionsIncludeLabels: true,
-           
-            //contraints
-            fixedNodeConstraint: fixedResponse,
-            alignmentConstraint: undefined,
-            relativePlacementConstraint: undefined,
-
-            ready: () => {},
-            stop: () => {
-               this.fit = true; //??
-            }                 
-        });
-            
-        layout.run();
 }
 
 /*****************************************************************************

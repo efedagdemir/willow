@@ -75,18 +75,10 @@ async function urlLoaded(tabId, url) {
         let node = cy.add({// add the node to the cy graph
             group: 'nodes',
             data: {id: url, title: "title not loaded :(", openTabCount:1, iconURL: favIconUrl},
-            //position: { x: 200, y: 200 }
+            
         });
-
-        // TEST PURPOSE ---------------
-        // apply layout after adding the new node.
-        /*
-        var layout = cy.elements().layout({
-            name: 'circle'
-        });
-        layout.run();
-        */
-        // ----------------------------- 
+        // addFixedNodes(url, {}, 1); //1 represents that this is a new node.
+        runLayout(); 
         
         chrome.tabs.get(tabId , function(tab){
             node.title = tab.title; // this is asyncronous but that should be ok.

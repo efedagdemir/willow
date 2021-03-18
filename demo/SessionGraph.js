@@ -1,6 +1,6 @@
 
 var cy = null; // The variable that holds the cytoscape object.
-var fixedCon = []; // The variable that holds fixed node positions
+//var fixedCon = []; // The variable that holds fixed node positions
 
 /**
  * Initalizes the session graph as a cytoscape object with no elements.
@@ -34,32 +34,70 @@ function getCytoscapeJSON(){
 
 function updateNodePosition(nodeId, newPos) {
     console.log("UPDATING", nodeId);
-    let found = 0;
     cy.getElementById(nodeId).position(newPos);
-    fixedCon.forEach(function (item) {
-        if (item.nodeId == nodeId)
-        {
-            found = 1;
-            item.nodeId = nodeId;
-            item.position.x = newPos.x;
-            item.position.y = newPos.y;
-        }
-
-    });
-    if (found == 0){
-        var fixedNode = {
-            nodeId : nodeId,
-            position: {x: newPos.x, y: newPos.y}
-        };
-       fixedCon.push(fixedNode);
-    }
+    //addFixedNodes(nodeId, newPos, 0);
+   
 }
 
 function messageReceived(request, sender, sendResponse) {
     if (request.type == "getCytoscapeJSON") {
-        var arr = [this.getCytoscapeJSON(), fixedCon];
-        sendResponse(arr);
+        sendResponse(this.getCytoscapeJSON());
     } else if (request.message == "WILLOW_BACKGROUND_UPDATE_NODE_POS") {
         updateNodePosition(request.nodeId, request.newPos);
     }
 }
+
+
+function runLayout(){
+
+    cy.layout({
+        
+        name: 'fcose',
+        quality: "proof",
+        fit: true, 
+        padding: 30,
+        animate: false,
+        randomize: false,
+        nodeDimensionsIncludeLabels: true,
+        packComponents: true,
+       
+        //contraints
+        fixedNodeConstraint: undefined, //fixedCon,
+        alignmentConstraint: undefined,
+        relativePlacementConstraint: undefined,
+
+        ready: () => {},
+        stop: () => {}                 
+    }).run();
+}
+
+/*
+function addFixedNodes(nodeId, newPos, newNode){
+    
+    if (newNode) {
+        runLayout();  //so that the layout can decide its position     
+        
+        var newPos = {x: cy.getElementById(nodeId).position('x'), y: cy.getElementById(nodeId).position('y')};
+        var fixedNode = {
+            nodeId : nodeId,
+            position: newPos
+        };
+        fixedCon.push(fixedNode); 
+
+        //cy.getElementById(nodeId).position(newPos);
+    }
+    else {
+      
+        fixedCon.forEach(function (item) {
+            if (item.nodeId == nodeId)
+            {
+                found = 1;
+                item.nodeId = nodeId;
+                item.position.x = newPos.x;
+                item.position.y = newPos.y;
+            }
+
+        });
+    }
+   
+}*/
