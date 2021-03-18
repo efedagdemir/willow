@@ -28,7 +28,8 @@ function updateCytoscape() {
         console.log(response);
         cy.mount(canvas);
         cy.json(response);
-      
+
+        applyContextMenu();
         applyStyle();
     });
     
@@ -89,6 +90,148 @@ function applyStyle(){
             'text-opacity': 0
         })
         .update();
+}
+
+function applyContextMenu(){
+    var contextMenu = cy.contextMenus({
+        menuItems: [
+            {
+                id: 'remove',
+                content: 'Remove node',
+                tooltipText: 'Remove node from graph',
+                selector: 'node',
+                onClickFunction: function (event) {
+                    /*var target = event.target || event.cyTarget;
+                    removed = cy.remove(target);
+                    console.log(removed + "is removed");   */ 
+                    let target = event.target || event.cyTarget;
+                    let id = target.id();
+                    removed = cy.remove(target);
+                    console.log(removed + "is removed");
+                    chrome.runtime.sendMessage( { 
+                        message: "WILLOW_BACKGROUND_REMOVE_NODE",
+                        nodeId: id
+                    });
+                    chrome.runtime.sendMessage( {
+                        message: "WILLOW_GRAPH_SYNC_REQUEST",
+                    })
+
+                },
+                show: true,
+                coreAsWell: true
+            },
+            {
+                id: 'open',
+                content: 'Open page',
+                tooltipText: 'Open page in the active tab',
+                selector: 'node',
+                onClickFunction: function (event) {
+                    /*var target = event.target || event.cyTarget;
+                    removed = cy.remove(target);
+                    console.log(removed + "is removed");   */ 
+                    let target = event.target || event.cyTarget;
+                    let id = target.id();
+                    chrome.runtime.sendMessage( { 
+                        message: "WILLOW_BACKGROUND_OPEN_PAGE",
+                        nodeId: id
+                    });
+                    chrome.runtime.sendMessage( {
+                        message: "WILLOW_GRAPH_SYNC_REQUEST",
+                    })
+
+                },
+                show: true,
+                coreAsWell: true
+            },
+            {
+                id: 'open-in-new-tab',
+                content: 'Open page in new tab',
+                tooltipText: 'Open page in new tab',
+                selector: 'node',
+                onClickFunction: function (event) {
+                    /*var target = event.target || event.cyTarget;
+                    removed = cy.remove(target);
+                    console.log(removed + "is removed");   */ 
+                    let target = event.target || event.cyTarget;
+                    let id = target.id();
+                    chrome.runtime.sendMessage( { 
+                        message: "WILLOW_BACKGROUND_OPEN_PAGE_IN_NEW_TAB",
+                        nodeId: id
+                    });
+                    chrome.runtime.sendMessage( {
+                        message: "WILLOW_GRAPH_SYNC_REQUEST",
+                    })
+
+                },
+                show: true,
+                coreAsWell: true
+            },
+            {
+                id: 'remove-edge',
+                content: 'Remove edge',
+                tooltipText: 'Remove the edge between the nodes',
+                selector: 'node',
+                onClickFunction: function (event) {
+                    /*var target = event.target || event.cyTarget;
+                    removed = cy.remove(target);
+                    console.log(removed + "is removed");   */ 
+                    let target = event.target || event.cyTarget;
+                    let id = target.id();
+                    chrome.runtime.sendMessage( { 
+                        message: "WILLOW_BACKGROUND_REMOVE_EDGE",
+                        nodeId: id
+                    });
+                    chrome.runtime.sendMessage( {
+                        message: "WILLOW_GRAPH_SYNC_REQUEST",
+                    })
+
+                },
+                show: true,
+                coreAsWell: true
+            }
+
+        ],
+        submenuIndicator: { src: 'node_modules/cytoscape-context-menus/assets/submenu-indicator-default.svg', width: 12, height: 12 }
+
+    });
+    
+    cy.on('cxttap', function() {
+        contextMenu.showMenuItem('remove');
+    });
+
+    // ! WIP (Work in progress)
+    /*var allSelected = function (type) {
+        if (type == 'node') {
+          return cy.nodes().length == cy.nodes(':selected').length;
+        }
+        else if (type == 'edge') {
+          return cy.edges().length == cy.edges(':selected').length;
+        }
+        return false;
+    }
+
+    cy.on('cxttap', function(event) {
+        if (allSelected('node')) {
+            contextMenu.hideMenuItem('remove-edge');
+            contextMenu.showMenuItem('remove');
+            contextMenu.showMenuItem('open');
+            contextMenu.showMenuItem('open-in-new-tab');
+        }/*
+        else if (allSelected('edge')) {
+            contextMenu.showMenuItem('remove-edge');
+            contextMenu.hideMenuItem('remove');
+            contextMenu.hideMenuItem('open');
+            contextMenu.hideMenuItem('open-in-new-tab');
+        }
+        else {
+            contextMenu.hideMenuItem('remove-edge');
+            contextMenu.hideMenuItem('remove');
+            contextMenu.hideMenuItem('open');
+            contextMenu.hideMenuItem('open-in-new-tab');
+        }
+      });*/
+
+
 }
 
 /*****************************************************************************
