@@ -137,7 +137,6 @@ function openSidePanel(isOrigin) {
   sidePanel.style.width = panelWidth;
 
   if (isOrigin) {
-
     // set global state
     chrome.storage.local.set({ WILLOW_SP_OPEN: true });
     // notify other tabs with a sync request
@@ -146,6 +145,16 @@ function openSidePanel(isOrigin) {
       action: "WILLOW_SP_SYNC_OPEN",
     });
   }
+
+  // the graph needs to re-adjust its viewport after the panel is opened.
+  // ! A timeout is used temporarily to ensure that the iframe is resized before adjusting the viewport.
+  setTimeout(() => {
+    chrome.runtime.sendMessage({
+      message: "WILLOW_GRAPH_VIEWPORT_ADJ",
+    })
+  }, 150);
+
+
 }
 
 /**

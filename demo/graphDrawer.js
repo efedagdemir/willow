@@ -29,7 +29,7 @@ function updateCytoscape() {
         cy.mount(canvas);
         cy.json(response);
 
-        applyContextMenu();
+        // applyContextMenu(); ! Temporarily commented out.
         applyStyle();
 
         /**
@@ -37,16 +37,15 @@ function updateCytoscape() {
          * set the zoom level / camera position as the Cytoscape instance is being updated.
          */
         adjustViewport();
-        console.log("LOOK HERE: ", cy);
-        
     });
-
 }
 
 /**
  * Sets the zoom level and the camera position to center the graph.
  */
 function adjustViewport() {
+    cy.resize() // make sure that cytoscape is up-to-date with its container size.
+
     /**
      * We have a few alternatives, we can choose any and comment out the rest
      * according to what is needed.
@@ -58,7 +57,7 @@ function adjustViewport() {
 
     // (2): Fit Graph
     // Adjust the zoom level to fit the whole graph in addition to centering.
-    //cy.fit();
+    cy.fit();
 
     // (3): Center Origin
     // Set camera position manually. Bring origin to the center. 
@@ -72,11 +71,12 @@ function adjustViewport() {
 
     // (4): Fit Origin
     // Adjust zoom level as well as centering the origin.
+    /*
     cy.fit();
     cy.pan({
         x: cy.width() / 2,
         y: cy.height() / 2,
-    });
+    });*/
 }
 
 function applyStyle() {
@@ -285,10 +285,13 @@ function applyContextMenu() {
 // listen for Graph sync requests
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-        if (request.message != "WILLOW_GRAPH_SYNC_REQUEST") {
-            return;
-        }
-        handleSyncRequest(request);
+        if (request.message == "WILLOW_GRAPH_SYNC_REQUEST") {
+            handleSyncRequest(request);
+        } else if (request.message == "WILLOW_GRAPH_VIEWPORT_ADJ") {
+            console.log("Adjusting viewport");
+            adjustViewport();
+        } 
+        
     }
 );
 
