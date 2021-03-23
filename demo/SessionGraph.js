@@ -40,12 +40,20 @@ function updateNodePosition(nodeId, newPos) {
 }
 
 function removeNode(nodeId) {
-    /*
+
     console.log("DELETING NODE");
     let node = cy.getElementById(nodeId);
     cy.remove(node);
-    */
-   return true;
+
+    // remove the entry from tabUrls
+    if (node.data("openTabCount") > 0 ) {
+        let nodeUrl = node.data("id");
+        tabURLs.forEach((url, tabId) => {
+            if(nodeUrl == url)
+                tabURLs.delete(tabId);
+        });
+    }
+    return true;
 }
 
 function openPage(nodeId) {
