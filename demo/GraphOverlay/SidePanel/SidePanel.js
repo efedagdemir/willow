@@ -19,8 +19,8 @@ var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
 var UNDOCK_DEFAULT_HEIGHT = "600px";
 var UNDOCK_DEFAULT_WIDTH = "400px";
 
-var RESIZE_MIN_WIDTH = 200;  // in px
-var RESIZE_MIN_HEIGHT = 200;  // in px
+var RESIZE_MIN_WIDTH = 250;  // in px
+var RESIZE_MIN_HEIGHT = 250;  // in px
 
 /**
  * The icon has been replaced with the BrowserAction.
@@ -43,18 +43,18 @@ var sidePanelHTML = `
 <div id="sidePanel">
   <div id="panelHeader">
     <a id="willowLabel">Willow</a>
-    <a id="undockBtn">&raquo;</a>
-    <a id="dockBtn" style="display:none;">&laquo;</a>
-    <a id="closeBtn">&times;</a>
+    <a class="headerBtn" id="closeBtn">&times;</a>
+    <a class="headerBtn" id="undockBtn">&raquo;</a>
+    <a class="headerBtn" id="dockBtn" style="display:none;">&laquo;</a>
   </div>
   <div id="panelBody">
     <iframe id="graphFrame" src="${chrome.runtime.getURL("GraphOverlay/Graph/GraphDrawer.html")}"></iframe>
     <div id="graphInvisLayer"></div>
   </div>
-  <div id="leftBorder"></div>
-  <div id="rightBorder"></div>
-  <div id="topBorder"></div>
-  <div id="bottomBorder"></div>
+  <div class="border" id="leftBorder"></div>
+  <div class="border" id="rightBorder"></div>
+  <div class="border" id="topBorder"></div>
+  <div class="border" id="bottomBorder"></div>
 </div>
 </body>
 </html>

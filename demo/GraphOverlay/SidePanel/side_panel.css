@@ -3,7 +3,7 @@
  * as constants at the very top of SidePanel.js
  */
 
-/*
+/* ! NOTES ON STYLING
  * In each ruleset, the declarations below the dashed comment line 
  * are styling-flexible. The ones above it should not be modified.
  */
@@ -16,102 +16,100 @@
   left: 0;
   overflow-x: hidden;
   overflow-y: hidden;
-
   /*---------------*/
   background-color: rgba(77, 3, 3, 0.993);
   /*transition: all 2s ease-out; */
 }
 
 #panelHeader {
-  height: 70px;
-  width: 100%; /* there probably is a way to automatically make this as large as the parent div */
+  width: 100%;
   background-color: rgba(3, 72, 77, 0.993);
+  /*---------------*/
+  height: 70px; /*! Also defined as HEADER_HEIGHT in SidePanel.js. Don't know whal will happen if it does not match with that*/
   text-align: center;
 }
 
-#panelHeader a {  /* applies to the Willow label, the undock button and the close button */
-  padding: 0px 16px 0px 16px;
+/* applies to the Willow label, the undock button and the close button */
+/* We may want separate styles for the label and the buttons. Then, use 
+ * the rulesets .headerBtn and #willowLabel.
+ */
+#panelHeader a {
+  /*---------------*/
   text-decoration: none;
-  cursor: pointer;
+  cursor: pointer; /* shows text cursor by default*/
   margin: 0 auto;
   font-size: 48px;
   color: #16f095;
-  line-height: 70px;  /* has to be the same as #panelHeader's height for the text to be vertically centered */
+  line-height: 70px;  /*! has to be the same as #panelHeader's height for the text to be vertically centered */
   font-family:'Gabriola';
   /* transition: all 4s; */
 }
 
-#closeBtn {
-  position: absolute;  /* absolute positions are relative to the parent container */
-  right: 0px; /* place on the right, the padding inherited from #panelHeader a ensures margin */
+#panelHeader a:hover {
+  /*---------------*/
+  color: #f1f1f1;
 }
-#undockBtn {
-  position: absolute;  /* absolute positions are relative to the parent container */
-  right: 40px; /* TODO: how to place this near closeBtn respecting the margins? */
-  float: right;
-}
-#dockBtn {
-  position: absolute;  /* absolute positions are relative to the parent container */
-  right: 40px; /* TODO: how to place this near closeBtn respecting the margins? */
+.headerBtn {
+  /*---------------*/
+  padding: 0px 16px 0px 0px;
   float: right;
 }
 #willowLabel {
-  position: absolute;  /* absolute positions are relative to the parent container */
-  left: 0px; /* place on the left, the padding inherited from #panelHeader a ensures margin */
-}
-
-#panelHeader a:hover {
-  color: #f1f1f1;
+  /*---------------*/
+  padding: 0px 0px 0px 16px;
+  float: left;
 }
 
 #panelBody {
   position: absolute;
-  top: 70px;
   bottom: 0%;
   left: 0;
-  width: 100%; /* there probably is a way to automatically make this as large as the parent div*/
+  width: 100%;
+  /*---------------*/
+  top: 70px; /*! has to be the same as #panelHeader's height */
   background-color: rgba(77, 3, 3, 0.993);
 }
 
 /*
- * ! A lot of duplicate code here!!
+ * BORDERS
  */
+.border {
+  position: absolute;
+  /*---------------*/
+  background-color: rgba(1, 49, 53, 0.993);
+}
 
 #leftBorder {
-  position: absolute;
   height: 100%;
   top: 0;
   left: 0;
+  /*---------------*/
   width: 5px;
-  background-color: rgba(1, 49, 53, 0.993);
 }
 
 #rightBorder {
-  position: absolute;
   height: 100%;
   top: 0;
   right: 0;
-  width: 5px;
   cursor: ew-resize;
-  background-color: rgba(1, 49, 53, 0.993);
+  /*---------------*/
+  width: 5px;
 }
 
 #topBorder {
-  position: absolute;
   width: 100%;
   top: 0;
   left: 0;
+  /*---------------*/
   height: 5px;
-  background-color: rgba(1, 49, 53, 0.993);
 }
 
 #bottomBorder {
-  position: absolute;
   width: 100%;
   bottom: 0;
   left: 0;
+  /*---------------*/
   height: 5px;
-  background-color: rgba(1, 49, 53, 0.993);
 }
 
 #graphFrame {
@@ -121,6 +119,7 @@
   width: 100%;
   height: 100%;
   z-index: 0;
+  /*---------------*/
   background-color: rgba(1, 234, 255, 0.993);
 }
 
@@ -131,4 +130,5 @@
   width: 100%;
   height: 100%;
   z-index: -1;
+  /*---------------*/
 }
