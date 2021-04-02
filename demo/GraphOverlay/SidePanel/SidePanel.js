@@ -9,17 +9,10 @@
 **********************    Implementation of SidePanel   ********************** 
 *****************************************************************************/
 
-//------------------------//
-//        CONSANTS        //
-//------------------------//
+//-------------------------//
+//        CONSTANTS        //
+//-------------------------//
 var HEADER_HEIGHT = "70px";
-
-/**
- * The icon is removed
-var ICON_WIDTH = "70px";
-var ICON_HEIGHT = "70px";
- */
-
 
 var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
 var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
@@ -29,11 +22,17 @@ var UNDOCK_DEFAULT_WIDTH = "400px";
 var RESIZE_MIN_WIDTH = 200;  // in px
 var RESIZE_MIN_HEIGHT = 200;  // in px
 
+/**
+ * The icon has been replaced with the BrowserAction.
+var ICON_WIDTH = "70px";
+var ICON_HEIGHT = "70px";
+ */
+
 var sidePanelHTML = `
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="${chrome.runtime.getURL("side_panel.css")}">
+  <link rel="stylesheet" href="${chrome.runtime.getURL("GraphOverlay/SidePanel/side_panel.css")}">
   
   <script src="cytoscape.min.js"></script>
   <script src="node_modules/dagre/dist/dagre.min.js"></script>
@@ -49,7 +48,7 @@ var sidePanelHTML = `
     <a id="closeBtn">&times;</a>
   </div>
   <div id="panelBody">
-    <iframe id="graphFrame" src="${chrome.runtime.getURL("GraphDrawer.html")}"></iframe>
+    <iframe id="graphFrame" src="${chrome.runtime.getURL("GraphOverlay/Graph/GraphDrawer.html")}"></iframe>
     <div id="graphInvisLayer"></div>
   </div>
   <div id="leftBorder"></div>
@@ -78,7 +77,6 @@ injectSidePanel();
 // read panel state
 chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UNDOCKED_LOC", "WILLOW_SP_WIDTH"], function (res) {
   panelWidth = res.WILLOW_SP_WIDTH;
-  console.log("panelWidth: " + panelWidth);
   // The panel is closed and docked by default. Update based on the stored state.
   if (res.WILLOW_SP_OPEN) {
     openSidePanel(false);
