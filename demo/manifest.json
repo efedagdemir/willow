@@ -7,7 +7,7 @@
     "content_scripts": [
         {
           "matches": ["<all_urls>"],
-          "js": ["SidePanel.js"],
+          "js": ["GraphOverlay/SidePanel/SidePanel.js"],
           "run_at": "document_end",
           "match_about_blank": true
         },
@@ -27,7 +27,7 @@
     
             
                     "SyncBroadcaster.js",
-                    "SidePanel_background.js",
+                    "GraphOverlay/SidePanel/SidePanel_background.js",
                     "SessionGraph.js",
                     "History.js",
                     "Monitor.js"],
@@ -39,12 +39,10 @@
         }
     },
     "web_accessible_resources": [
-        "side_panel.html",
-        "side_panel.css",
-        "side_panel.js",
-        "willowIcon_50x50.jpeg",
-        "GraphDrawer.html",
-        "willowIcon_50x50.jpeg"
+        "GraphOverlay/SidePanel/side_panel.html",
+        "GraphOverlay/SidePanel/side_panel.css",
+        "GraphOverlay/SidePanel/side_panel.js",
+        "GraphOverlay/Graph/GraphDrawer.html"
     ],
     "content_security_policy": "script-src 'self'; object-src 'self'; img-src chrome://favicon;"
 }

@@ -10,7 +10,6 @@ chrome.runtime.onInstalled.addListener(function () {
 
 // register browserAction listener (extension icon in the toolbar)
 chrome.browserAction.onClicked.addListener(function(tab) {
-    console.log("IN_onClicked");
     // set global state
     chrome.storage.local.set({ WILLOW_SP_OPEN: true });
     // notify tabs through the broadcaster
