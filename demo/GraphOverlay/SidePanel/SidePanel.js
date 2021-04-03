@@ -12,8 +12,6 @@
 //-------------------------//
 //        CONSTANTS        //
 //-------------------------//
-var HEADER_HEIGHT = "70px";
-
 var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
 var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
 var UNDOCK_DEFAULT_HEIGHT = "600px";
@@ -21,12 +19,6 @@ var UNDOCK_DEFAULT_WIDTH = "400px";
 
 var RESIZE_MIN_WIDTH = 250;  // in px
 var RESIZE_MIN_HEIGHT = 250;  // in px
-
-/**
- * The icon has been replaced with the BrowserAction.
-var ICON_WIDTH = "70px";
-var ICON_HEIGHT = "70px";
- */
 
 var sidePanelHTML = `
 <!DOCTYPE html>
