@@ -130,7 +130,16 @@ function applyStyle() {
                 },
             'width': '20',
             'height': '20',
-            'content': 'data(title)',
+            'content': function (ele) {
+                var limit = 45
+                if (ele.data('title').length > limit){
+                    var shortened = ele.data('title').substring(0,limit-3);
+                    shortened = shortened + "...";
+                    return shortened;
+                }
+                else
+                    return ele.data('title');
+            },
             'text-wrap': 'wrap',
             'text-max-width': '170px',
             'text-justification': 'center',
