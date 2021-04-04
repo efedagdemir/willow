@@ -4,7 +4,8 @@ chrome.runtime.onInstalled.addListener(function () {
         WILLOW_SP_OPEN: false, 
         WILLOW_SP_UNDOCKED: false,  
         WILLOW_SP_UNDOCKED_LOC: null,
-        WILLOW_SP_WIDTH: "400px" 
+        WILLOW_SP_WIDTH: "400px",
+        WILLOW_SP_UD_HEIGHT: "600px"
     });
 });
 
