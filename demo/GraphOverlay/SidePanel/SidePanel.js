@@ -12,21 +12,11 @@
 //-------------------------//
 //        CONSTANTS        //
 //-------------------------//
-var HEADER_HEIGHT = "70px";
-
 var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
 var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
-var UNDOCK_DEFAULT_HEIGHT = "600px";
-var UNDOCK_DEFAULT_WIDTH = "400px";
 
 var RESIZE_MIN_WIDTH = 250;  // in px
 var RESIZE_MIN_HEIGHT = 250;  // in px
-
-/**
- * The icon has been replaced with the BrowserAction.
-var ICON_WIDTH = "70px";
-var ICON_HEIGHT = "70px";
- */
 
 var sidePanelHTML = `
 <!DOCTYPE html>
@@ -43,9 +33,10 @@ var sidePanelHTML = `
 <div id="sidePanel">
   <div id="panelHeader">
     <a id="willowLabel">Willow</a>
-    <a class="headerBtn" id="closeBtn">&times;</a>
-    <a class="headerBtn" id="undockBtn">&raquo;</a>
-    <a class="headerBtn" id="dockBtn" style="display:none;">&laquo;</a>
+    <a class="headerBtn" id="closeBtn">&times; <span class="closeText">Close!</span></a>
+    <a class="headerBtn" id="undockBtn">&raquo; <span class="dockText">Undock!</span></a>
+    <a class="headerBtn" id="dockBtn" style="display:none;">&laquo; <span class="dockText">Dock!</span> </a>
+    <img src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
   </div>
   <div id="panelBody">
     <iframe id="graphFrame" src="${chrome.runtime.getURL("GraphOverlay/Graph/GraphDrawer.html")}"></iframe>
@@ -65,8 +56,9 @@ var sidePanelHTML = `
 //------------------------//
 //        VARIABLES       //
 //------------------------//
-var sidePanel;  // the HTML div that is the side panel. Saved here to avoid getting it from the document each time it's needed.
-var panelWidth; // the docked width of the panel. Initialized according to the stored state.
+var sidePanel;   // the HTML div that is the side panel. Saved here to avoid getting it from the document each time it's needed.
+var panelWidth;  // the width of the panel when open. Initialized according to the stored state.
+var panelUndockedHeight; // the undocked height of the panel
 
 
 //------------------------//
@@ -75,8 +67,10 @@ var panelWidth; // the docked width of the panel. Initialized according to the s
 injectSidePanel();
 
 // read panel state
-chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UNDOCKED_LOC", "WILLOW_SP_WIDTH"], function (res) {
+chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UNDOCKED_LOC", 
+  "WILLOW_SP_WIDTH", "WILLOW_SP_UD_HEIGHT"], function (res) {
   panelWidth = res.WILLOW_SP_WIDTH;
+  panelUndockedHeight = res.WILLOW_SP_UD_HEIGHT;
   // The panel is closed and docked by default. Update based on the stored state.
   if (res.WILLOW_SP_OPEN) {
     openSidePanel(false);
@@ -198,8 +192,8 @@ function undockSidePanel(undockedLoc, isOrigin) {
     sidePanel.style.top   = undockedLoc.top;
     sidePanel.style.left  = undockedLoc.left;
   }
-  sidePanel.style.height = UNDOCK_DEFAULT_HEIGHT;
-  sidePanel.style.width  = UNDOCK_DEFAULT_WIDTH;
+  sidePanel.style.height = panelUndockedHeight;
+  sidePanel.style.width  = panelWidth;
 
   document.getElementById("undockBtn").style.display = "none";
   document.getElementById("dockBtn").style.display = "";  // default
@@ -380,8 +374,8 @@ function enableResizing(rightBorderOnly) {
 
     // save new panel Width
     chrome.storage.local.set({
-      WILLOW_SP_WIDTH: sidePanel.style.width
-      // ! also set height
+      WILLOW_SP_WIDTH: sidePanel.style.width,
+      WILLOW_SP_UD_HEIGHT: sidePanel.style.height
     });
 
     // notify other tabs with a sync request

@@ -2,6 +2,7 @@ let canvas = document.getElementById("canvas");
 let cy = cytoscape();
 cy.mount(canvas);
 let contextMenuApplied = false;
+updateCytoscape();
 
 cy.on('dragfree', 'node', function (evt) {
     console.log('DF: ', evt.target.id(), evt.target.position());
@@ -21,8 +22,21 @@ cy.on('dragfree', 'node', function (evt) {
         })
     }, 100);
 });
+cy.on("viewport", onViewport);
 
-updateCytoscape();
+
+function onViewport(event) {
+    chrome.storage.local.set({
+        WILLOW_VIEWPORT: {
+            zoom: cy.zoom(),
+            pan: cy.pan()
+        }
+    }, function() {
+        chrome.runtime.sendMessage({
+             message: "WILLOW_VIEWPORT_SYNC_REQUEST",
+        });
+    }); 
+}
 
 function updateCytoscape() {
     chrome.runtime.sendMessage({ type: "getCytoscapeJSON" }, function (response) {
@@ -30,6 +44,7 @@ function updateCytoscape() {
         cy.json(response);
 
         applyStyle();
+        
         /**
          * This implementation is mainly for reference. It may or may not make sense to
          * set the zoom level / camera position as the Cytoscape instance is being updated.
@@ -43,10 +58,11 @@ function updateCytoscape() {
     });
 }
 
+
 /**
  * Sets the zoom level and the camera position to center the graph.
  */
-function adjustViewport() {
+ function adjustViewport() {
     cy.resize() // make sure that cytoscape is up-to-date with its container size.
 
     /**
@@ -82,6 +98,16 @@ function adjustViewport() {
     });*/
 }
 
+function syncViewport() {
+    chrome.storage.local.get(["WILLOW_VIEWPORT"], function (res) {
+        console.log(res.WILLOW_VIEWPORT);
+        cy.removeListener("viewport"); // disable to avoid cycles
+        cy.viewport(res.WILLOW_VIEWPORT);
+        cy.on("viewport", onViewport);  // re-enable 
+    });
+    
+}
+
 function applyStyle() {
     cy.style()
         .selector('node')
@@ -93,14 +119,14 @@ function applyStyle() {
                     else
                         return '#808080';
                 },
-            'border-width': 3, //added border for icons
+            'border-width': 2, //added border for icons
             'border-opacity': 1,
             'border-color':
                 function (ele) {
                     if (ele.data('openTabCount') > 0)
                         return '#50b46e';
                     else
-                        return '#808080';
+                        return '#495057';
                 },
             'width': '20',
             'height': '20',
@@ -112,13 +138,14 @@ function applyStyle() {
             'background-image-opacity': '1',
             'background-opacity': '0',
             'background-fit': 'contain',
-            'background-clip': 'node'
+            'background-clip': 'node',
+            'font-family' : 'Open Sans',
         })
         .selector('edge')
         .style({
-            'line-color': '#F2B1BA',
-            'target-arrow-color': '#F2B1BA',
-            'width': 2,
+            'line-color': '#ab0321',
+            'target-arrow-color': '#ab0321',
+            'width': 2.5,
             'target-arrow-shape': 'triangle-backcurve',
             'curve-style': 'bezier',    // the default curve style does not support arrows
             'opacity': 0.8
@@ -290,8 +317,10 @@ chrome.runtime.onMessage.addListener(
             handleSyncRequest(request);
         } else if (request.message == "WILLOW_GRAPH_VIEWPORT_ADJ") {
             console.log("Adjusting viewport");
-            adjustViewport();
-        } 
+            //adjustViewport();
+        } else if (request.message == "WILLOW_VIEWPORT_SYNC_REQUEST") {
+            syncViewport();
+        }
         
     }
 );

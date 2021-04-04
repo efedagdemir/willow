@@ -17,16 +17,17 @@
   overflow-x: hidden;
   overflow-y: hidden;
   /*---------------*/
-  background-color: rgba(77, 3, 3, 0.993);
+  border-radius: 5px;
   /*transition: all 2s ease-out; */
 }
 
 #panelHeader {
   width: 100%;
-  background-color: rgba(3, 72, 77, 0.993);
+  /*background-color: rgba(3, 72, 77, 0.993);*/ /*did not delete here because it is above the dashed lines, however I don't see a use*/
   /*---------------*/
-  height: 70px; /*! Also defined as HEADER_HEIGHT in SidePanel.js. Don't know whal will happen if it does not match with that*/
+  height: 70px;
   text-align: center;
+  background-color: #001d3d;
 }
 
 /* applies to the Willow label, the undock button and the close button */
@@ -39,8 +40,10 @@
   cursor: pointer; /* shows text cursor by default*/
   margin: 0 auto;
   font-size: 48px;
-  color: #16f095;
-  line-height: 70px;  /*! has to be the same as #panelHeader's height for the text to be vertically centered */
+  color: #ab0321;
+  line-height: 85px;  /*! has to be the same as #panelHeader's height for the text to be vertically centered */
+  /*It seemed vertically more centered (with the added tooltips) when the heights did not match.*/
+  
   font-family:'Gabriola';
   /* transition: all 4s; */
 }
@@ -54,10 +57,12 @@
   padding: 0px 16px 0px 0px;
   float: right;
 }
+
 #willowLabel {
   /*---------------*/
-  padding: 0px 0px 0px 16px;
-  float: left;
+  padding-right: 140px;
+  font-weight: bold;
+
 }
 
 #panelBody {
@@ -67,7 +72,6 @@
   width: 100%;
   /*---------------*/
   top: 70px; /*! has to be the same as #panelHeader's height */
-  background-color: rgba(77, 3, 3, 0.993);
 }
 
 /*
@@ -76,7 +80,7 @@
 .border {
   position: absolute;
   /*---------------*/
-  background-color: rgba(1, 49, 53, 0.993);
+  background-color: #5e6472;
 }
 
 #leftBorder {
@@ -84,7 +88,7 @@
   top: 0;
   left: 0;
   /*---------------*/
-  width: 5px;
+  width: 3px;
 }
 
 #rightBorder {
@@ -93,7 +97,7 @@
   right: 0;
   cursor: ew-resize;
   /*---------------*/
-  width: 5px;
+  width: 3px;
 }
 
 #topBorder {
@@ -101,7 +105,7 @@
   top: 0;
   left: 0;
   /*---------------*/
-  height: 5px;
+  height: 3px;
 }
 
 #bottomBorder {
@@ -109,7 +113,7 @@
   bottom: 0;
   left: 0;
   /*---------------*/
-  height: 5px;
+  height: 3px;
 }
 
 #graphFrame {
@@ -120,7 +124,9 @@
   height: 100%;
   z-index: 0;
   /*---------------*/
-  background-color: rgba(1, 234, 255, 0.993);
+  background-image: linear-gradient(to right, #cbdcf2, #91bbd9);
+  
+  
 }
 
 #graphInvisLayer {
@@ -132,3 +138,46 @@
   z-index: -1;
   /*---------------*/
 }
+
+img {
+  border-radius: 30%;
+  margin-top: 10px;
+  margin-left: 10px;
+  float: left;
+}
+
+/*
+ * TOOLTIP
+ */
+#closeBtn, #dockBtn, #undockBtn {
+  position: relative;
+  display: inline;
+}
+
+#undockBtn .dockText, #closeBtn .closeText, #dockBtn .dockText {
+  
+  visibility: hidden;
+  font-size: 12px;
+  color: #fff;
+  height: 30px;
+  font-family : 'Open Sans';
+  
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: -25%;
+  
+}
+
+#undockBtn .dockText {
+  right: 5%;
+}
+
+#closeBtn .closeText, #dockBtn .dockText {
+  right: 30%;
+}
+
+#closeBtn:hover .closeText, #dockBtn:hover .dockText, #undockBtn:hover .dockText {
+  visibility: visible;
+}
+
