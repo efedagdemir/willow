@@ -84,12 +84,14 @@ function openPageInNewTab(nodeId) {
 function removeEdge(source, target) {
     //! Bu henüz olmuyo.
 
-    let edge= cy.edges('edge[source = "' + source + '"][target = "' + target + '"]');
-    cy.remove(edge);
+    //TODO commented kisimlar = basarisiz denemeler
+    /*let edge= cy.edges('edge[source = "' + source + '"][target = "' + target + '"]');
+    cy.remove(edge);*/
     return true;
 }
 
 function changeBorderColor(nodeId, color) {
+    //determine the hex value of the selected color
     if (color == "red")
         hexColorValue = '#E81414';
     else if (color == "green")
@@ -97,9 +99,9 @@ function changeBorderColor(nodeId, color) {
     else if (color == "blue")
         hexColorValue = '#1444E8';
     
-    //TODO
-    let node = cy.getElementById(nodeId);
-    node.style({'border-color': hexColorValue});
+    //TODO asagidaki commentler farkli denemeler ama henuz hicbiri duzgun calismadi
+    /*let node = cy.getElementById(nodeId);
+    node.style({'border-color': hexColorValue});*/
     //node.style('border-color', hexColorValue);
     //cy.$(nodeId).style('border-color', hexColorValue);
     //cy.style().selector('node').style('border-color', hexColorValue).update();

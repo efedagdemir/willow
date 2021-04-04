@@ -115,13 +115,13 @@ function applyStyle() {
                 },
             'border-width': 2, //added border for icons
             'border-opacity': 1,
-            /*'border-color':
+            'border-color':
                 function (ele) {
                     if (ele.data('openTabCount') > 0)
                         return '#50b46e';
                     else
                         return '#808080';
-                },*/
+                },
             'width': '20',
             'height': '20',
             'content': function (ele) {
