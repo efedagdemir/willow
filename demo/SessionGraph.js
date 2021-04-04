@@ -58,7 +58,8 @@ function removeNode(nodeId) {
 
 function openPage(nodeId) {
     //! This results in an edge because the transition type of the visit caused by this function is "link".
-    //TODO find a way to handle this.
+    openingFromGraph.set(nodeId, true);
+
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         var tab = tabs[0];
         chrome.tabs.update(tab.id, {url: nodeId});
