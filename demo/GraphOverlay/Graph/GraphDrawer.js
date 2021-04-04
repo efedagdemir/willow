@@ -1,6 +1,7 @@
 let canvas = document.getElementById("canvas");
-
 let cy = cytoscape();
+cy.mount(canvas);
+let contextMenuApplied = false;
 
 cy.on('dragfree', 'node', function (evt) {
     console.log('DF: ', evt.target.id(), evt.target.position());
@@ -26,19 +27,19 @@ updateCytoscape();
 function updateCytoscape() {
     chrome.runtime.sendMessage({ type: "getCytoscapeJSON" }, function (response) {
         console.log(response);
-        cy.mount(canvas);
         cy.json(response);
 
         applyStyle();
-        
         /**
          * This implementation is mainly for reference. It may or may not make sense to
          * set the zoom level / camera position as the Cytoscape instance is being updated.
          */
         adjustViewport();
-        
-        applyContextMenu();
 
+        if(!contextMenuApplied) {
+            applyContextMenu();
+            contextMenuApplied = true;
+        }
     });
 }
 
@@ -276,8 +277,6 @@ function applyContextMenu() {
             contextMenu.hideMenuItem('open-in-new-tab');
         }
       });*/
-
-
 }
 
 /*****************************************************************************
