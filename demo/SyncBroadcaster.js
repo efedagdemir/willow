@@ -3,7 +3,8 @@ chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         // only broadcast SidePanel or Graph sync requests, do nothing when other messages are received
         if (request.message == "WILLOW_SP_SYNC_REQUEST"
-            || request.message == "WILLOW_GRAPH_SYNC_REQUEST") {
+            || request.message == "WILLOW_GRAPH_SYNC_REQUEST" 
+            || request.message == "WILLOW_VIEWPORT_SYNC_REQUEST") {
             broadcastSyncRequest(request);
         }
     }

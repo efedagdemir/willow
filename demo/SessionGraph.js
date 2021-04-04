@@ -9,7 +9,8 @@ function initializeSG() {
     // create an HTML container for the graph in the background page
     //* This page is not rendered, the container's sole purpose is to enable cytospace.js to work properly.
     let container = document.createElement("div");
-    container.style.width = container.style.height = 200; // random values for width and height.
+    // ! This is problematic! 
+    container.style.width = container.style.height = "300px"; // random values for width and height.
     document.body.appendChild(container);
 
     cy = cytoscape({
@@ -97,7 +98,7 @@ function messageReceived(request, sender, sendResponse) {
         openPageInNewTab(request.nodeId);
     } else if (request.message == "WILLOW_BACKGROUND_REMOVE_EDGE") {
         removeEdge(request.nodeId);
-    } 
+    }
 
 }
 
@@ -124,6 +125,7 @@ function runLayout(){
         stop: () => {}                 
     }).run();
 }
+
 
 /*
 function addFixedNodes(nodeId, newPos, newNode){

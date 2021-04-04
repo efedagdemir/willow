@@ -1,6 +1,7 @@
 let canvas = document.getElementById("canvas");
 
 let cy = cytoscape();
+updateCytoscape();
 
 cy.on('dragfree', 'node', function (evt) {
     console.log('DF: ', evt.target.id(), evt.target.position());
@@ -20,8 +21,21 @@ cy.on('dragfree', 'node', function (evt) {
         })
     }, 100);
 });
+cy.on("viewport", onViewport);
 
-updateCytoscape();
+
+function onViewport(event) {
+    chrome.storage.local.set({
+        WILLOW_VIEWPORT: {
+            zoom: cy.zoom(),
+            pan: cy.pan()
+        }
+    }, function() {
+        chrome.runtime.sendMessage({
+             message: "WILLOW_VIEWPORT_SYNC_REQUEST",
+        });
+    }); 
+}
 
 function updateCytoscape() {
     chrome.runtime.sendMessage({ type: "getCytoscapeJSON" }, function (response) {
@@ -31,19 +45,14 @@ function updateCytoscape() {
 
         applyContextMenu();
         applyStyle();
-
-        /**
-         * This implementation is mainly for reference. It may or may not make sense to
-         * set the zoom level / camera position as the Cytoscape instance is being updated.
-         */
-        adjustViewport();
     });
 }
+
 
 /**
  * Sets the zoom level and the camera position to center the graph.
  */
-function adjustViewport() {
+ function adjustViewport() {
     cy.resize() // make sure that cytoscape is up-to-date with its container size.
 
     /**
@@ -77,6 +86,16 @@ function adjustViewport() {
         x: cy.width() / 2,
         y: cy.height() / 2,
     });*/
+}
+
+function syncViewport() {
+    chrome.storage.local.get(["WILLOW_VIEWPORT"], function (res) {
+        console.log(res.WILLOW_VIEWPORT);
+        cy.removeListener("viewport"); // disable to avoid cycles
+        cy.viewport(res.WILLOW_VIEWPORT);
+        cy.on("viewport", onViewport);  // re-enable 
+    });
+    
 }
 
 function applyStyle() {
@@ -290,8 +309,10 @@ chrome.runtime.onMessage.addListener(
             handleSyncRequest(request);
         } else if (request.message == "WILLOW_GRAPH_VIEWPORT_ADJ") {
             console.log("Adjusting viewport");
-            adjustViewport();
-        } 
+            //adjustViewport();
+        } else if (request.message == "WILLOW_VIEWPORT_SYNC_REQUEST") {
+            syncViewport();
+        }
         
     }
 );
