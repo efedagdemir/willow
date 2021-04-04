@@ -48,23 +48,39 @@ function updateNodePosition(nodeId, newPos) {
 }
 
 function removeNode(nodeId) {
-    /*
+
     console.log("DELETING NODE");
     let node = cy.getElementById(nodeId);
     cy.remove(node);
-    */
-   return true;
+
+    // remove the entry from tabUrls
+    if (node.data("openTabCount") > 0 ) {
+        let nodeUrl = node.data("id");
+        tabURLs.forEach((url, tabId) => {
+            if(nodeUrl == url)
+                tabURLs.delete(tabId);
+        });
+    }
+    return true;
 }
 
 function openPage(nodeId) {
-   return true;
+    //! This results in an edge because the transition type of the visit caused by this function is "link".
+    //TODO find a way to handle this.
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        var tab = tabs[0];
+        chrome.tabs.update(tab.id, {url: nodeId});
+    });
+    return true;
 }
 
 function openPageInNewTab(nodeId) {
-   return true;
+    chrome.tabs.create({url: nodeId});
+    return true;
 }
 
-function removeEdge(nodeId) {
+function removeEdge(edgeId) {
+    //! Bu henüz olmuyo.
     return true;
 }
 

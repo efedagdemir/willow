@@ -29,7 +29,7 @@ function updateCytoscape() {
         cy.mount(canvas);
         cy.json(response);
 
-        // applyContextMenu(); ! Temporarily commented out.
+        applyContextMenu();
         applyStyle();
 
         /**
@@ -53,11 +53,11 @@ function adjustViewport() {
 
     // (1): Center Graph
     // Bring the center of the graph to the center of the canvas.
-    //cy.center();
+    cy.center();
 
     // (2): Fit Graph
     // Adjust the zoom level to fit the whole graph in addition to centering.
-    cy.fit();
+    //cy.fit();
 
     // (3): Center Origin
     // Set camera position manually. Bring origin to the center. 
