@@ -39,10 +39,12 @@
         }
     },
     "web_accessible_resources": [
+        "images/willowIcon_50x50.png",
         "GraphOverlay/SidePanel/side_panel.html",
         "GraphOverlay/SidePanel/side_panel.css",
         "GraphOverlay/SidePanel/side_panel.js",
         "GraphOverlay/Graph/GraphDrawer.html"
+        
     ],
     "content_security_policy": "script-src 'self'; object-src 'self'; img-src chrome://favicon;"
 }

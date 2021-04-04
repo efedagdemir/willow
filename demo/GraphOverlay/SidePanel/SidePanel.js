@@ -43,9 +43,10 @@ var sidePanelHTML = `
 <div id="sidePanel">
   <div id="panelHeader">
     <a id="willowLabel">Willow</a>
-    <a class="headerBtn" id="closeBtn">&times;</a>
-    <a class="headerBtn" id="undockBtn">&raquo;</a>
-    <a class="headerBtn" id="dockBtn" style="display:none;">&laquo;</a>
+    <a class="headerBtn" id="closeBtn">&times; <span class="closeText">Close!</span></a>
+    <a class="headerBtn" id="undockBtn">&raquo; <span class="dockText">Undock!</span></a>
+    <a class="headerBtn" id="dockBtn" style="display:none;">&laquo; <span class="dockText">Dock!</span> </a>
+    <img src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
   </div>
   <div id="panelBody">
     <iframe id="graphFrame" src="${chrome.runtime.getURL("GraphOverlay/Graph/GraphDrawer.html")}"></iframe>

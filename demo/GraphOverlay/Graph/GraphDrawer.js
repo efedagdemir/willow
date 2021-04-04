@@ -90,14 +90,14 @@ function applyStyle() {
                     else
                         return '#808080';
                 },
-            'border-width': 3, //added border for icons
+            'border-width': 2, //added border for icons
             'border-opacity': 1,
             'border-color':
                 function (ele) {
                     if (ele.data('openTabCount') > 0)
                         return '#50b46e';
                     else
-                        return '#808080';
+                        return '#495057';
                 },
             'width': '20',
             'height': '20',
@@ -109,13 +109,14 @@ function applyStyle() {
             'background-image-opacity': '1',
             'background-opacity': '0',
             'background-fit': 'contain',
-            'background-clip': 'node'
+            'background-clip': 'node',
+            'font-family' : 'Open Sans',
         })
         .selector('edge')
         .style({
-            'line-color': '#F2B1BA',
-            'target-arrow-color': '#F2B1BA',
-            'width': 2,
+            'line-color': '#ab0321',
+            'target-arrow-color': '#ab0321',
+            'width': 2.5,
             'target-arrow-shape': 'triangle-backcurve',
             'curve-style': 'bezier',    // the default curve style does not support arrows
             'opacity': 0.8

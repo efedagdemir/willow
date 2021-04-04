@@ -14,6 +14,14 @@ function initializeSG() {
 
     cy = cytoscape({
         container: container,
+        style: [ // the stylesheet for the graph
+            {
+              selector: 'node',
+              style: {
+                'label': 'data(title)'
+              }
+            },
+        ],
         ready: function () {
             // ready 1
         }
