@@ -81,9 +81,29 @@ function openPageInNewTab(nodeId) {
     return true;
 }
 
-function removeEdge(edgeId) {
+function removeEdge(source, target) {
     //! Bu henüz olmuyo.
+
+    let edge= cy.edges('edge[source = "' + source + '"][target = "' + target + '"]');
+    cy.remove(edge);
     return true;
+}
+
+function changeBorderColor(nodeId, color) {
+    if (color == "red")
+        hexColorValue = '#E81414';
+    else if (color == "green")
+        hexColorValue = '#50b46e';
+    else if (color == "blue")
+        hexColorValue = '#1444E8';
+    
+    //TODO
+    let node = cy.getElementById(nodeId);
+    node.style({'border-color': hexColorValue});
+    //node.style('border-color', hexColorValue);
+    //cy.$(nodeId).style('border-color', hexColorValue);
+    //cy.style().selector('node').style('border-color', hexColorValue).update();
+    //cy.style().$(nodeId).style('border-color', hexColorValue).update();
 }
 
 function messageReceived(request, sender, sendResponse) {
@@ -98,7 +118,9 @@ function messageReceived(request, sender, sendResponse) {
     } else if (request.message == "WILLOW_BACKGROUND_OPEN_PAGE_IN_NEW_TAB") {
         openPageInNewTab(request.nodeId);
     } else if (request.message == "WILLOW_BACKGROUND_REMOVE_EDGE") {
-        removeEdge(request.nodeId);
+        removeEdge(request.source, request.target);
+    } else if (request.message == "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR") {
+        changeBorderColor(request.nodeId, request.color);
     }
 
 }

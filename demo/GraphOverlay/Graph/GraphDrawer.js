@@ -115,13 +115,13 @@ function applyStyle() {
                 },
             'border-width': 2, //added border for icons
             'border-opacity': 1,
-            'border-color':
+            /*'border-color':
                 function (ele) {
                     if (ele.data('openTabCount') > 0)
                         return '#50b46e';
                     else
-                        return '#495057';
-                },
+                        return '#808080';
+                },*/
             'width': '20',
             'height': '20',
             'content': function (ele) {
@@ -171,41 +171,15 @@ function applyStyle() {
 
 function applyContextMenu() {
     var contextMenu = cy.contextMenus({
+        evtType: 'cxttap',
         menuItems: [
-            {
-                id: 'remove',
-                content: 'Remove node',
-                tooltipText: 'Remove node from graph',
-                selector: 'node',
-                onClickFunction: function (event) {
-                    /*var target = event.target || event.cyTarget;
-                    removed = cy.remove(target);
-                    console.log(removed + "is removed");   */
-                    let target = event.target || event.cyTarget;
-                    let id = target.id();
-                    removed = cy.remove(target);
-                    console.log(removed + "is removed");
-                    chrome.runtime.sendMessage({
-                        message: "WILLOW_BACKGROUND_REMOVE_NODE",
-                        nodeId: id
-                    });
-                    chrome.runtime.sendMessage({
-                        message: "WILLOW_GRAPH_SYNC_REQUEST",
-                    })
-
-                },
-                show: true,
-                coreAsWell: true
-            },
             {
                 id: 'open',
                 content: 'Open page',
                 tooltipText: 'Open page in the active tab',
                 selector: 'node',
+                hasTrailingDivider: true,
                 onClickFunction: function (event) {
-                    /*var target = event.target || event.cyTarget;
-                    removed = cy.remove(target);
-                    console.log(removed + "is removed");   */
                     let target = event.target || event.cyTarget;
                     let id = target.id();
                     chrome.runtime.sendMessage({
@@ -214,8 +188,7 @@ function applyContextMenu() {
                     });
                     chrome.runtime.sendMessage({
                         message: "WILLOW_GRAPH_SYNC_REQUEST",
-                    })
-
+                    });
                 },
                 show: true,
                 coreAsWell: true
@@ -225,10 +198,8 @@ function applyContextMenu() {
                 content: 'Open page in new tab',
                 tooltipText: 'Open page in new tab',
                 selector: 'node',
+                hasTrailingDivider: true,
                 onClickFunction: function (event) {
-                    /*var target = event.target || event.cyTarget;
-                    removed = cy.remove(target);
-                    console.log(removed + "is removed");   */
                     let target = event.target || event.cyTarget;
                     let id = target.id();
                     chrome.runtime.sendMessage({
@@ -237,8 +208,93 @@ function applyContextMenu() {
                     });
                     chrome.runtime.sendMessage({
                         message: "WILLOW_GRAPH_SYNC_REQUEST",
-                    })
+                    });
+                },
+                show: true,
+                coreAsWell: true
+            },
+            {
+                id: 'change-border-color',
+                content: 'Change border color',
+                tooltipText: 'Change the color around the node',
+                selector: 'node',
+                hasTrailingDivider: true,
+                submenu: [
+                    {
+                        id: 'color-red',
+                        content: 'Red',
+                        tooltipText: 'Red',
+                        hasTrailingDivider: true,
+                        onClickFunction: function (event){
+                            let target = event.target || event.cyTarget;
+                            let id = target.id();
+                            target.style('border-color', '#E81414');
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR",
+                                nodeId: id,
+                                color: "red"
+                            });
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_GRAPH_SYNC_REQUEST",
+                            });
+                        }
+                    },
+                    {
+                        id: 'color-green',
+                        content: 'Green',
+                        tooltipText: 'Green',
+                        hasTrailingDivider: true,
+                        onClickFunction: function (event){
+                            let target = event.target || event.cyTarget;
+                            let id = target.id();
+                            target.style('border-color', '#50b46e');
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR",
+                                nodeId: id,
+                                color: "green"
+                            });
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_GRAPH_SYNC_REQUEST",
+                            });
+                        }
+                    },
+                    {
+                        id: 'color-blue',
+                        content: 'Blue',
+                        tooltipText: 'Blue',
+                        onClickFunction: function (event){
+                            let target = event.target || event.cyTarget;
+                            let id = target.id();
+                            target.style('border-color', '#1444E8');
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR",
+                                nodeId: id,
+                                color: "blue"
+                            });
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_GRAPH_SYNC_REQUEST",
+                            });
+                        }
+                    }
+                ]
 
+            },
+            {
+                id: 'remove',
+                content: 'Remove node',
+                tooltipText: 'Remove node from graph',
+                selector: 'node',
+                onClickFunction: function (event) {
+                    let target = event.target || event.cyTarget;
+                    let id = target.id();
+                    removed = cy.remove(target);
+                    chrome.runtime.sendMessage({
+                        message: "WILLOW_BACKGROUND_REMOVE_NODE",
+                        nodeId: id
+                    });
+                    chrome.runtime.sendMessage({
+                        message: "WILLOW_GRAPH_SYNC_REQUEST",
+                    });
                 },
                 show: true,
                 coreAsWell: true
@@ -249,14 +305,13 @@ function applyContextMenu() {
                 tooltipText: 'Remove the edge between the nodes',
                 selector: 'node',
                 onClickFunction: function (event) {
-                    /*var target = event.target || event.cyTarget;
-                    removed = cy.remove(target);
-                    console.log(removed + "is removed");   */
                     let target = event.target || event.cyTarget;
-                    let id = target.id();
+                    let sourceURL = target.source();
+                    let targetURL = target.target();
                     chrome.runtime.sendMessage({
                         message: "WILLOW_BACKGROUND_REMOVE_EDGE",
-                        nodeId: id
+                        source: sourceURL,
+                        target: targetURL
                     });
                     chrome.runtime.sendMessage({
                         message: "WILLOW_GRAPH_SYNC_REQUEST",
@@ -268,45 +323,40 @@ function applyContextMenu() {
             }
 
         ],
-        submenuIndicator: { src: 'node_modules/cytoscape-context-menus/assets/submenu-indicator-default.svg', width: 12, height: 12 }
+        submenuIndicator: {src: '/node_modules/cytoscape-context-menus/assets/submenu-indicator-default.svg', width: 12, height: 12}
 
     });
 
-    cy.on('cxttap', function () {
-        contextMenu.showMenuItem('remove');
-    });
-
-    // ! WIP (Work in progress)
-    /*var allSelected = function (type) {
-        if (type == 'node') {
-          return cy.nodes().length == cy.nodes(':selected').length;
-        }
-        else if (type == 'edge') {
-          return cy.edges().length == cy.edges(':selected').length;
-        }
-        return false;
-    }
-
-    cy.on('cxttap', function(event) {
-        if (allSelected('node')) {
+    cy.on('cxttap', function (event) {
+        var evtTarget = event.target;
+        if (evtTarget === cy){
+            console.log("target is the background");
+            contextMenu.hideMenuItem('open');
+            contextMenu.hideMenuItem('open-in-new-tab');
+            contextMenu.hideMenuItem('remove');
             contextMenu.hideMenuItem('remove-edge');
-            contextMenu.showMenuItem('remove');
+            contextMenu.hideMenuItem('change-border-color');
+        }
+        else if (evtTarget.isNode()){
+            console.log("target is a node");
             contextMenu.showMenuItem('open');
             contextMenu.showMenuItem('open-in-new-tab');
-        }/*
-        else if (allSelected('edge')) {
-            contextMenu.showMenuItem('remove-edge');
-            contextMenu.hideMenuItem('remove');
-            contextMenu.hideMenuItem('open');
-            contextMenu.hideMenuItem('open-in-new-tab');
-        }
-        else {
+            contextMenu.showMenuItem('remove');
+            contextMenu.showMenuItem('change-border-color');
+
             contextMenu.hideMenuItem('remove-edge');
-            contextMenu.hideMenuItem('remove');
+        }
+        else if (evtTarget.isEdge()){
+            console.log("target is an edge");
+            contextMenu.showMenuItem('remove-edge');
+
             contextMenu.hideMenuItem('open');
             contextMenu.hideMenuItem('open-in-new-tab');
+            contextMenu.hideMenuItem('remove');
+            contextMenu.hideMenuItem('change-border-color');
         }
-      });*/
+    });
+
 }
 
 /*****************************************************************************
