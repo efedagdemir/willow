@@ -29,14 +29,16 @@ function updateCytoscape() {
         cy.mount(canvas);
         cy.json(response);
 
-        applyContextMenu();
         applyStyle();
-
+        
         /**
          * This implementation is mainly for reference. It may or may not make sense to
          * set the zoom level / camera position as the Cytoscape instance is being updated.
          */
         adjustViewport();
+        
+        applyContextMenu();
+
     });
 }
 
