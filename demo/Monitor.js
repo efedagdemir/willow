@@ -40,7 +40,7 @@ function tabUpdated(tabId, changeInfo, tab) {
 
                 // ! This seems like the correct place for this. Might need to move somewhere else
                 // Notify all tabs of the newly inserted node
-                broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
+                broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
             }, 30);
         /*
          * ChangeInfo contains a title on two different triggers: when the URL changes and when the page's actual title loads.

@@ -3,6 +3,7 @@ let cy = cytoscape();
 cy.mount(canvas);
 let contextMenuApplied = false;
 updateCytoscape();
+syncViewport();
 
 cy.on('dragfree', 'node', function (evt) {
     console.log('DF: ', evt.target.id(), evt.target.position());
@@ -22,10 +23,12 @@ cy.on('dragfree', 'node', function (evt) {
         })
     }, 100);
 });
+
 cy.on("viewport", onViewport);
 
 
 function onViewport(event) {
+    console.log("VIEWPORT EVENT FIRED");
     chrome.storage.local.set({
         WILLOW_VIEWPORT: {
             zoom: cy.zoom(),
@@ -40,7 +43,15 @@ function onViewport(event) {
 
 function updateCytoscape() {
     chrome.runtime.sendMessage({ type: "getCytoscapeJSON" }, function (response) {
+        console.log("RESPONSE RECEIVED");
         console.log(response);
+        // save current viewport to restore after response json is loaded
+        let tmp = {
+            zoom: cy.zoom(),
+            pan: cy.pan()
+        }
+        response.pan = tmp.pan;
+        response.zoom = tmp.zoom;
         cy.json(response);
 
         applyStyle();
@@ -99,7 +110,6 @@ function syncViewport() {
         cy.viewport(res.WILLOW_VIEWPORT);
         cy.on("viewport", onViewport);  // re-enable 
     });
-    
 }
 
 function applyStyle() {

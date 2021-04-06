@@ -23,8 +23,8 @@
 
 #panelHeader {
   width: 100%;
-  /*background-color: rgba(3, 72, 77, 0.993);*/ /*did not delete here because it is above the dashed lines, however I don't see a use*/
   /*---------------*/
+  /*background-color: rgba(3, 72, 77, 0.993);*/ /*did not delete here because it is above the dashed lines, however I don't see a use*/
   height: 70px;
   text-align: center;
   background-color: #001d3d;
@@ -36,6 +36,13 @@
  */
 #panelHeader a {
   /*---------------*/
+    
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
   text-decoration: none;
   cursor: pointer; /* shows text cursor by default*/
   margin: 0 auto;
@@ -125,7 +132,7 @@
   z-index: 0;
   /*---------------*/
   background-image: linear-gradient(to right, #cbdcf2, #91bbd9);
-  
+  opacity: 0.87;
   
 }
 
@@ -180,4 +187,3 @@ img {
 #closeBtn:hover .closeText, #dockBtn:hover .dockText, #undockBtn:hover .dockText {
   visibility: visible;
 }
-
