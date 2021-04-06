@@ -269,6 +269,13 @@ function enableDragging() {
   function dragMouseMove(e) {
     e = e || window.event;
     e.preventDefault();
+
+    let elemBelow = document.elementFromPoint(e.clientX, e.clientY);
+  
+    // mousemove events may trigger out of the window (when the panel is dragged off-screen)
+    // if clientX/clientY are out of the window, then elementFromPoint returns null
+    if (!elemBelow) return;
+
     deltaX = e.clientX - lastX;
     deltaY = e.clientY - lastY;
     lastX = e.clientX;
@@ -342,6 +349,12 @@ function enableResizing(rightBorderOnly) {
   function resizeMouseMove(e) {
     e = e || window.event;
     e.preventDefault();
+
+    let elemBelow = document.elementFromPoint(e.clientX, e.clientY);
+  
+    // mousemove events may trigger out of the window (when the panel is dragged off-screen)
+    // if clientX/clientY are out of the window, then elementFromPoint returns null
+    if (!elemBelow) return;
 
     deltaX = e.clientX - lastX;
     lastX = e.clientX;
