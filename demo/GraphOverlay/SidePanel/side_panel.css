@@ -156,12 +156,12 @@ img {
 /*
  * TOOLTIP
  */
-#closeBtn, #dockBtn, #undockBtn ,#resetBtn{
+#closeBtn, #dockBtn, #undockBtn ,#resetBtn, #centerBtn{
   position: relative;
   display: inline;
 }
 
-#undockBtn .dockText, #closeBtn .closeText, #dockBtn .dockText ,#resetBtn .resetText{
+#undockBtn .dockText, #closeBtn .closeText, #dockBtn .dockText ,#resetBtn .resetText, #centerBtn .centerText {
   
   visibility: hidden;
   font-size: 12px;
@@ -180,10 +180,10 @@ img {
   right: 5%;
 }
 
-#closeBtn .closeText, #dockBtn .dockText ,#resetBtn .resetText{
+#closeBtn .closeText, #dockBtn .dockText ,#resetBtn .resetText, #centerBtn .centerText{
   right: 30%;
 }
 
-#closeBtn:hover .closeText, #dockBtn:hover .dockText, #undockBtn:hover .dockText ,#resetBtn:hover .resetText{
+#closeBtn:hover .closeText, #dockBtn:hover .dockText, #undockBtn:hover .dockText ,#resetBtn:hover .resetText, #centerBtn:hover .centerText{
   visibility: visible;
 }

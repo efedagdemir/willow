@@ -67,7 +67,7 @@ function updateCytoscape() {
 /**
  * Sets the zoom level and the camera position to center the graph.
  */
- function adjustViewport() {
+ function centerViewport() {
     cy.resize() // make sure that cytoscape is up-to-date with its container size.
 
     /**
@@ -378,9 +378,8 @@ chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.message == "WILLOW_GRAPH_SYNC_REQUEST") {
             handleSyncRequest(request);
-        } else if (request.message == "WILLOW_GRAPH_VIEWPORT_ADJ") {
-            console.log("Adjusting viewport");
-            //adjustViewport();
+        } else if (request.message == "WILLOW_GRAPH_VIEWPORT_CENTER") {
+            centerViewport();
         } else if (request.message == "WILLOW_VIEWPORT_SYNC_REQUEST") {
             syncViewport();
         }

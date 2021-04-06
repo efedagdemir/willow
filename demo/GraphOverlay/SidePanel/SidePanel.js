@@ -37,6 +37,8 @@ var sidePanelHTML = `
     <a class="headerBtn" id="undockBtn">&raquo; <span class="dockText">Undock!</span></a>
     <a class="headerBtn" id="dockBtn" style="display:none;">&laquo; <span class="dockText">Dock!</span> </a>
     <a class="headerBtn" id="resetBtn">&osol; <span class="resetText">Reset!</span></a>
+    <a class="headerBtn" id="centerBtn">&curren; <span class="centerText">Center!</span></a>
+
     <img src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
   </div>
   <div id="panelBody">
@@ -85,7 +87,8 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
 document.getElementById("closeBtn").onclick   = () => closeSidePanel(true);
 document.getElementById("undockBtn").onclick  = () => undockSidePanel(null, true);
 document.getElementById("dockBtn").onclick    = () => dockSidePanel(true);
-document.getElementById("resetBtn").onclick   = () => {chrome.runtime.sendMessage({message:"WILLOW_BACKGROUND_CLEAR_SESSION"})};
+document.getElementById("resetBtn").onclick   = () => {chrome.runtime.sendMessage({message: "WILLOW_BACKGROUND_CLEAR_SESSION"})};
+document.getElementById("centerBtn").onclick   = () => {chrome.runtime.sendMessage({message: "WILLOW_GRAPH_VIEWPORT_CENTER"})};
 
 enableResizing(rightBorderOnly = true);
 
@@ -140,14 +143,16 @@ function openSidePanel(isOrigin) {
     });
   }
 
+  // TODO: When to do this? Surely not everytime a page is loaded.
+  /**
   // the graph needs to re-adjust its viewport after the panel is opened.
   // ! A timeout is used temporarily to ensure that the iframe is resized before adjusting the viewport.
   setTimeout(() => {
     chrome.runtime.sendMessage({
-      message: "WILLOW_GRAPH_VIEWPORT_ADJ",
+      message: "WILLOW_GRAPH_VIEWPORT_CENTER",
     })
   }, 150);
-
+  */
 
 }
 
