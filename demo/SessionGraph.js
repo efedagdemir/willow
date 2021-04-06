@@ -37,6 +37,15 @@ function loadSG(cyJson) {
     cy.json(cyJson);
 }
 
+/**
+ * Clearss the session graph.
+ */
+function clearSG(){
+    cy.remove(cy.elements());
+    initialize();
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+}
+
 function getCytoscapeJSON(){
     return cy.json(true);
 }
@@ -123,6 +132,8 @@ function messageReceived(request, sender, sendResponse) {
         removeEdge(request.source, request.target);
     } else if (request.message == "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR") {
         changeBorderColor(request.nodeId, request.color);
+    } else if (request.message == "WILLOW_BACKGROUND_CLEAR_SESSION") {
+        clearSG();
     }
 
 }

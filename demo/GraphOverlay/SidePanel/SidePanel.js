@@ -36,6 +36,7 @@ var sidePanelHTML = `
     <a class="headerBtn" id="closeBtn">&times; <span class="closeText">Close!</span></a>
     <a class="headerBtn" id="undockBtn">&raquo; <span class="dockText">Undock!</span></a>
     <a class="headerBtn" id="dockBtn" style="display:none;">&laquo; <span class="dockText">Dock!</span> </a>
+    <a class="headerBtn" id="resetBtn">&osol; <span class="resetText">Reset!</span></a>
     <img src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
   </div>
   <div id="panelBody">
@@ -84,6 +85,7 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
 document.getElementById("closeBtn").onclick   = () => closeSidePanel(true);
 document.getElementById("undockBtn").onclick  = () => undockSidePanel(null, true);
 document.getElementById("dockBtn").onclick    = () => dockSidePanel(true);
+document.getElementById("resetBtn").onclick   = () => {chrome.runtime.sendMessage({message:"WILLOW_BACKGROUND_CLEAR_SESSION"})};
 
 enableResizing(rightBorderOnly = true);
 
