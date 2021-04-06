@@ -149,12 +149,12 @@ img {
 /*
  * TOOLTIP
  */
-#closeBtn, #dockBtn, #undockBtn {
+#closeBtn, #dockBtn, #undockBtn ,#resetBtn{
   position: relative;
   display: inline;
 }
 
-#undockBtn .dockText, #closeBtn .closeText, #dockBtn .dockText {
+#undockBtn .dockText, #closeBtn .closeText, #dockBtn .dockText ,#resetBtn .resetText{
   
   visibility: hidden;
   font-size: 12px;
@@ -173,11 +173,11 @@ img {
   right: 5%;
 }
 
-#closeBtn .closeText, #dockBtn .dockText {
+#closeBtn .closeText, #dockBtn .dockText ,#resetBtn .resetText{
   right: 30%;
 }
 
-#closeBtn:hover .closeText, #dockBtn:hover .dockText, #undockBtn:hover .dockText {
+#closeBtn:hover .closeText, #dockBtn:hover .dockText, #undockBtn:hover .dockText ,#resetBtn:hover .resetText{
   visibility: visible;
 }
 
