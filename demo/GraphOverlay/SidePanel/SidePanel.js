@@ -15,7 +15,7 @@
 var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
 var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
 
-var RESIZE_MIN_WIDTH = 250;  // in px
+var RESIZE_MIN_WIDTH = 670;  // in px
 var RESIZE_MIN_HEIGHT = 250;  // in px
 
 var sidePanelHTML = `
@@ -23,6 +23,8 @@ var sidePanelHTML = `
 <html>
 <head>
   <link rel="stylesheet" href="${chrome.runtime.getURL("GraphOverlay/SidePanel/side_panel.css")}">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
   
   <script src="cytoscape.min.js"></script>
   <script src="node_modules/dagre/dist/dagre.min.js"></script>
@@ -32,14 +34,14 @@ var sidePanelHTML = `
 <body>
 <div id="sidePanel">
   <div id="panelHeader">
-    <a id="willowLabel">Willow</a>
+    <a id="willowLabel">W I L L O W</a>
     <a class="headerBtn" id="closeBtn">&times; <span class="closeText">Close!</span></a>
     <a class="headerBtn" id="undockBtn">&raquo; <span class="dockText">Undock!</span></a>
     <a class="headerBtn" id="dockBtn" style="display:none;">&laquo; <span class="dockText">Dock!</span> </a>
     <a class="headerBtn" id="resetBtn">&osol; <span class="resetText">Reset!</span></a>
     <a class="headerBtn" id="centerBtn">&curren; <span class="centerText">Center!</span></a>
 
-    <img src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
+    <img id="willowIcon" src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
   </div>
   <div id="panelBody">
     <iframe id="graphFrame" src="${chrome.runtime.getURL("GraphOverlay/Graph/GraphDrawer.html")}"></iframe>

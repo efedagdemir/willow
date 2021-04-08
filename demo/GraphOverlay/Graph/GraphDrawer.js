@@ -150,8 +150,8 @@ function applyStyle() {
         })
         .selector('edge')
         .style({
-            'line-color': '#ab0321',
-            'target-arrow-color': '#ab0321',
+            'line-color': '#8d0801', /*#ab0321*/
+            'target-arrow-color': '#8d0801',
             'width': 2.5,
             'target-arrow-shape': 'triangle-backcurve',
             'curve-style': 'bezier',    // the default curve style does not support arrows
