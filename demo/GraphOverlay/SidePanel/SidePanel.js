@@ -15,7 +15,7 @@
 var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
 var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
 
-var RESIZE_MIN_WIDTH = 250;  // in px
+var RESIZE_MIN_WIDTH = 670;  // in px
 var RESIZE_MIN_HEIGHT = 250;  // in px
 
 var sidePanelHTML = `
@@ -23,6 +23,8 @@ var sidePanelHTML = `
 <html>
 <head>
   <link rel="stylesheet" href="${chrome.runtime.getURL("GraphOverlay/SidePanel/side_panel.css")}">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
   
   <script src="cytoscape.min.js"></script>
   <script src="node_modules/dagre/dist/dagre.min.js"></script>
@@ -32,11 +34,14 @@ var sidePanelHTML = `
 <body>
 <div id="sidePanel">
   <div id="panelHeader">
-    <a id="willowLabel">Willow</a>
+    <a id="willowLabel">W I L L O W</a>
     <a class="headerBtn" id="closeBtn">&times; <span class="closeText">Close!</span></a>
     <a class="headerBtn" id="undockBtn">&raquo; <span class="dockText">Undock!</span></a>
     <a class="headerBtn" id="dockBtn" style="display:none;">&laquo; <span class="dockText">Dock!</span> </a>
-    <img src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
+    <a class="headerBtn" id="resetBtn">&osol; <span class="resetText">Reset!</span></a>
+    <a class="headerBtn" id="centerBtn">&curren; <span class="centerText">Center!</span></a>
+
+    <img id="willowIcon" src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
   </div>
   <div id="panelBody">
     <iframe id="graphFrame" src="${chrome.runtime.getURL("GraphOverlay/Graph/GraphDrawer.html")}"></iframe>
@@ -84,6 +89,8 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
 document.getElementById("closeBtn").onclick   = () => closeSidePanel(true);
 document.getElementById("undockBtn").onclick  = () => undockSidePanel(null, true);
 document.getElementById("dockBtn").onclick    = () => dockSidePanel(true);
+document.getElementById("resetBtn").onclick   = () => {chrome.runtime.sendMessage({message: "WILLOW_BACKGROUND_CLEAR_SESSION"})};
+document.getElementById("centerBtn").onclick   = () => {chrome.runtime.sendMessage({message: "WILLOW_GRAPH_VIEWPORT_CENTER"})};
 
 enableResizing(rightBorderOnly = true);
 
@@ -138,14 +145,16 @@ function openSidePanel(isOrigin) {
     });
   }
 
+  // TODO: When to do this? Surely not everytime a page is loaded.
+  /**
   // the graph needs to re-adjust its viewport after the panel is opened.
   // ! A timeout is used temporarily to ensure that the iframe is resized before adjusting the viewport.
   setTimeout(() => {
     chrome.runtime.sendMessage({
-      message: "WILLOW_GRAPH_VIEWPORT_ADJ",
+      message: "WILLOW_GRAPH_VIEWPORT_CENTER",
     })
   }, 150);
-
+  */
 
 }
 
@@ -262,6 +271,13 @@ function enableDragging() {
   function dragMouseMove(e) {
     e = e || window.event;
     e.preventDefault();
+
+    let elemBelow = document.elementFromPoint(e.clientX, e.clientY);
+  
+    // mousemove events may trigger out of the window (when the panel is dragged off-screen)
+    // if clientX/clientY are out of the window, then elementFromPoint returns null
+    if (!elemBelow) return;
+
     deltaX = e.clientX - lastX;
     deltaY = e.clientY - lastY;
     lastX = e.clientX;
@@ -335,6 +351,12 @@ function enableResizing(rightBorderOnly) {
   function resizeMouseMove(e) {
     e = e || window.event;
     e.preventDefault();
+
+    let elemBelow = document.elementFromPoint(e.clientX, e.clientY);
+  
+    // mousemove events may trigger out of the window (when the panel is dragged off-screen)
+    // if clientX/clientY are out of the window, then elementFromPoint returns null
+    if (!elemBelow) return;
 
     deltaX = e.clientX - lastX;
     lastX = e.clientX;

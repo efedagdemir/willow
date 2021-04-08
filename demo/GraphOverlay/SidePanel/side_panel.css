@@ -23,11 +23,11 @@
 
 #panelHeader {
   width: 100%;
-  /*background-color: rgba(3, 72, 77, 0.993);*/ /*did not delete here because it is above the dashed lines, however I don't see a use*/
+
   /*---------------*/
   height: 70px;
   text-align: center;
-  background-color: #001d3d;
+  background-color: #041424; /*#001d3d*/
 }
 
 /* applies to the Willow label, the undock button and the close button */
@@ -36,15 +36,22 @@
  */
 #panelHeader a {
   /*---------------*/
+    
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
   text-decoration: none;
   cursor: pointer; /* shows text cursor by default*/
   margin: 0 auto;
-  font-size: 48px;
-  color: #ab0321;
-  line-height: 85px;  /*! has to be the same as #panelHeader's height for the text to be vertically centered */
+  font-size: 44px;
+  color: #f4d58d; /*ab0321*/
+  line-height: 70px;  /*! has to be the same as #panelHeader's height for the text to be vertically centered */
   /*It seemed vertically more centered (with the added tooltips) when the heights did not match.*/
   
-  font-family:'Gabriola';
+  font-family:'Montserrat', sans-serif;
   /* transition: all 4s; */
 }
 
@@ -52,17 +59,26 @@
   /*---------------*/
   color: #f1f1f1;
 }
+
 .headerBtn {
   /*---------------*/
   padding: 0px 16px 0px 0px;
   float: right;
+  height: 44px;
 }
 
-#willowLabel {
+#willowLabel.override {
   /*---------------*/
   padding-right: 140px;
+  font-family: 'Montserrat', sans-serif;
   font-weight: bold;
+  font-size: 12px;
 
+}
+
+#willowLabel:hover {
+  /*---------------*/
+  color: #8d0801
 }
 
 #panelBody {
@@ -80,7 +96,7 @@
 .border {
   position: absolute;
   /*---------------*/
-  background-color: #5e6472;
+  background-color: #a8a8a8; /*#5e6472*/
 }
 
 #leftBorder {
@@ -124,8 +140,9 @@
   height: 100%;
   z-index: 0;
   /*---------------*/
-  background-image: linear-gradient(to right, #cbdcf2, #91bbd9);
-  
+  background-image: linear-gradient(to right, #f4d58d, #708d81); /*linear-gradient(to right, #cbdcf2, #91bbd9);*/ /*yesil 708d81*/
+  /*background-color: #540B0E;*/
+  opacity: 0.95; /*0.87*/
   
 }
 
@@ -139,7 +156,7 @@
   /*---------------*/
 }
 
-img {
+#willowIcon {
   border-radius: 30%;
   margin-top: 10px;
   margin-left: 10px;
@@ -149,12 +166,12 @@ img {
 /*
  * TOOLTIP
  */
-#closeBtn, #dockBtn, #undockBtn {
+#closeBtn, #dockBtn, #undockBtn ,#resetBtn, #centerBtn{
   position: relative;
   display: inline;
 }
 
-#undockBtn .dockText, #closeBtn .closeText, #dockBtn .dockText {
+#undockBtn .dockText, #closeBtn .closeText, #dockBtn .dockText ,#resetBtn .resetText, #centerBtn .centerText {
   
   visibility: hidden;
   font-size: 12px;
@@ -173,11 +190,10 @@ img {
   right: 5%;
 }
 
-#closeBtn .closeText, #dockBtn .dockText {
+#closeBtn .closeText, #dockBtn .dockText ,#resetBtn .resetText, #centerBtn .centerText{
   right: 30%;
 }
 
-#closeBtn:hover .closeText, #dockBtn:hover .dockText, #undockBtn:hover .dockText {
+#closeBtn:hover .closeText, #dockBtn:hover .dockText, #undockBtn:hover .dockText ,#resetBtn:hover .resetText, #centerBtn:hover .centerText{
   visibility: visible;
 }
-
