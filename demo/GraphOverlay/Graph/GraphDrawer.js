@@ -116,6 +116,8 @@ function applyStyle() {
     cy.style()
         .selector('node')
         .style({
+            'width': 'data(width)',
+            'height': 'data(width)',
             'background-color':
                 function (ele) {
                     if (ele.data('openTabCount') > 0)
@@ -123,17 +125,9 @@ function applyStyle() {
                     else
                         return '#808080';
                 },
-            'border-width': 2, //added border for icons
+            'border-width': 2, 
             'border-opacity': 1,
-            'border-color':
-                function (ele) {
-                    if (ele.data('openTabCount') > 0)
-                        return '#50b46e';
-                    else
-                        return '#808080';
-                },
-            'width': '20',
-            'height': '20',
+            'border-color':'data(border_color)',
             'content': function (ele) {
                 var limit = 45
                 if (ele.data('title').length > limit){
@@ -290,6 +284,116 @@ function applyContextMenu() {
 
             },
             {
+                id: 'change-node-size',
+                content: 'Change node size',
+                tooltipText: 'Change the size of the node',
+                selector: 'node',
+                hasTrailingDivider: true,
+                submenu: [
+                    {
+                        id: '12',
+                        content: 'Extra small',
+                        tooltipText: 'Extra small',
+                        hasTrailingDivider: true,
+                        onClickFunction: function (event){
+                            let target = event.target || event.cyTarget;
+                            let id = target.id();
+                            target.style('width', 12);
+                            target.style('height', 12);
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_BACKGROUND_CHANGE_NODE_SIZE",
+                                nodeId: id,
+                                size: 12
+                            });
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_GRAPH_SYNC_REQUEST",
+                            });
+                        }
+                    },
+                    {
+                        id: '20',
+                        content: 'Small',
+                        tooltipText: 'Small',
+                        hasTrailingDivider: true,
+                        onClickFunction: function (event){
+                            let target = event.target || event.cyTarget;
+                            let id = target.id();
+                            target.style('width', 20);
+                            target.style('height', 20);
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_BACKGROUND_CHANGE_NODE_SIZE",
+                                nodeId: id,
+                                size: 20
+                            });
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_GRAPH_SYNC_REQUEST",
+                            });
+                        }
+                    },
+                    {
+                        id: '28',
+                        content: 'Medium',
+                        tooltipText: 'Medium',
+                        hasTrailingDivider: true,
+                        onClickFunction: function (event){
+                            let target = event.target || event.cyTarget;
+                            let id = target.id();
+                            target.style('width', 28);
+                            target.style('height', 28);
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_BACKGROUND_CHANGE_NODE_SIZE",
+                                nodeId: id,
+                                size: 28
+                            });
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_GRAPH_SYNC_REQUEST",
+                            });
+                        }
+                    },
+                    {
+                        id: '36',
+                        content: 'Large',
+                        tooltipText: 'Large',
+                        hasTrailingDivider: true,
+                        onClickFunction: function (event){
+                            let target = event.target || event.cyTarget;
+                            let id = target.id();
+                            target.style('width', 36);
+                            target.style('height', 36);
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_BACKGROUND_CHANGE_NODE_SIZE",
+                                nodeId: id,
+                                size: 36
+                            });
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_GRAPH_SYNC_REQUEST",
+                            });
+                        }
+                    },
+                    {
+                        id: '44',
+                        content: 'Extra large',
+                        tooltipText: 'Extra large',
+                        hasTrailingDivider: true,
+                        onClickFunction: function (event){
+                            let target = event.target || event.cyTarget;
+                            let id = target.id();
+                            target.style('width', 44);
+                            target.style('height', 44);
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_BACKGROUND_CHANGE_NODE_SIZE",
+                                nodeId: id,
+                                size: 44
+                            });
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_GRAPH_SYNC_REQUEST",
+                            });
+                        }
+                    },
+                ]
+
+            },
+            {
                 id: 'remove',
                 content: 'Remove node',
                 tooltipText: 'Remove node from graph',
@@ -313,7 +417,7 @@ function applyContextMenu() {
                 id: 'remove-edge',
                 content: 'Remove edge',
                 tooltipText: 'Remove the edge between the nodes',
-                selector: 'node',
+                selector: 'edge',
                 onClickFunction: function (event) {
                     let target = event.target || event.cyTarget;
                     let sourceURL = target.source();
@@ -346,6 +450,7 @@ function applyContextMenu() {
             contextMenu.hideMenuItem('remove');
             contextMenu.hideMenuItem('remove-edge');
             contextMenu.hideMenuItem('change-border-color');
+            contextMenu.hideMenuItem('change-node-size');
         }
         else if (evtTarget.isNode()){
             console.log("target is a node");
@@ -353,6 +458,7 @@ function applyContextMenu() {
             contextMenu.showMenuItem('open-in-new-tab');
             contextMenu.showMenuItem('remove');
             contextMenu.showMenuItem('change-border-color');
+            contextMenu.showMenuItem('change-node-size');
 
             contextMenu.hideMenuItem('remove-edge');
         }
@@ -364,6 +470,7 @@ function applyContextMenu() {
             contextMenu.hideMenuItem('open-in-new-tab');
             contextMenu.hideMenuItem('remove');
             contextMenu.hideMenuItem('change-border-color');
+            contextMenu.hideMenuItem('change-node-size');
         }
     });
 

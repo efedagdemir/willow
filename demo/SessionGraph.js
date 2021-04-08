@@ -19,7 +19,10 @@ function initializeSG() {
             {
               selector: 'node',
               style: {
-                'label': 'data(title)'
+                'label': 'data(title)',
+                'border-color':'data(border_color)',
+                'width': 'data(width)',
+                'height': 'data(width)'
               }
             },
         ],
@@ -100,6 +103,7 @@ function removeEdge(source, target) {
 }
 
 function changeBorderColor(nodeId, color) {
+    
     //determine the hex value of the selected color
     if (color == "red")
         hexColorValue = '#E81414';
@@ -107,14 +111,15 @@ function changeBorderColor(nodeId, color) {
         hexColorValue = '#50b46e';
     else if (color == "blue")
         hexColorValue = '#1444E8';
+        
+    let node = cy.getElementById(nodeId); 
+    node.data("border_color", hexColorValue);  
+}
+
+function changeNodeSize(nodeId, size) {
     
-    //TODO asagidaki commentler farkli denemeler ama henuz hicbiri duzgun calismadi
-    /*let node = cy.getElementById(nodeId);
-    node.style({'border-color': hexColorValue});*/
-    //node.style('border-color', hexColorValue);
-    //cy.$(nodeId).style('border-color', hexColorValue);
-    //cy.style().selector('node').style('border-color', hexColorValue).update();
-    //cy.style().$(nodeId).style('border-color', hexColorValue).update();
+    let node = cy.getElementById(nodeId); 
+    node.data("width", size);
 }
 
 function messageReceived(request, sender, sendResponse) {
@@ -132,10 +137,11 @@ function messageReceived(request, sender, sendResponse) {
         removeEdge(request.source, request.target);
     } else if (request.message == "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR") {
         changeBorderColor(request.nodeId, request.color);
+    } else if (request.message == "WILLOW_BACKGROUND_CHANGE_NODE_SIZE"){
+        changeNodeSize(request.nodeId, request.size);
     } else if (request.message == "WILLOW_BACKGROUND_CLEAR_SESSION") {
         clearSG();
     }
-
 }
 
 

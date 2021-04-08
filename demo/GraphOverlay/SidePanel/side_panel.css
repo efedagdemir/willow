@@ -23,11 +23,12 @@
 
 #panelHeader {
   width: 100%;
+
   /*---------------*/
-  /*background-color: rgba(3, 72, 77, 0.993);*/ /*did not delete here because it is above the dashed lines, however I don't see a use*/
   height: 70px;
   text-align: center;
   background-color: #001d3d;
+  
 }
 
 /* applies to the Willow label, the undock button and the close button */
@@ -69,7 +70,6 @@
   /*---------------*/
   padding-right: 140px;
   font-weight: bold;
-
 }
 
 #panelBody {
@@ -132,8 +132,7 @@
   z-index: 0;
   /*---------------*/
   background-image: linear-gradient(to right, #cbdcf2, #91bbd9);
-  opacity: 0.87;
-  
+  opacity: 0.95;
 }
 
 #graphInvisLayer {
@@ -146,7 +145,7 @@
   /*---------------*/
 }
 
-img {
+#willowIcon {
   border-radius: 30%;
   margin-top: 10px;
   margin-left: 10px;
