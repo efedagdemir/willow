@@ -182,8 +182,6 @@ function applyStyle() {
             'text-max-width': '170px',
             'text-justification': 'center',
             'font-family' : 'Open Sans',  
-            height: "20px",
-            width: "20px"
         })
         .update();
 }
