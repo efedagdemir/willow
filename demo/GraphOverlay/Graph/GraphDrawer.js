@@ -2,6 +2,7 @@ let canvas = document.getElementById("canvas");
 let cy = cytoscape();
 cy.mount(canvas);
 let contextMenuApplied = false;
+let hoverOverApplied = false;
 updateCytoscape();
 
 cy.on('dragfree', 'node', function (evt) {
@@ -48,6 +49,10 @@ function updateCytoscape() {
         if(!contextMenuApplied) {
             applyContextMenu();
             contextMenuApplied = true;
+        }
+        if(!hoverOverApplied) {
+            applyHoverOver();
+            hoverOverApplied = true;
         }
     });
 }
@@ -165,6 +170,16 @@ function applyStyle() {
         .css({
             'opacity': 0.25,
             'text-opacity': 0
+        })
+        .selector('.hovered')
+        .css({
+            content : 'data(title)',
+            'text-wrap': 'wrap',
+            'text-max-width': '170px',
+            'text-justification': 'center',
+            'font-family' : 'Open Sans',  
+            height: "20px",
+            width: "20px"
         })
         .update();
 }
@@ -358,6 +373,23 @@ function applyContextMenu() {
     });
 
 }
+
+
+/*
+    Function that shows titles of node when users mouse hover over them
+ */
+function applyHoverOver(){
+    cy.on('mouseover', 'node', function(e) {
+        var sel = e.target;
+        sel.addClass('hovered');
+       
+    });
+    cy.on('mouseout', 'node', function(e) {
+        var sel = e.target;
+        sel.removeClass('hovered');
+    });
+}
+
 
 /*****************************************************************************
 *******************    Implementation of GraphSyncer   ******************* 
