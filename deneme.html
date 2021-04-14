@@ -1,0 +1,31 @@
+<body>
+    <input id="inputfile" type="file" />
+    <button id="btn"> What's it say?</button>
+    <script>
+        document.getElementById("btn").addEventListener("click", () => {
+            let f = document.getElementById("inputfile");
+            console.log(f.files[0])
+            const reader = new FileReader();
+            reader.readAsText(f.files[0])
+            reader.onload = function () {
+                alert(reader.result);
+                var link = document.createElement('a');
+                link.setAttribute('download', 'info.txt');
+                var data = new Blob([reader.result], {type: 'text/plain'});
+                link.href = window.URL.createObjectURL(data);
+                document.body.appendChild(link);
+
+                // wait for the link to be added to the document
+                window.requestAnimationFrame(function () {
+                    var event = new MouseEvent('click');
+                    link.dispatchEvent(event);
+                    document.body.removeChild(link);
+                });
+            }
+            reader.onerror = function () {
+                console.log(reader.error);
+            };
+        });
+
+    </script>
+</body>
