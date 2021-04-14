@@ -106,11 +106,19 @@ function changeBorderColor(nodeId, color) {
     
     //determine the hex value of the selected color
     if (color == "red")
-        hexColorValue = '#E81414';
+        hexColorValue = '#d50000';
     else if (color == "green")
-        hexColorValue = '#50b46e';
+        hexColorValue = '#49a84d';
     else if (color == "blue")
-        hexColorValue = '#1444E8';
+        hexColorValue = '#0388e7';
+    else if (color == 'pink')
+        hexColorValue = '#ed539e';
+    else if (color == 'yellow')
+        hexColorValue = '#f6b126';
+    else if (color == 'purple')
+        hexColorValue = '#9424aa';
+    else if (color == 'black')
+        hexColorValue = '#000000'
         
     let node = cy.getElementById(nodeId); 
     node.data("border_color", hexColorValue);  

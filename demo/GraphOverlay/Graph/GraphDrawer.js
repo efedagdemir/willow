@@ -123,14 +123,8 @@ function applyStyle() {
         .style({
             'width': 'data(width)',
             'height': 'data(width)',
-            'background-color':
-                function (ele) {
-                    if (ele.data('openTabCount') > 0)
-                        return '#50b46e';
-                    else
-                        return '#808080';
-                },
-            'border-width': 2, 
+            'border-width': 3, 
+            'border-height': 'data(width)',
             'border-opacity': 1,
             'border-color':'data(border_color)',
             'content': function (ele) {
@@ -242,18 +236,29 @@ function applyContextMenu() {
                         content: 'Red',
                         tooltipText: 'Red',
                         hasTrailingDivider: true,
+                        image: {src: "red-color.png", width: 10, height: 10, x: 6, y: 4},
                         onClickFunction: function (event){
-                            let target = event.target || event.cyTarget;
-                            let id = target.id();
-                            target.style('border-color', '#E81414');
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR",
-                                nodeId: id,
-                                color: "red"
-                            });
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_GRAPH_SYNC_REQUEST",
-                            });
+                            changeNodeColor(event, '#d50000', 'red')
+                        }
+                    },
+                    {
+                        id: 'color-pink',
+                        content: 'Pink',
+                        tooltipText: 'Pink',
+                        hasTrailingDivider: true,
+                        image: {src: "pink-color.png", width: 10, height: 10, x: 6, y: 4},
+                        onClickFunction: function (event){
+                            changeNodeColor(event, '#ed539e', 'pink')
+                        }
+                    },
+                    {
+                        id: 'color-yellow',
+                        content: 'Yellow',
+                        tooltipText: 'Yellow',
+                        hasTrailingDivider: true,
+                        image: {src: "yellow-color.png", width: 10, height: 10, x: 6, y: 4},
+                        onClickFunction: function (event){
+                            changeNodeColor(event, '#f6b126', 'yellow')
                         }
                     },
                     {
@@ -261,36 +266,38 @@ function applyContextMenu() {
                         content: 'Green',
                         tooltipText: 'Green',
                         hasTrailingDivider: true,
+                        image: {src: "green-color.png", width: 10, height: 10, x: 6, y: 4},
                         onClickFunction: function (event){
-                            let target = event.target || event.cyTarget;
-                            let id = target.id();
-                            target.style('border-color', '#50b46e');
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR",
-                                nodeId: id,
-                                color: "green"
-                            });
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_GRAPH_SYNC_REQUEST",
-                            });
+                            changeNodeColor(event, '#49a84d', 'green')
+                        }
+                    },
+                    {
+                        id: 'color-purple',
+                        content: 'Purple',
+                        tooltipText: 'Purple',
+                        hasTrailingDivider: true,
+                        image: {src: "purple-color.png", width: 10, height: 10, x: 6, y: 4},
+                        onClickFunction: function (event){
+                            changeNodeColor(event, '#9424aa', 'purple')
                         }
                     },
                     {
                         id: 'color-blue',
                         content: 'Blue',
                         tooltipText: 'Blue',
+                        hasTrailingDivider: true,
+                        image: {src: "blue-color.png", width: 10, height: 10, x: 6, y: 4},
                         onClickFunction: function (event){
-                            let target = event.target || event.cyTarget;
-                            let id = target.id();
-                            target.style('border-color', '#1444E8');
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR",
-                                nodeId: id,
-                                color: "blue"
-                            });
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_GRAPH_SYNC_REQUEST",
-                            });
+                            changeNodeColor(event, '#0388e7', 'blue')
+                        }
+                    },
+                    {
+                        id: 'color-black',
+                        content: 'Black',
+                        tooltipText: 'Black',
+                        image: {src: "black-color.png", width: 10, height: 10, x: 6, y: 4},
+                        onClickFunction: function (event){
+                            changeNodeColor(event, '#000000', 'black')
                         }
                     }
                 ]
@@ -304,24 +311,33 @@ function applyContextMenu() {
                 hasTrailingDivider: true,
                 submenu: [
                     {
-                        id: '12',
-                        content: 'Extra small',
-                        tooltipText: 'Extra small',
-                        hasTrailingDivider: true,
-                        onClickFunction: function (event){
-                            let target = event.target || event.cyTarget;
-                            let id = target.id();
-                            target.style('width', 12);
-                            target.style('height', 12);
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_BACKGROUND_CHANGE_NODE_SIZE",
-                                nodeId: id,
-                                size: 12
-                            });
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_GRAPH_SYNC_REQUEST",
-                            });
-                        }
+                        id: 'arrange-size',
+                        content: 'Arrange size',
+                        tooltipText: 'Arrange size',
+                        hasTrailingDivider: true, 
+                        submenu: [
+                            
+                            {
+                                id: 'increase-size',
+                                content: 'Increase size',
+                                tooltipText: 'Increase size',
+                                hasTrailingDivider: true,
+                                onClickFunction: function (event){
+                                    let target = event.target || event.cyTarget;
+                                    changeNodeSize(event, target.width() + 10);
+                                }
+                            },
+                            {
+                                id: 'decrease-size',
+                                content: 'Decrease size',
+                                tooltipText: 'Decrease size',
+                                hasTrailingDivider: true,
+                                onClickFunction: function (event){
+                                    let target = event.target || event.cyTarget;
+                                    changeNodeSize(event, target.width() - 10);
+                                }
+                            }
+                        ]
                     },
                     {
                         id: '20',
@@ -329,78 +345,25 @@ function applyContextMenu() {
                         tooltipText: 'Small',
                         hasTrailingDivider: true,
                         onClickFunction: function (event){
-                            let target = event.target || event.cyTarget;
-                            let id = target.id();
-                            target.style('width', 20);
-                            target.style('height', 20);
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_BACKGROUND_CHANGE_NODE_SIZE",
-                                nodeId: id,
-                                size: 20
-                            });
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_GRAPH_SYNC_REQUEST",
-                            });
+                            changeNodeSize(event, 20);
                         }
                     },
                     {
-                        id: '28',
-                        content: 'Medium',
-                        tooltipText: 'Medium',
+                        id: '35',
+                        content: 'Medium (default)',
+                        tooltipText: 'Medium (default)',
                         hasTrailingDivider: true,
                         onClickFunction: function (event){
-                            let target = event.target || event.cyTarget;
-                            let id = target.id();
-                            target.style('width', 28);
-                            target.style('height', 28);
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_BACKGROUND_CHANGE_NODE_SIZE",
-                                nodeId: id,
-                                size: 28
-                            });
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_GRAPH_SYNC_REQUEST",
-                            });
+                            changeNodeSize(event, 35);
                         }
                     },
                     {
-                        id: '36',
+                        id: '50',
                         content: 'Large',
                         tooltipText: 'Large',
                         hasTrailingDivider: true,
                         onClickFunction: function (event){
-                            let target = event.target || event.cyTarget;
-                            let id = target.id();
-                            target.style('width', 36);
-                            target.style('height', 36);
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_BACKGROUND_CHANGE_NODE_SIZE",
-                                nodeId: id,
-                                size: 36
-                            });
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_GRAPH_SYNC_REQUEST",
-                            });
-                        }
-                    },
-                    {
-                        id: '44',
-                        content: 'Extra large',
-                        tooltipText: 'Extra large',
-                        hasTrailingDivider: true,
-                        onClickFunction: function (event){
-                            let target = event.target || event.cyTarget;
-                            let id = target.id();
-                            target.style('width', 44);
-                            target.style('height', 44);
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_BACKGROUND_CHANGE_NODE_SIZE",
-                                nodeId: id,
-                                size: 44
-                            });
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_GRAPH_SYNC_REQUEST",
-                            });
+                            changeNodeSize(event, 50);
                         }
                     },
                 ]
@@ -486,6 +449,8 @@ function applyContextMenu() {
             },
 
         ],
+        menuItemClasses: ['contex-menu-item'],
+        contextMenuClasses: ['context-menu'],
         submenuIndicator: {src: '/node_modules/cytoscape-context-menus/assets/submenu-indicator-default.svg', width: 12, height: 12}
 
     });
@@ -523,6 +488,45 @@ function applyContextMenu() {
         }
     });
 
+}
+
+/**
+ * Sets the size of targeted node. 
+ */
+function changeNodeSize(event, size){
+   
+    if (size >= 10 && size <= 130) {
+        let target = event.target || event.cyTarget;
+        let id = target.id();
+        target.style('width', size);
+        target.style('height', size);
+        chrome.runtime.sendMessage({
+            message: "WILLOW_BACKGROUND_CHANGE_NODE_SIZE",
+            nodeId: id,
+            size: size
+        });
+        chrome.runtime.sendMessage({
+            message: "WILLOW_GRAPH_SYNC_REQUEST",
+        });
+    }
+}
+
+/**
+ * Sets the color of targeted node. 
+ */
+function changeNodeColor(event, color, colorName){
+   
+    let target = event.target || event.cyTarget;
+    let id = target.id();
+    target.style('border-color', color);
+    chrome.runtime.sendMessage({
+        message: "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR",
+        nodeId: id,
+        color: colorName
+    });
+    chrome.runtime.sendMessage({
+        message: "WILLOW_GRAPH_SYNC_REQUEST",
+    });
 }
 
 
