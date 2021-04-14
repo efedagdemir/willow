@@ -96,7 +96,7 @@ async function urlLoaded(tabId, url) {
             // the edge is already in the graph
             /** NOP */
         } else {        
-            if (sourceURL) {
+            if (cy.getElementById(sourceURL).length > 0) { // if the sourceURL has a node in the graph.
                 // add the new node as a child.
                 cy.add({ group: 'edges', data: {source: sourceURL, target: url} });
             } else {
