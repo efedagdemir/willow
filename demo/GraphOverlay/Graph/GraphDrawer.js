@@ -442,12 +442,48 @@ function applyContextMenu() {
                     });
                     chrome.runtime.sendMessage({
                         message: "WILLOW_GRAPH_SYNC_REQUEST",
-                    })
-
+                    });
+                    
                 },
                 show: true,
                 coreAsWell: true
-            }
+            },
+            {
+                id: 'exportJSON',
+                content: 'Export session',
+                tooltipText: 'Export the session graph as a downloadable file',
+                selector: "",
+                onClickFunction: function (event) {
+                    chrome.runtime.sendMessage({
+                        message: "WILLOW_BACKGROUND_EXPORT",
+                    });
+                },
+                show: true,
+                coreAsWell: true
+            },
+            {
+                id: 'importJSON',
+                content: 'Import Session',
+                tooltipText: 'Import a session from a ".willow" file',
+                selector: "",
+                onClickFunction: function (event) {
+                    var input = document.createElement("INPUT");
+                    input.setAttribute("type", "file");
+                    input.addEventListener("change",  () => {
+                        const reader = new FileReader();
+                        reader.readAsText(input.files[0])
+                        reader.onload = function () {
+                            chrome.runtime.sendMessage({
+                                message: "WILLOW_BACKGROUND_IMPORT",
+                                json: JSON.parse(reader.result),
+                            });
+                        }
+                    });
+                    input.click();
+                },
+                show: true,
+                coreAsWell: true
+            },
 
         ],
         submenuIndicator: {src: '/node_modules/cytoscape-context-menus/assets/submenu-indicator-default.svg', width: 12, height: 12}

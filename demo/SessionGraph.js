@@ -122,6 +122,44 @@ function changeNodeSize(nodeId, size) {
     node.data("width", size);
 }
 
+function exportJSON() {
+    console.log("exporting JSON");
+    var blob = new Blob([JSON.stringify(cy.json())], {type: 'application/willow'})
+    var url = URL.createObjectURL(blob);
+    chrome.downloads.download({
+      url: url, // The object URL can be used as download URL
+      filename: "default.willow"
+    });
+}
+
+function importJSON(json) {
+    console.log("importing JSON");
+    cy.json(json);
+    let nodes = cy.nodes();
+
+    // close all tabs but the active one.
+    chrome.tabs.query( {active:false, currentWindow: true},  (tabs) => {
+        chrome.tabs.remove(tabs.map( (tab) => {return tab.id}));
+    });
+
+    // create the tabs that were open in the imported JSON
+    let firstHit = false;
+    nodes.forEach( (node) => {
+        if(node.data("openTabCount") > 0) {
+            let tabCount = node.data("openTabCount");
+            node.data("openTabCount", 0);
+            for( let i = 0; i < tabCount; i ++) {
+                if(!firstHit) {
+                    chrome.tabs.query( {active:true, currentWindow: true}, (tabs) => { chrome.tabs.update(tabs[0].id, {url : node.id()})});
+                } else {
+                    chrome.tabs.create({url: node.id(), active: false});
+                }
+            }
+        }
+    })
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+}
+
 function messageReceived(request, sender, sendResponse) {
     if (request.type == "getCytoscapeJSON") {
         sendResponse(this.getCytoscapeJSON());
@@ -141,6 +179,10 @@ function messageReceived(request, sender, sendResponse) {
         changeNodeSize(request.nodeId, request.size);
     } else if (request.message == "WILLOW_BACKGROUND_CLEAR_SESSION") {
         clearSG();
+    } else if (request.message == "WILLOW_BACKGROUND_EXPORT") {
+        exportJSON();
+    } else if (request.message == "WILLOW_BACKGROUND_IMPORT") {
+        importJSON( request.json);
     }
 }
 
