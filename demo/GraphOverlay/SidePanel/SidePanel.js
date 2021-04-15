@@ -15,7 +15,7 @@
 var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
 var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
 
-var RESIZE_MIN_WIDTH = 670;  // in px
+var RESIZE_MIN_WIDTH = 700;  // in px
 var RESIZE_MIN_HEIGHT = 250;  // in px
 
 var sidePanelHTML = `
@@ -40,6 +40,7 @@ var sidePanelHTML = `
     <a class="headerBtn" id="dockBtn" style="display:none;">&laquo; <span class="dockText">Dock!</span> </a>
     <a class="headerBtn" id="resetBtn">&osol; <span class="resetText">Reset!</span></a>
     <a class="headerBtn" id="centerBtn">&curren; <span class="centerText">Center!</span></a>
+    <a class="headerBtn" id="settingsBtn">&dagger; <span class="settingsText">Settings</span></a>
 
     <img id="willowIcon" src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
   </div>
@@ -91,7 +92,7 @@ document.getElementById("undockBtn").onclick  = () => undockSidePanel(null, true
 document.getElementById("dockBtn").onclick    = () => dockSidePanel(true);
 document.getElementById("resetBtn").onclick   = () => {chrome.runtime.sendMessage({message: "WILLOW_BACKGROUND_CLEAR_SESSION"})};
 document.getElementById("centerBtn").onclick   = () => {chrome.runtime.sendMessage({message: "WILLOW_GRAPH_VIEWPORT_CENTER"})};
-
+document.getElementById("settingsBtn").onclick = () => openSettingsMenu();  // defined in SettingMenu.js
 enableResizing(rightBorderOnly = true);
 
 // -- end of script
