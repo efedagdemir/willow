@@ -29,25 +29,8 @@ function addListeners() {
  * @param {Tab} tab             The chrome tab object, more info in the link above.
  */
 function tabUpdated(tabId, changeInfo, tab) {
-
     if (changeInfo.url && !changeInfo.url.startsWith("chrome")) { // do not consider the pages that start with chrome, no history is kept for them.
         urlLoaded(tabId, tab.url);
-    }
-    else if(changeInfo.title) {
-        let node = cy.getElementById(tab.url);
-        if(node.length>0)
-            setTimeout( () => {
-                node.data("title", changeInfo.title);
-
-                // ! This seems like the correct place for this. Might need to move somewhere else
-                // Notify all tabs of the newly inserted node
-                broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
-            }, 30);
-        /*
-         * ChangeInfo contains a title on two different triggers: when the URL changes and when the page's actual title loads.
-         * by doing this in the "else", we guarantee that we will get the actual title and not the URL.
-         * We wait a bit before doing this to make sure the sesisonGraph actually contains the node.
-         */
     }
 }
 
@@ -80,12 +63,19 @@ async function urlLoaded(tabId, url) {
             data: {id: url, title: "title not loaded :(", width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl,comment: ""},
             
         });
-        // addFixedNodes(url, {}, 1); //1 represents that this is a new node.
-        
-        
-        chrome.tabs.get(tabId , function(tab){
-            node.title = tab.title; // this is asyncronous but that should be ok.
-        });    
+
+        // get the page's title and add it. this happens asynchronously. //TODO this could be formatted better.
+        const getTitle = (url) => {  
+            return fetch(url)
+              .then((response) => response.text())
+              .then((html) => {
+                const doc = new DOMParser().parseFromString(html, "text/html");
+                const title = doc.querySelectorAll('title')[0];
+                return title.innerText;
+            });
+        };
+        node.data("title", await getTitle(url));
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
     }
     
     // insert the edge if it does not already exist
