@@ -81,7 +81,7 @@ async function urlLoaded(tabId, url) {
             
         });
         // addFixedNodes(url, {}, 1); //1 represents that this is a new node.
-        runLayout(); 
+        
         
         chrome.tabs.get(tabId , function(tab){
             node.title = tab.title; // this is asyncronous but that should be ok.
@@ -103,9 +103,9 @@ async function urlLoaded(tabId, url) {
                 console.warn( "The parent of the newly loaded page is not in the session graph.");
             }
         }
-
     }
-    
+    runLayout(); 
+
     // the tab does not contain the old page anymore.
     let oldURL = tabURLs.get(tabId);
     if(oldURL) {

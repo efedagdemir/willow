@@ -22,7 +22,10 @@ function initializeSG() {
                 'label': 'data(title)',
                 'border-color':'data(border_color)',
                 'width': 'data(width)',
-                'height': 'data(width)'
+                'height': 'data(width)',
+                'text-wrap': 'wrap',
+                'text-max-width': '170px',
+                'text-justification': 'center'
               }
             },
         ],
