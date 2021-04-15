@@ -151,6 +151,7 @@ function importJSON(json) {
             for( let i = 0; i < tabCount; i ++) {
                 if(!firstHit) {
                     chrome.tabs.query( {active:true, currentWindow: true}, (tabs) => { chrome.tabs.update(tabs[0].id, {url : node.id()})});
+                    firstHit = true;
                 } else {
                     chrome.tabs.create({url: node.id(), active: false});
                 }
