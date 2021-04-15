@@ -128,7 +128,6 @@ function changeBorderColor(nodeId, color) {
 }
 
 function changeNodeSize(nodeId, size) {
-    
     let node = cy.getElementById(nodeId); 
     node.data("width", size);
 }
@@ -171,6 +170,11 @@ function importJSON(json) {
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
 }
 
+function addComment(nodeId,comment){
+    let node = cy.getElementById(nodeId);
+    node.data("comment", comment);
+}
+
 function messageReceived(request, sender, sendResponse) {
     if (request.type == "getCytoscapeJSON") {
         sendResponse(this.getCytoscapeJSON());
@@ -194,6 +198,8 @@ function messageReceived(request, sender, sendResponse) {
         exportJSON();
     } else if (request.message == "WILLOW_BACKGROUND_IMPORT") {
         importJSON( request.json);
+    } else if(request.message == "WILLOW_ADD_COMMENT"){
+        addComment(request.nodeId, request.comment);
     }
 }
 
