@@ -166,12 +166,12 @@
 /*
  * TOOLTIP
  */
-#closeBtn, #dockBtn, #undockBtn ,#resetBtn, #centerBtn{
+#closeBtn, #dockBtn, #undockBtn ,#resetBtn, #centerBtn, #settingsBtn{
   position: relative;
   display: inline;
 }
 
-#undockBtn .dockText, #closeBtn .closeText, #dockBtn .dockText ,#resetBtn .resetText, #centerBtn .centerText {
+#undockBtn .dockText, #closeBtn .closeText, #dockBtn .dockText ,#resetBtn .resetText, #centerBtn .centerText , #settingsBtn .settingsText{
   
   visibility: hidden;
   font-size: 12px;
@@ -190,10 +190,10 @@
   right: 5%;
 }
 
-#closeBtn .closeText, #dockBtn .dockText ,#resetBtn .resetText, #centerBtn .centerText{
+#closeBtn .closeText, #dockBtn .dockText ,#resetBtn .resetText, #centerBtn .centerText, #settingsBtn .settingsText{
   right: 30%;
 }
 
-#closeBtn:hover .closeText, #dockBtn:hover .dockText, #undockBtn:hover .dockText ,#resetBtn:hover .resetText, #centerBtn:hover .centerText{
+#closeBtn:hover .closeText, #dockBtn:hover .dockText, #undockBtn:hover .dockText ,#resetBtn:hover .resetText, #centerBtn:hover .centerText, #settingsBtn:hover .settingsText{
   visibility: visible;
 }

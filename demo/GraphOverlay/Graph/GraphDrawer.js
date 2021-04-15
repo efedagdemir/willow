@@ -1,3 +1,9 @@
+/**
+ * !!!! An Issue: We need to get rid of the "temporary" timeouts soon.
+ * ! More importantly, it seems that the ctx menu options do not think about this
+ * ! problem at all (not even using a timeout).
+ */
+
 let canvas = document.getElementById("canvas");
 let cy = cytoscape();
 cy.mount(canvas);
@@ -16,7 +22,7 @@ cy.on('dragfree', 'node', function (evt) {
         newPos: evt.target.position()
     })
 
-    // ! A timeout is used temporarily. Need to wait for response from the backgroundç
+    // ! A timeout is used temporarily. Need to wait for response from the background.
     setTimeout(() => {
         // notify the other tabs of the change
         chrome.runtime.sendMessage({
@@ -45,7 +51,7 @@ function onViewport(event) {
 function updateCytoscape() {
     chrome.runtime.sendMessage({ type: "getCytoscapeJSON" }, function (response) {
         console.log("RESPONSE RECEIVED");
-        console.log(response);
+        console.log(JSON.stringify(response));
         // save current viewport to restore after response json is loaded
         let tmp = {
             zoom: cy.zoom(),
@@ -56,6 +62,7 @@ function updateCytoscape() {
         cy.json(response);
 
         applyStyle();
+        cy.style().update();
 
         if(!contextMenuApplied) {
             applyContextMenu();
@@ -541,8 +548,7 @@ function changeNodeSize(event, size){
     if (size >= 10 && size <= 130) {
         let target = event.target || event.cyTarget;
         let id = target.id();
-        target.style('width', size);
-        target.style('height', size);
+        target.data('width', size);
         chrome.runtime.sendMessage({
             message: "WILLOW_BACKGROUND_CHANGE_NODE_SIZE",
             nodeId: id,
