@@ -128,7 +128,8 @@ function exportJSON() {
     var url = URL.createObjectURL(blob);
     chrome.downloads.download({
       url: url, // The object URL can be used as download URL
-      filename: "default.willow"
+      filename: "default.willow",
+      saveAs: true,
     });
 }
 
