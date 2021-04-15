@@ -106,11 +106,19 @@ function changeBorderColor(nodeId, color) {
     
     //determine the hex value of the selected color
     if (color == "red")
-        hexColorValue = '#E81414';
+        hexColorValue = '#d50000';
     else if (color == "green")
-        hexColorValue = '#50b46e';
+        hexColorValue = '#49a84d';
     else if (color == "blue")
-        hexColorValue = '#1444E8';
+        hexColorValue = '#0388e7';
+    else if (color == 'pink')
+        hexColorValue = '#ed539e';
+    else if (color == 'yellow')
+        hexColorValue = '#f6b126';
+    else if (color == 'purple')
+        hexColorValue = '#9424aa';
+    else if (color == 'black')
+        hexColorValue = '#000000'
         
     let node = cy.getElementById(nodeId); 
     node.data("border_color", hexColorValue);  
@@ -120,6 +128,44 @@ function changeNodeSize(nodeId, size) {
     
     let node = cy.getElementById(nodeId); 
     node.data("width", size);
+}
+
+function exportJSON() {
+    console.log("exporting JSON");
+    var blob = new Blob([JSON.stringify(cy.json())], {type: 'application/willow'})
+    var url = URL.createObjectURL(blob);
+    chrome.downloads.download({
+      url: url, // The object URL can be used as download URL
+      filename: "default.willow"
+    });
+}
+
+function importJSON(json) {
+    console.log("importing JSON");
+    cy.json(json);
+    let nodes = cy.nodes();
+
+    // close all tabs but the active one.
+    chrome.tabs.query( {active:false, currentWindow: true},  (tabs) => {
+        chrome.tabs.remove(tabs.map( (tab) => {return tab.id}));
+    });
+
+    // create the tabs that were open in the imported JSON
+    let firstHit = false;
+    nodes.forEach( (node) => {
+        if(node.data("openTabCount") > 0) {
+            let tabCount = node.data("openTabCount");
+            node.data("openTabCount", 0);
+            for( let i = 0; i < tabCount; i ++) {
+                if(!firstHit) {
+                    chrome.tabs.query( {active:true, currentWindow: true}, (tabs) => { chrome.tabs.update(tabs[0].id, {url : node.id()})});
+                } else {
+                    chrome.tabs.create({url: node.id(), active: false});
+                }
+            }
+        }
+    })
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
 }
 
 function messageReceived(request, sender, sendResponse) {
@@ -141,6 +187,10 @@ function messageReceived(request, sender, sendResponse) {
         changeNodeSize(request.nodeId, request.size);
     } else if (request.message == "WILLOW_BACKGROUND_CLEAR_SESSION") {
         clearSG();
+    } else if (request.message == "WILLOW_BACKGROUND_EXPORT") {
+        exportJSON();
+    } else if (request.message == "WILLOW_BACKGROUND_IMPORT") {
+        importJSON( request.json);
     }
 }
 
@@ -157,6 +207,7 @@ function runLayout(){
         randomize: false,
         nodeDimensionsIncludeLabels: true,
         packComponents: true,
+        spacingFactor: 0.69,
        
         //contraints
         fixedNodeConstraint: undefined, //fixedCon,

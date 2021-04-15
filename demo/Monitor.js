@@ -77,7 +77,7 @@ async function urlLoaded(tabId, url) {
         let favIconUrl = "chrome://favicon/size/64@1x/" + url;
         let node = cy.add({// add the node to the cy graph
             group: 'nodes',
-            data: {id: url, title: "title not loaded :(", width: 28, border_color: "#808080", openTabCount:1, iconURL: favIconUrl},
+            data: {id: url, title: "title not loaded :(", width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl},
             
         });
         // addFixedNodes(url, {}, 1); //1 represents that this is a new node.
@@ -96,7 +96,7 @@ async function urlLoaded(tabId, url) {
             // the edge is already in the graph
             /** NOP */
         } else {        
-            if (sourceURL) {
+            if (cy.getElementById(sourceURL).length > 0) { // if the sourceURL has a node in the graph.
                 // add the new node as a child.
                 cy.add({ group: 'edges', data: {source: sourceURL, target: url} });
             } else {
