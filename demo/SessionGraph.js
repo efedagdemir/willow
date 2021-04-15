@@ -125,9 +125,24 @@ function changeBorderColor(nodeId, color) {
 }
 
 function changeNodeSize(nodeId, size) {
-    
     let node = cy.getElementById(nodeId); 
     node.data("width", size);
+}
+
+function resetNodeSizes(option) {
+    if (option == "uniform") {
+        cy.nodes().forEach(function( ele ){
+            ele.data("width", 35);
+        });
+    } else if (option == "pagerank") {
+        var pr = cy.elements().pageRank();
+        cy.nodes().forEach(function( ele ){
+            ele.data("width", pr.rank(ele) * 50 * cy.nodes().size());
+        });
+    } else {
+        console.error("resetNodeSizes called with invalid option");
+        return;
+    }
 }
 
 function exportJSON() {
@@ -185,6 +200,8 @@ function messageReceived(request, sender, sendResponse) {
         changeBorderColor(request.nodeId, request.color);
     } else if (request.message == "WILLOW_BACKGROUND_CHANGE_NODE_SIZE"){
         changeNodeSize(request.nodeId, request.size);
+    } else if (request.message == "WILLOW_BACKGROUND_RESET_NODE_SIZES") {
+        resetNodeSizes(request.option);
     } else if (request.message == "WILLOW_BACKGROUND_CLEAR_SESSION") {
         clearSG();
     } else if (request.message == "WILLOW_BACKGROUND_EXPORT") {
