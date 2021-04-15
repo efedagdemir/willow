@@ -22,7 +22,10 @@ function initializeSG() {
                 'label': 'data(title)',
                 'border-color':'data(border_color)',
                 'width': 'data(width)',
-                'height': 'data(width)'
+                'height': 'data(width)',
+                'text-wrap': 'wrap',
+                'text-max-width': '170px',
+                'text-justification': 'center'
               }
             },
         ],
@@ -106,18 +109,25 @@ function changeBorderColor(nodeId, color) {
     
     //determine the hex value of the selected color
     if (color == "red")
-        hexColorValue = '#E81414';
+        hexColorValue = '#d50000';
     else if (color == "green")
-        hexColorValue = '#50b46e';
+        hexColorValue = '#49a84d';
     else if (color == "blue")
-        hexColorValue = '#1444E8';
+        hexColorValue = '#0388e7';
+    else if (color == 'pink')
+        hexColorValue = '#ed539e';
+    else if (color == 'yellow')
+        hexColorValue = '#f6b126';
+    else if (color == 'purple')
+        hexColorValue = '#9424aa';
+    else if (color == 'black')
+        hexColorValue = '#000000'
         
     let node = cy.getElementById(nodeId); 
     node.data("border_color", hexColorValue);  
 }
 
 function changeNodeSize(nodeId, size) {
-    
     let node = cy.getElementById(nodeId); 
     node.data("width", size);
 }
@@ -167,6 +177,11 @@ function importJSON(json) {
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
 }
 
+function addComment(nodeId,comment){
+    let node = cy.getElementById(nodeId);
+    node.data("comment", comment);
+}
+
 function messageReceived(request, sender, sendResponse) {
     if (request.type == "getCytoscapeJSON") {
         sendResponse(this.getCytoscapeJSON());
@@ -190,6 +205,8 @@ function messageReceived(request, sender, sendResponse) {
         exportJSON();
     } else if (request.message == "WILLOW_BACKGROUND_IMPORT") {
         importJSON( request.json);
+    } else if(request.message == "WILLOW_ADD_COMMENT"){
+        addComment(request.nodeId, request.comment);
     }
 }
 
