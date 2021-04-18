@@ -11,8 +11,15 @@ chrome.runtime.onInstalled.addListener(function () {
 
 // register browserAction listener (extension icon in the toolbar)
 chrome.browserAction.onClicked.addListener(function(tab) {
-    // set global state
-    chrome.storage.local.set({ WILLOW_SP_OPEN: true });
+    // read and toggle global panel state
+    chrome.storage.local.get(["WILLOW_SP_OPEN"], function (res) {
+        if (res.WILLOW_SP_OPEN) {
+            chrome.storage.local.set({ WILLOW_SP_OPEN: false});
+        } else {
+            chrome.storage.local.set({ WILLOW_SP_OPEN: true});
+        }
+    });
+   
     // notify tabs through the broadcaster
     broadcastSyncRequest({
         message: "WILLOW_SP_SYNC_REQUEST",
