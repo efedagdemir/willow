@@ -1,3 +1,9 @@
+/**
+ * !!!! An Issue: We need to get rid of the "temporary" timeouts soon.
+ * ! More importantly, it seems that the ctx menu options do not think about this
+ * ! problem at all (not even using a timeout).
+ */
+
 let canvas = document.getElementById("canvas");
 let cy = cytoscape();
 cy.mount(canvas);
@@ -16,7 +22,7 @@ cy.on('dragfree', 'node', function (evt) {
         newPos: evt.target.position()
     })
 
-    // ! A timeout is used temporarily. Need to wait for response from the backgroundç
+    // ! A timeout is used temporarily. Need to wait for response from the background.
     setTimeout(() => {
         // notify the other tabs of the change
         chrome.runtime.sendMessage({
@@ -45,7 +51,7 @@ function onViewport(event) {
 function updateCytoscape() {
     chrome.runtime.sendMessage({ type: "getCytoscapeJSON" }, function (response) {
         console.log("RESPONSE RECEIVED");
-        console.log(response);
+        console.log(JSON.stringify(response));
         // save current viewport to restore after response json is loaded
         let tmp = {
             zoom: cy.zoom(),
@@ -56,6 +62,7 @@ function updateCytoscape() {
         cy.json(response);
 
         applyStyle();
+        cy.style().update();
 
         if(!contextMenuApplied) {
             applyContextMenu();
@@ -220,6 +227,47 @@ function applyContextMenu() {
                     chrome.runtime.sendMessage({
                         message: "WILLOW_GRAPH_SYNC_REQUEST",
                     });
+                },
+                show: true,
+                coreAsWell: true
+            },
+            /*BURADASIN SEZİN */
+            {
+                id: 'comment',
+                content: 'Notes',
+                tooltipText: 'See notes',
+                selector: 'node',
+                hasTrailingDivider: true,
+                onClickFunction: function (event) {
+                    let target = event.target || event.cyTarget;
+                    let id = target.id();
+                    let node = cy.getElementById(id);
+                    console.log("Node comment is ", node.data("comment"));
+                    
+                    var modal = document.getElementById("myModal");
+                    var span = document.getElementsByClassName("close")[0];
+                    
+                        
+                    document.getElementById("comments").value = node.data("comment");
+                     
+                    modal.style.display = "block";
+                    modal.draggable = 'true';
+                   // When the user clicks on <span> (x), close the modal
+                    span.onclick = function() {
+                        let comment_txt = document.getElementById("comments").value;
+                        modal.style.display = "none";
+                        node.data("comment",comment_txt);
+                        chrome.runtime.sendMessage({
+                            message: "WILLOW_ADD_COMMENT",
+                            nodeId: id,
+                            comment: comment_txt
+                        });
+                        
+                        chrome.runtime.sendMessage({
+                            message: "WILLOW_GRAPH_SYNC_REQUEST",
+                        });
+                    }
+   
                 },
                 show: true,
                 coreAsWell: true
@@ -465,11 +513,13 @@ function applyContextMenu() {
             contextMenu.hideMenuItem('remove-edge');
             contextMenu.hideMenuItem('change-border-color');
             contextMenu.hideMenuItem('change-node-size');
+            contextMenu.hideMenuItem('comment');
         }
         else if (evtTarget.isNode()){
             console.log("target is a node");
             contextMenu.showMenuItem('open');
             contextMenu.showMenuItem('open-in-new-tab');
+            contextMenu.showMenuItem('comment');
             contextMenu.showMenuItem('remove');
             contextMenu.showMenuItem('change-border-color');
             contextMenu.showMenuItem('change-node-size');
@@ -498,8 +548,7 @@ function changeNodeSize(event, size){
     if (size >= 10 && size <= 130) {
         let target = event.target || event.cyTarget;
         let id = target.id();
-        target.style('width', size);
-        target.style('height', size);
+        target.data('width', size);
         chrome.runtime.sendMessage({
             message: "WILLOW_BACKGROUND_CHANGE_NODE_SIZE",
             nodeId: id,

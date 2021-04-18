@@ -1,0 +1,55 @@
+#settingsMenu {
+    position: absolute;
+    height: 70%;
+    width: 70%;
+    top: 15%;
+    left: 15%;
+    background-color: #041424; /* same as #panelHeader (side_panel.css)*/
+    text-align: center;
+}
+
+#menuHeader b {
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    line-height: 40px;
+}
+
+#menuHeader hr {
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    border: 1px solid;
+}
+
+.settingElement {
+    width: 90%;
+    margin: auto;
+    border: 1px solid #f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    padding: 10px;
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    
+}
+.settingElement .label {
+    display: inline-block;
+    text-align: left;
+    float: left;
+}
+
+.settingElement .opt {
+    display: inline-block;
+    text-align: right;
+    margin-inline: 5px;
+}
+
+.opt button{
+    color:#f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    background-color: cadetblue;
+}
+/*Transparency*/
+#sliderTrans {
+    height: 13px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+  
+  

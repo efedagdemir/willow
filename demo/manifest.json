@@ -6,10 +6,16 @@
     "permissions": ["storage", "tabs", "history", "downloads", "chrome://favicon/*"],
     "content_scripts": [
         {
-          "matches": ["<all_urls>"],
-          "js": ["GraphOverlay/SidePanel/SidePanel.js"],
-          "run_at": "document_end",
-          "match_about_blank": true
+            "matches": ["<all_urls>"],
+            "js": ["GraphOverlay/SidePanel/SettingsMenu.js"],
+            "run_at": "document_end",
+            "match_about_blank": true
+        },
+        {
+            "matches": ["<all_urls>"],
+            "js": ["GraphOverlay/SidePanel/SidePanel.js"],
+            "run_at": "document_end",
+            "match_about_blank": true
         },
         {
             "matches": ["<all_urls>"],
@@ -45,6 +51,7 @@
         "GraphOverlay/SidePanel/side_panel.html",
         "GraphOverlay/SidePanel/side_panel.css",
         "GraphOverlay/SidePanel/side_panel.js",
+        "GraphOverlay/SidePanel/settings_menu.css",
         "GraphOverlay/Graph/GraphDrawer.html"
         
     ],
