@@ -207,7 +207,7 @@ function runLayout(){
         randomize: false,
         nodeDimensionsIncludeLabels: true,
         packComponents: true,
-        spacingFactor: 0.69,
+        /*spacingFactor: 0.69,*/
        
         //contraints
         fixedNodeConstraint: undefined, //fixedCon,
