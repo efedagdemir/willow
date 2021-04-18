@@ -26,7 +26,7 @@
         }
         .context-menu {
             border-color: rgb(0, 0, 0, 0) !important; 
-                                    
+                               
         } 
         
         /*MODAL*/
@@ -41,6 +41,10 @@
             overflow: auto; /* Enable scroll if needed */
             background-color: rgb(0,0,0); /* Fallback color */
             background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            border-top-left-radius: 7px !important;
+            border-top-right-radius: 7px !important;
+            border-bottom-left-radius: 7px !important;
+            border-bottom-right-radius: 7px !important; 
         }
 
 /* Modal Content/Box */
@@ -53,16 +57,21 @@
             width: 42%; /* Could be more or less, depending on screen size */
         }
         .myText{
-            color: #0c0c0c;
+            color:#041424;
             font-size: 17px;
             background-color: #f4d58d;
+            border-color: #f7dda3;
             font-family:'Montserrat', sans-serif;
             text-align: left;
         }
         .modal-title{
-            color: #0c0c0c;
+            color: #041424;
             font-size: 25px;
             font-family:"italic";
+        }
+        #modal-header hr {
+            color: #041424; 
+            border: 1px solid;
         }
 /* The Close Button */
         .close {
@@ -99,7 +108,8 @@
         <div class="modal-content">  
             <span class="close">&times;</span>
             <div class="modal-header">
-                <h5 class="modal-title">Notes</h5>
+                <b class = "modal-title">Notes</b>
+                <hr>
             </div>
             
             <span class="modal-text" id="modalText">
