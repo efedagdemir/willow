@@ -231,6 +231,47 @@ function applyContextMenu() {
                 show: true,
                 coreAsWell: true
             },
+            /*BURADASIN SEZİN */
+            {
+                id: 'comment',
+                content: 'Notes',
+                tooltipText: 'See notes',
+                selector: 'node',
+                hasTrailingDivider: true,
+                onClickFunction: function (event) {
+                    let target = event.target || event.cyTarget;
+                    let id = target.id();
+                    let node = cy.getElementById(id);
+                    console.log("Node comment is ", node.data("comment"));
+                    
+                    var modal = document.getElementById("myModal");
+                    var span = document.getElementsByClassName("close")[0];
+                    
+                        
+                    document.getElementById("comments").value = node.data("comment");
+                     
+                    modal.style.display = "block";
+                    modal.draggable = 'true';
+                   // When the user clicks on <span> (x), close the modal
+                    span.onclick = function() {
+                        let comment_txt = document.getElementById("comments").value;
+                        modal.style.display = "none";
+                        node.data("comment",comment_txt);
+                        chrome.runtime.sendMessage({
+                            message: "WILLOW_ADD_COMMENT",
+                            nodeId: id,
+                            comment: comment_txt
+                        });
+                        
+                        chrome.runtime.sendMessage({
+                            message: "WILLOW_GRAPH_SYNC_REQUEST",
+                        });
+                    }
+   
+                },
+                show: true,
+                coreAsWell: true
+            },
             {
                 id: 'change-border-color',
                 content: 'Change border color',
@@ -472,11 +513,13 @@ function applyContextMenu() {
             contextMenu.hideMenuItem('remove-edge');
             contextMenu.hideMenuItem('change-border-color');
             contextMenu.hideMenuItem('change-node-size');
+            contextMenu.hideMenuItem('comment');
         }
         else if (evtTarget.isNode()){
             console.log("target is a node");
             contextMenu.showMenuItem('open');
             contextMenu.showMenuItem('open-in-new-tab');
+            contextMenu.showMenuItem('comment');
             contextMenu.showMenuItem('remove');
             contextMenu.showMenuItem('change-border-color');
             contextMenu.showMenuItem('change-node-size');

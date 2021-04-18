@@ -22,7 +22,10 @@ function initializeSG() {
                 'label': 'data(title)',
                 'border-color':'data(border_color)',
                 'width': 'data(width)',
-                'height': 'data(width)'
+                'height': 'data(width)',
+                'text-wrap': 'wrap',
+                'text-max-width': '170px',
+                'text-justification': 'center'
               }
             },
         ],
@@ -149,9 +152,15 @@ function exportJSON() {
     console.log("exporting JSON");
     var blob = new Blob([JSON.stringify(cy.json())], {type: 'application/willow'})
     var url = URL.createObjectURL(blob);
+
+    var now = new Date();
+    var name = "Willow Session " + now.getFullYear()+'-'+String((now.getMonth()+1)).padStart(2,'0')+'-'+ String(now.getDate()).padStart(2,'0') + ' at '
+                + now.getHours() + "." + String(now.getMinutes()).padStart(2,'0') + "." + String(now.getSeconds()).padStart(2,'0');
+    console.log(name);
     chrome.downloads.download({
       url: url, // The object URL can be used as download URL
-      filename: "default.willow"
+      filename: name + ".willow",
+      saveAs: true,
     });
 }
 
@@ -174,6 +183,7 @@ function importJSON(json) {
             for( let i = 0; i < tabCount; i ++) {
                 if(!firstHit) {
                     chrome.tabs.query( {active:true, currentWindow: true}, (tabs) => { chrome.tabs.update(tabs[0].id, {url : node.id()})});
+                    firstHit = true;
                 } else {
                     chrome.tabs.create({url: node.id(), active: false});
                 }
@@ -181,6 +191,11 @@ function importJSON(json) {
         }
     })
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+}
+
+function addComment(nodeId,comment){
+    let node = cy.getElementById(nodeId);
+    node.data("comment", comment);
 }
 
 function messageReceived(request, sender, sendResponse) {
@@ -208,6 +223,8 @@ function messageReceived(request, sender, sendResponse) {
         exportJSON();
     } else if (request.message == "WILLOW_BACKGROUND_IMPORT") {
         importJSON( request.json);
+    } else if(request.message == "WILLOW_ADD_COMMENT"){
+        addComment(request.nodeId, request.comment);
     }
 }
 
