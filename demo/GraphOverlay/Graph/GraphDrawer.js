@@ -125,6 +125,7 @@ function syncViewport() {
 }
 
 function applyStyle() {
+    console.log(cy.json());
     cy.style()
         .selector('node')
         .style({
@@ -158,6 +159,17 @@ function applyStyle() {
         .style({
             'line-color': '#8d0801', /*#ab0321*/
             'target-arrow-color': '#8d0801',
+            'line-style':  function (ele) {
+                if(ele.data("discovering") == true){
+                    console.log("IF PART ", ele );
+                    return 'solid';
+                }
+                else{
+                    console.log("ELSE PART ", ele );
+                    return 'dashed';
+                }
+                
+            },
             'width': 2.5,
             'target-arrow-shape': 'triangle-backcurve',
             'curve-style': 'bezier',    // the default curve style does not support arrows
