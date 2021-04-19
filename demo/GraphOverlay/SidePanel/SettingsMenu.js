@@ -22,6 +22,11 @@ function openSettingsMenu() {
                 <div id="resetSizesUniBtn" class="opt"> <button>Uniform</button></div>
                 <div id="resetSizesPRBtn" class="opt"> <button>PageRank</button></div>
             </div>
+            <div class="settingElement" id="runLayout" class>
+                <div class="label"> <b>Run layout: </b></div>
+                <div id="runLayoutAdjustBtn" class="opt"> <button>Adjust</button></div>
+                <div id="runLayoutRecalcBtn" class="opt"> <button>Recalculate</button></div>
+            </div>
             <div class="settingElement" id ="setTrans" class>
                 <div class= "label"> <b>Background transparency: </b></div>
                 <div class = "opt">
@@ -46,39 +51,74 @@ function closeSettingsMenu() {
 }
 
 function addSettingsMenuListeners() {
-    document.getElementById("resetSizesUniBtn").onclick = function () {
-        chrome.runtime.sendMessage({
-            message: "WILLOW_BACKGROUND_RESET_NODE_SIZES",
-            option: "uniform"
-        });
-        // ! A timeout is used temporarily. Need to wait for response from the background.
-        setTimeout(() => {
-            // notify the other tabs of the change
-            chrome.runtime.sendMessage({
-                message: "WILLOW_GRAPH_SYNC_REQUEST",
-                notifyActiveTab: true
-            })
-        }, 1000);
-    }
+    document.getElementById("resetSizesUniBtn").onclick     = resetSizesUniBtn_handler; 
+    document.getElementById("resetSizesPRBtn").onclick      = resetSizesPRBtn_handler; 
+    document.getElementById("runLayoutAdjustBtn").onclick   = runLayoutAdjustBtn_handler; 
+    document.getElementById("runLayoutRecalcBtn").onclick   = runLayoutRecalcBtn_handler; 
+    document.getElementById("sliderTrans").oninput          = sliderTrans_handler; 
+}
 
-    document.getElementById("resetSizesPRBtn").onclick = function () {
+function resetSizesUniBtn_handler() {
+    chrome.runtime.sendMessage({
+        message: "WILLOW_BACKGROUND_RESET_NODE_SIZES",
+        option: "uniform"
+    });
+    // ! A timeout is used temporarily. Need to wait for response from the background.
+    setTimeout(() => {
+        // notify the other tabs of the change
         chrome.runtime.sendMessage({
-            message: "WILLOW_BACKGROUND_RESET_NODE_SIZES",
-            option: "pagerank"
-        });
-        // ! A timeout is used temporarily. Need to wait for response from the background.
-        setTimeout(() => {
-            // notify the other tabs of the change
-            chrome.runtime.sendMessage({
-                message: "WILLOW_GRAPH_SYNC_REQUEST",
-                notifyActiveTab: true
-            })
-        }, 1000);
-    }
-    document.getElementById("sliderTrans").oninput = function () {
-        var object =  document.getElementById("graphFrame");//
-        object.style.opacity = document.getElementById("sliderTrans").value.toString();
-        
-        
-    }
+            message: "WILLOW_GRAPH_SYNC_REQUEST",
+            notifyActiveTab: true
+        })
+    }, 1000);
+}
+
+function resetSizesPRBtn_handler() {
+    chrome.runtime.sendMessage({
+        message: "WILLOW_BACKGROUND_RESET_NODE_SIZES",
+        option: "pagerank"
+    });
+    // ! A timeout is used temporarily. Need to wait for response from the background.
+    setTimeout(() => {
+        // notify the other tabs of the change
+        chrome.runtime.sendMessage({
+            message: "WILLOW_GRAPH_SYNC_REQUEST",
+            notifyActiveTab: true
+        })
+    }, 1000);
+}
+
+function runLayoutAdjustBtn_handler() {
+    chrome.runtime.sendMessage({
+        message: "WILLOW_BACKGROUND_RUN_LAYOUT",
+        option: "incremental"
+    });
+    // ! A timeout is used temporarily. Need to wait for response from the background.
+    setTimeout(() => {
+        // notify the other tabs of the change
+        chrome.runtime.sendMessage({
+            message: "WILLOW_GRAPH_SYNC_REQUEST",
+            notifyActiveTab: true
+        })
+    }, 1000);
+}
+
+function runLayoutRecalcBtn_handler() {
+    chrome.runtime.sendMessage({
+        message: "WILLOW_BACKGROUND_RUN_LAYOUT",
+        option: "recalculate"
+    });
+    // ! A timeout is used temporarily. Need to wait for response from the background.
+    setTimeout(() => {
+        // notify the other tabs of the change
+        chrome.runtime.sendMessage({
+            message: "WILLOW_GRAPH_SYNC_REQUEST",
+            notifyActiveTab: true
+        })
+    }, 1000);
+}
+
+function sliderTrans_handler() {
+    var object =  document.getElementById("graphFrame");
+    object.style.opacity = document.getElementById("sliderTrans").value.toString();
 }
