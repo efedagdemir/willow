@@ -51,6 +51,8 @@ function tabRemoved( tabId, removeInfo) {
  */
 async function urlLoaded(tabId, url) {
     let node = cy.getElementById(url);
+    let newNode = false; // whether or not the node is newly discovered.
+
     if (node.length > 0) { //! Sketchy (if there is already a node with this url)
         // the url was opened before, there is a node in the graph with this url.
         // ? If we're going to keep track of all visits (ditch the session tree), the link needs to be added here.
@@ -63,6 +65,7 @@ async function urlLoaded(tabId, url) {
             data: {id: url, title: "title not loaded :(", width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl,comment: ""},
             
         });
+        newNode = true;
 
         // get the page's title and add it. this happens asynchronously. //TODO this could be formatted better.
         const getTitle = (url) => {  
@@ -88,7 +91,9 @@ async function urlLoaded(tabId, url) {
         } else {        
             if (cy.getElementById(sourceURL).length > 0) { // if the sourceURL has a node in the graph.
                 // add the new node as a child.
-                cy.add({ group: 'edges', data: {source: sourceURL, target: url} });
+                let newEdge = cy.add({ group: 'edges', data: {source: sourceURL, target: url} });
+                if(newNode)
+                    newEdge.data("discovering", true);
             } else {
                 console.warn( "The parent of the newly loaded page is not in the session graph.");
             }
