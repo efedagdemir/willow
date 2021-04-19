@@ -147,11 +147,21 @@ function applyStyle() {
             'text-wrap': 'wrap',
             'text-max-width': '170px',
             'text-justification': 'center',
-            'background-image': 'data(iconURL)',
-            'background-image-opacity': '1',
-            'background-opacity': '0',
-            'background-fit': 'contain',
-            'background-clip': 'node',
+            'background-image': function (ele) {
+                console.log("icon is:" + ele.data('iconURL'));
+                if (ele.data('openTabCount') > 0 ) 
+                    return [ele.data('iconURL'), 'active-color4.png'];
+                else 
+                    return ele.data('iconURL');
+            },
+            'background-image-containment': ['inside', 'over'],
+            'background-width': ['100%', '20%'],
+            'background-height': ['100%', '20%'],
+            'background-position-x': ['0px', '-10px'],
+            'background-position-y':['0px', '3px'],
+            'background-image-opacity': ['1', '1'],
+            'background-clip': ['node', 'none'],
+            'bounds-expansion': ['0', '10'],
             'font-family' : 'Open Sans',
         })
         .selector('edge')
