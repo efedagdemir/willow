@@ -125,7 +125,6 @@ function syncViewport() {
 }
 
 function applyStyle() {
-    console.log(cy.json());
     cy.style()
         .selector('node')
         .style({
@@ -161,11 +160,9 @@ function applyStyle() {
             'target-arrow-color': '#8d0801',
             'line-style':  function (ele) {
                 if(ele.data("discovering") == true){
-                    console.log("IF PART ", ele );
                     return 'solid';
                 }
                 else{
-                    console.log("ELSE PART ", ele );
                     return 'dashed';
                 }
                 
