@@ -41,10 +41,7 @@
             overflow: auto; /* Enable scroll if needed */
             background-color: rgb(0,0,0); /* Fallback color */
             background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            border-top-left-radius: 7px !important;
-            border-top-right-radius: 7px !important;
-            border-bottom-left-radius: 7px !important;
-            border-bottom-right-radius: 7px !important; 
+            
         }
 
 /* Modal Content/Box */
@@ -52,9 +49,14 @@
             background-color: #f4d58d;
             margin: 3% auto; /* 15% from the top and centered */
             padding: 3px;
+            overflow: auto;
             text-align: center;
             border: 1px solid #888;
             width: 42%; /* Could be more or less, depending on screen size */
+            border-top-left-radius: 14px !important;
+            border-top-right-radius: 14px !important;
+            border-bottom-left-radius: 14px !important;
+            border-bottom-right-radius: 14px !important; 
         }
         .myText{
             color:#041424;
@@ -63,6 +65,11 @@
             border-color: #f7dda3;
             font-family:'Montserrat', sans-serif;
             text-align: left;
+            resize: none;
+            border-top-left-radius: 14px !important;
+            border-top-right-radius: 14px !important;
+            border-bottom-left-radius: 14px !important;
+            border-bottom-right-radius: 14px !important; 
         }
         .modal-title{
             color: #041424;
@@ -111,7 +118,6 @@
                 <b class = "modal-title">Notes</b>
                 <hr>
             </div>
-            
             <span class="modal-text" id="modalText">
                 <textarea class = "myText" type="text" id= "comments" rows="10" cols="20" ></textarea>
             </span>
