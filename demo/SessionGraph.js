@@ -133,7 +133,7 @@ function changeNodeSize(nodeId, size) {
 }
 
 var UNIFORM_DEFAULT_SIZE = 35;
-var PAGERANK_AVG_SIZE = 120;
+var PAGERANK_AVG_SIZE = 55;
 function resetNodeSizes(option) {
     if (option == "uniform") {
         cy.nodes().forEach(function( ele ){
@@ -221,6 +221,10 @@ function messageReceived(request, sender, sendResponse) {
         changeNodeSize(request.nodeId, request.size);
     } else if (request.message == "WILLOW_BACKGROUND_RESET_NODE_SIZES") {
         resetNodeSizes(request.option);
+    } else if (request.message == "WILLOW_BACKGROUND_RUN_LAYOUT") {
+        if (request.option == "incremental") runLayout();
+        else if (request.option == "recalculate") recalcLayout();
+        else console.error("run layout request with invalid option");
     } else if (request.message == "WILLOW_BACKGROUND_CLEAR_SESSION") {
         clearSG();
     } else if (request.message == "WILLOW_BACKGROUND_EXPORT") {
@@ -243,6 +247,32 @@ function runLayout(){
         padding: 30,
         animate: false,
         randomize: false,
+        nodeDimensionsIncludeLabels: true,
+        packComponents: true,
+        /*spacingFactor: 0.69,*/
+       
+        //contraints
+        fixedNodeConstraint: undefined, //fixedCon,
+        alignmentConstraint: undefined,
+        relativePlacementConstraint: undefined,
+
+        ready: () => {},
+        stop: () => {}                 
+    }).run();
+}
+
+/**
+ * Non-incremental version of runLayout()
+ */
+function recalcLayout() {
+    cy.layout({
+        
+        name: 'fcose',
+        quality: "proof",
+        fit: true, 
+        padding: 30,
+        animate: false,
+        randomize: true,
         nodeDimensionsIncludeLabels: true,
         packComponents: true,
         /*spacingFactor: 0.69,*/
