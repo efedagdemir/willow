@@ -52,7 +52,13 @@
         "GraphOverlay/SidePanel/side_panel.css",
         "GraphOverlay/SidePanel/side_panel.js",
         "GraphOverlay/SidePanel/settings_menu.css",
-        "GraphOverlay/Graph/GraphDrawer.html"
+        "GraphOverlay/Graph/GraphDrawer.html",
+        "icons/close.png",
+        "icons/right-arrow.png",
+        "icons/left-arrow.png",
+        "icons/circular-arrow.png",
+        "icons/graph.png",
+        "icons/settings.png"
         
     ],
     "content_security_policy": "script-src 'self'; object-src 'self'; img-src chrome://favicon;"
