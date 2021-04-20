@@ -28,6 +28,7 @@
   height: 70px;
   text-align: center;
   background-color: #041424; /*#001d3d*/
+  display: flex;
 }
 
 /* applies to the Willow label, the undock button and the close button */
@@ -44,42 +45,160 @@
   -o-user-select: none;
   user-select: none;
   text-decoration: none;
-  cursor: pointer; /* shows text cursor by default*/
+  cursor: default; /* shows text cursor by default*/
   margin: 0 auto;
-  font-size: 44px;
+  font-size: 32px;
   color: #f4d58d; /*ab0321*/
   line-height: 70px;  /*! has to be the same as #panelHeader's height for the text to be vertically centered */
   /*It seemed vertically more centered (with the added tooltips) when the heights did not match.*/
   
   font-family:'Montserrat', sans-serif;
+
+  /*display: none;*/
   /* transition: all 4s; */
 }
 
-#panelHeader a:hover {
-  /*---------------*/
+/*#panelHeader a:hover {
+  /*---------------*//*
   color: #f1f1f1;
-}
+}*/
 
-.headerBtn {
-  /*---------------*/
+/*.headerBtn {
+  /*---------------*//*
   padding: 0px 16px 0px 0px;
   float: right;
   height: 44px;
+}*/
+
+/*.label{
+  width: 262px;
+  transition-property: width;
+  transition-duration: 2s;
+  font-size: 44px;
+  margin-left: 20px;
+  margin-right: 20px;
+}*/
+
+/*.label.shrinkTrans {
+  width: 0px;
+}*/
+
+.headerBtn {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  text-decoration: none;
+  line-height: 70px;
+  /*padding: 0px 16px 0px 0px;*/
+  float: right;
+  /*height: 44px;*/
+  cursor: pointer;
+  /*margin: 0px 2px;*/
+  background-color: #041424;
+  background-size: cover;
+  border: none;
+  opacity: 1;
+  height: 32px;
+  width: 32px;
+  margin-top: 20px;
+  margin-right: 20px;
 }
 
-#willowLabel.override {
+.headerBtn:hover {
+  opacity: 0.3;
+}
+
+.headerBtn:focus {
+  outline: none;
+}
+
+.btn-close {
+  background-image: url('../../icons/close.png');
+  order: 6;
+  /*background-color: #041424;
+  background-size: cover;
+  border: none;
+  opacity: 1;
+  height: 32px;
+  width: 32px;*/
+  /*background: transparent;*/
+  /*background-color: #eee;*/
+  /*background-image: url( `${chrome.extension.getURL('../../images/willowIcon_50x50.png')} `);*/
+}
+
+.btn-undock {
+  background-image: url('../../icons/right-arrow.png');
+  order: 5;
+  /*background-color: #041424;
+  background-size: cover;
+  border: none;
+  opacity: 1;
+  height: 32px;
+  width: 32px;*/
+}
+
+.btn-dock {
+  background-image: url('../../icons/left-arrow.png');
+  order: 4;
+  /*background-color: #041424;
+  background-size: cover;
+  border: none;
+  opacity: 1;
+  height: 32px;
+  width: 32px;*/
+}
+
+.btn-reset {
+  background-image: url('../../icons/circular-arrow.png');
+  order: 1;
+  /*background-color: #041424;
+  background-size: cover;
+  border: none;
+  opacity: 1;
+  height: 32px;
+  width: 32px;*/
+}
+
+.btn-center {
+  background-image: url('../../icons/graph.png');
+  order: 2;
+  /*background-color: #041424;
+  background-size: cover;
+  border: none;
+  opacity: 1;
+  height: 32px;
+  width: 32px;*/
+}
+
+.btn-settings {
+  background-image: url('../../icons/settings.png');
+  order: 3;
+  /*background-color: #041424;
+  background-size: cover;
+  border: none;
+  opacity: 1;
+  height: 32px;
+  width: 32px;*/
+}
+
+
+#willowLabel {
   /*---------------*/
-  padding-right: 140px;
+  /*padding-right: 140px;
   font-family: 'Montserrat', sans-serif;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 12px;*/
+  float: left;
 
 }
 
-#willowLabel:hover {
-  /*---------------*/
+/*#willowLabel:hover {
+  /*---------------*//*
   color: #8d0801
-}
+}*/
 
 #panelBody {
   position: absolute;
@@ -160,12 +279,18 @@
   border-radius: 30%;
   margin-top: 10px;
   margin-left: 10px;
+  margin-bottom: 10px;
+  margin-right: auto;
   float: left;
+  /*position: sticky;
+  left: 0px;
+  /*margin: auto;*/
 }
 
 /*
  * TOOLTIP
  */
+ /*
 #closeBtn, #dockBtn, #undockBtn ,#resetBtn, #centerBtn, #settingsBtn{
   position: relative;
   display: inline;
@@ -179,7 +304,7 @@
   height: 30px;
   font-family : 'Open Sans';
   
-  /* Position the tooltip */
+  /* Position the tooltip *//*
   position: absolute;
   z-index: 1;
   top: -25%;
@@ -196,4 +321,4 @@
 
 #closeBtn:hover .closeText, #dockBtn:hover .dockText, #undockBtn:hover .dockText ,#resetBtn:hover .resetText, #centerBtn:hover .centerText, #settingsBtn:hover .settingsText{
   visibility: visible;
-}
+}*/
