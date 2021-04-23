@@ -98,7 +98,7 @@ document.getElementById("undockBtn").onclick  = () => undockSidePanel(null, true
 document.getElementById("dockBtn").onclick    = () => dockSidePanel(true);
 document.getElementById("resetBtn").onclick   = () => {chrome.runtime.sendMessage({message: "WILLOW_BACKGROUND_CLEAR_SESSION"})};
 document.getElementById("centerBtn").onclick   = () => {chrome.runtime.sendMessage({message: "WILLOW_GRAPH_VIEWPORT_CENTER"})};
-document.getElementById("settingsBtn").onclick = () => openSettingsMenu();  // defined in SettingMenu.js
+document.getElementById("settingsBtn").onclick = () => openSettingsMenu(true);  // defined in SettingMenu.js
 enableResizing(rightBorderOnly = true);
 
 // -- end of script
