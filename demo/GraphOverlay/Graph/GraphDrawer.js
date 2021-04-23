@@ -65,7 +65,7 @@ function updateCytoscape() {
 
 
 /**
- * Sets the zoom level and the camera position to center the graph.
+ * Sets the camera position to center the graph.
  */
  function centerViewport() {
     cy.resize() // make sure that cytoscape is up-to-date with its container size.
@@ -101,6 +101,11 @@ function updateCytoscape() {
         x: cy.width() / 2,
         y: cy.height() / 2,
     });*/
+}
+
+function fitViewport() {
+    cy.resize();
+    cy.fit();
 }
 
 function syncViewport() {
@@ -462,6 +467,28 @@ function applyContextMenu() {
                         message: "WILLOW_GRAPH_SYNC_REQUEST",
                     });
                     
+                },
+                show: true,
+                coreAsWell: true
+            },
+            {
+                id: 'centerGraph',
+                content: 'Center graph',
+                tooltipText: 'Pan the view to the center of the graph',
+                selector: "",
+                onClickFunction: function (event) {
+                    centerViewport();
+                },
+                show: true,
+                coreAsWell: true
+            },
+            {
+                d: 'fitGraph',
+                content: 'Fit graph',
+                tooltipText: 'Have the graph fit the view',
+                selector: "",
+                onClickFunction: function (event) {
+                    fitViewport();
                 },
                 show: true,
                 coreAsWell: true
