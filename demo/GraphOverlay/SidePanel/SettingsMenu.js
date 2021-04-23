@@ -1,6 +1,19 @@
+// initialize the menu's open/closee state
+chrome.storage.local.get(["WILLOW_SETTINGS_OPEN"], function (res) {
+  if (res.WILLOW_SETTINGS_OPEN) {
+    openSettingsMenu(false);
+  }
+});
+
+
 var menuWrapper;
+/**
+ * SidePanel.js registers this funtction as the onclick handler of the settings button.
+ * See openSidePanel et al. for the meaning of isOrigin.
+ */
+
 /*Put settingsMenuHTML here to avoid getting null value for opacity of the graph frame */
-function openSettingsMenu() {
+function openSettingsMenu(isOrigin) {
     menuWrapper = document.createElement('div');
     menuWrapper.id = "willowSettingsMenuWrapper";
     var settingsMenuHTML = `
@@ -41,13 +54,33 @@ function openSettingsMenu() {
     `;
     menuWrapper.innerHTML = settingsMenuHTML;
     document.getElementById("panelBody").appendChild(menuWrapper);
-    document.getElementById("settingsBtn").onclick = () => closeSettingsMenu(); 
+    document.getElementById("settingsBtn").onclick = () => closeSettingsMenu(true); 
     addSettingsMenuListeners();
+
+    if (isOrigin) {
+        // set global state
+        chrome.storage.local.set({ WILLOW_SETTINGS_OPEN: true });
+        // notify other tabs with a sync request
+        chrome.runtime.sendMessage({ 
+          message: "WILLOW_SETTINGS_SYNC_REQUEST",
+          action: "WILLOW_SETTINGS_SYNC_OPEN",
+        });
+    }
 }
 
-function closeSettingsMenu() {
+function closeSettingsMenu(isOrigin) {
     menuWrapper.parentNode.removeChild(menuWrapper);
-    document.getElementById("settingsBtn").onclick = () => openSettingsMenu(); 
+    document.getElementById("settingsBtn").onclick = () => openSettingsMenu(true);
+
+    if (isOrigin) {
+        // set global state
+        chrome.storage.local.set({ WILLOW_SETTINGS_OPEN: false });
+        // notify other tabs with a sync request
+        chrome.runtime.sendMessage({ 
+          message: "WILLOW_SETTINGS_SYNC_REQUEST",
+          action: "WILLOW_SETTINGS_SYNC_CLOSE",
+        });
+    }
 }
 
 function addSettingsMenuListeners() {
@@ -89,4 +122,26 @@ function runLayoutRecalcBtn_handler() {
 function sliderTrans_handler() {
     var object =  document.getElementById("graphFrame");
     object.style.opacity = document.getElementById("sliderTrans").value.toString();
+}
+
+/**
+ * SYNCING SETTINGS MENU OPEN/CLOSED SETTINGS
+ */
+
+// listen for settings menu sync requests
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+      if (request.message != "WILLOW_SETTINGS_SYNC_REQUEST") {
+          return;
+      }
+      handleSettingsSyncRequest(request);
+    }
+);
+
+function handleSettingsSyncRequest(request) {
+    if (request.action == "WILLOW_SETTINGS_SYNC_OPEN") {
+        openSettingsMenu(false);
+    } else if (request.action == "WILLOW_SETTINGS_SYNC_CLOSE") {
+        closeSettingsMenu(false);    
+    }
 }

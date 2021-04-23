@@ -24,7 +24,6 @@ cy.on("viewport", onViewport);
 
 
 function onViewport(event) {
-    console.log("VIEWPORT EVENT FIRED");
     chrome.storage.local.set({
         WILLOW_VIEWPORT: {
             zoom: cy.zoom(),
