@@ -216,9 +216,6 @@ function applyContextMenu() {
                         message: "WILLOW_BACKGROUND_OPEN_PAGE",
                         nodeId: id
                     });
-                    chrome.runtime.sendMessage({
-                        message: "WILLOW_GRAPH_SYNC_REQUEST",
-                    });
                 },
                 show: true,
                 coreAsWell: true
@@ -235,9 +232,6 @@ function applyContextMenu() {
                     chrome.runtime.sendMessage({
                         message: "WILLOW_BACKGROUND_OPEN_PAGE_IN_NEW_TAB",
                         nodeId: id
-                    });
-                    chrome.runtime.sendMessage({
-                        message: "WILLOW_GRAPH_SYNC_REQUEST",
                     });
                 },
                 show: true,
@@ -270,13 +264,9 @@ function applyContextMenu() {
                         modal.style.display = "none";
                         node.data("comment",comment_txt);
                         chrome.runtime.sendMessage({
-                            message: "WILLOW_ADD_COMMENT",
+                            message: "WILLOW_BACKGROUND_ADD_COMMENT",
                             nodeId: id,
                             comment: comment_txt
-                        });
-                        
-                        chrome.runtime.sendMessage({
-                            message: "WILLOW_GRAPH_SYNC_REQUEST",
                         });
                     }
    
@@ -442,9 +432,6 @@ function applyContextMenu() {
                         message: "WILLOW_BACKGROUND_REMOVE_NODE",
                         nodeId: id
                     });
-                    chrome.runtime.sendMessage({
-                        message: "WILLOW_GRAPH_SYNC_REQUEST",
-                    });
                 },
                 show: true,
                 coreAsWell: true
@@ -463,6 +450,7 @@ function applyContextMenu() {
                         source: sourceURL,
                         target: targetURL
                     });
+                    // !! Move this to BG once remove edge is implemented.
                     chrome.runtime.sendMessage({
                         message: "WILLOW_GRAPH_SYNC_REQUEST",
                     });
@@ -578,7 +566,6 @@ function applyContextMenu() {
  * Sets the size of targeted node. 
  */
 function changeNodeSize(event, size){
-   
     if (size >= 10 && size <= 130) {
         let target = event.target || event.cyTarget;
         let id = target.id();
@@ -588,9 +575,6 @@ function changeNodeSize(event, size){
             nodeId: id,
             size: size
         });
-        chrome.runtime.sendMessage({
-            message: "WILLOW_GRAPH_SYNC_REQUEST",
-        });
     }
 }
 
@@ -598,7 +582,6 @@ function changeNodeSize(event, size){
  * Sets the color of targeted node. 
  */
 function changeNodeColor(event, color, colorName){
-   
     let target = event.target || event.cyTarget;
     let id = target.id();
     target.style('border-color', color);
@@ -606,9 +589,6 @@ function changeNodeColor(event, color, colorName){
         message: "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR",
         nodeId: id,
         color: colorName
-    });
-    chrome.runtime.sendMessage({
-        message: "WILLOW_GRAPH_SYNC_REQUEST",
     });
 }
 
