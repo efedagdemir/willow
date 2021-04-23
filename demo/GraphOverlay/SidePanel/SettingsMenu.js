@@ -19,13 +19,13 @@ function openSettingsMenu() {
         <div id="menuBody">
             <div class="settingElement" id="resetNodeSizes" class>
                 <div class="label"> <b>Reset node sizes: </b></div>
-                <div id="resetSizesUniBtn" class="opt"> <button>Uniform</button></div>
-                <div id="resetSizesPRBtn" class="opt"> <button>PageRank</button></div>
+                <div id="resetSizesUniBtn" class="opt"> <button title="Set all nodes to the default size" >Uniform</button></div>
+                <div id="resetSizesPRBtn" class="opt">  <button title="Node sizes are set according to their importance on search engine results" >PageRank</button></div>
             </div>
             <div class="settingElement" id="runLayout" class>
                 <div class="label"> <b>Run layout: </b></div>
-                <div id="runLayoutAdjustBtn" class="opt"> <button>Adjust</button></div>
-                <div id="runLayoutRecalcBtn" class="opt"> <button>Recalculate</button></div>
+                <div id="runLayoutAdjustBtn" class="opt"> <button title="Adjust the layout based on the recent changes" >Adjust</button></div>
+                <div id="runLayoutRecalcBtn" class="opt"> <button title="Recalculate the layout from scratch" >Recalculate</button></div>
             </div>
             <div class="settingElement" id ="setTrans" class>
                 <div class= "label"> <b>Background transparency: </b></div>
