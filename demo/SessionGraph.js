@@ -63,7 +63,6 @@ function updateNodePosition(nodeId, newPos) {
 }
 
 function removeNode(nodeId) {
-
     console.log("DELETING NODE");
     let node = cy.getElementById(nodeId);
     cy.remove(node);
@@ -76,6 +75,7 @@ function removeNode(nodeId) {
                 tabURLs.delete(tabId);
         });
     }
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
     return true;
 }
 
@@ -85,13 +85,19 @@ function openPage(nodeId) {
 
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         var tab = tabs[0];
-        chrome.tabs.update(tab.id, {url: nodeId});
+        chrome.tabs.update(tab.id, {url: nodeId}, function() {
+            // sync after callback
+            //broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+        });
     });
     return true;
 }
 
 function openPageInNewTab(nodeId) {
-    chrome.tabs.create({url: nodeId});
+    chrome.tabs.create({url: nodeId}, function () {
+        // sync after callback
+        //broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+    });
     return true;
 }
 
@@ -105,7 +111,6 @@ function removeEdge(source, target) {
 }
 
 function changeBorderColor(nodeId, color) {
-    
     //determine the hex value of the selected color
     if (color == "red")
         hexColorValue = '#d50000';
@@ -123,12 +128,15 @@ function changeBorderColor(nodeId, color) {
         hexColorValue = '#000000'
         
     let node = cy.getElementById(nodeId); 
-    node.data("border_color", hexColorValue);  
+    node.data("border_color", hexColorValue);
+
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
 }
 
 function changeNodeSize(nodeId, size) {
     let node = cy.getElementById(nodeId); 
     node.data("width", size);
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
 }
 
 var UNIFORM_DEFAULT_SIZE = 35;
@@ -201,6 +209,7 @@ function importJSON(json) {
 function addComment(nodeId,comment){
     let node = cy.getElementById(nodeId);
     node.data("comment", comment);
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
 }
 
 function messageReceived(request, sender, sendResponse) {
@@ -230,7 +239,7 @@ function messageReceived(request, sender, sendResponse) {
         exportJSON();
     } else if (request.message == "WILLOW_BACKGROUND_IMPORT") {
         importJSON( request.json);
-    } else if(request.message == "WILLOW_ADD_COMMENT"){
+    } else if(request.message == "WILLOW_BACKGROUND_ADD_COMMENT"){
         addComment(request.nodeId, request.comment);
     }
 }

@@ -80,7 +80,6 @@ async function urlLoaded(tabId, url) {
             });
         };
         node.data("title", await getTitle(url));
-        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
     }
     
     // insert the edge if it does not already exist
@@ -126,7 +125,7 @@ async function urlLoaded(tabId, url) {
     
     // update the URL open in the tab.
     tabURLs.set(tabId, url);
-
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
     return null;
 
     //--------------------------- helper functions --------------------------------
