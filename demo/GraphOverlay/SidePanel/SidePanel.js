@@ -43,7 +43,7 @@ var sidePanelHTML = `
     <button title="Undock"        class="headerBtn btn-undock"    id="undockBtn"                               </button>
     <button title="Settings"      class="headerBtn btn-settings"  id="settingsBtn"                             </button>
     <button title="Reset Graph"   class="headerBtn btn-reset"     id="resetBtn"                                </button>
-    <button title="Center Graph"  class="headerBtn btn-center"    id="centerBtn"                               </button>
+    <button title="Run Layout"    class="headerBtn btn-layout"    id="layoutBtn"                               </button>
     
   </div>
   <div id="panelBody">
@@ -93,12 +93,12 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
 });
 
 // register event handlers
-document.getElementById("closeBtn").onclick   = () => closeSidePanel(true);
-document.getElementById("undockBtn").onclick  = () => undockSidePanel(null, true);
-document.getElementById("dockBtn").onclick    = () => dockSidePanel(true);
-document.getElementById("resetBtn").onclick   = () => {chrome.runtime.sendMessage({message: "WILLOW_BACKGROUND_CLEAR_SESSION"})};
-document.getElementById("centerBtn").onclick   = () => {chrome.runtime.sendMessage({message: "WILLOW_GRAPH_VIEWPORT_CENTER"})};
-document.getElementById("settingsBtn").onclick = () => openSettingsMenu(true);  // defined in SettingMenu.js
+document.getElementById("closeBtn").onclick     = () => closeSidePanel(true);
+document.getElementById("undockBtn").onclick    = () => undockSidePanel(null, true);
+document.getElementById("dockBtn").onclick      = () => dockSidePanel(true);
+document.getElementById("resetBtn").onclick     = () => {chrome.runtime.sendMessage({message: "WILLOW_BACKGROUND_CLEAR_SESSION"})};
+document.getElementById("layoutBtn").onclick    = () => runLayoutAdjustBtn_handler(); // defined in SettingsMenu.js /*{chrome.runtime.sendMessage({message: "WILLOW_GRAPH_VIEWPORT_CENTER"})};*/
+document.getElementById("settingsBtn").onclick  = () => openSettingsMenu();  // defined in SettingsMenu.js
 enableResizing(rightBorderOnly = true);
 
 // -- end of script

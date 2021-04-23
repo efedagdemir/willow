@@ -95,10 +95,10 @@
   background-size: cover;
   border: none;
   opacity: 1;
-  height: 32px;
-  width: 32px;
-  margin-top: 20px;
-  margin-right: 20px;
+  height: 24px;
+  width: 24px;
+  margin-top: 25px;
+  margin-right: 25px;
 }
 
 .headerBtn:hover {
@@ -122,10 +122,10 @@
 }
 
 .btn-reset {
-  background-image: url('../../icons/circular-arrow.png');
+  background-image: url('../../icons/reset.png');
 }
 
-.btn-center {
+.btn-layout {
   background-image: url('../../icons/graph.png');
 }
 
