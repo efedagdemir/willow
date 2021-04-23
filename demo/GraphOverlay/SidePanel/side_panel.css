@@ -28,7 +28,9 @@
   height: 70px;
   text-align: center;
   background-color: #041424; /*#001d3d*/
-  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
+  /*display: flex;*/
 }
 
 /* applies to the Willow label, the undock button and the close button */
@@ -49,7 +51,7 @@
   margin: 0 auto;
   font-size: 32px;
   color: #f4d58d; /*ab0321*/
-  line-height: 70px;  /*! has to be the same as #panelHeader's height for the text to be vertically centered */
+  line-height: 73px;  /*! has to be the same as #panelHeader's height for the text to be vertically centered */ /*70px*/
   /*It seemed vertically more centered (with the added tooltips) when the heights did not match.*/
   
   font-family:'Montserrat', sans-serif;
@@ -70,18 +72,33 @@
   height: 44px;
 }*/
 
-/*.label{
-  width: 262px;
-  transition-property: width;
-  transition-duration: 2s;
+.willow-label{
+  width: 210px;
+  white-space: normal;
+  overflow: hidden;
+  transition-property: width, white-space;
+  transition-duration: 1.7s;
+  transition-delay: 0.7s;
   font-size: 44px;
-  margin-left: 20px;
-  margin-right: 20px;
-}*/
+  /*margin-left: 20px;
+  margin-right: 20px;*/
+}
 
-/*.label.shrinkTrans {
+.willow-label.shrinkTrans {
   width: 0px;
-}*/
+  white-space: nowrap;
+  /*margin: 0% !important;*/
+  overflow: hidden;
+  animation-name: hop;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes hop {
+  0%    {transform: translateX(0px)}
+  50%   {transform: translateX(30px)}
+  100%  {transform: translateX(0px)}
+}
 
 .headerBtn {
   -webkit-user-select: none;
@@ -280,7 +297,7 @@
   margin-top: 10px;
   margin-left: 10px;
   margin-bottom: 10px;
-  margin-right: auto;
+  margin-right: 10px;
   float: left;
   /*position: sticky;
   left: 0px;

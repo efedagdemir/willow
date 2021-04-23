@@ -36,14 +36,14 @@ var sidePanelHTML = `
   <div id="panelHeader">
   
     <img id="willowIcon" src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
-    <a class="label" id="willowLabel" style="display:;">W I L L O W</a>
+    <a class="willow-label" id="willowLabel" style="display:;">W I L L O W</a>
     
-    <button class="headerBtn btn-center"    id="centerBtn"                               </button>
-    <button class="headerBtn btn-reset"     id="resetBtn"                                </button>
-    <button class="headerBtn btn-settings"  id="settingsBtn"                             </button>
-    <button class="headerBtn btn-undock"    id="undockBtn"                               </button>
-    <button class="headerBtn btn-dock"      id="dockBtn"      style="display:none;"      </button>
     <button class="headerBtn btn-close"     id="closeBtn"                                </button>
+    <button class="headerBtn btn-dock"      id="dockBtn"      style="display:none;"      </button>
+    <button class="headerBtn btn-undock"    id="undockBtn"                               </button>
+    <button class="headerBtn btn-settings"  id="settingsBtn"                             </button>
+    <button class="headerBtn btn-reset"     id="resetBtn"                                </button>
+    <button class="headerBtn btn-center"    id="centerBtn"                               </button>
     
   </div>
   <div id="panelBody">
@@ -108,6 +108,9 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
   if (res.WILLOW_SP_UNDOCKED) {
     undockSidePanel(res.WILLOW_SP_UNDOCKED_LOC, false);
   }
+  if (panelWidth < 700)
+    document.getElementById("willowLabel").style.display = "none";
+    
 });
 
 // register event handlers
@@ -395,31 +398,31 @@ function enableResizing(rightBorderOnly) {
 
     if (heldBorder == "right") {
       if (curWidth + deltaX > RESIZE_MIN_WIDTH) {
-        if (curWidth + deltaX >= 700){
-          /*let wlwLabel = document.getElementById("willowLabel");
-          wlwLabel.classList.remove('shrinkTrans');*/
-          document.getElementById("willowLabel").style.display = "";
+        if (curWidth + deltaX >= 650){
+          let wlwLabel = document.getElementById("willowLabel");
+          wlwLabel.classList.remove('shrinkTrans');
+          //document.getElementById("willowLabel").style.display = "";
           //console.log("current wid: " + curWidth + " deltaX: " + deltaX);
         }
         else {
-          /*let wlwLabel = document.getElementById("willowLabel");
-          wlwLabel.classList.add('shrinkTrans');*/
-          document.getElementById("willowLabel").style.display = "none";
+          let wlwLabel = document.getElementById("willowLabel");
+          wlwLabel.classList.add('shrinkTrans');
+          //document.getElementById("willowLabel").style.display = "none";
         }
 
         sidePanel.style.width = (curWidth + deltaX) + "px";
       }
     } else if (heldBorder == "left") {
       if (curWidth - deltaX > RESIZE_MIN_WIDTH) {
-        if (curWidth - deltaX >= 700){
-          /*let wlwLabel = document.getElementById("willowLabel");
-          wlwLabel.classList.remove('shrinkTrans');*/
-          document.getElementById("willowLabel").style.display = "";
+        if (curWidth - deltaX >= 650){
+          let wlwLabel = document.getElementById("willowLabel");
+          wlwLabel.classList.remove('shrinkTrans');
+          //document.getElementById("willowLabel").style.display = "";
         }
         else {
-          /*let wlwLabel = document.getElementById("willowLabel");
-          wlwLabel.classList.add('shrinkTrans');*/
-          document.getElementById("willowLabel").style.display = "none";
+          let wlwLabel = document.getElementById("willowLabel");
+          wlwLabel.classList.add('shrinkTrans');
+          //document.getElementById("willowLabel").style.display = "none";
         }
 
         sidePanel.style.width = (curWidth - deltaX) + "px";
