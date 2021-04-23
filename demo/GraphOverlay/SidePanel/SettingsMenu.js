@@ -41,10 +41,10 @@ function openSettingsMenu(isOrigin) {
                 <div id="runLayoutRecalcBtn" class="opt"> <button title="Recalculate the layout from scratch" >Recalculate</button></div>
             </div>
             <div class="settingElement" id ="setTrans" class>
-                <div class= "label"> <b>Background transparency: </b></div>
+                <div class= "label"> <b>Background opacity: </b></div>
                 <div class = "opt">
                     <input type="range" id="sliderTrans"
-                        min="0" max="1" step="0.05" value="${getComputedStyle(document.getElementById("graphFrame")).getPropertyValue("opacity")}"/>
+                        min="${getComputedStyle(document.getElementById("graphFrame")).getPropertyValue("opacity")-0.15}" max="1" step="0.005" value="${getComputedStyle(document.getElementById("graphFrame")).getPropertyValue("opacity")}"/>
                 </div>
             </div>
         </div>
