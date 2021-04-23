@@ -63,14 +63,6 @@ function resetSizesUniBtn_handler() {
         message: "WILLOW_BACKGROUND_RESET_NODE_SIZES",
         option: "uniform"
     });
-    // ! A timeout is used temporarily. Need to wait for response from the background.
-    setTimeout(() => {
-        // notify the other tabs of the change
-        chrome.runtime.sendMessage({
-            message: "WILLOW_GRAPH_SYNC_REQUEST",
-            notifyActiveTab: true
-        })
-    }, 1000);
 }
 
 function resetSizesPRBtn_handler() {
@@ -78,14 +70,6 @@ function resetSizesPRBtn_handler() {
         message: "WILLOW_BACKGROUND_RESET_NODE_SIZES",
         option: "pagerank"
     });
-    // ! A timeout is used temporarily. Need to wait for response from the background.
-    setTimeout(() => {
-        // notify the other tabs of the change
-        chrome.runtime.sendMessage({
-            message: "WILLOW_GRAPH_SYNC_REQUEST",
-            notifyActiveTab: true
-        })
-    }, 1000);
 }
 
 function runLayoutAdjustBtn_handler() {
@@ -93,14 +77,6 @@ function runLayoutAdjustBtn_handler() {
         message: "WILLOW_BACKGROUND_RUN_LAYOUT",
         option: "incremental"
     });
-    // ! A timeout is used temporarily. Need to wait for response from the background.
-    setTimeout(() => {
-        // notify the other tabs of the change
-        chrome.runtime.sendMessage({
-            message: "WILLOW_GRAPH_SYNC_REQUEST",
-            notifyActiveTab: true
-        })
-    }, 1000);
 }
 
 function runLayoutRecalcBtn_handler() {
@@ -108,14 +84,6 @@ function runLayoutRecalcBtn_handler() {
         message: "WILLOW_BACKGROUND_RUN_LAYOUT",
         option: "recalculate"
     });
-    // ! A timeout is used temporarily. Need to wait for response from the background.
-    setTimeout(() => {
-        // notify the other tabs of the change
-        chrome.runtime.sendMessage({
-            message: "WILLOW_GRAPH_SYNC_REQUEST",
-            notifyActiveTab: true
-        })
-    }, 1000);
 }
 
 function sliderTrans_handler() {

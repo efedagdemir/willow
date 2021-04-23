@@ -1,7 +1,6 @@
 /**
- * !!!! An Issue: We need to get rid of the "temporary" timeouts soon.
- * ! More importantly, it seems that the ctx menu options do not think about this
- * ! problem at all (not even using a timeout).
+ * !!!! An Issue: it seems that the ctx menu options do not think about the sync
+ * ! problem at all.
  */
 
 let canvas = document.getElementById("canvas");
@@ -13,22 +12,12 @@ updateCytoscape();
 syncViewport();
 
 cy.on('dragfree', 'node', function (evt) {
-    console.log('DF: ', evt.target.id(), evt.target.position());
-
     // update the node position at the background script
     chrome.runtime.sendMessage({
         message: "WILLOW_BACKGROUND_UPDATE_NODE_POS",
         nodeId: evt.target.id(),
         newPos: evt.target.position()
     })
-
-    // ! A timeout is used temporarily. Need to wait for response from the background.
-    setTimeout(() => {
-        // notify the other tabs of the change
-        chrome.runtime.sendMessage({
-            message: "WILLOW_GRAPH_SYNC_REQUEST",
-        })
-    }, 100);
 });
 
 cy.on("viewport", onViewport);

@@ -57,10 +57,9 @@ function getCytoscapeJSON(){
 }
 
 function updateNodePosition(nodeId, newPos) {
-    console.log("UPDATING", nodeId);
     cy.getElementById(nodeId).position(newPos);
     //addFixedNodes(nodeId, newPos, 0);
-   
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
 }
 
 function removeNode(nodeId) {
@@ -140,12 +139,14 @@ function resetNodeSizes(option) {
             ele.data("width", UNIFORM_DEFAULT_SIZE);
         });
         runLayout();
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
     } else if (option == "pagerank") {
         var pr = cy.elements().pageRank();
         cy.nodes().forEach(function( ele ){
             ele.data("width", pr.rank(ele) * PAGERANK_AVG_SIZE * cy.nodes().size());
         });
         runLayout();
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
     } else {
         console.error("resetNodeSizes called with invalid option");
         return;
@@ -222,9 +223,7 @@ function messageReceived(request, sender, sendResponse) {
     } else if (request.message == "WILLOW_BACKGROUND_RESET_NODE_SIZES") {
         resetNodeSizes(request.option);
     } else if (request.message == "WILLOW_BACKGROUND_RUN_LAYOUT") {
-        if (request.option == "incremental") runLayout();
-        else if (request.option == "recalculate") recalcLayout();
-        else console.error("run layout request with invalid option");
+        handleRunLayoutMessage(request.option); // func. def. explains weird naming.
     } else if (request.message == "WILLOW_BACKGROUND_CLEAR_SESSION") {
         clearSG();
     } else if (request.message == "WILLOW_BACKGROUND_EXPORT") {
@@ -285,6 +284,23 @@ function recalcLayout() {
         ready: () => {},
         stop: () => {}                 
     }).run();
+}
+
+/**
+ * Names thus since runLayout() is taken.
+ * Would make sense to rename that to runIncrementalLayout or someting similar but
+ * I'm leaving it as it is in order not to confuse the rest of the team.
+ */
+function handleRunLayoutMessage(option) {
+    if (option == "incremental") {
+        runLayout();
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
+    } else if (option == "recalculate") {
+        recalcLayout();
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
+    } else {
+        console.error("run layout request with invalid option");
+    }
 }
 
 
