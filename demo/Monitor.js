@@ -39,9 +39,10 @@ function tabRemoved( tabId, removeInfo) {
     // the page isn't open in that tab anymore
     let node = cy.getElementById(tabURLs.get(tabId));
 
-    if(node.length > 0) //! Sketchy
+    if(node.length > 0) { //! Sketchy
         node.data( "openTabCount", node.data("openTabCount") - 1); // decrement the openTabCount of the node.
-
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+    }
     tabURLs.delete(tabId);
 }
 
