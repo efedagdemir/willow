@@ -177,7 +177,7 @@ function exportJSON() {
     });
 }
 
-function importJSON(json) {
+async function importJSON(json) {
     console.log("importing JSON");
     cy.json(json);
     let nodes = cy.nodes();
@@ -187,22 +187,30 @@ function importJSON(json) {
         chrome.tabs.remove(tabs.map( (tab) => {return tab.id}));
     });
 
+    chrome.tabs.query( {active:true, currentWindow: true}, (tabs) => { chrome.tabs.update(tabs[0].id, {url : "chrome://newtab"})});
+
+    let promises = []
     // create the tabs that were open in the imported JSON
-    let firstHit = false;
     nodes.forEach( (node) => {
         if(node.data("openTabCount") > 0) {
             let tabCount = node.data("openTabCount");
             node.data("openTabCount", 0);
             for( let i = 0; i < tabCount; i ++) {
-                if(!firstHit) {
-                    chrome.tabs.query( {active:true, currentWindow: true}, (tabs) => { chrome.tabs.update(tabs[0].id, {url : node.id()})});
-                    firstHit = true;
-                } else {
-                    chrome.tabs.create({url: node.id(), active: false});
-                }
+                openingFromGraph.set(node.id(), true);
+                let promise = new Promise ( (resolve, reject) => {
+                    chrome.tabs.create({url: node.id(), active: false}, function(result) {
+                        resolve(true);
+                    });
+                });
+                promises.push(promise);
             }
         }
-    })
+    });
+    
+    await Promise.all(promises);
+    
+    chrome.tabs.query( {active:true, currentWindow: true}, (tabs) => { chrome.tabs.remove(tabs[0].id)});
+
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
 }
 
