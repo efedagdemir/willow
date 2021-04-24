@@ -6,6 +6,7 @@
     left: 15%;
     background-color: #041424; /* same as #panelHeader (side_panel.css)*/
     text-align: center;
+    border-radius: 20px;
 }
 
 #menuHeader b {
@@ -52,4 +53,18 @@
     transition: opacity .2s;
   }
   
-  
+/* buttons */
+ .table-buttons {   
+    margin: 5px;
+    background-color: #f4d58d;
+    background-repeat:no-repeat;
+    border: none;
+    color: #041424;
+    border-radius: 5px;
+    
+  }
+
+  /* table buttons are in */
+  #settings_button_table {
+    margin: 0 auto;
+  }

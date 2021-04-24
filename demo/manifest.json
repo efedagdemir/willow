@@ -7,6 +7,18 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
+            "js": ["GraphOverlay/SidePanel/HowToPage.js"],
+            "run_at": "document_end",
+            "match_about_blank": true
+        },
+        {
+            "matches": ["<all_urls>"],
+            "js": ["GraphOverlay/SidePanel/InfoPage.js"],
+            "run_at": "document_end",
+            "match_about_blank": true
+        },
+        {
+            "matches": ["<all_urls>"],
             "js": ["GraphOverlay/SidePanel/SettingsMenu.js"],
             "run_at": "document_end",
             "match_about_blank": true
@@ -31,7 +43,6 @@
                     "node_modules/cose-base/cose-base.js",
                     "node_modules/cytoscape-fcose/cytoscape-fcose.js",
                     "node_modules/cytoscape-layout-utilities/cytoscape-layout-utilities.js",
-    
             
                     "SyncBroadcaster.js",
                     "GraphOverlay/SidePanel/SidePanel_background.js",
@@ -52,6 +63,8 @@
         "GraphOverlay/SidePanel/side_panel.css",
         "GraphOverlay/SidePanel/side_panel.js",
         "GraphOverlay/SidePanel/settings_menu.css",
+        "GraphOverlay/SidePanel/info_page.css",
+        "GraphOverlay/SidePanel/how_to_page.css",
         "GraphOverlay/Graph/GraphDrawer.html",
         "icons/close.png",
         "icons/right-arrow.png",
@@ -59,7 +72,6 @@
         "icons/reset.png",
         "icons/graph.png",
         "icons/settings.png"
-        
     ],
     "content_security_policy": "script-src 'self'; object-src 'self'; img-src chrome://favicon;"
 }

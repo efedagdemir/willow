@@ -47,6 +47,18 @@ function openSettingsMenu(isOrigin) {
                         min="${getComputedStyle(document.getElementById("graphFrame")).getPropertyValue("opacity")-0.15}" max="1" step="0.005" value="${getComputedStyle(document.getElementById("graphFrame")).getPropertyValue("opacity")}"/>
                 </div>
             </div>
+            <br>
+            <table id="settings_button_table">
+                <tr>
+                    <th> <button id="exportBtn" class="table-buttons" title="Save the graph as a file">Export Session</button></th>
+                    <th> <button id="importBtn" class="table-buttons" title="Open a Pre-saved Graph from Files">Import Session</button></th>
+                    
+                </tr>
+                <tr>
+                    <th> <button id="infoBtn"  class="table-buttons" title="Open 'Information' Page">Info</button></th>
+                    <th> <button id="howToBtn" class="table-buttons" title="Open 'How To?' Page">How to?</button></th>
+                </tr>
+            <table>
         </div>
     </div>
     </body>
@@ -89,6 +101,11 @@ function addSettingsMenuListeners() {
     document.getElementById("runLayoutAdjustBtn").onclick   = runLayoutAdjustBtn_handler; 
     document.getElementById("runLayoutRecalcBtn").onclick   = runLayoutRecalcBtn_handler; 
     document.getElementById("sliderTrans").oninput          = sliderTrans_handler; 
+    document.getElementById("exportBtn").onclick            = exportBtn_handler; 
+    document.getElementById("importBtn").onclick            = importBtn_handler; 
+    document.getElementById("infoBtn").onclick     = () =>    openInfoPage();      //defined in InfoPage.js
+    document.getElementById("howToBtn").onclick    = () =>    openHowToPage();     //defined in HowToPage.js
+
 }
 
 function resetSizesUniBtn_handler() {
@@ -122,6 +139,27 @@ function runLayoutRecalcBtn_handler() {
 function sliderTrans_handler() {
     var object =  document.getElementById("graphFrame");
     object.style.opacity = document.getElementById("sliderTrans").value.toString();
+}
+
+function exportBtn_handler(){
+    chrome.runtime.sendMessage({
+        message: "WILLOW_BACKGROUND_EXPORT",
+    });
+}
+function importBtn_handler(){
+    var input = document.createElement("INPUT");
+    input.setAttribute("type", "file");
+    input.addEventListener("change",  () => {
+        const reader = new FileReader();
+        reader.readAsText(input.files[0])
+        reader.onload = function () {
+            chrome.runtime.sendMessage({
+                message: "WILLOW_BACKGROUND_IMPORT",
+                json: JSON.parse(reader.result),
+            });
+        }
+    });
+    input.click();
 }
 
 /**
