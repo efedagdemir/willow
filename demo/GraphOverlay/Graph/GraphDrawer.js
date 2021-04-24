@@ -4,6 +4,7 @@
  * ! problem at all (not even using a timeout).
  */
 
+
 let canvas = document.getElementById("canvas");
 let cy = cytoscape();
 cy.mount(canvas);
@@ -60,7 +61,7 @@ function updateCytoscape() {
         response.pan = tmp.pan;
         response.zoom = tmp.zoom;
         cy.json(response);
-
+        
         applyStyle();
         cy.style().update();
 
@@ -130,7 +131,7 @@ function applyStyle() {
         .style({
             'width': 'data(width)',
             'height': 'data(width)',
-            'border-width': 3, 
+            'border-width': 5, 
             'border-height': 'data(width)',
             'border-opacity': 1,
             'border-color':'data(border_color)',
@@ -157,12 +158,13 @@ function applyStyle() {
             'background-image-containment': ['inside', 'over'],
             'background-width': ['100%', '20%'],
             'background-height': ['100%', '20%'],
-            'background-position-x': ['0px', '-10px'],
+            'background-position-x': ['0.5px', '-10.5px'],
             'background-position-y':['0px', '3px'],
             'background-image-opacity': ['1', '1'],
             'background-clip': ['node', 'none'],
             'bounds-expansion': ['0', '10'],
             'font-family' : 'Open Sans',
+            'font-size': 'data(title_size)'
         })
         .selector('edge')
         .style({
@@ -203,7 +205,7 @@ function applyStyle() {
             'text-justification': 'center',
             'font-family' : 'Open Sans',  
         })
-        .update();
+        .update();    
 }
 
 function applyContextMenu() {
@@ -391,7 +393,7 @@ function applyContextMenu() {
                                 hasTrailingDivider: true,
                                 onClickFunction: function (event){
                                     let target = event.target || event.cyTarget;
-                                    changeNodeSize(event, target.width() + 10);
+                                    changeNodeSize(event, target.width() + 10, true, target.data('title_size'));
                                 }
                             },
                             {
@@ -401,7 +403,7 @@ function applyContextMenu() {
                                 hasTrailingDivider: true,
                                 onClickFunction: function (event){
                                     let target = event.target || event.cyTarget;
-                                    changeNodeSize(event, target.width() - 10);
+                                    changeNodeSize(event, target.width() - 10, false, target.data('title_size'));
                                 }
                             }
                         ]
@@ -412,7 +414,7 @@ function applyContextMenu() {
                         tooltipText: 'Small',
                         hasTrailingDivider: true,
                         onClickFunction: function (event){
-                            changeNodeSize(event, 20);
+                            changeNodeSize(event, 20, false, '20px');
                         }
                     },
                     {
@@ -421,7 +423,7 @@ function applyContextMenu() {
                         tooltipText: 'Medium (default)',
                         hasTrailingDivider: true,
                         onClickFunction: function (event){
-                            changeNodeSize(event, 35);
+                            changeNodeSize(event, 35, false, '21px');
                         }
                     },
                     {
@@ -430,7 +432,7 @@ function applyContextMenu() {
                         tooltipText: 'Large',
                         hasTrailingDivider: true,
                         onClickFunction: function (event){
-                            changeNodeSize(event, 50);
+                            changeNodeSize(event, 50, false, '23px');
                         }
                     },
                 ]
@@ -477,43 +479,7 @@ function applyContextMenu() {
                 },
                 show: true,
                 coreAsWell: true
-            },
-            {
-                id: 'exportJSON',
-                content: 'Export session',
-                tooltipText: 'Export the session graph as a downloadable file',
-                selector: "",
-                onClickFunction: function (event) {
-                    chrome.runtime.sendMessage({
-                        message: "WILLOW_BACKGROUND_EXPORT",
-                    });
-                },
-                show: true,
-                coreAsWell: true
-            },
-            {
-                id: 'importJSON',
-                content: 'Import Session',
-                tooltipText: 'Import a session from a ".willow" file',
-                selector: "",
-                onClickFunction: function (event) {
-                    var input = document.createElement("INPUT");
-                    input.setAttribute("type", "file");
-                    input.addEventListener("change",  () => {
-                        const reader = new FileReader();
-                        reader.readAsText(input.files[0])
-                        reader.onload = function () {
-                            chrome.runtime.sendMessage({
-                                message: "WILLOW_BACKGROUND_IMPORT",
-                                json: JSON.parse(reader.result),
-                            });
-                        }
-                    });
-                    input.click();
-                },
-                show: true,
-                coreAsWell: true
-            },
+            }
 
         ],
         menuItemClasses: ['contex-menu-item'],
@@ -562,16 +528,32 @@ function applyContextMenu() {
 /**
  * Sets the size of targeted node. 
  */
-function changeNodeSize(event, size){
-   
+function changeNodeSize(event, size, increase, title_size){
+    
+    
     if (size >= 10 && size <= 130) {
+
         let target = event.target || event.cyTarget;
+        var tSize = parseInt( title_size, 10);
+        
+        if (increase){
+            tSize = `${tSize + 0.5}px`;
+            target.data('title_size', tSize);
+            
+        }
+        else {
+            tSize = `${tSize - 0.5}px`;
+            target.data('title_size', tSize);
+        }
+        console.log("title_size" , title_size);
+        console.log("TSIXE" , tSize);
         let id = target.id();
         target.data('width', size);
         chrome.runtime.sendMessage({
             message: "WILLOW_BACKGROUND_CHANGE_NODE_SIZE",
             nodeId: id,
-            size: size
+            size: size,
+            tSize: tSize
         });
         chrome.runtime.sendMessage({
             message: "WILLOW_GRAPH_SYNC_REQUEST",

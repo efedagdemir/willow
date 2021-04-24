@@ -1,0 +1,104 @@
+#howToPage {
+    position: absolute;
+    height: 70%;
+    width: 70%;
+    top: 15%;
+    left: 15%;
+    background-color: #f4d58d; /* same as #panelHeader (side_panel.css)*/
+    text-align: center;
+    border-radius: 20px;
+    overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+#willowHowToHeader {
+    padding: 10px;
+    background-color: #f4d58d;
+    color:#041424;
+    vertical-align: middle;
+    
+}
+
+
+
+#willow_header_how_to {
+    text-align: center;
+}
+
+
+/* detaill - summary tags */
+#willow_purpose, #willow_page_rank {
+    padding: 7px;
+    color:#041424;
+}
+
+.willow_summary{
+    color: #041424;
+    font-weight: bold;
+}
+
+.nested_summary{
+    color: #941c1c;
+    font-weight: bold;
+}
+
+.willow_detail{
+    padding: 15px;
+    border: 0.1px solid #4d0000;
+    
+}
+
+
+details > summary {
+    list-style-type: none;
+}
+
+details > summary::-webkit-details-marker {
+    display: none;
+}
+
+
+.willow_detail > summary::before {
+    content: "> ";
+}
+
+.willow_detail[open] > summary::before {
+    content: "< ";
+}
+
+.nested_detail > summary::before {
+    content: "+ ";
+}
+
+.nested_detail[open] > summary::before  {
+    content: "- ";
+}
+
+
+/* close button */ 
+#how_to_close_btn {
+    float: right;
+    background-image: url('../../icons/close.png');
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    text-decoration: none;
+    
+    cursor: pointer;
+    background-color: #041424;
+    background-size: cover;
+    border: none;
+    opacity: 1;
+    height: 12px;
+    width: 12px;
+    
+}
+
+
+#how_to_close_btn:hover {
+    opacity: 0.3;
+}
