@@ -10,6 +10,7 @@ addListeners();
 function initialize() {
     tabURLs = new Map();
     openingFromGraph = new Map();
+    initializeSG();
 }
 
 // adds the listeners to relevant chrome events.

@@ -53,8 +53,8 @@ function loadSG(cyJson) {
 /**
  * Clears the session graph.
  */
-function clearSG(){
-    cy.remove(cy.elements());
+async function clearSG(){
+    await saveCurrentSession();
     initialize();
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
 }

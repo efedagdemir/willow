@@ -1,7 +1,7 @@
-initializeSG();
 console.log("alo");
 
-function loadHistoryMenu() {
+async function loadHistoryMenu() {
+    await saveCurrentSession();
     chrome.tabs.create({url: chrome.extension.getURL("HistoryMenu.html")});
 }
 
