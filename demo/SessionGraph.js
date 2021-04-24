@@ -1,7 +1,6 @@
 
-var cy = null; // The variable that holds the cytoscape object.
-//var fixedCon = []; // The variable that holds fixed node positions
-
+var cy = null;          // The variable that holds the cytoscape object.
+var interval = null;    // A setInterval() result that updates the session graph every 30 seconds.
 /**
  * Initalizes the session graph as a cytoscape object with no elements.
  */
@@ -42,7 +41,10 @@ function initializeSG() {
         let nextId = result.nextId;
         cy.data("id", nextId);
         chrome.storage.local.set({nextId: nextId + 1});
-    })
+    });
+
+    // start saving the session graph every 30 seconds.
+    interval = setInterval( saveCurrentSession, 30000);
 }
 
 /**
@@ -58,6 +60,7 @@ function loadSG(cyJson) {
  */
 async function clearSG(){
     await saveCurrentSession();
+    clearInterval(interval);
     initialize();
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
 }
