@@ -1,2 +1,0 @@
-initializeSG();
-console.log("alo");
