@@ -2,7 +2,7 @@ console.log("alo");
 
 async function loadHistoryMenu() {
     await saveCurrentSession();
-    chrome.tabs.create({url: chrome.extension.getURL("HistoryMenu.html")});
+    chrome.tabs.create({url: chrome.extension.getURL("/History/HistoryMenu.html")});
 }
 
 async function loadSessionWithId(id) {

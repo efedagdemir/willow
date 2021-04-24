@@ -48,7 +48,7 @@
                     "GraphOverlay/SidePanel/SidePanel_background.js",
                     "GraphOverlay/Graph/GraphDrawer_background.js",
                     "SessionGraph.js",
-                    "History.js",
+                    "History/History.js",
                     "Monitor.js"],
         "persistent": false
     },
