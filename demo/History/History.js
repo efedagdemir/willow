@@ -2,7 +2,7 @@ initializeSG();
 console.log("alo");
 
 function loadHistoryMenu() {
-    chrome.tabs.create({url: chrome.extension.getURL("HistoryMenu.html")});
+    chrome.tabs.create({url: chrome.extension.getURL("/History/HistoryMenu.html")});
 }
 
 async function loadSessionWithId(id) {

@@ -1,0 +1,32 @@
+body {
+    background-image: linear-gradient(to right, #f4d58d, #708d81); /*same as #graphFrame (side_panel.css)*/
+}
+
+#sessionList {
+    position: absolute;
+    height: 94%;
+    width: 30%;
+    top: 3%;
+    left: 35%;
+    background-color: #041424; /* same as #panelHeader (side_panel.css)*/
+}
+
+.historyElement {
+    width: 90%;
+    margin: auto;
+    border: 1px solid #f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    padding: 10px;
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    
+}
+.settingElement .label {
+    display: inline-block;
+    text-align: left;
+    float: left;
+}
+
+.settingElement .opt {
+    display: inline-block;
+    text-align: right;
+    margin-inline: 5px;
+}
