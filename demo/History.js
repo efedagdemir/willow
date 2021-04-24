@@ -6,7 +6,7 @@ function loadHistoryMenu() {
 }
 
 async function loadSessionWithId(id) {
-    await saveSG();
+    await saveCurrentSession();
     chrome.storage.local.get({sessions: []}, function (result) {
         var sessions = result.sessions;
 
@@ -22,7 +22,31 @@ async function loadSessionWithId(id) {
     });
 }
 
-function saveSG() {
+//! Duplicate code here, decompose some part of this into a function later.
+function renameSessionWithId(id, name) {
+    chrome.storage.local.get({sessions: []}, function (result) {
+        var sessions = result.sessions;
+
+        let found = false;
+        for( let i = 0; i < sessions.length; i++) {
+            if(sessions[i].data.id == id) {
+                sessions[i].data.name = name;
+                found = true;
+            }
+        }
+        if(!found)
+            console.error("Session with id: " + id + " is not found");
+        else {
+            // update the stored array
+            chrome.storage.local.set({sessions: sessions}, function () {
+                console.log("session renamed! New sessions: ", sessions);
+                resolve();
+            });
+        }
+    });
+}
+
+function saveCurrentSession() {
     return new Promise( (resolve, reject) => {
         // save the sesssion to chrome's persistent storage
         chrome.storage.local.get({sessions: []}, function (result) {
@@ -30,6 +54,12 @@ function saveSG() {
 
             // save the png export inside data
             cy.data("png", cy.png());
+            
+            // set the last updated data
+            var now = new Date();
+            var name = "Session on " + now.getFullYear()+'-'+String((now.getMonth()+1)).padStart(2,'0')+'-'+ String(now.getDate()).padStart(2,'0') + ' at '
+                + now.getHours() + "." + String(now.getMinutes()).padStart(2,'0') + "." + String(now.getSeconds()).padStart(2,'0');
+            cy.data("lastUpdated", name);
 
             let id = cy.data("id");
             let found = false;
@@ -53,8 +83,10 @@ function saveSG() {
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        if( request.message == "WILLOW_HISTORY_LOAD_ID") {
+        if( request.message == "WILLOW_HISTORY_LOAD_SESSION") {
             loadSessionWithId(request.id);
+        } else if (request.message == "WILLOW_HISTORY_RENAME_SESSION") {
+            renameSessionWithId(request.id, request.name);
         }
     }
 );

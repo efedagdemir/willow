@@ -26,7 +26,7 @@ function addListeners() {
 }
 
 function windowClosed() {
-    saveSG();
+    saveCurrentSession();
 }
 
 /**

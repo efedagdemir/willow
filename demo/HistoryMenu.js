@@ -21,21 +21,34 @@ function addSessionElements (session) {
     let sessionDiv = document.createElement("div");
     let title = document.createElement("h1");
     let image = document.createElement("img");
-    let button = document.createElement("button");
+    let loadButton = document.createElement("button");
+    let renameButton = document.createElement("button");
+
     sessionDiv.appendChild(title);
     sessionDiv.appendChild(image);
-    sessionDiv.appendChild(button);
+    sessionDiv.appendChild(loadButton);
+    sessionDiv.appendChild(renameButton);
     sessionList.appendChild(sessionDiv);
 
     // apply the styles (possibly)
         // not yet
 
     // set the properties
-    button.innerHTML = "Load";
+    loadButton.innerHTML = "Load";
+    renameButton.innerHTML = "Rename";
     image.setAttribute("src", session.data.png);
-    title.innerHTML = "Session with ID " + session.data.id;
+    if (session.data.name)
+        title.innerHTML = session.data.name;
+    else
+        title.innerHTML = session.data.lastUpdated;
 
-    button.addEventListener("click", function () {
-        chrome.runtime.sendMessage({ message: "WILLOW_HISTORY_LOAD_ID", id: session.data.id});
+    loadButton.addEventListener("click", function () {
+        chrome.runtime.sendMessage({ message: "WILLOW_HISTORY_LOAD_SESSION", id: session.data.id});
+    });
+
+    renameButton.addEventListener("click", function() {
+        let name = prompt("Enter new name:");
+        chrome.runtime.sendMessage( {message: "WILLOW_HISTORY_RENAME_SESSION", id: session.data.id, name: name});
+        title.innerHTML = name;
     });
 }
