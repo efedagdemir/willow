@@ -23,6 +23,27 @@ cy.on('dragfree', 'node', function (evt) {
 
 cy.on("viewport", onViewport);
 
+var dblclickDelay = 350;
+var previousTapStamp;
+
+cy.on('tap', 'node', function(e) {
+    var currentTapStamp = e.timeStamp;
+    var tapDelay = currentTapStamp - previousTapStamp;
+
+    if (tapDelay < dblclickDelay) {
+        e.target.trigger('doubleTap', e);
+    }
+    previousTapStamp = currentTapStamp;
+});
+
+cy.on('doubleTap', function(event, originalTap) {
+    let target = originalTap.target || originalTap.cyTarget;
+    let id = target.id();
+    chrome.runtime.sendMessage({
+        message: "WILLOW_BACKGROUND_OPEN_PAGE",
+        nodeId: id
+    });
+});
 
 function onViewport(event) {
     chrome.storage.local.set({
