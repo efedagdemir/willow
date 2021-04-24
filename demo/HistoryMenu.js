@@ -32,7 +32,7 @@ function addSessionElements (session) {
 
     // set the properties
     button.innerHTML = "Load";
-    image.setAttribute("src", "https://icons.iconarchive.com/icons/paomedia/small-n-flat/256/sign-right-icon.png");
+    image.setAttribute("src", session.data.png);
     title.innerHTML = "Session with ID " + session.data.id;
 
     button.addEventListener("click", function () {

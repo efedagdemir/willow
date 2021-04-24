@@ -28,6 +28,9 @@ function saveSG() {
         chrome.storage.local.get({sessions: []}, function (result) {
             var sessions = result.sessions;
 
+            // save the png export inside data
+            cy.data("png", cy.png());
+
             let id = cy.data("id");
             let found = false;
             for( let i = 0; i < sessions.length; i++) {
