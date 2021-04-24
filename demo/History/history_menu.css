@@ -5,10 +5,11 @@ body {
 #sessionList {
     position: absolute;
     height: 94%;
-    width: 30%;
+    width: 50%;
     top: 3%;
-    left: 35%;
+    left: 10%;
     background-color: #041424; /* same as #panelHeader (side_panel.css)*/
+    text-align: right;
 }
 
 .historyElement {
@@ -17,16 +18,16 @@ body {
     border: 1px solid #f4d58d; /* same as #panelHeader a (side_panel.css)*/
     padding: 10px;
     color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
-    
+    display: flex;
+    align-items: center;
 }
-.settingElement .label {
-    display: inline-block;
+.historyElement .label {
     text-align: left;
     float: left;
 }
 
-.settingElement .opt {
-    display: inline-block;
+.historyElement .opt {
+    margin-left: auto;
+    order: 2;
     text-align: right;
-    margin-inline: 5px;
 }

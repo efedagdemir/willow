@@ -47,6 +47,7 @@ function addSessionElements (session) {
 }
 
 //--------------------------------------------------------------------------------
+/*
 let sessionList = document.getElementById("sessionList");
 
 initialize();
@@ -58,12 +59,13 @@ function initialize() {
             addSessionElements(session);
         });
     });
-}
+} */
 
 /**
  * 
  * @param {Object} session A cytoscape export.
  */
+/*
 function addSessionElements (session) {
     console.log(session);
     // add the html elements
@@ -101,3 +103,4 @@ function addSessionElements (session) {
         title.innerHTML = name;
     });
 }
+*/
