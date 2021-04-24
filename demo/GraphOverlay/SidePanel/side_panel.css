@@ -18,7 +18,6 @@
   overflow-y: hidden;
   /*---------------*/
   border-radius: 5px;
-  /*transition: all 2s ease-out; */
 }
 
 #panelHeader {
@@ -28,7 +27,8 @@
   height: 70px;
   text-align: center;
   background-color: #041424; /*#001d3d*/
-  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 /* applies to the Willow label, the undock button and the close button */
@@ -49,39 +49,36 @@
   margin: 0 auto;
   font-size: 32px;
   color: #f4d58d; /*ab0321*/
-  line-height: 70px;  /*! has to be the same as #panelHeader's height for the text to be vertically centered */
+  line-height: 73px;  /*! has to be the same as #panelHeader's height for the text to be vertically centered */ /*70px*/
   /*It seemed vertically more centered (with the added tooltips) when the heights did not match.*/
   
   font-family:'Montserrat', sans-serif;
-
-  /*display: none;*/
-  /* transition: all 4s; */
 }
 
-/*#panelHeader a:hover {
-  /*---------------*//*
-  color: #f1f1f1;
-}*/
-
-/*.headerBtn {
-  /*---------------*//*
-  padding: 0px 16px 0px 0px;
-  float: right;
-  height: 44px;
-}*/
-
-/*.label{
-  width: 262px;
-  transition-property: width;
-  transition-duration: 2s;
+.willow-label{
+  width: 210px;
+  white-space: normal;
+  overflow: hidden;
+  transition-property: width, white-space;
+  transition-duration: 1.7s;
+  transition-delay: 0.7s;
   font-size: 44px;
-  margin-left: 20px;
-  margin-right: 20px;
-}*/
+}
 
-/*.label.shrinkTrans {
+.willow-label.shrinkTrans {
   width: 0px;
-}*/
+  white-space: nowrap;
+  overflow: hidden;
+  animation-name: hop;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes hop {
+  0%    {transform: translateX(0px)}
+  50%   {transform: translateX(30px)}
+  100%  {transform: translateX(0px)}
+}
 
 .headerBtn {
   -webkit-user-select: none;
@@ -92,19 +89,16 @@
   user-select: none;
   text-decoration: none;
   line-height: 70px;
-  /*padding: 0px 16px 0px 0px;*/
   float: right;
-  /*height: 44px;*/
   cursor: pointer;
-  /*margin: 0px 2px;*/
   background-color: #041424;
   background-size: cover;
   border: none;
   opacity: 1;
-  height: 32px;
-  width: 32px;
-  margin-top: 20px;
-  margin-right: 20px;
+  height: 24px;
+  width: 24px;
+  margin-top: 25px;
+  margin-right: 25px;
 }
 
 .headerBtn:hover {
@@ -117,88 +111,34 @@
 
 .btn-close {
   background-image: url('../../icons/close.png');
-  order: 6;
-  /*background-color: #041424;
-  background-size: cover;
-  border: none;
-  opacity: 1;
-  height: 32px;
-  width: 32px;*/
-  /*background: transparent;*/
-  /*background-color: #eee;*/
-  /*background-image: url( `${chrome.extension.getURL('../../images/willowIcon_50x50.png')} `);*/
 }
 
 .btn-undock {
   background-image: url('../../icons/right-arrow.png');
-  order: 5;
-  /*background-color: #041424;
-  background-size: cover;
-  border: none;
-  opacity: 1;
-  height: 32px;
-  width: 32px;*/
 }
 
 .btn-dock {
   background-image: url('../../icons/left-arrow.png');
-  order: 4;
-  /*background-color: #041424;
-  background-size: cover;
-  border: none;
-  opacity: 1;
-  height: 32px;
-  width: 32px;*/
 }
 
 .btn-reset {
-  background-image: url('../../icons/circular-arrow.png');
-  order: 1;
-  /*background-color: #041424;
-  background-size: cover;
-  border: none;
-  opacity: 1;
-  height: 32px;
-  width: 32px;*/
+  background-image: url('../../icons/reset.png');
 }
 
-.btn-center {
+.btn-layout {
   background-image: url('../../icons/graph.png');
-  order: 2;
-  /*background-color: #041424;
-  background-size: cover;
-  border: none;
-  opacity: 1;
-  height: 32px;
-  width: 32px;*/
 }
 
 .btn-settings {
   background-image: url('../../icons/settings.png');
-  order: 3;
-  /*background-color: #041424;
-  background-size: cover;
-  border: none;
-  opacity: 1;
-  height: 32px;
-  width: 32px;*/
 }
 
 
 #willowLabel {
   /*---------------*/
-  /*padding-right: 140px;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: bold;
-  font-size: 12px;*/
   float: left;
-
 }
 
-/*#willowLabel:hover {
-  /*---------------*//*
-  color: #8d0801
-}*/
 
 #panelBody {
   position: absolute;
@@ -207,6 +147,7 @@
   width: 100%;
   /*---------------*/
   top: 70px; /*! has to be the same as #panelHeader's height */
+  user-select: none;
 }
 
 /*
@@ -280,45 +221,7 @@
   margin-top: 10px;
   margin-left: 10px;
   margin-bottom: 10px;
-  margin-right: auto;
+  margin-right: 10px;
   float: left;
-  /*position: sticky;
-  left: 0px;
-  /*margin: auto;*/
+  user-select: none;
 }
-
-/*
- * TOOLTIP
- */
- /*
-#closeBtn, #dockBtn, #undockBtn ,#resetBtn, #centerBtn, #settingsBtn{
-  position: relative;
-  display: inline;
-}
-
-#undockBtn .dockText, #closeBtn .closeText, #dockBtn .dockText ,#resetBtn .resetText, #centerBtn .centerText , #settingsBtn .settingsText{
-  
-  visibility: hidden;
-  font-size: 12px;
-  color: #fff;
-  height: 30px;
-  font-family : 'Open Sans';
-  
-  /* Position the tooltip *//*
-  position: absolute;
-  z-index: 1;
-  top: -25%;
-  
-}
-
-#undockBtn .dockText {
-  right: 5%;
-}
-
-#closeBtn .closeText, #dockBtn .dockText ,#resetBtn .resetText, #centerBtn .centerText, #settingsBtn .settingsText{
-  right: 30%;
-}
-
-#closeBtn:hover .closeText, #dockBtn:hover .dockText, #undockBtn:hover .dockText ,#resetBtn:hover .resetText, #centerBtn:hover .centerText, #settingsBtn:hover .settingsText{
-  visibility: visible;
-}*/

@@ -60,14 +60,12 @@ function getCytoscapeJSON(){
 }
 
 function updateNodePosition(nodeId, newPos) {
-    console.log("UPDATING", nodeId);
     cy.getElementById(nodeId).position(newPos);
     //addFixedNodes(nodeId, newPos, 0);
-   
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
 }
 
 function removeNode(nodeId) {
-
     console.log("DELETING NODE");
     let node = cy.getElementById(nodeId);
     cy.remove(node);
@@ -80,6 +78,7 @@ function removeNode(nodeId) {
                 tabURLs.delete(tabId);
         });
     }
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
     return true;
 }
 
@@ -89,13 +88,19 @@ function openPage(nodeId) {
 
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         var tab = tabs[0];
-        chrome.tabs.update(tab.id, {url: nodeId});
+        chrome.tabs.update(tab.id, {url: nodeId}, function() {
+            // sync after callback
+            //broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+        });
     });
     return true;
 }
 
 function openPageInNewTab(nodeId) {
-    chrome.tabs.create({url: nodeId});
+    chrome.tabs.create({url: nodeId}, function () {
+        // sync after callback
+        //broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+    });
     return true;
 }
 
@@ -109,7 +114,6 @@ function removeEdge(source, target) {
 }
 
 function changeBorderColor(nodeId, color) {
-    
     //determine the hex value of the selected color
     if (color == "red")
         hexColorValue = '#d50000';
@@ -127,13 +131,16 @@ function changeBorderColor(nodeId, color) {
         hexColorValue = '#000000'
         
     let node = cy.getElementById(nodeId); 
-    node.data("border_color", hexColorValue);  
+    node.data("border_color", hexColorValue);
+
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
 }
 
 function changeNodeSize(nodeId, size, tSize) {
     let node = cy.getElementById(nodeId); 
     node.data("width", size);
     node.data("title_size", tSize);
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
 }
 
 var UNIFORM_DEFAULT_SIZE = 35;
@@ -147,6 +154,7 @@ function resetNodeSizes(option) {
             ele.data('title_size', UNIFORM_TITLE_SIZE);
         });
         runLayout();
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
     } else if (option == "pagerank") {
         var pr = cy.elements().pageRank();
         cy.nodes().forEach(function( ele ){
@@ -154,6 +162,7 @@ function resetNodeSizes(option) {
             ele.data('tite_size', PAGERANK_AVG_TITLE_SIZE);
         });
         runLayout();
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
     } else {
         console.error("resetNodeSizes called with invalid option");
         return;
@@ -208,6 +217,7 @@ function importJSON(json) {
 function addComment(nodeId,comment){
     let node = cy.getElementById(nodeId);
     node.data("comment", comment);
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
 }
 
 function messageReceived(request, sender, sendResponse) {
@@ -230,16 +240,14 @@ function messageReceived(request, sender, sendResponse) {
     } else if (request.message == "WILLOW_BACKGROUND_RESET_NODE_SIZES") {
         resetNodeSizes(request.option);
     } else if (request.message == "WILLOW_BACKGROUND_RUN_LAYOUT") {
-        if (request.option == "incremental") runLayout();
-        else if (request.option == "recalculate") recalcLayout();
-        else console.error("run layout request with invalid option");
+        handleRunLayoutMessage(request.option); // func. def. explains weird naming.
     } else if (request.message == "WILLOW_BACKGROUND_CLEAR_SESSION") {
         clearSG();
     } else if (request.message == "WILLOW_BACKGROUND_EXPORT") {
         exportJSON();
     } else if (request.message == "WILLOW_BACKGROUND_IMPORT") {
         importJSON( request.json);
-    } else if(request.message == "WILLOW_ADD_COMMENT"){
+    } else if(request.message == "WILLOW_BACKGROUND_ADD_COMMENT"){
         addComment(request.nodeId, request.comment);
     }
 }
@@ -293,6 +301,23 @@ function recalcLayout() {
         ready: () => {},
         stop: () => {}                 
     }).run();
+}
+
+/**
+ * Names thus since runLayout() is taken.
+ * Would make sense to rename that to runIncrementalLayout or someting similar but
+ * I'm leaving it as it is in order not to confuse the rest of the team.
+ */
+function handleRunLayoutMessage(option) {
+    if (option == "incremental") {
+        runLayout();
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
+    } else if (option == "recalculate") {
+        recalcLayout();
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
+    } else {
+        console.error("run layout request with invalid option");
+    }
 }
 
 

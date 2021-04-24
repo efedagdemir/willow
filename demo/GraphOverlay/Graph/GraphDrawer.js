@@ -1,7 +1,6 @@
 /**
- * !!!! An Issue: We need to get rid of the "temporary" timeouts soon.
- * ! More importantly, it seems that the ctx menu options do not think about this
- * ! problem at all (not even using a timeout).
+ * !!!! An Issue: it seems that the ctx menu options do not think about the sync
+ * ! problem at all.
  */
 
 
@@ -14,29 +13,18 @@ updateCytoscape();
 syncViewport();
 
 cy.on('dragfree', 'node', function (evt) {
-    console.log('DF: ', evt.target.id(), evt.target.position());
-
     // update the node position at the background script
     chrome.runtime.sendMessage({
         message: "WILLOW_BACKGROUND_UPDATE_NODE_POS",
         nodeId: evt.target.id(),
         newPos: evt.target.position()
     })
-
-    // ! A timeout is used temporarily. Need to wait for response from the background.
-    setTimeout(() => {
-        // notify the other tabs of the change
-        chrome.runtime.sendMessage({
-            message: "WILLOW_GRAPH_SYNC_REQUEST",
-        })
-    }, 100);
 });
 
 cy.on("viewport", onViewport);
 
 
 function onViewport(event) {
-    console.log("VIEWPORT EVENT FIRED");
     chrome.storage.local.set({
         WILLOW_VIEWPORT: {
             zoom: cy.zoom(),
@@ -78,7 +66,7 @@ function updateCytoscape() {
 
 
 /**
- * Sets the zoom level and the camera position to center the graph.
+ * Sets the camera position to center the graph.
  */
  function centerViewport() {
     cy.resize() // make sure that cytoscape is up-to-date with its container size.
@@ -114,6 +102,11 @@ function updateCytoscape() {
         x: cy.width() / 2,
         y: cy.height() / 2,
     });*/
+}
+
+function fitViewport() {
+    cy.resize();
+    cy.fit();
 }
 
 function syncViewport() {
@@ -225,9 +218,6 @@ function applyContextMenu() {
                         message: "WILLOW_BACKGROUND_OPEN_PAGE",
                         nodeId: id
                     });
-                    chrome.runtime.sendMessage({
-                        message: "WILLOW_GRAPH_SYNC_REQUEST",
-                    });
                 },
                 show: true,
                 coreAsWell: true
@@ -244,9 +234,6 @@ function applyContextMenu() {
                     chrome.runtime.sendMessage({
                         message: "WILLOW_BACKGROUND_OPEN_PAGE_IN_NEW_TAB",
                         nodeId: id
-                    });
-                    chrome.runtime.sendMessage({
-                        message: "WILLOW_GRAPH_SYNC_REQUEST",
                     });
                 },
                 show: true,
@@ -279,13 +266,9 @@ function applyContextMenu() {
                         modal.style.display = "none";
                         node.data("comment",comment_txt);
                         chrome.runtime.sendMessage({
-                            message: "WILLOW_ADD_COMMENT",
+                            message: "WILLOW_BACKGROUND_ADD_COMMENT",
                             nodeId: id,
                             comment: comment_txt
-                        });
-                        
-                        chrome.runtime.sendMessage({
-                            message: "WILLOW_GRAPH_SYNC_REQUEST",
                         });
                     }
    
@@ -451,9 +434,6 @@ function applyContextMenu() {
                         message: "WILLOW_BACKGROUND_REMOVE_NODE",
                         nodeId: id
                     });
-                    chrome.runtime.sendMessage({
-                        message: "WILLOW_GRAPH_SYNC_REQUEST",
-                    });
                 },
                 show: true,
                 coreAsWell: true
@@ -472,10 +452,33 @@ function applyContextMenu() {
                         source: sourceURL,
                         target: targetURL
                     });
+                    // !! Move this to BG once remove edge is implemented.
                     chrome.runtime.sendMessage({
                         message: "WILLOW_GRAPH_SYNC_REQUEST",
                     });
                     
+                },
+                show: true,
+                coreAsWell: true
+            },
+            {
+                id: 'centerGraph',
+                content: 'Center graph',
+                tooltipText: 'Pan the view to the center of the graph',
+                selector: "",
+                onClickFunction: function (event) {
+                    centerViewport();
+                },
+                show: true,
+                coreAsWell: true
+            },
+            {
+                d: 'fitGraph',
+                content: 'Fit graph',
+                tooltipText: 'Have the graph fit the view',
+                selector: "",
+                onClickFunction: function (event) {
+                    fitViewport();
                 },
                 show: true,
                 coreAsWell: true
@@ -555,9 +558,6 @@ function changeNodeSize(event, size, increase, title_size){
             size: size,
             tSize: tSize
         });
-        chrome.runtime.sendMessage({
-            message: "WILLOW_GRAPH_SYNC_REQUEST",
-        });
     }
 }
 
@@ -565,7 +565,6 @@ function changeNodeSize(event, size, increase, title_size){
  * Sets the color of targeted node. 
  */
 function changeNodeColor(event, color, colorName){
-   
     let target = event.target || event.cyTarget;
     let id = target.id();
     target.style('border-color', color);
@@ -573,9 +572,6 @@ function changeNodeColor(event, color, colorName){
         message: "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR",
         nodeId: id,
         color: colorName
-    });
-    chrome.runtime.sendMessage({
-        message: "WILLOW_GRAPH_SYNC_REQUEST",
     });
 }
 

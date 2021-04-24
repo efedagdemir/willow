@@ -36,14 +36,14 @@ var sidePanelHTML = `
   <div id="panelHeader">
   
     <img id="willowIcon" src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
-    <a class="label" id="willowLabel" style="display:;">W I L L O W</a>
+    <a class="willow-label" id="willowLabel" style="display:;">W I L L O W</a>
     
-    <button class="headerBtn btn-center"    id="centerBtn"                               </button>
-    <button class="headerBtn btn-reset"     id="resetBtn"                                </button>
-    <button class="headerBtn btn-settings"  id="settingsBtn"                             </button>
-    <button class="headerBtn btn-undock"    id="undockBtn"                               </button>
-    <button class="headerBtn btn-dock"      id="dockBtn"      style="display:none;"      </button>
-    <button class="headerBtn btn-close"     id="closeBtn"                                </button>
+    <button title="Close"         class="headerBtn btn-close"     id="closeBtn"                                </button>
+    <button title="Dock"          class="headerBtn btn-dock"      id="dockBtn"      style="display:none;"      </button>
+    <button title="Undock"        class="headerBtn btn-undock"    id="undockBtn"                               </button>
+    <button title="Settings"      class="headerBtn btn-settings"  id="settingsBtn"                             </button>
+    <button title="Reset Graph"   class="headerBtn btn-reset"     id="resetBtn"                                </button>
+    <button title="Run Layout"    class="headerBtn btn-layout"    id="layoutBtn"                               </button>
     
   </div>
   <div id="panelBody">
@@ -59,27 +59,6 @@ var sidePanelHTML = `
 </html>
 `
 
-/* OLD BUTTON CODE
-
-  <a class="headerBtn" id="closeBtn">&times; <span class="closeText">Close!</span></a>
-  <a class="headerBtn" id="undockBtn">&raquo; <span class="dockText">Undock!</span></a>
-  <a class="headerBtn" id="dockBtn" style="display:none;">&laquo; <span class="dockText">Dock!</span> </a>
-  <a class="headerBtn" id="resetBtn">&osol; <span class="resetText">Reset!</span></a>
-  <a class="headerBtn" id="centerBtn">&curren; <span class="centerText">Center!</span></a>
-  <a class="headerBtn" id="settingsBtn">&dagger; <span class="settingsText">Settings</span></a>
-  <div class="btn-group">
-  <img id="willowIcon" src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
-  <img id="willowIcon" src="/../../images/willowIcon_50x50.png" alt="Willow">
-  </div>
-
-  <span class="closeText">Close!</span>
-  <span class="dockText">Undock!</span>
-  <span class="dockText">Dock!</span>
-  <span class="resetText">Reset!</span>
-  <span class="centerText">Center!</span>
-  <span class="settingsText">Settings</span> 
-
-  END OF OLD BUTTON CODE */
 // end of constants
 
 
@@ -108,15 +87,18 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
   if (res.WILLOW_SP_UNDOCKED) {
     undockSidePanel(res.WILLOW_SP_UNDOCKED_LOC, false);
   }
+  if (panelWidth < 700)
+    document.getElementById("willowLabel").style.display = "none";
+    
 });
 
 // register event handlers
-document.getElementById("closeBtn").onclick   = () => closeSidePanel(true);
-document.getElementById("undockBtn").onclick  = () => undockSidePanel(null, true);
-document.getElementById("dockBtn").onclick    = () => dockSidePanel(true);
-document.getElementById("resetBtn").onclick   = () => {chrome.runtime.sendMessage({message: "WILLOW_BACKGROUND_CLEAR_SESSION"})};
-document.getElementById("centerBtn").onclick   = () => {chrome.runtime.sendMessage({message: "WILLOW_GRAPH_VIEWPORT_CENTER"})};
-document.getElementById("settingsBtn").onclick = () => openSettingsMenu();  // defined in SettingMenu.js
+document.getElementById("closeBtn").onclick     = () => closeSidePanel(true);
+document.getElementById("undockBtn").onclick    = () => undockSidePanel(null, true);
+document.getElementById("dockBtn").onclick      = () => dockSidePanel(true);
+document.getElementById("resetBtn").onclick     = () => {chrome.runtime.sendMessage({message: "WILLOW_BACKGROUND_CLEAR_SESSION"})};
+document.getElementById("layoutBtn").onclick    = () => runLayoutAdjustBtn_handler(); // defined in SettingsMenu.js /*{chrome.runtime.sendMessage({message: "WILLOW_GRAPH_VIEWPORT_CENTER"})};*/
+document.getElementById("settingsBtn").onclick  = () => openSettingsMenu();  // defined in SettingsMenu.js
 enableResizing(rightBorderOnly = true);
 
 // -- end of script
@@ -395,31 +377,31 @@ function enableResizing(rightBorderOnly) {
 
     if (heldBorder == "right") {
       if (curWidth + deltaX > RESIZE_MIN_WIDTH) {
-        if (curWidth + deltaX >= 700){
-          /*let wlwLabel = document.getElementById("willowLabel");
-          wlwLabel.classList.remove('shrinkTrans');*/
-          document.getElementById("willowLabel").style.display = "";
+        if (curWidth + deltaX >= 590){
+          let wlwLabel = document.getElementById("willowLabel");
+          wlwLabel.classList.remove('shrinkTrans');
+          //document.getElementById("willowLabel").style.display = "";
           //console.log("current wid: " + curWidth + " deltaX: " + deltaX);
         }
         else {
-          /*let wlwLabel = document.getElementById("willowLabel");
-          wlwLabel.classList.add('shrinkTrans');*/
-          document.getElementById("willowLabel").style.display = "none";
+          let wlwLabel = document.getElementById("willowLabel");
+          wlwLabel.classList.add('shrinkTrans');
+          //document.getElementById("willowLabel").style.display = "none";
         }
 
         sidePanel.style.width = (curWidth + deltaX) + "px";
       }
     } else if (heldBorder == "left") {
       if (curWidth - deltaX > RESIZE_MIN_WIDTH) {
-        if (curWidth - deltaX >= 700){
-          /*let wlwLabel = document.getElementById("willowLabel");
-          wlwLabel.classList.remove('shrinkTrans');*/
-          document.getElementById("willowLabel").style.display = "";
+        if (curWidth - deltaX >= 590){
+          let wlwLabel = document.getElementById("willowLabel");
+          wlwLabel.classList.remove('shrinkTrans');
+          //document.getElementById("willowLabel").style.display = "";
         }
         else {
-          /*let wlwLabel = document.getElementById("willowLabel");
-          wlwLabel.classList.add('shrinkTrans');*/
-          document.getElementById("willowLabel").style.display = "none";
+          let wlwLabel = document.getElementById("willowLabel");
+          wlwLabel.classList.add('shrinkTrans');
+          //document.getElementById("willowLabel").style.display = "none";
         }
 
         sidePanel.style.width = (curWidth - deltaX) + "px";

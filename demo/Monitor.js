@@ -39,9 +39,10 @@ function tabRemoved( tabId, removeInfo) {
     // the page isn't open in that tab anymore
     let node = cy.getElementById(tabURLs.get(tabId));
 
-    if(node.length > 0) //! Sketchy
+    if(node.length > 0) { //! Sketchy
         node.data( "openTabCount", node.data("openTabCount") - 1); // decrement the openTabCount of the node.
-
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+    }
     tabURLs.delete(tabId);
 }
 
@@ -79,7 +80,6 @@ async function urlLoaded(tabId, url) {
             });
         };
         node.data("title", await getTitle(url));
-        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
     }
     
     // insert the edge if it does not already exist
@@ -125,7 +125,7 @@ async function urlLoaded(tabId, url) {
     
     // update the URL open in the tab.
     tabURLs.set(tabId, url);
-
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
     return null;
 
     //--------------------------- helper functions --------------------------------
