@@ -33,6 +33,13 @@ function initializeSG() {
             // ready 1
         }
     });
+
+    // set the id and increment the nextId
+    chrome.storage.local.get("nextId", function (result) {
+        let nextId = result.nextId;
+        cy.data("id", nextId);
+        chrome.storage.local.set({nextId: nextId + 1});
+    })
 }
 
 /**
@@ -44,12 +51,35 @@ function loadSG(cyJson) {
 }
 
 /**
- * Clearss the session graph.
+ * Clears the session graph.
  */
 function clearSG(){
     cy.remove(cy.elements());
     initialize();
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+}
+
+function saveSG() {
+    // save the sesssion to chrome's persistent storage
+    chrome.storage.local.get({sessions: []}, function (result) {
+        var sessions = result.sessions;
+
+        let id = cy.data("id");
+        let found = false;
+        for( let i = 0; i < sessions.length; i++) {
+            if(sessions[i].data.id == id) {
+                sessions[i] = cy.json();
+                found = true;
+            }
+        }
+        if(!found)
+            sessions.push(cy.json());
+        
+        // set the new array value to the same key
+        chrome.storage.local.set({sessions: sessions}, function () {
+            console.log("session saved! New sessions: ", sessions);
+        });
+    });
 }
 
 function getCytoscapeJSON(){
@@ -184,6 +214,10 @@ async function importJSON(json) {
 
     // close all tabs but the active one.
     chrome.tabs.query( {active:false, currentWindow: true},  (tabs) => {
+        chrome.tabs.remove(tabs.map( (tab) => {return tab.id}));
+    });
+
+    chrome.tabs.query( {currentWindow: false},  (tabs) => {
         chrome.tabs.remove(tabs.map( (tab) => {return tab.id}));
     });
 
