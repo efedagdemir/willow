@@ -96,6 +96,8 @@ chrome.runtime.onMessage.addListener(
             loadSessionWithId(request.id);
         } else if (request.message == "WILLOW_HISTORY_RENAME_SESSION") {
             renameSessionWithId(request.id, request.name);
+        } else if (request.message == "WILLOW_HISTORY_SHOW") {
+            loadHistoryMenu();
         }
     }
 );
