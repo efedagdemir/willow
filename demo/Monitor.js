@@ -10,6 +10,7 @@ addListeners();
 function initialize() {
     tabURLs = new Map();
     openingFromGraph = new Map();
+    initializeSG();
 }
 
 // adds the listeners to relevant chrome events.
@@ -26,7 +27,7 @@ function addListeners() {
 }
 
 function windowClosed() {
-    saveSG();
+    saveCurrentSession();
 }
 
 /**
@@ -70,7 +71,7 @@ async function urlLoaded(tabId, url) {
         let favIconUrl = "chrome://favicon/size/64@1x/" + url;
         let node = cy.add({// add the node to the cy graph
             group: 'nodes',
-            data: {id: url, title: "title not loaded :(", width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl,comment: ""},
+            data: {id: url, title_size: '20px', title: "title not loaded :(", width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl, comment: ""},
             
         });
         newNode = true;

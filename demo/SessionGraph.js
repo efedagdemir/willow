@@ -15,12 +15,15 @@ function initializeSG() {
 
     cy = cytoscape({
         container: container,
+        /*wheelSensitivity: '0.000000001',*/
+        /*wheelSensitivity: 1,*/
         style: [ // the stylesheet for the graph
             {
               selector: 'node',
               style: {
                 'label': 'data(title)',
                 'border-color':'data(border_color)',
+                'font-size': 'data(title_size)',
                 'width': 'data(width)',
                 'height': 'data(width)',
                 'text-wrap': 'wrap',
@@ -53,8 +56,8 @@ function loadSG(cyJson) {
 /**
  * Clears the session graph.
  */
-function clearSG(){
-    cy.remove(cy.elements());
+async function clearSG(){
+    await saveCurrentSession();
     initialize();
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
 }
@@ -140,18 +143,22 @@ function changeBorderColor(nodeId, color) {
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
 }
 
-function changeNodeSize(nodeId, size) {
+function changeNodeSize(nodeId, size, tSize) {
     let node = cy.getElementById(nodeId); 
     node.data("width", size);
+    node.data("title_size", tSize);
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
 }
 
 var UNIFORM_DEFAULT_SIZE = 35;
+var UNIFORM_TITLE_SIZE = '20px';
 var PAGERANK_AVG_SIZE = 55;
+var PAGERANK_AVG_TITLE_SIZE = '22px';
 function resetNodeSizes(option) {
     if (option == "uniform") {
         cy.nodes().forEach(function( ele ){
             ele.data("width", UNIFORM_DEFAULT_SIZE);
+            ele.data('title_size', UNIFORM_TITLE_SIZE);
         });
         runLayout();
         broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
@@ -159,6 +166,7 @@ function resetNodeSizes(option) {
         var pr = cy.elements().pageRank();
         cy.nodes().forEach(function( ele ){
             ele.data("width", pr.rank(ele) * PAGERANK_AVG_SIZE * cy.nodes().size());
+            ele.data('tite_size', PAGERANK_AVG_TITLE_SIZE);
         });
         runLayout();
         broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
@@ -247,7 +255,7 @@ function messageReceived(request, sender, sendResponse) {
     } else if (request.message == "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR") {
         changeBorderColor(request.nodeId, request.color);
     } else if (request.message == "WILLOW_BACKGROUND_CHANGE_NODE_SIZE"){
-        changeNodeSize(request.nodeId, request.size);
+        changeNodeSize(request.nodeId, request.size, request.tSize);
     } else if (request.message == "WILLOW_BACKGROUND_RESET_NODE_SIZES") {
         resetNodeSizes(request.option);
     } else if (request.message == "WILLOW_BACKGROUND_RUN_LAYOUT") {
