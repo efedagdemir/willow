@@ -2,7 +2,16 @@ console.log("alo");
 
 async function loadHistoryMenu() {
     await saveCurrentSession();
-    chrome.tabs.create({url: chrome.extension.getURL("/History/HistoryMenu.html")});
+    // if a tab contains the history menu, reload that one and switch to it. If not, create a new tab.
+    chrome.tabs.query({url: chrome.extension.getURL("/History/HistoryMenu.html")}, function (res) {
+        if(res.length > 0) {
+            chrome.tabs.reload(res[0].id, {bypassCache:true}, function () {
+                chrome.tabs.update(res[0].id, {active: true});
+            });
+        } else {
+            chrome.tabs.create({url: chrome.extension.getURL("/History/HistoryMenu.html")});
+        }
+    });
 }
 
 async function loadSessionWithId(id) {
