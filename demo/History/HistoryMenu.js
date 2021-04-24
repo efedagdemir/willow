@@ -39,9 +39,9 @@ function addSessionElements (session) {
 
     //image.setAttribute("src", "https://icons.iconarchive.com/icons/paomedia/small-n-flat/256/sign-right-icon.png");
     if (session.data.name)
-        title.innerHTML = session.data.name;
+        titleDiv.innerHTML = "<b>" + session.data.name + "</b>";
     else
-        title.innerHTML = session.data.lastUpdated;
+        titleDiv.innerHTML = session.data.lastUpdated;
     
     restoreBtnDiv.appendChild(restoreBtn);
     renameBtnDiv.appendChild(renameBtn);
@@ -51,16 +51,16 @@ function addSessionElements (session) {
     //sessionDiv.appendChild(image);
     sessionList.appendChild(rootDiv);
     
-    restoreButton.addEventListener("click", function () {
+    restoreBtn.addEventListener("click", function () {
         alert("HELLO1");
         chrome.runtime.sendMessage({ message: "WILLOW_HISTORY_LOAD_SESSION", id: session.data.id});
     });
 
-    renameButton.addEventListener("click", function() {
+    renameBtn.addEventListener("click", function() {
         alert("HELLO2");
         let name = prompt("Enter new name:");
         chrome.runtime.sendMessage( {message: "WILLOW_HISTORY_RENAME_SESSION", id: session.data.id, name: name});
-        title.innerHTML = name;
+        titleDiv.innerHTML = name;
     });
 }
 
