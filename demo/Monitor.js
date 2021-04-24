@@ -168,5 +168,4 @@ async function urlLoaded(tabId, url) {
             });
         }); 
     }
-
 }
