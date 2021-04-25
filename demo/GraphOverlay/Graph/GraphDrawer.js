@@ -5,7 +5,7 @@
 
 
 let canvas = document.getElementById("canvas");
-let cy = cytoscape();
+let cy = cytoscape({wheelSensitivity: 0.4});
 cy.mount(canvas);
 let contextMenuApplied = false;
 let hoverOverApplied = false;
@@ -139,89 +139,6 @@ function syncViewport() {
     });
 }
 
-function applyStyle() {
-    cy.style()
-        .selector('node')
-        .style({
-            'width': 'data(width)',
-            'height': 'data(width)',
-            'border-width': 5, 
-            'border-height': 'data(width)',
-            'border-opacity': 1,
-            'border-color':'data(border_color)',
-            'content': function (ele) {
-                var limit = 45
-                if (ele.data('title').length > limit){
-                    var shortened = ele.data('title').substring(0,limit-3);
-                    shortened = shortened + "...";
-                    return shortened;
-                }
-                else
-                    return ele.data('title');
-            },
-            'text-wrap': 'wrap',
-            'text-max-width': '170px',
-            'text-justification': 'center',
-            'background-image': function (ele) {
-                console.log("icon is:" + ele.data('iconURL'));
-                if (ele.data('openTabCount') > 0 ) 
-                    return [ele.data('iconURL'), 'active-color4.png'];
-                else 
-                    return ele.data('iconURL');
-            },
-            'background-image-containment': ['inside', 'over'],
-            'background-width': ['100%', '20%'],
-            'background-height': ['100%', '20%'],
-            'background-position-x': ['0.5px', '-10.5px'],
-            'background-position-y':['0px', '3px'],
-            'background-image-opacity': ['1', '1'],
-            'background-clip': ['node', 'none'],
-            'bounds-expansion': ['0', '10'],
-            'font-family' : 'Open Sans',
-            'font-size': 'data(title_size)'
-        })
-        .selector('edge')
-        .style({
-            'line-color': '#8d0801', /*#ab0321*/
-            'target-arrow-color': '#8d0801',
-            'line-style':  function (ele) {
-                if(ele.data("discovering") == true){
-                    return 'solid';
-                }
-                else{
-                    return 'dashed';
-                }
-                
-            },
-            'width': 2.5,
-            'target-arrow-shape': 'triangle-backcurve',
-            'curve-style': 'bezier',    // the default curve style does not support arrows
-            'opacity': 0.8
-        })
-        .selector(':selected')
-        .style({
-            'background-color': 'black',
-            'line-color': 'black',
-            'target-arrow-color': 'black',
-            'source-arrow-color': 'black',
-            'opacity': 1
-        })
-        .selector('.faded')
-        .css({
-            'opacity': 0.25,
-            'text-opacity': 0
-        })
-        .selector('.hovered')
-        .css({
-            content : 'data(title)',
-            'text-wrap': 'wrap',
-            'text-max-width': '170px',
-            'text-justification': 'center',
-            'font-family' : 'Open Sans',  
-        })
-        .update();    
-}
-
 function applyContextMenu() {
     var contextMenu = cy.contextMenus({
         evtType: 'cxttap',
@@ -274,13 +191,14 @@ function applyContextMenu() {
                     console.log("Node comment is ", node.data("comment"));
                     
                     var modal = document.getElementById("myModal");
+                    modal.draggable = 'false';
                     var span = document.getElementsByClassName("close")[0];
                     
                         
                     document.getElementById("comments").value = node.data("comment");
                      
                     modal.style.display = "block";
-                    modal.draggable = 'true';
+                    
                    // When the user clicks on <span> (x), close the modal
                     span.onclick = function() {
                         let comment_txt = document.getElementById("comments").value;

@@ -6,8 +6,13 @@ chrome.runtime.onInstalled.addListener(function () {
         WILLOW_SP_UNDOCKED_LOC: null,
         WILLOW_SP_WIDTH: "700px",
         WILLOW_SP_UD_HEIGHT: "600px",
-
-        WILLOW_SETTINGS_OPEN: false
+        WILLOW_OPACITY_UPDATE:false,
+        WILLOW_OPACITY:null,
+        WILLOW_SETTINGS_OPEN: false,
+        WILLOW_INFO_OPEN: false,
+        WILLOW_HOW_TO_OPEN: false,
+        WILLOW_LAYOUT_OPT: 1,
+        WILLOW_DETAILS_TAGS: '0000000' //a basic way of showing which details are opened, used only for initialization
     });
 });
 

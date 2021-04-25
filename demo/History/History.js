@@ -62,6 +62,8 @@ function saveCurrentSession() {
             var sessions = result.sessions;
 
             // save the png export inside data
+            applyStyle();
+            cy.style().update();
             cy.data("png", cy.png());
             
             // set the last updated data

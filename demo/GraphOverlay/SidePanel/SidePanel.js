@@ -77,7 +77,7 @@ injectSidePanel();
 
 // read panel state
 chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UNDOCKED_LOC", 
-  "WILLOW_SP_WIDTH", "WILLOW_SP_UD_HEIGHT"], function (res) {
+  "WILLOW_SP_WIDTH", "WILLOW_SP_UD_HEIGHT","WILLOW_OPACITY_UPDATE","WILLOW_OPACITY"], function (res) {
   panelWidth = res.WILLOW_SP_WIDTH;
   panelUndockedHeight = res.WILLOW_SP_UD_HEIGHT;
   // The panel is closed and docked by default. Update based on the stored state.
@@ -89,7 +89,8 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
   }
   if (panelWidth < 700)
     document.getElementById("willowLabel").style.display = "none";
-    
+  if(res.WILLOW_OPACITY_UPDATE)
+    updateOpacity(res.WILLOW_OPACITY);
 });
 
 // register event handlers
@@ -195,6 +196,10 @@ function toggleSidePanel(isOrigin) {
   } else {
     openSidePanel(isOrigin);
   }
+}
+
+function updateOpacity(willowOpacity){
+  document.getElementById("graphFrame").style.opacity = willowOpacity.opacity;
 }
 
 function undockSidePanel(undockedLoc, isOrigin) {
