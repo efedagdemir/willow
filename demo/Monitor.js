@@ -122,7 +122,7 @@ async function urlLoaded(tabId, url) {
             polyominoGridSizeFactor: 1,
             utilityFunction: 1,
             componentSpacing: 30
-        });
+    });
     
     instance.placeNewNodes(cy.getElementById(url));  
     //instance.packComponents(cy.elements().components());
