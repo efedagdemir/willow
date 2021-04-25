@@ -79,7 +79,7 @@ async function urlLoaded(tabId, url) {
         //! temp
         applyStyle();
         cy.style().update();
-        cy.data("png", cy.png());
+        cy.data("png", cy.png({full:true}));
 
         // get the page's title and add it. this happens asynchronously. //TODO this could be formatted better.
         const getTitle = (url) => {  

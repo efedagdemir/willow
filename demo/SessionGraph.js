@@ -199,13 +199,24 @@ async function importJSON(json) {
     cy.json(json);
     let nodes = cy.nodes();
 
+    // create a blank tab and activate it
+    await new Promise ( (resolve, reject) => { chrome.tabs.create({url: "chrome://newtab", active: true}, ()=> resolve())});
+
     // close all tabs but the active one.
     chrome.tabs.query( {active:false, currentWindow: true},  (tabs) => {
-        chrome.tabs.remove(tabs.map( (tab) => {return tab.id}));
+        for( let tab of tabs) {
+            if(!tab.url.startsWith("chrome")) {
+                chrome.tabs.remove(tab.id);
+            }
+        }
     });
 
     chrome.tabs.query( {currentWindow: false},  (tabs) => {
-        chrome.tabs.remove(tabs.map( (tab) => {return tab.id}));
+        for( let tab of tabs) {
+            if(!tab.url.startsWith("chrome")) {
+                chrome.tabs.remove(tab.id);
+            }
+        }
     });
 
     chrome.tabs.query( {active:true, currentWindow: true}, (tabs) => { chrome.tabs.update(tabs[0].id, {url : "chrome://newtab"})});
