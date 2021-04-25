@@ -1,3 +1,12 @@
+/* Initializes the state of 'Info' page */
+chrome.storage.local.get(["WILLOW_INFO_OPEN"], function (res) {
+    
+    if (res.WILLOW_INFO_OPEN) {
+        openSettingsMenu(false);
+        openInfoPage(false);
+    }
+  });
+
 
 var infoPageHTML = `
 <!DOCTYPE html>
@@ -65,18 +74,54 @@ var infoPageHTML = `
 `;
    
 
-function openInfoPage() {
+function openInfoPage(isOrigin) {
    
     infoWrapper = document.createElement('div');
     infoWrapper.id = "willowInfoPageWrapper";
     infoWrapper.innerHTML = infoPageHTML;
     
     document.getElementById("panelBody").appendChild(infoWrapper);
-    document.getElementById("info_close_btn").onclick = () => closeInfoPage(); 
+    document.getElementById("info_close_btn").onclick = () => closeInfoPage(true); 
+
+    if (isOrigin) {
+        // set global state
+        chrome.storage.local.set({ WILLOW_INFO_OPEN: true });
+        // notify other tabs with a sync request
+        chrome.runtime.sendMessage({ 
+          message: "WILLOW_INFO_SYNC_REQUEST",
+          action: "WILLOW_INFO_SYNC_OPEN",
+        });
+    }
 }
 
 
-function closeInfoPage() {
+function closeInfoPage(isOrigin) {
     infoWrapper.parentNode.removeChild(infoWrapper);
+    if (isOrigin) {
+        // set global state
+        chrome.storage.local.set({ WILLOW_INFO_OPEN: false });
+        // notify other tabs with a sync request
+        chrome.runtime.sendMessage({ 
+          message: "WILLOW_INFO_SYNC_REQUEST",
+          action: "WILLOW_INFO_SYNC_CLOSE",
+        });
+    }
 }
 
+/*Listening synchronization requets*/
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+      if (request.message != "WILLOW_INFO_SYNC_REQUEST") {
+          return;
+      }
+      handleInfoPageSyncRequest(request);
+    }
+);
+
+function handleInfoPageSyncRequest(request) {
+    if (request.action == "WILLOW_INFO_SYNC_OPEN") {
+        openInfoPage(false);
+    } else if (request.action == "WILLOW_INFO_SYNC_CLOSE") {
+        closeInfoPage(false);    
+    }
+}

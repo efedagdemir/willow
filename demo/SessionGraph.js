@@ -1,4 +1,3 @@
-
 var cy = null;          // The variable that holds the cytoscape object.
 var interval = null;    // A setInterval() result that updates the session graph every 30 seconds.
 /**
@@ -14,8 +13,6 @@ function initializeSG() {
 
     cy = cytoscape({
         container: container,
-        /*wheelSensitivity: '0.000000001',*/
-        /*wheelSensitivity: 1,*/
         style: [ // the stylesheet for the graph
             {
               selector: 'node',
@@ -35,6 +32,8 @@ function initializeSG() {
             // ready 1
         }
     });
+
+    applyStyle();
 
     // set the id and increment the nextId
     chrome.storage.local.get("nextId", function (result) {

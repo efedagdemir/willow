@@ -46,6 +46,7 @@
             
                     "SyncBroadcaster.js",
                     "GraphOverlay/SidePanel/SidePanel_background.js",
+                    "GraphOverlay/Graph/GraphStyler.js",
                     "GraphOverlay/Graph/GraphDrawer_background.js",
                     "SessionGraph.js",
                     "History/History.js",

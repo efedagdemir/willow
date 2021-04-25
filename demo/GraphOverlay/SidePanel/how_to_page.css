@@ -5,7 +5,6 @@
     top: 15%;
     left: 15%;
     background-color: #f4d58d; /* same as #panelHeader (side_panel.css)*/
-    text-align: center;
     border-radius: 20px;
     overflow: auto;
     overflow-x: auto;
@@ -20,17 +19,17 @@
     
 }
 
-
-
 #willow_header_how_to {
     text-align: center;
+    font-size: 20px;
 }
 
 
-/* detaill - summary tags */
-#willow_purpose, #willow_page_rank {
-    padding: 7px;
-    color:#041424;
+/* details - summary tags */
+
+.willow_detail{
+    margin-top: 10px;
+    margin-left: 20px;
 }
 
 .willow_summary{
@@ -39,42 +38,27 @@
 }
 
 .nested_summary{
-    color: #941c1c;
+    color: #d82828;
     font-weight: bold;
+    margin-left: 15px;
+    margin-top: 10px;
+  
 }
 
-.willow_detail{
-    padding: 15px;
-    border: 0.1px solid #4d0000;
-    
+.details_p {
+    padding: 7px;
+    margin-left: 15px;
+    color:#041424;
 }
 
-
-details > summary {
-    list-style-type: none;
+.nested_p {
+    padding: 5px;
+    margin-left: 15px;
 }
 
-details > summary::-webkit-details-marker {
-    display: none;
+p {
+    color: #041424;;
 }
-
-
-.willow_detail > summary::before {
-    content: "> ";
-}
-
-.willow_detail[open] > summary::before {
-    content: "< ";
-}
-
-.nested_detail > summary::before {
-    content: "+ ";
-}
-
-.nested_detail[open] > summary::before  {
-    content: "- ";
-}
-
 
 /* close button */ 
 #how_to_close_btn {
