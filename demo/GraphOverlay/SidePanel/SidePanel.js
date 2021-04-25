@@ -98,8 +98,8 @@ document.getElementById("closeBtn").onclick     = () => closeSidePanel(true);
 document.getElementById("undockBtn").onclick    = () => undockSidePanel(null, true);
 document.getElementById("dockBtn").onclick      = () => dockSidePanel(true);
 document.getElementById("newBtn").onclick       = () => {chrome.runtime.sendMessage({message: "WILLOW_BACKGROUND_CLEAR_SESSION"})};
-document.getElementById("layoutBtn").onclick    = () => runLayoutAdjustBtn_handler(); // defined in SettingsMenu.js /*{chrome.runtime.sendMessage({message: "WILLOW_GRAPH_VIEWPORT_CENTER"})};*/
-document.getElementById("settingsBtn").onclick  = () => toggleSettingsMenu();  // defined in SettingsMenu.js
+document.getElementById("layoutBtn").onclick    = () => runLayoutBtn_handler();
+document.getElementById("settingsBtn").onclick  = () => toggleSettingsMenu();
 enableResizing(rightBorderOnly = true);
 
 // -- end of script
@@ -448,6 +448,23 @@ function toggleSettingsMenu() {
   chrome.runtime.sendMessage({
     message: "WILLOW_TOGGLE_SETTINGS_MENU"
   })
+}
+
+function runLayoutBtn_handler() {
+  chrome.storage.local.get(["WILLOW_LAYOUT_OPT"], function (res) {
+      if (res.WILLOW_LAYOUT_OPT == 1){
+        chrome.runtime.sendMessage({
+            message: "WILLOW_BACKGROUND_RUN_LAYOUT",
+            option: "incremental"
+        });
+      }
+      else{
+        chrome.runtime.sendMessage({
+            message: "WILLOW_BACKGROUND_RUN_LAYOUT",
+            option: "recalculate"
+        });
+      }
+  });
 }
 
 /*****************************************************************************

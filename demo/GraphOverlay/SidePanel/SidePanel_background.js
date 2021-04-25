@@ -8,7 +8,7 @@ chrome.runtime.onInstalled.addListener(function () {
         WILLOW_SP_UD_HEIGHT: "600px",
         WILLOW_OPACITY_UPDATE:false,
         WILLOW_OPACITY:null,
-        WILLOW_SETTINGS_OPEN: true,
+        WILLOW_SETTINGS_OPEN: false,
         WILLOW_INFO_OPEN: false,
         WILLOW_HOW_TO_OPEN: false,
         WILLOW_LAYOUT_OPT: 1,

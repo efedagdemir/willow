@@ -218,27 +218,6 @@ function radiBtn_handler(button_no){
     });
 }
 
-/* Sends the layout message according 
- * to the checked radio button        */
-function runLayoutAdjustBtn_handler() {
-    
-    chrome.storage.local.get(["WILLOW_LAYOUT_OPT"], function (res) {
-        
-        if (res.WILLOW_LAYOUT_OPT == 1){
-                chrome.runtime.sendMessage({
-                    message: "WILLOW_BACKGROUND_RUN_LAYOUT",
-                    option: "incremental"
-                });
-        }
-        else{
-            chrome.runtime.sendMessage({
-                message: "WILLOW_BACKGROUND_RUN_LAYOUT",
-                option: "recalculate"
-            });
-        }
-    });
-}
-
 
 /**
  * SYNCING SETTINGS MENU OPEN/CLOSED SETTINGS
