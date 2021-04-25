@@ -3,7 +3,7 @@ var interval = null;    // A setInterval() result that updates the session graph
 /**
  * Initalizes the session graph as a cytoscape object with no elements.
  */
-function initializeSG() {
+async function initializeSG() {
     // create an HTML container for the graph in the background page
     //* This page is not rendered, the container's sole purpose is to enable cytospace.js to work properly.
     let container = document.createElement("div");
@@ -11,36 +11,38 @@ function initializeSG() {
     container.style.width = container.style.height = "300px"; // random values for width and height.
     document.body.appendChild(container);
 
+
+    let nextId;
+    await new Promise((resolve, reject) => {chrome.storage.local.get("nextId", function (result) {
+        nextId = result.nextId;
+        chrome.storage.local.set({nextId: nextId + 1});
+        resolve();
+    })});
+    
     cy = cytoscape({
         container: container,
         style: [ // the stylesheet for the graph
             {
-              selector: 'node',
-              style: {
-                'label': 'data(title)',
-                'border-color':'data(border_color)',
-                'font-size': 'data(title_size)',
-                'width': 'data(width)',
-                'height': 'data(width)',
-                'text-wrap': 'wrap',
-                'text-max-width': '170px',
-                'text-justification': 'center'
-              }
+                selector: 'node',
+                style: {
+                    'label': 'data(title)',
+                    'border-color':'data(border_color)',
+                    'font-size': 'data(title_size)',
+                    'width': 'data(width)',
+                    'height': 'data(width)',
+                    'text-wrap': 'wrap',
+                    'text-max-width': '170px',
+                    'text-justification': 'center'
+                }
             },
         ],
         ready: function () {
             // ready 1
         }
     });
-
+    
+    cy.data("id", nextId);
     applyStyle();
-
-    // set the id and increment the nextId
-    chrome.storage.local.get("nextId", function (result) {
-        let nextId = result.nextId;
-        cy.data("id", nextId);
-        chrome.storage.local.set({nextId: nextId + 1});
-    });
 
     // start saving the session graph every 30 seconds.
     interval = setInterval( saveCurrentSession, 30000);
@@ -61,6 +63,27 @@ async function clearSG(){
     await saveCurrentSession();
     clearInterval(interval);
     initialize();
+
+    // create a blank tab and activate it
+    await new Promise ( (resolve, reject) => { chrome.tabs.create({url: "chrome://newtab", active: true}, ()=> resolve())});
+
+    // close all tabs but the active one.
+    chrome.tabs.query( {active:false, currentWindow: true},  (tabs) => {
+        for( let tab of tabs) {
+            if(!tab.url.startsWith("chrome")) {
+                chrome.tabs.remove(tab.id);
+            }
+        }
+    });
+
+    chrome.tabs.query( {currentWindow: false},  (tabs) => {
+        for( let tab of tabs) {
+            if(!tab.url.startsWith("chrome")) {
+                chrome.tabs.remove(tab.id);
+            }
+        }
+    });
+
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
 }
 
