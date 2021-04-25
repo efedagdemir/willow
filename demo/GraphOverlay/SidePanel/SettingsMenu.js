@@ -143,6 +143,15 @@ function runLayoutRecalcBtn_handler() {
 function sliderTrans_handler() {
     var object =  document.getElementById("graphFrame");
     object.style.opacity = document.getElementById("sliderTrans").value.toString();
+    chrome.storage.local.get(["WILLOW_OPACITY_UPDATE"], function (res) {
+        chrome.storage.local.set({
+            WILLOW_OPACITY_UPDATE : true,
+            WILLOW_OPACITY: {
+              opacity : document.getElementById("sliderTrans").value.toString()
+            }
+          });
+        
+    });
 }
 
 function exportBtn_handler(){
