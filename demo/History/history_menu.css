@@ -28,6 +28,10 @@ body {
     overflow: hidden
 }
 
+#imgBackground {
+    background-image: linear-gradient(to right, #f4d58d, #708d81); /*same as #graphFrame (side_panel.css)*/
+}
+
 #previewPane hr{
     color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
     border: 1px solid;
