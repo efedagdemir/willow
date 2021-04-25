@@ -14,6 +14,14 @@ async function loadHistoryMenu() {
     });
 }
 
+chrome.tabs.onActivated.addListener( (activeInfo) => {
+    chrome.tabs.get(activeInfo.tabId, function (tab) {
+        if(tab.url == chrome.extension.getURL("/History/HistoryMenu.html")) {
+            loadHistoryMenu();
+        }
+    })
+});
+
 async function loadSessionWithId(id) {
     await saveCurrentSession();
     chrome.storage.local.get({sessions: []}, function (result) {
