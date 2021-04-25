@@ -6,6 +6,8 @@ chrome.storage.local.get(["WILLOW_SETTINGS_OPEN","WILLOW_HOW_TO_OPEN", "WILLOW_I
   }
 });
 
+var menuIsOpen = false;
+
 var menuWrapper;
 /**
  * SidePanel.js registers this funtction as the onclick handler of the settings button.
@@ -53,7 +55,7 @@ function openSettingsMenu(isOrigin) {
                 <div class= "label"> <b>Background opacity: </b></div>
                 <div class = "opt">
                     <input type="range" id="sliderTrans"
-                        min="0.75" max="1" step="0.005" value="${getComputedStyle(document.getElementById("graphFrame")).getPropertyValue("opacity")}"/>
+                        min="0.75" max="1" step="0.005" value="${getComputedStyle(document.getElementById("canvas")).getPropertyValue("opacity")}"/>
             </div>
                 </div>
             <br>
@@ -77,10 +79,11 @@ function openSettingsMenu(isOrigin) {
     `;
     
     menuWrapper.innerHTML = settingsMenuHTML;
-    document.getElementById("panelBody").appendChild(menuWrapper);
-    document.getElementById("settingsBtn").onclick = () => closeSettingsMenu(true);
+    document.body.append(menuWrapper);
     addSettingsMenuListeners();
     arrangeLayoutRadioButton(); 
+
+    menuIsOpen = true;
 
     if (isOrigin) {
         // set global state
@@ -103,7 +106,7 @@ function closeSettingsMenu(isOrigin) {
     }); 
 
     menuWrapper.parentNode.removeChild(menuWrapper);
-    document.getElementById("settingsBtn").onclick = () => openSettingsMenu(true);
+    menuIsOpen = false;
 
     if (isOrigin) {
         // set global state
@@ -161,7 +164,7 @@ function resetSizesPRBtn_handler() {
 
 
 function sliderTrans_handler() {
-    var object =  document.getElementById("graphFrame");
+    var object =  document.getElementById("canvas");
     object.style.opacity = document.getElementById("sliderTrans").value.toString();
     chrome.storage.local.get(["WILLOW_OPACITY_UPDATE"], function (res) {
         chrome.storage.local.set({
@@ -250,6 +253,12 @@ chrome.runtime.onMessage.addListener(
         else if ( request.message == "WILLOW_RADIO_SYNC_REQUEST"){
             chrome.storage.local.set({ WILLOW_LAYOUT_OPT: request.button_no });  
             document.getElementById("layout_radio" + request.button_no).checked = "checked";
+        } else if (request.message == "WILLOW_TOGGLE_SETTINGS_MENU") {
+            if (menuIsOpen) {
+                closeSettingsMenu();
+            } else {
+                openSettingsMenu();
+            }
         }
     }
 );

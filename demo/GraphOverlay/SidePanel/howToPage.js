@@ -90,7 +90,7 @@ function openHowToPage(isOrigin) {
     howToWrapper.id = "willowHowToPageWrapper";
     howToWrapper.innerHTML = howToPageHTML;
 
-    document.getElementById("panelBody").appendChild(howToWrapper);
+    document.body.append(howToWrapper);
     document.getElementById("how_to_close_btn").onclick = () => closeHowToPage(true);
     addHowToPageDetailsListeners();
     arrangeDetailsTags();

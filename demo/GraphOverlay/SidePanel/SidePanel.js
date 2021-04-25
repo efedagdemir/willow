@@ -99,7 +99,7 @@ document.getElementById("undockBtn").onclick    = () => undockSidePanel(null, tr
 document.getElementById("dockBtn").onclick      = () => dockSidePanel(true);
 document.getElementById("newBtn").onclick       = () => {chrome.runtime.sendMessage({message: "WILLOW_BACKGROUND_CLEAR_SESSION"})};
 document.getElementById("layoutBtn").onclick    = () => runLayoutAdjustBtn_handler(); // defined in SettingsMenu.js /*{chrome.runtime.sendMessage({message: "WILLOW_GRAPH_VIEWPORT_CENTER"})};*/
-document.getElementById("settingsBtn").onclick  = () => openSettingsMenu(true);  // defined in SettingsMenu.js
+document.getElementById("settingsBtn").onclick  = () => toggleSettingsMenu();  // defined in SettingsMenu.js
 enableResizing(rightBorderOnly = true);
 
 // -- end of script
@@ -442,6 +442,12 @@ function enableResizing(rightBorderOnly) {
       newWidth: sidePanel.style.width
     });
   }
+}
+
+function toggleSettingsMenu() {
+  chrome.runtime.sendMessage({
+    message: "WILLOW_TOGGLE_SETTINGS_MENU"
+  })
 }
 
 /*****************************************************************************

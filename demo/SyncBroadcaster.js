@@ -4,6 +4,7 @@ chrome.runtime.onMessage.addListener(
         // only broadcast SidePanel or Graph sync requests, do nothing when other messages are received
         if (   request.message == "WILLOW_SP_SYNC_REQUEST"
             || request.message == "WILLOW_SETTINGS_SYNC_REQUEST"
+            || request.message == "WILLOW_TOGGLE_SETTINGS_MENU"
             || request.message == "WILLOW_INFO_SYNC_REQUEST"
             || request.message == "WILLOW_HOW_TO_SYNC_REQUEST"
             || request.message == "WILLOW_HOW_TO_DETAILS_SYNC_REQUEST"

@@ -80,7 +80,7 @@ function openInfoPage(isOrigin) {
     infoWrapper.id = "willowInfoPageWrapper";
     infoWrapper.innerHTML = infoPageHTML;
     
-    document.getElementById("panelBody").appendChild(infoWrapper);
+    document.body.append(infoWrapper);
     document.getElementById("info_close_btn").onclick = () => closeInfoPage(true); 
 
     if (isOrigin) {
