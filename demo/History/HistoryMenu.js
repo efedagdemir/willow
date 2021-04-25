@@ -5,8 +5,11 @@ let curTitle = document.getElementById("curTitle");
 let restoreBtn = document.getElementById("restoreBtn");
 let renameBtn = document.getElementById("renameBtn");
 let deleteBtn = document.getElementById("deleteBtn");
+
 let curSession;
 let curHistElement;
+let lockedSession;
+let lockedHistElement;
 
 initialize();
 
@@ -71,12 +74,35 @@ function addSessionElements (session) {
     rootDiv.addEventListener("mouseover", function() {
         activateHistElement(rootDiv);
         curSession = session;
+        curHistElement = rootDiv;
         updatePreview();
     });
+    rootDiv.addEventListener("mouseleave", function() { 
+        if (lockedHistElement && lockedHistElement != rootDiv) {
+            
+            rootDiv.style.border = "1px solid #f4d58d";
+            curHistElement = null;
+            curSession = lockedSession;
+            updatePreview();
+        }
+    });
+    rootDiv.addEventListener("mousedown", function() { 
+        if (lockedHistElement == rootDiv) {
+            lockedSession = null;
+            lockedHistElement = null;
+            rootDiv.style.border = "3px solid #f4d58d";
+            return
+        }
+        lockedSession = session;
+        lockHistElement(rootDiv);
+        lockedHistElement = rootDiv;
+    });
+
 
     // quick fix that initializes the active item
     if (!curHistElement) {
         activateHistElement(rootDiv);
+        curHistElement = rootDiv;
     }
 }
 
@@ -91,10 +117,18 @@ function clearPreview() {
 }
 
 function activateHistElement(e) {
-    if (curHistElement)
+    if (curHistElement && curHistElement != lockedHistElement)
         curHistElement.style.border = "1px solid #f4d58d";
-    e.style.border = "3px solid #f4d58d";
-    curHistElement = e;
+    if (lockedHistElement != e) {
+        e.style.border = "3px solid #f4d58d";
+    }
+}
+
+function lockHistElement(e) {
+    if (lockedHistElement) {
+        lockedHistElement.style.border = "1px solid #f4d58d";
+    }
+    e.style.border = "3px solid #bb0909";
 }
 
 function getSessionTitle(session) {
