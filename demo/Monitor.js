@@ -199,8 +199,13 @@ async function urlLoaded(tabId, url) {
         return new Promise( function (resolve, reject) {
             // request a list of visits to the url.
             chrome.history.getVisits({ url: url }, function (visitItems) {
+                console.log(visitItems);
                 console.log("The page was visited ", visitItems.length, " times.");
                 console.log("Last transition type is ", visitItems[visitItems.length - 1].transition);
+                
+                // if the new url is last visited by "generated", we find that in the second to last entry.
+                if (visitItems[visitItems.length - 1].transition == "link")
+                    resolve(false);
                 // if the new url is last visited by a link, the new page's node is a child of the node this tab is at.
                 if (visitItems[visitItems.length - 1].transition == "link" ||
                     visitItems[visitItems.length - 1].transition == "form_submit") {
