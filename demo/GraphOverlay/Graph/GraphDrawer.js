@@ -3,7 +3,7 @@
  * ! problem at all.
  */
 
-
+// cytoscape.warnings(false);
 let canvas = document.getElementById("canvas");
 let cy = cytoscape({wheelSensitivity: 0.4});
 cy.mount(canvas);
@@ -395,29 +395,6 @@ function applyContextMenu() {
                 coreAsWell: true
             },
             {
-                id: 'remove-edge',
-                content: 'Remove edge',
-                tooltipText: 'Remove the edge between the nodes',
-                selector: 'edge',
-                onClickFunction: function (event) {
-                    let target = event.target || event.cyTarget;
-                    let sourceURL = target.source();
-                    let targetURL = target.target();
-                    chrome.runtime.sendMessage({
-                        message: "WILLOW_BACKGROUND_REMOVE_EDGE",
-                        source: sourceURL,
-                        target: targetURL
-                    });
-                    // !! Move this to BG once remove edge is implemented.
-                    chrome.runtime.sendMessage({
-                        message: "WILLOW_GRAPH_SYNC_REQUEST",
-                    });
-                    
-                },
-                show: true,
-                coreAsWell: true
-            },
-            {
                 id: 'centerGraph',
                 content: 'Center graph',
                 tooltipText: 'Pan the view to the center of the graph',
@@ -454,7 +431,6 @@ function applyContextMenu() {
             contextMenu.hideMenuItem('open');
             contextMenu.hideMenuItem('open-in-new-tab');
             contextMenu.hideMenuItem('remove');
-            contextMenu.hideMenuItem('remove-edge');
             contextMenu.hideMenuItem('change-border-color');
             contextMenu.hideMenuItem('change-node-size');
             contextMenu.hideMenuItem('comment');
@@ -468,11 +444,9 @@ function applyContextMenu() {
             contextMenu.showMenuItem('change-border-color');
             contextMenu.showMenuItem('change-node-size');
 
-            contextMenu.hideMenuItem('remove-edge');
         }
         else if (evtTarget.isEdge()){
             //console.log("target is an edge");
-            contextMenu.showMenuItem('remove-edge');
 
             contextMenu.hideMenuItem('open');
             contextMenu.hideMenuItem('open-in-new-tab');
