@@ -37,6 +37,14 @@ function windowClosed() {
  * @param {Tab} tab             The chrome tab object, more info in the link above.
  */
 function tabUpdated(tabId, changeInfo, tab) {
+    
+    let node = cy.getElementById(tabURLs.get(tabId)); 
+    if (node.data("openTabCount") > 0 && changeInfo.url != undefined && changeInfo.url.startsWith("chrome")){
+        
+        tabURLs.set(tabId, changeInfo.url);
+        node.data( "openTabCount", node.data("openTabCount") - 1); 
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+    }
     if (changeInfo.url && !changeInfo.url.startsWith("chrome")) { // do not consider the pages that start with chrome, no history is kept for them.
         urlLoaded(tabId, tab.url);
     }
@@ -165,7 +173,7 @@ async function urlLoaded(tabId, url) {
 
     // the tab does not contain the old page anymore.
     let oldURL = tabURLs.get(tabId);
-    if(oldURL) {
+    if(oldURL && !oldURL.startsWith("chrome")) {
         let oldURLNode = cy.getElementById(oldURL); // decrement the old page's node's open tab count.
         oldURLNode.data("openTabCount", oldURLNode.data("openTabCount") - 1);
     }
