@@ -53,13 +53,18 @@ function addSessionElements (session) {
     // --- create the html elements ---
     let rootDiv = document.createElement("div");
     let titleDiv = document.createElement("div");
+    let lastAccDiv = document.createElement("div");
 
     // --- set the properties ---
     rootDiv.className = "historyElement";
     titleDiv.className = "label";
+    lastAccDiv.className = "opt"
+    
     titleDiv.innerHTML = "<b>" + getSessionTitle(session) + "</b>";
+    lastAccDiv.innerHTML = "<b>" + session.data.lastUpdated + "</b>";
 
     rootDiv.appendChild(titleDiv);
+    rootDiv.appendChild(lastAccDiv);
     sessionList.appendChild(rootDiv);
     
     // --- add listeners ---
@@ -96,5 +101,5 @@ function getSessionTitle(session) {
     if (session.data.name)
         return session.data.name;
     else
-        return session.data.lastUpdated;
+        return "Anonymous session";
 }

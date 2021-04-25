@@ -58,19 +58,20 @@ function renameSessionWithId(id, name) {
 function saveCurrentSession() {
     return new Promise( (resolve, reject) => {
         // save the sesssion to chrome's persistent storage
-        chrome.storage.local.get({sessions: []}, function (result) {
+        chrome.storage.local.get({sessions: []}, async function (result) {
             var sessions = result.sessions;
 
             // save the png export inside data
             applyStyle();
-            cy.style().update();
+            cy.style().update();            
+            cy.data("png", cy.png());
             cy.data("png", cy.png());
             
             // set the last updated data
             var now = new Date();
-            var name = "Session on " + now.getFullYear()+'-'+String((now.getMonth()+1)).padStart(2,'0')+'-'+ String(now.getDate()).padStart(2,'0') + ' at '
+            var lastAccess = now.getFullYear()+'-'+String((now.getMonth()+1)).padStart(2,'0')+'-'+ String(now.getDate()).padStart(2,'0') + ' at '
                 + now.getHours() + "." + String(now.getMinutes()).padStart(2,'0') + "." + String(now.getSeconds()).padStart(2,'0');
-            cy.data("lastUpdated", name);
+            cy.data("lastUpdated", lastAccess);
 
             let id = cy.data("id");
             let found = false;
