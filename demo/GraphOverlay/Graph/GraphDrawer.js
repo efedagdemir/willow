@@ -5,7 +5,7 @@
 
 
 let canvas = document.getElementById("canvas");
-let cy = cytoscape();
+let cy = cytoscape({wheelSensitivity: 0.4});
 cy.mount(canvas);
 let contextMenuApplied = false;
 let hoverOverApplied = false;
@@ -140,7 +140,7 @@ function syncViewport() {
 }
 
 function applyStyle() {
-    cy.style()
+    cy.style()/*.fromJson({'wheelSensitivity': '0.1'})*/
         .selector('node')
         .style({
             'width': 'data(width)',
@@ -163,7 +163,6 @@ function applyStyle() {
             'text-max-width': '170px',
             'text-justification': 'center',
             'background-image': function (ele) {
-                console.log("icon is:" + ele.data('iconURL'));
                 if (ele.data('openTabCount') > 0 ) 
                     return [ele.data('iconURL'), 'active-color4.png'];
                 else 
@@ -172,7 +171,7 @@ function applyStyle() {
             'background-image-containment': ['inside', 'over'],
             'background-width': ['100%', '20%'],
             'background-height': ['100%', '20%'],
-            'background-position-x': ['0.5px', '-10.5px'],
+            'background-position-x': ['0.5px', '-3.5px'],
             'background-position-y':['0px', '3px'],
             'background-image-opacity': ['1', '1'],
             'background-clip': ['node', 'none'],
@@ -213,13 +212,18 @@ function applyStyle() {
         })
         .selector('.hovered')
         .css({
-            content : 'data(title)',
+             content : 'data(title)',
             'text-wrap': 'wrap',
             'text-max-width': '170px',
             'text-justification': 'center',
             'font-family' : 'Open Sans',  
         })
-        .update();    
+        .update();   
+
+        //cy.userZoomingEnabled(true);
+        //cy.style().fromJson({'wheelSensitivity': '0.3'}).update(); 
+
+        
 }
 
 function applyContextMenu() {

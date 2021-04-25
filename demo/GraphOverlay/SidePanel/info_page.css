@@ -1,3 +1,4 @@
+
 #infoPage {
     position: absolute;
     height: 70%;
@@ -34,6 +35,11 @@
     font-size: 18px;
 }
 
+#willow_footer {
+    font-size: 10px;
+}
+
+/* close button */ 
 #info_close_btn {
     float: right;
     background-image: url('../../icons/close.png');
@@ -60,7 +66,5 @@
     opacity: 0.3;
 }
 
-#willow_footer {
-    font-size: 10px;
-}
+
 

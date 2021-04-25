@@ -15,8 +15,6 @@ function initializeSG() {
 
     cy = cytoscape({
         container: container,
-        /*wheelSensitivity: '0.000000001',*/
-        /*wheelSensitivity: 1,*/
         style: [ // the stylesheet for the graph
             {
               selector: 'node',
@@ -28,7 +26,8 @@ function initializeSG() {
                 'height': 'data(width)',
                 'text-wrap': 'wrap',
                 'text-max-width': '170px',
-                'text-justification': 'center'
+                'text-justification': 'center',
+                'background-image-containment':'over'
               }
             },
         ],

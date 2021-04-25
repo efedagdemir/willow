@@ -1,3 +1,4 @@
+
 #settingsMenu {
     position: absolute;
     height: 70%;
@@ -31,6 +32,7 @@
     display: inline-block;
     text-align: left;
     float: left;
+    color: #f4d58d;
 }
 
 .settingElement .opt {
@@ -53,7 +55,7 @@
     transition: opacity .2s;
   }
   
-/* buttons */
+/* the four buttons on the bottom */
  .table-buttons {   
     margin: 5px;
     background-color: #f4d58d;
@@ -61,10 +63,50 @@
     border: none;
     color: #041424;
     border-radius: 5px;
+    width: fit-content;
+    padding: 5px;
     
-  }
+}
 
-  /* table buttons are in */
-  #settings_button_table {
+/* table buttons are in */
+#settings_button_table {
     margin: 0 auto;
-  }
+    
+}
+
+tr.space_table_cell>td {
+    padding-bottom: 2em;
+}
+
+/* close button on the top-right corner */
+#settings_close_btn {
+    float: right;
+    background-image: url('../../icons/close.png');
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    text-decoration: none;
+
+    cursor: pointer;
+    background-color: #041424;
+    background-size: cover;
+    border: none;
+    opacity: 1;
+    height: 12px;
+    width: 12px;
+    margin-top: 8px;
+    margin-right: 10px; 
+}
+
+
+#settings_close_btn:hover {
+opacity: 0.3;
+}
+
+/*radio buttons*/
+.layout_radio {
+    padding: 15px;
+}
