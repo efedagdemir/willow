@@ -44,7 +44,7 @@ function openSettingsMenu(isOrigin) {
                 <div class= "label"> <b>Background opacity: </b></div>
                 <div class = "opt">
                     <input type="range" id="sliderTrans"
-                        min="${getComputedStyle(document.getElementById("graphFrame")).getPropertyValue("opacity")-0.15}" max="1" step="0.005" value="${getComputedStyle(document.getElementById("graphFrame")).getPropertyValue("opacity")}"/>
+                        min="0.75" max="1" step="0.005" value="${getComputedStyle(document.getElementById("graphFrame")).getPropertyValue("opacity")}"/>
                 </div>
             </div>
             <br>
