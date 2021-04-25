@@ -10,6 +10,7 @@ addListeners();
 function initialize() {
     tabURLs = new Map();
     openingFromGraph = new Map();
+    initializeSG();
 }
 
 // adds the listeners to relevant chrome events.
@@ -21,6 +22,12 @@ function addListeners() {
     chrome.tabs.onUpdated.addListener(tabUpdated);
     chrome.tabs.onRemoved.addListener(tabRemoved);  
     chrome.runtime.onMessage.addListener(messageReceived);
+    chrome.windows.onRemoved.addListener(windowClosed);
+    chrome.runtime.onInstalled.addListener( () => chrome.storage.local.set({sessions: [], nextId: 0}));
+}
+
+function windowClosed() {
+    saveCurrentSession();
 }
 
 /**
@@ -162,5 +169,4 @@ async function urlLoaded(tabId, url) {
             });
         }); 
     }
-
 }

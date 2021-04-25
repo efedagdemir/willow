@@ -46,16 +46,16 @@ function openSettingsMenu(isOrigin) {
             <label class="layout_radio">Recalculate
                 <input type="radio" name="radio" id="layout_radio2">
                 <span class="span_radio"></span>
+        </div>
             </label>
-        </div>
     </div>
-    <div class="settingElement" id ="setTrans" class>
-        <div class= "label"> <b>Background opacity: </b></div>
-        <div class = "opt">
-            <input type="range" id="sliderTrans"
-                min="${getComputedStyle(document.getElementById("graphFrame")).getPropertyValue("opacity")-0.15}" max="1" step="0.005" value="${getComputedStyle(document.getElementById("graphFrame")).getPropertyValue("opacity")}"/>
-        </div>
-    </div>
+            <div class="settingElement" id ="setTrans" class>
+                <div class= "label"> <b>Background opacity: </b></div>
+                <div class = "opt">
+                    <input type="range" id="sliderTrans"
+                        min="0.75" max="1" step="0.005" value="${getComputedStyle(document.getElementById("graphFrame")).getPropertyValue("opacity")}"/>
+            </div>
+                </div>
             <br>
             <table id="settings_button_table">
                 <tr class="space_table_cell">
@@ -65,6 +65,9 @@ function openSettingsMenu(isOrigin) {
                 <tr>
                     <td> <button id="infoBtn"  class="table-buttons" title="Open 'Information' Page">Information</button></th>
                     <td> <button id="howToBtn" class="table-buttons" title="Open 'How To?' Page">How to?</button></th>
+                </tr>
+                <tr>
+                    <th> <button id="historyBtn"  class="table-buttons" title="Show History">History</button></th>
                 </tr>
             <table>
         </div>
@@ -125,9 +128,9 @@ function addSettingsMenuListeners() {
     document.getElementById("sliderTrans").oninput          = sliderTrans_handler; 
     document.getElementById("exportBtn").onclick            = exportBtn_handler; 
     document.getElementById("importBtn").onclick            = importBtn_handler; 
+    document.getElementById("historyBtn").onclick           = historyBtn_handler; 
     document.getElementById("infoBtn").onclick     = () =>    openInfoPage(true);      //defined in InfoPage.js
     document.getElementById("howToBtn").onclick    = () =>    openHowToPage(true);     //defined in HowToPage.js
-    
     document.getElementById("layout_radio1").addEventListener("change", function(event) {radiBtn_handler(1)});
     document.getElementById("layout_radio2").addEventListener("change", function(event) {radiBtn_handler(2)});
 }
@@ -160,6 +163,15 @@ function resetSizesPRBtn_handler() {
 function sliderTrans_handler() {
     var object =  document.getElementById("graphFrame");
     object.style.opacity = document.getElementById("sliderTrans").value.toString();
+    chrome.storage.local.get(["WILLOW_OPACITY_UPDATE"], function (res) {
+        chrome.storage.local.set({
+            WILLOW_OPACITY_UPDATE : true,
+            WILLOW_OPACITY: {
+              opacity : document.getElementById("sliderTrans").value.toString()
+            }
+          });
+        
+    });
 }
 
 function exportBtn_handler(){
@@ -183,6 +195,12 @@ function importBtn_handler(){
         }
     });
     input.click();
+}
+
+function historyBtn_handler() {
+    chrome.runtime.sendMessage({
+        message: "WILLOW_HISTORY_SHOW",
+    });
 }
 
 /* Sends synchronization message about 

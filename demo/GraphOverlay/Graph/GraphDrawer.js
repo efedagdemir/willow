@@ -171,7 +171,7 @@ function applyStyle() {
             'background-image-containment': ['inside', 'over'],
             'background-width': ['100%', '20%'],
             'background-height': ['100%', '20%'],
-            'background-position-x': ['0.5px', '-3.5px'],
+            'background-position-x': ['0.5px', '-10.5px'],
             'background-position-y':['0px', '3px'],
             'background-image-opacity': ['1', '1'],
             'background-clip': ['node', 'none'],
@@ -278,13 +278,14 @@ function applyContextMenu() {
                     console.log("Node comment is ", node.data("comment"));
                     
                     var modal = document.getElementById("myModal");
+                    modal.draggable = 'false';
                     var span = document.getElementsByClassName("close")[0];
                     
                         
                     document.getElementById("comments").value = node.data("comment");
                      
                     modal.style.display = "block";
-                    modal.draggable = 'true';
+                    
                    // When the user clicks on <span> (x), close the modal
                     span.onclick = function() {
                         let comment_txt = document.getElementById("comments").value;

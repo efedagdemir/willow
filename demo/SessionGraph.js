@@ -1,7 +1,6 @@
 
-var cy = null; // The variable that holds the cytoscape object.
-//var fixedCon = []; // The variable that holds fixed node positions
-
+var cy = null;          // The variable that holds the cytoscape object.
+var interval = null;    // A setInterval() result that updates the session graph every 30 seconds.
 /**
  * Initalizes the session graph as a cytoscape object with no elements.
  */
@@ -26,8 +25,7 @@ function initializeSG() {
                 'height': 'data(width)',
                 'text-wrap': 'wrap',
                 'text-max-width': '170px',
-                'text-justification': 'center',
-                'background-image-containment':'over'
+                'text-justification': 'center'
               }
             },
         ],
@@ -35,6 +33,16 @@ function initializeSG() {
             // ready 1
         }
     });
+
+    // set the id and increment the nextId
+    chrome.storage.local.get("nextId", function (result) {
+        let nextId = result.nextId;
+        cy.data("id", nextId);
+        chrome.storage.local.set({nextId: nextId + 1});
+    });
+
+    // start saving the session graph every 30 seconds.
+    interval = setInterval( saveCurrentSession, 30000);
 }
 
 /**
@@ -46,10 +54,11 @@ function loadSG(cyJson) {
 }
 
 /**
- * Clearss the session graph.
+ * Clears the session graph.
  */
-function clearSG(){
-    cy.remove(cy.elements());
+async function clearSG(){
+    await saveCurrentSession();
+    clearInterval(interval);
     initialize();
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
 }
@@ -184,7 +193,7 @@ function exportJSON() {
     });
 }
 
-function importJSON(json) {
+async function importJSON(json) {
     console.log("importing JSON");
     cy.json(json);
     let nodes = cy.nodes();
@@ -194,22 +203,34 @@ function importJSON(json) {
         chrome.tabs.remove(tabs.map( (tab) => {return tab.id}));
     });
 
+    chrome.tabs.query( {currentWindow: false},  (tabs) => {
+        chrome.tabs.remove(tabs.map( (tab) => {return tab.id}));
+    });
+
+    chrome.tabs.query( {active:true, currentWindow: true}, (tabs) => { chrome.tabs.update(tabs[0].id, {url : "chrome://newtab"})});
+
+    let promises = []
     // create the tabs that were open in the imported JSON
-    let firstHit = false;
     nodes.forEach( (node) => {
         if(node.data("openTabCount") > 0) {
             let tabCount = node.data("openTabCount");
             node.data("openTabCount", 0);
             for( let i = 0; i < tabCount; i ++) {
-                if(!firstHit) {
-                    chrome.tabs.query( {active:true, currentWindow: true}, (tabs) => { chrome.tabs.update(tabs[0].id, {url : node.id()})});
-                    firstHit = true;
-                } else {
-                    chrome.tabs.create({url: node.id(), active: false});
-                }
+                openingFromGraph.set(node.id(), true);
+                let promise = new Promise ( (resolve, reject) => {
+                    chrome.tabs.create({url: node.id(), active: false}, function(result) {
+                        resolve(true);
+                    });
+                });
+                promises.push(promise);
             }
         }
-    })
+    });
+    
+    await Promise.all(promises);
+    
+    chrome.tabs.query( {active:true, currentWindow: true}, (tabs) => { chrome.tabs.remove(tabs[0].id)});
+
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
 }
 
