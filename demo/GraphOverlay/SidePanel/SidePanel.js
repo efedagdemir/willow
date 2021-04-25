@@ -35,14 +35,14 @@ var sidePanelHTML = `
 <div id="sidePanel">
   <div id="panelHeader">
   
-    <img id="willowIcon" src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
+    <img title="Willow: Graph-Based Browsing" id="willowIcon" src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
     <a class="willow-label" id="willowLabel" style="display:;">W I L L O W</a>
     
     <button title="Close"         class="headerBtn btn-close"     id="closeBtn"                                </button>
     <button title="Dock"          class="headerBtn btn-dock"      id="dockBtn"      style="display:none;"      </button>
     <button title="Undock"        class="headerBtn btn-undock"    id="undockBtn"                               </button>
     <button title="Settings"      class="headerBtn btn-settings"  id="settingsBtn"                             </button>
-    <button title="Reset Graph"   class="headerBtn btn-reset"     id="resetBtn"                                </button>
+    <button title="New Session"   class="headerBtn btn-new"       id="newBtn"                                  </button>
     <button title="Run Layout"    class="headerBtn btn-layout"    id="layoutBtn"                               </button>
     
   </div>
@@ -87,7 +87,7 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
   if (res.WILLOW_SP_UNDOCKED) {
     undockSidePanel(res.WILLOW_SP_UNDOCKED_LOC, false);
   }
-  if (panelWidth < 700)
+  if (parseInt(panelWidth, 10) < 590)
     document.getElementById("willowLabel").style.display = "none";
   if(res.WILLOW_OPACITY_UPDATE)
     updateOpacity(res.WILLOW_OPACITY);
@@ -97,7 +97,7 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
 document.getElementById("closeBtn").onclick     = () => closeSidePanel(true);
 document.getElementById("undockBtn").onclick    = () => undockSidePanel(null, true);
 document.getElementById("dockBtn").onclick      = () => dockSidePanel(true);
-document.getElementById("resetBtn").onclick     = () => {chrome.runtime.sendMessage({message: "WILLOW_BACKGROUND_CLEAR_SESSION"})};
+document.getElementById("newBtn").onclick       = () => {chrome.runtime.sendMessage({message: "WILLOW_BACKGROUND_CLEAR_SESSION"})};
 document.getElementById("layoutBtn").onclick    = () => runLayoutAdjustBtn_handler(); // defined in SettingsMenu.js /*{chrome.runtime.sendMessage({message: "WILLOW_GRAPH_VIEWPORT_CENTER"})};*/
 document.getElementById("settingsBtn").onclick  = () => openSettingsMenu(true);  // defined in SettingsMenu.js
 enableResizing(rightBorderOnly = true);
@@ -385,13 +385,10 @@ function enableResizing(rightBorderOnly) {
         if (curWidth + deltaX >= 590){
           let wlwLabel = document.getElementById("willowLabel");
           wlwLabel.classList.remove('shrinkTrans');
-          //document.getElementById("willowLabel").style.display = "";
-          //console.log("current wid: " + curWidth + " deltaX: " + deltaX);
         }
         else {
           let wlwLabel = document.getElementById("willowLabel");
           wlwLabel.classList.add('shrinkTrans');
-          //document.getElementById("willowLabel").style.display = "none";
         }
 
         sidePanel.style.width = (curWidth + deltaX) + "px";
@@ -401,12 +398,10 @@ function enableResizing(rightBorderOnly) {
         if (curWidth - deltaX >= 590){
           let wlwLabel = document.getElementById("willowLabel");
           wlwLabel.classList.remove('shrinkTrans');
-          //document.getElementById("willowLabel").style.display = "";
         }
         else {
           let wlwLabel = document.getElementById("willowLabel");
           wlwLabel.classList.add('shrinkTrans');
-          //document.getElementById("willowLabel").style.display = "none";
         }
 
         sidePanel.style.width = (curWidth - deltaX) + "px";
@@ -431,6 +426,8 @@ function enableResizing(rightBorderOnly) {
     // end of drag. remove handlers.
     document.onmouseup = null;
     document.onmousemove = null;
+
+    panelWidth = sidePanel.style.width;
 
     // save new panel Width
     chrome.storage.local.set({

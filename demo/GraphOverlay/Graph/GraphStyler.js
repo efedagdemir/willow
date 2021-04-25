@@ -28,7 +28,7 @@ function applyStyle() {
             'text-justification': 'center',
             'background-image': function (ele) {
                 if (ele.data('openTabCount') > 0 ) 
-                    return [ele.data('iconURL'), 'active-color4.png'];
+                    return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/active-color4.png')];
                 else 
                     return ele.data('iconURL');
             },
@@ -63,6 +63,7 @@ function applyStyle() {
         })
         .selector(':selected')
         .style({
+            'border-color': 'black',
             'background-color': 'black',
             'line-color': 'black',
             'target-arrow-color': 'black',

@@ -45,6 +45,23 @@ cy.on('doubleTap', function(event, originalTap) {
     });
 });
 
+var tapholdSelected = false;
+
+cy.on('taphold', 'node', function(event) {
+    let target = event.target || event.cyTarget;
+    //console.log('taphold is happening on node');
+    target.component().select();
+    tapholdSelected = true;
+});
+
+cy.on('unselect', 'node', function(event) {
+    if(tapholdSelected){
+        let target = event.target || event.cyTarget;
+        target.component().select();
+    }
+    tapholdSelected = false;
+});
+
 function onViewport(event) {
     chrome.storage.local.set({
         WILLOW_VIEWPORT: {
@@ -60,8 +77,8 @@ function onViewport(event) {
 
 function updateCytoscape() {
     chrome.runtime.sendMessage({ type: "getCytoscapeJSON" }, function (response) {
-        console.log("RESPONSE RECEIVED");
-        console.log(JSON.stringify(response));
+        //console.log("RESPONSE RECEIVED");
+        //console.log(JSON.stringify(response));
         // save current viewport to restore after response json is loaded
         let tmp = {
             zoom: cy.zoom(),
@@ -132,7 +149,7 @@ function fitViewport() {
 
 function syncViewport() {
     chrome.storage.local.get(["WILLOW_VIEWPORT"], function (res) {
-        console.log(res.WILLOW_VIEWPORT);
+        //console.log(res.WILLOW_VIEWPORT);
         cy.removeListener("viewport"); // disable to avoid cycles
         cy.viewport(res.WILLOW_VIEWPORT);
         cy.on("viewport", onViewport);  // re-enable 
@@ -188,7 +205,7 @@ function applyContextMenu() {
                     let target = event.target || event.cyTarget;
                     let id = target.id();
                     let node = cy.getElementById(id);
-                    console.log("Node comment is ", node.data("comment"));
+                    //console.log("Node comment is ", node.data("comment"));
                     
                     var modal = document.getElementById("myModal");
                     modal.draggable = 'false';
@@ -433,7 +450,7 @@ function applyContextMenu() {
     cy.on('cxttap', function (event) {
         var evtTarget = event.target;
         if (evtTarget === cy){
-            console.log("target is the background");
+            //console.log("target is the background");
             contextMenu.hideMenuItem('open');
             contextMenu.hideMenuItem('open-in-new-tab');
             contextMenu.hideMenuItem('remove');
@@ -443,7 +460,7 @@ function applyContextMenu() {
             contextMenu.hideMenuItem('comment');
         }
         else if (evtTarget.isNode()){
-            console.log("target is a node");
+            //console.log("target is a node");
             contextMenu.showMenuItem('open');
             contextMenu.showMenuItem('open-in-new-tab');
             contextMenu.showMenuItem('comment');
@@ -454,7 +471,7 @@ function applyContextMenu() {
             contextMenu.hideMenuItem('remove-edge');
         }
         else if (evtTarget.isEdge()){
-            console.log("target is an edge");
+            //console.log("target is an edge");
             contextMenu.showMenuItem('remove-edge');
 
             contextMenu.hideMenuItem('open');
@@ -487,8 +504,8 @@ function changeNodeSize(event, size, increase, title_size){
             tSize = `${tSize - 0.5}px`;
             target.data('title_size', tSize);
         }
-        console.log("title_size" , title_size);
-        console.log("TSIXE" , tSize);
+        //console.log("title_size" , title_size);
+        //console.log("TSIXE" , tSize);
         let id = target.id();
         target.data('width', size);
         chrome.runtime.sendMessage({
@@ -522,7 +539,6 @@ function applyHoverOver(){
     cy.on('mouseover', 'node', function(e) {
         var sel = e.target;
         sel.addClass('hovered');
-       
     });
     cy.on('mouseout', 'node', function(e) {
         var sel = e.target;
