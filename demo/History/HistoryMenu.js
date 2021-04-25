@@ -3,6 +3,7 @@ let previewImg = document.getElementById("previewImg");
 let sessionList = document.getElementById("sessionList");
 let curTitle = document.getElementById("curTitle");
 let curSession;
+let curHistElement;
 
 initialize();
 
@@ -66,6 +67,7 @@ function addSessionElements (session) {
     
     // --- add listeners ---
     rootDiv.addEventListener("mouseover", function() {
+        activateHistElement(rootDiv);
         curSession = session;
         updatePreview();
     });
@@ -84,6 +86,11 @@ function addSessionElements (session) {
         // TODO
         alert("GETCHO ASS UP CEM!");
     });
+
+    // quick fix that initializes the active item
+    if (!curHistElement) {
+        activateHistElement(rootDiv);
+    }
 }
 
 function updatePreview() {
@@ -94,6 +101,13 @@ function updatePreview() {
 
 function clearPreview() {
     previewPane.style.display = "none";
+}
+
+function activateHistElement(e) {
+    if (curHistElement)
+        curHistElement.style.border = "1px solid #f4d58d";
+    e.style.border = "3px solid #f4d58d";
+    curHistElement = e;
 }
 
 function getSessionTitle(session) {
