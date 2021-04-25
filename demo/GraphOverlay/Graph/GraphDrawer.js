@@ -274,13 +274,14 @@ function applyContextMenu() {
                     console.log("Node comment is ", node.data("comment"));
                     
                     var modal = document.getElementById("myModal");
+                    modal.draggable = 'false';
                     var span = document.getElementsByClassName("close")[0];
                     
                         
                     document.getElementById("comments").value = node.data("comment");
                      
                     modal.style.display = "block";
-                    modal.draggable = 'true';
+                    
                    // When the user clicks on <span> (x), close the modal
                     span.onclick = function() {
                         let comment_txt = document.getElementById("comments").value;
