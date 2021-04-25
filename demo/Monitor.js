@@ -113,7 +113,8 @@ async function urlLoaded(tabId, url) {
         }
     }
     
-    
+    runLayout();
+
     var instance = cy.layoutUtilities( 
        {    idealEdgeLength: 10,
             offset: 10,
@@ -121,12 +122,46 @@ async function urlLoaded(tabId, url) {
             desiredAspectRatio: 1,
             polyominoGridSizeFactor: 1,
             utilityFunction: 1,
-            componentSpacing: 30
-    });
+            componentSpacing: 10
+        });
     
     instance.placeNewNodes(cy.getElementById(url));  
-    //instance.packComponents(cy.elements().components());
     runLayout();
+    //trial 
+    var components = cy.elements().components();
+    var subgraphs = [];
+    components.forEach(function (component) {
+      var subgraph = {};
+      subgraph.nodes = [];
+      subgraph.edges = [];
+
+      component.edges().forEach(function (edge) {
+        var boundingBox = edge.boundingBox();
+        subgraph.edges.push({ startX: boundingBox.x1, startY: boundingBox.y1, endX: boundingBox.x2, endY: boundingBox.y2 });
+      });
+      component.nodes().forEach(function (node) {
+        var boundingBox = node.boundingBox();
+        subgraph.nodes.push({ x: boundingBox.x1, y: boundingBox.y1, width: boundingBox.w, height: boundingBox.h });
+      });
+
+      subgraphs.push(subgraph);
+    });
+
+    var result = instance.packComponents(subgraphs);
+    components.forEach(function (component, index) {
+        component.nodes().layout({
+          name: 'preset',
+          animate: false,
+          fit: false,
+          transform: (node) => {
+            let position = {};
+            position.x = node.position('x') + result.shifts[index].dx;
+            position.y = node.position('y') + result.shifts[index].dy;
+            return position;
+          }
+        }).run();
+      });
+    //end of trial*/
 
     // the tab does not contain the old page anymore.
     let oldURL = tabURLs.get(tabId);

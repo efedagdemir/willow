@@ -63,6 +63,7 @@ function applyStyle() {
         })
         .selector(':selected')
         .style({
+            'border-color': 'black',
             'background-color': 'black',
             'line-color': 'black',
             'target-arrow-color': 'black',
