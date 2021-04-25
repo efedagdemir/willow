@@ -58,6 +58,9 @@ function openSettingsMenu(isOrigin) {
                     <th> <button id="infoBtn"  class="table-buttons" title="Open 'Information' Page">Info</button></th>
                     <th> <button id="howToBtn" class="table-buttons" title="Open 'How To?' Page">How to?</button></th>
                 </tr>
+                <tr>
+                    <th> <button id="historyBtn"  class="table-buttons" title="Show History">History</button></th>
+                </tr>
             <table>
         </div>
     </div>
@@ -103,6 +106,7 @@ function addSettingsMenuListeners() {
     document.getElementById("sliderTrans").oninput          = sliderTrans_handler; 
     document.getElementById("exportBtn").onclick            = exportBtn_handler; 
     document.getElementById("importBtn").onclick            = importBtn_handler; 
+    document.getElementById("historyBtn").onclick           = historyBtn_handler; 
     document.getElementById("infoBtn").onclick     = () =>    openInfoPage();      //defined in InfoPage.js
     document.getElementById("howToBtn").onclick    = () =>    openHowToPage();     //defined in HowToPage.js
 
@@ -146,6 +150,7 @@ function exportBtn_handler(){
         message: "WILLOW_BACKGROUND_EXPORT",
     });
 }
+
 function importBtn_handler(){
     var input = document.createElement("INPUT");
     input.setAttribute("type", "file");
@@ -160,6 +165,12 @@ function importBtn_handler(){
         }
     });
     input.click();
+}
+
+function historyBtn_handler() {
+    chrome.runtime.sendMessage({
+        message: "WILLOW_HISTORY_SHOW",
+    });
 }
 
 /**
