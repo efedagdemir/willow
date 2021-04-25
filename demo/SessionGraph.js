@@ -328,6 +328,12 @@ function runLayout(){
         alignmentConstraint: undefined,
         relativePlacementConstraint: undefined,
 
+        idealEdgeLength: edge => {
+            if(edge.data("discovering"))
+                return 40;
+            else return 200;
+        },
+
         ready: () => {},
         stop: () => {}                 
     }).run();
@@ -353,6 +359,12 @@ function recalcLayout() {
         fixedNodeConstraint: undefined, //fixedCon,
         alignmentConstraint: undefined,
         relativePlacementConstraint: undefined,
+
+        idealEdgeLength: edge => {
+            if(edge.data("discovering"))
+                return 40;
+            else return 200;
+        },
 
         ready: () => {},
         stop: () => {}                 
