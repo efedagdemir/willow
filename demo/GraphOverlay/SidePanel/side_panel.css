@@ -57,11 +57,11 @@
 
 .willow-label{
   width: 210px;
-  white-space: normal;
+  white-space: nowrap;
   overflow: hidden;
   transition-property: width, white-space;
-  transition-duration: 1.7s;
-  transition-delay: 0.7s;
+  transition-duration: 1.3s;
+  transition-delay: 0.4s;
   font-size: 44px;
 }
 
@@ -70,7 +70,7 @@
   white-space: nowrap;
   overflow: hidden;
   animation-name: hop;
-  animation-duration: 1s;
+  animation-duration: 0.8s;
   animation-timing-function: ease-in-out;
 }
 
@@ -121,8 +121,8 @@
   background-image: url('../../icons/left-arrow.png');
 }
 
-.btn-reset {
-  background-image: url('../../icons/reset.png');
+.btn-new {
+  background-image: url('../../icons/new.png');
 }
 
 .btn-layout {
