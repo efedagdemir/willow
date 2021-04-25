@@ -111,6 +111,12 @@ function closeSettingsMenu(isOrigin) {
             action: "WILLOW_SETTINGS_SYNC_CLOSE",
         });
     }
+    chrome.storage.local.get(["WILLOW_HOW_TO_OPEN", "WILLOW_INFO_OPEN"], function (res) {
+        if (res.WILLOW_INFO_OPEN)
+            closeInfoPage(true);
+        else if (res.WILLOW_HOW_TO_OPEN)
+            closeHowToPage(true);
+    }); 
 }
 
 function addSettingsMenuListeners() {
