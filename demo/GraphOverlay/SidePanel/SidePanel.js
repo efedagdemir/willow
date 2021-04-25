@@ -445,9 +445,27 @@ function enableResizing(rightBorderOnly) {
 }
 
 function toggleSettingsMenu() {
-  chrome.runtime.sendMessage({
-    message: "WILLOW_TOGGLE_SETTINGS_MENU"
-  })
+  // initialize the menu's open/closee state
+  chrome.storage.local.get(["WILLOW_SETTINGS_OPEN"], function (res) {
+    if (res.WILLOW_SETTINGS_OPEN) {
+      // set global state
+      chrome.storage.local.set({ WILLOW_SETTINGS_OPEN: false });
+      // broadcast
+      chrome.runtime.sendMessage({ 
+        message: "WILLOW_SETTINGS_SYNC_REQUEST",
+        action: "WILLOW_SETTINGS_SYNC_CLOSE",
+      });
+    } else {
+      // set global state
+      chrome.storage.local.set({ WILLOW_SETTINGS_OPEN: true });
+      // broadcast
+      chrome.runtime.sendMessage({ 
+        message: "WILLOW_SETTINGS_SYNC_REQUEST",
+        action: "WILLOW_SETTINGS_SYNC_OPEN",
+      });
+    }
+    
+  });
 }
 
 function runLayoutBtn_handler() {

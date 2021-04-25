@@ -84,16 +84,6 @@ function openSettingsMenu(isOrigin) {
     arrangeLayoutRadioButton(); 
 
     menuIsOpen = true;
-
-    if (isOrigin) {
-        // set global state
-        chrome.storage.local.set({ WILLOW_SETTINGS_OPEN: true });
-        // notify other tabs with a sync request
-        chrome.runtime.sendMessage({ 
-          message: "WILLOW_SETTINGS_SYNC_REQUEST",
-          action: "WILLOW_SETTINGS_SYNC_OPEN",
-        });
-    }
 }
 
 function closeSettingsMenu(isOrigin) {
@@ -104,19 +94,11 @@ function closeSettingsMenu(isOrigin) {
         else if (res.WILLOW_HOW_TO_OPEN)
             closeHowToPage(true);
     }); 
-
-    menuWrapper.parentNode.removeChild(menuWrapper);
-    menuIsOpen = false;
-
-    if (isOrigin) {
-        // set global state
-        chrome.storage.local.set({ WILLOW_SETTINGS_OPEN: false });
-        // notify other tabs with a sync request
-        chrome.runtime.sendMessage({ 
-            message: "WILLOW_SETTINGS_SYNC_REQUEST",
-            action: "WILLOW_SETTINGS_SYNC_CLOSE",
-        });
+    if (document.body.contains(menuWrapper)) {
+        document.body.removeChild(menuWrapper);
     }
+    menuIsOpen = false;
+    
     chrome.storage.local.get(["WILLOW_HOW_TO_OPEN", "WILLOW_INFO_OPEN"], function (res) {
         if (res.WILLOW_INFO_OPEN)
             closeInfoPage(true);
@@ -232,20 +214,23 @@ chrome.runtime.onMessage.addListener(
         else if ( request.message == "WILLOW_RADIO_SYNC_REQUEST"){
             chrome.storage.local.set({ WILLOW_LAYOUT_OPT: request.button_no });  
             document.getElementById("layout_radio" + request.button_no).checked = "checked";
-        } else if (request.message == "WILLOW_TOGGLE_SETTINGS_MENU") {
+        } /*else if (request.message == "WILLOW_TOGGLE_SETTINGS_MENU") {
+            console.log("toggle message recv.");
             if (menuIsOpen) {
-                closeSettingsMenu();
+                closeSettingsMenu(true);
             } else {
-                openSettingsMenu();
+                openSettingsMenu(true);
             }
-        }
+        }*/
     }
 );
 
 function handleSettingsSyncRequest(request) {
     if (request.action == "WILLOW_SETTINGS_SYNC_OPEN") {
+        console.log("sync_open recv.");
         openSettingsMenu(false);
     } else if (request.action == "WILLOW_SETTINGS_SYNC_CLOSE") {
+        console.log("sync_closed recv.");
         closeSettingsMenu(false);    
     }
 }
