@@ -35,7 +35,9 @@ async function loadSessionWithId(id) {
 function renameSessionWithId(id, name) {
     chrome.storage.local.get({sessions: []}, function (result) {
         var sessions = result.sessions;
-
+        if(id == cy.data("id")) {
+            cy.data("name", name);
+        }
         let found = false;
         for( let i = 0; i < sessions.length; i++) {
             if(sessions[i].data.id == id) {
@@ -49,7 +51,6 @@ function renameSessionWithId(id, name) {
             // update the stored array
             chrome.storage.local.set({sessions: sessions}, function () {
                 console.log("session renamed! New sessions: ", sessions);
-                resolve();
             });
         }
     });
