@@ -1,5 +1,6 @@
 body {
     background-image: linear-gradient(to right, #f4d58d, #708d81); /*same as #graphFrame (side_panel.css)*/
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
 }
 
 #sessionList {
@@ -7,14 +8,39 @@ body {
     height: 94%;
     width: 50%;
     top: 3%;
-    left: 10%;
+    left: 3%;
     background-color: #041424; /* same as #panelHeader (side_panel.css)*/
     text-align: right;
+}
+
+#previewPane {
+    position: absolute;
+    height: 94%;
+    width: 41%;
+    top: 3%;
+    left: 56%;
+    background-color: #041424; /* same as #panelHeader (side_panel.css)*/
+    text-align: center;
+}
+#previewPane div{
+    margin: 5px;
+}
+
+#previewPane hr{
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    border: 1px solid;
+    width: 94%
+}
+
+#previewImg {
+    width: 95%;
+    margin: auto;
 }
 
 .historyElement {
     width: 90%;
     margin: auto;
+    margin-top: 10px;
     border: 1px solid #f4d58d; /* same as #panelHeader a (side_panel.css)*/
     padding: 10px;
     color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/

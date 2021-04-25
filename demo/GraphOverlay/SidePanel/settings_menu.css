@@ -30,7 +30,6 @@
 .settingElement .label {
     display: inline-block;
     text-align: left;
-    float: left;
 }
 
 .settingElement .opt {
