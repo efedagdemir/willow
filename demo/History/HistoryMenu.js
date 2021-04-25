@@ -2,6 +2,9 @@ let previewPane = document.getElementById("previewPane");
 let previewImg = document.getElementById("previewImg");
 let sessionList = document.getElementById("sessionList");
 let curTitle = document.getElementById("curTitle");
+let restoreBtn = document.getElementById("restoreBtn");
+let renameBtn = document.getElementById("renameBtn");
+let deleteBtn = document.getElementById("deleteBtn");
 let curSession;
 let curHistElement;
 
@@ -22,6 +25,25 @@ function initialize() {
     });
 }
 
+restoreBtn.addEventListener("click", function () {
+    chrome.runtime.sendMessage(
+        { message: "WILLOW_HISTORY_LOAD_SESSION", id: curSession.data.id},
+        () => {location.reload()} // reload hist. page after restoring
+    );
+});
+renameBtn.addEventListener("click", function() {
+    let name = prompt("Enter new name:");
+    chrome.runtime.sendMessage(
+        {message: "WILLOW_HISTORY_RENAME_SESSION", id: curSession.data.id, name: name},
+        () => {location.reload()} // reload hist. page after renaming
+    );
+});
+deleteBtn.addEventListener("click", function () {
+    // TODO
+    alert("GETCHO ASS UP CEM!");
+});
+
+
 /**
  * 
  * @param {Object} session A cytoscape export.
@@ -31,38 +53,13 @@ function addSessionElements (session) {
     // --- create the html elements ---
     let rootDiv = document.createElement("div");
     let titleDiv = document.createElement("div");
-    let restoreBtnDiv = document.createElement("div");
-    let restoreBtn = document.createElement("button");
-    let renameBtnDiv = document.createElement("div");
-    let renameBtn = document.createElement("button");
-    let deleteBtnDiv = document.createElement("div");
-    let deleteBtn = document.createElement("button");
-        //let image = document.createElement("img");
 
     // --- set the properties ---
     rootDiv.className = "historyElement";
     titleDiv.className = "label";
-    restoreBtnDiv.className = "opt";
-    renameBtnDiv.className = "opt";
-    deleteBtnDiv.className = "opt";
-
-    restoreBtn.title = "Restore this session";
-    restoreBtn.innerHTML = "Restore";
-    renameBtn.title = "Rename this session";
-    renameBtn.innerHTML = "Rename";
-    deleteBtn.title = "Delete this session from your history";
-    deleteBtn.innerHTML = "Delete";
-
     titleDiv.innerHTML = "<b>" + getSessionTitle(session) + "</b>";
-    
-    restoreBtnDiv.appendChild(restoreBtn);
-    renameBtnDiv.appendChild(renameBtn);
-    deleteBtnDiv.appendChild(deleteBtn);
-    rootDiv.appendChild(restoreBtnDiv);
-    rootDiv.appendChild(renameBtnDiv);
-    rootDiv.appendChild(deleteBtnDiv);
+
     rootDiv.appendChild(titleDiv);
-    //sessionDiv.appendChild(image);
     sessionList.appendChild(rootDiv);
     
     // --- add listeners ---
@@ -70,21 +67,6 @@ function addSessionElements (session) {
         activateHistElement(rootDiv);
         curSession = session;
         updatePreview();
-    });
-    restoreBtn.addEventListener("click", function () {
-        chrome.runtime.sendMessage({ message: "WILLOW_HISTORY_LOAD_SESSION", id: session.data.id});
-    });
-    renameBtn.addEventListener("click", function() {
-        let name = prompt("Enter new name:");
-        chrome.runtime.sendMessage( {message: "WILLOW_HISTORY_RENAME_SESSION", id: session.data.id, name: name});
-        titleDiv.innerHTML = "<b>" + name + "</b>";
-        session.data.name = name;    // javascript pls remember this
-        curSession = session;
-        updatePreview();
-    });
-    deleteBtn.addEventListener("click", function () {
-        // TODO
-        alert("GETCHO ASS UP CEM!");
     });
 
     // quick fix that initializes the active item
