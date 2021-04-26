@@ -220,7 +220,7 @@ function undockSidePanel(undockedLoc, isOrigin) {
     sidePanel.style.left  = undockedLoc.left;
   }
   sidePanel.style.height = panelUndockedHeight;
-  sidePanel.style.width  = panelWidth;
+  //sidePanel.style.width  = panelWidth;
 
   document.getElementById("undockBtn").style.display = "none";
   document.getElementById("dockBtn").style.display = "";  // default
