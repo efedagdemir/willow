@@ -13,7 +13,7 @@ let hoverOverApplied = false;
 let disableCxtMenu = false;
 updateCytoscape();
 syncViewport();
-//syncNotes();
+syncNotes();
 
 cy.on('dragfree', 'node', function (evt) {
     // update the node position at the background script
@@ -196,6 +196,9 @@ function openNotesPage(id){
     modal.draggable = 'false';
                        
     document.getElementById("comments").value = node.data("comment");
+    if(node.data("comment") === undefined){
+        document.getElementById("comments").value ="";
+    }
                      
     modal.style.display = "block";
     var span = document.getElementsByClassName("close")[0]; 
