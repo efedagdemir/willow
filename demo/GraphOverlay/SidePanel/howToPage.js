@@ -57,19 +57,20 @@ var howToPageHTML = `
                 </details>
                 <details class="nested_detail" id="det4">
                     <summary class="nested_summary">Active Nodes</summary>
-                    <p class="nested_p"> Active nodes represent the currently open tabs. They are shown with the yellow
-                    cirlce image put on top of them.</p>
+                    <p class="nested_p"> Active nodes represent the currently open tabs. They are shown with the green
+                    circle near them.</p>
                 </details>
             </details>
             <details class="willow_detail" id="det5">
                 <summary class="willow_summary">Running Layout</summary>
-                <p class="details_p">Willow provides users two layout options. Users can click on the <b>Adjust</b> button on the 
-                Settings menu and re-apply an incremental layout to their graphs or users can randomize their graph layout with the
-                <b>Recalculate</b> button. </p>
+                <p class="details_p">Willow provides users with two layout options. The <b>Adjust</b> option re-applies an incremental
+                 layout algorithm, which improves the layout while respecting the existing node locations. The <b>Recalculate</b> option 
+                 creates an entirely new layout. The user can change the behavior of the layout button using the settings menu.
             </details>
             <details class="willow_detail" id="det6">
                 <summary class="willow_summary">What is Page Rank?</summary>
-                <p class="details_p"> By applying the <b> Page Rank</b> option, users can see the more frequently visited websites bigger in the graph.
+                <p class="details_p"> By applying the <b> Page Rank</b> option, users can see the more topologically important nodes (according to
+                how many nodes point to them and how important their pointees in turn are) bigger in the graph.
                 This option overrides the previously arranged node sizes. The <b>Uniform</b> option resizes the nodes to their default values.  </p>
             </details>
             <details class="willow_detail" id="det7">

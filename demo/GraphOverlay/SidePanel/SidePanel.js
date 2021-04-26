@@ -30,28 +30,28 @@ var sidePanelHTML = `
 </head>
 
 <body>
-<div id="sidePanel">
-  <div id="panelHeader">
+<div id="willow-sidePanel">
+  <div id="willow-panelHeader">
   
-    <img title="Willow: Graph-Based Browsing" id="willowIcon" src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
-    <a class="willow-label" id="willowLabel" style="display:;">W I L L O W</a>
+    <img title="Willow: Graph-Based Browsing" id="willow-willowIcon" src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
+    <a class="willow-label" id="willow-willowLabel" style="display:;">W I L L O W</a>
     
-    <button title="Close"         class="headerBtn btn-close"     id="closeBtn"                                </button>
-    <button title="Dock"          class="headerBtn btn-dock"      id="dockBtn"      style="display:none;"      </button>
-    <button title="Undock"        class="headerBtn btn-undock"    id="undockBtn"                               </button>
-    <button title="Settings"      class="headerBtn btn-settings"  id="settingsBtn"                             </button>
-    <button title="New Session"   class="headerBtn btn-new"       id="newBtn"                                  </button>
-    <button title="Run Layout"    class="headerBtn btn-layout"    id="layoutBtn"                               </button>
+    <button title="Close"         class="willow-headerBtn willow-btn-close"     id="willow-closeBtn"                                </button>
+    <button title="Dock"          class="willow-headerBtn willow-btn-dock"      id="willow-dockBtn"      style="display:none;"      </button>
+    <button title="Undock"        class="willow-headerBtn willow-btn-undock"    id="willow-undockBtn"                               </button>
+    <button title="Settings"      class="willow-headerBtn willow-btn-settings"  id="willow-settingsBtn"                             </button>
+    <button title="New Session"   class="willow-headerBtn willow-btn-new"       id="willow-newBtn"                                  </button>
+    <button title="Run Layout"    class="willow-headerBtn willow-btn-layout"    id="willow-layoutBtn"                               </button>
     
   </div>
-  <div id="panelBody">
-    <iframe id="graphFrame" src="${chrome.runtime.getURL("GraphOverlay/Graph/GraphDrawer.html")}"></iframe>
-    <div id="graphInvisLayer"></div>
+  <div id="willow-panelBody">
+    <iframe id="willow-graphFrame" src="${chrome.runtime.getURL("GraphOverlay/Graph/GraphDrawer.html")}"></iframe>
+    <div id="willow-graphInvisLayer"></div>
   </div>
-  <div class="border" id="leftBorder"></div>
-  <div class="border" id="rightBorder"></div>
-  <div class="border" id="topBorder"></div>
-  <div class="border" id="bottomBorder"></div>
+  <div class="willow-border" id="willow-leftBorder"></div>
+  <div class="willow-border" id="willow-rightBorder"></div>
+  <div class="willow-border" id="willow-topBorder"></div>
+  <div class="willow-border" id="willow-bottomBorder"></div>
 </div>
 </body>
 </html>
@@ -86,24 +86,24 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
     undockSidePanel(res.WILLOW_SP_UNDOCKED_LOC, false);
   }
   if (parseInt(panelWidth, 10) < 590)
-    document.getElementById("willowLabel").style.display = "none";
+    document.getElementById("willow-willowLabel").style.display = "none";
   if(res.WILLOW_OPACITY_UPDATE)
     updateOpacity(res.WILLOW_OPACITY);
   
   if (res.WILLOW_LABEL_OPEN){
-    document.getElementById("willowLabel").style.display = "";}
+    document.getElementById("willow-willowLabel").style.display = "";}
   else  {
-    document.getElementById("willowLabel").style.display = "none";}
+    document.getElementById("willow-willowLabel").style.display = "none";}
 
 });
 
 // register event handlers
-document.getElementById("closeBtn").onclick     = () => closeSidePanel(true);
-document.getElementById("undockBtn").onclick    = () => undockSidePanel(null, true);
-document.getElementById("dockBtn").onclick      = () => dockSidePanel(true);
-document.getElementById("newBtn").onclick       = () => startNewSession();
-document.getElementById("layoutBtn").onclick    = () => runLayoutBtn_handler();
-document.getElementById("settingsBtn").onclick  = () => toggleSettingsMenu();
+document.getElementById("willow-closeBtn").onclick     = () => closeSidePanel(true);
+document.getElementById("willow-undockBtn").onclick    = () => undockSidePanel(null, true);
+document.getElementById("willow-dockBtn").onclick      = () => dockSidePanel(true);
+document.getElementById("willow-newBtn").onclick       = () => startNewSession();
+document.getElementById("willow-layoutBtn").onclick    = () => runLayoutBtn_handler();
+document.getElementById("willow-settingsBtn").onclick  = () => toggleSettingsMenu();
 enableResizing(rightBorderOnly = true);
 
 // -- end of script
@@ -121,7 +121,7 @@ function injectSidePanel() {
   document.body.append(panelWrapper); // TODO: consider removing panelWrapper and inserting sidePanel only.
 
   // save sidePanel
-  sidePanel = document.getElementById("sidePanel");
+  sidePanel = document.getElementById("willow-sidePanel");
 
   document.body.zIndex = -1;
   sidePanel.style.zIndex = 2147483647; // how to choose this number? (to see the problem, set this to 1 and do a google search.)
@@ -203,7 +203,7 @@ function toggleSidePanel(isOrigin) {
 }
 
 function updateOpacity(willowOpacity){
-  document.getElementById("graphFrame").style.opacity = willowOpacity.opacity;
+  document.getElementById("willow-graphFrame").style.opacity = willowOpacity.opacity;
 }
 
 function undockSidePanel(undockedLoc, isOrigin) {
@@ -220,8 +220,8 @@ function undockSidePanel(undockedLoc, isOrigin) {
   sidePanel.style.height = panelUndockedHeight;
   //sidePanel.style.width  = panelWidth;
 
-  document.getElementById("undockBtn").style.display = "none";
-  document.getElementById("dockBtn").style.display = "";  // default
+  document.getElementById("willow-undockBtn").style.display = "none";
+  document.getElementById("willow-dockBtn").style.display = "";  // default
 
   enableDragging();
   enableResizing(rightBorderOnly = false);
@@ -248,8 +248,8 @@ function dockSidePanel(isOrigin) {
   sidePanel.style.left = "0px";
   sidePanel.style.height = "100%";
 
-  document.getElementById("dockBtn").style.display = "none";
-  document.getElementById("undockBtn").style.display = "";  // default
+  document.getElementById("willow-dockBtn").style.display = "none";
+  document.getElementById("willow-undockBtn").style.display = "";  // default
 
   disableDragging();
   enableResizing(rightBorderOnly = true);
@@ -273,12 +273,12 @@ function startNewSession(){
 }
 
 function disableDragging() {
-  document.getElementById("panelHeader").onmousedown = null;
+  document.getElementById("willow-panelHeader").onmousedown = null;
 }
 
 function enableDragging() {
   var deltaX = 0, deltaY = 0, lastX = 0, lastY = 0;
-  document.getElementById("panelHeader").onmousedown = dragMouseDown;
+  document.getElementById("willow-panelHeader").onmousedown = dragMouseDown;
 
   function dragMouseDown(e) {
     e = e || window.event;
@@ -336,24 +336,24 @@ function enableResizing(rightBorderOnly) {
   var deltaX = 0, lastX = 0, deltaY = 0, lastY = 0;
   var heldBorder = "";
 
-  document.getElementById("rightBorder").onmousedown  = (e) => resizeMouseDown(e, "right" );
+  document.getElementById("willow-rightBorder").onmousedown  = (e) => resizeMouseDown(e, "right" );
 
   if (rightBorderOnly) {
-    document.getElementById("leftBorder").onmousedown   = null;
-    document.getElementById("topBorder").onmousedown    = null;
-    document.getElementById("bottomBorder").onmousedown = null;
+    document.getElementById("willow-leftBorder").onmousedown   = null;
+    document.getElementById("willow-topBorder").onmousedown    = null;
+    document.getElementById("willow-bottomBorder").onmousedown = null;
 
-    document.getElementById("leftBorder").style.cursor    = "";
-    document.getElementById("topBorder").style.cursor     = "";
-    document.getElementById("bottomBorder").style.cursor  = "";
+    document.getElementById("willow-leftBorder").style.cursor    = "";
+    document.getElementById("willow-topBorder").style.cursor     = "";
+    document.getElementById("willow-bottomBorder").style.cursor  = "";
   } else {
-    document.getElementById("leftBorder").onmousedown   = (e) => resizeMouseDown(e, "left"  );
-    document.getElementById("topBorder").onmousedown    = (e) => resizeMouseDown(e, "top"   );
-    document.getElementById("bottomBorder").onmousedown = (e) => resizeMouseDown(e, "bottom");
+    document.getElementById("willow-leftBorder").onmousedown   = (e) => resizeMouseDown(e, "left"  );
+    document.getElementById("willow-topBorder").onmousedown    = (e) => resizeMouseDown(e, "top"   );
+    document.getElementById("willow-bottomBorder").onmousedown = (e) => resizeMouseDown(e, "bottom");
 
-    document.getElementById("leftBorder").style.cursor    = "ew-resize";
-    document.getElementById("topBorder").style.cursor     = "ns-resize";
-    document.getElementById("bottomBorder").style.cursor  = "ns-resize";
+    document.getElementById("willow-leftBorder").style.cursor    = "ew-resize";
+    document.getElementById("willow-topBorder").style.cursor     = "ns-resize";
+    document.getElementById("willow-bottomBorder").style.cursor  = "ns-resize";
   }
   
   function resizeMouseDown(e, border) {
@@ -364,7 +364,7 @@ function enableResizing(rightBorderOnly) {
     lastY = e.clientY;
     heldBorder = border;
 
-    document.getElementById("graphInvisLayer").style.zIndex = 1;
+    document.getElementById("willow-graphInvisLayer").style.zIndex = 1;
 
     document.onmouseup = resizeMouseUp;
     document.onmousemove = resizeMouseMove;
@@ -387,18 +387,18 @@ function enableResizing(rightBorderOnly) {
     var curWidth = parseInt(sidePanel.style.width, 10);
     var curHeight = parseInt(sidePanel.style.height, 10);
 
-    document.getElementById("willowLabel").style.display = "";
+    document.getElementById("willow-willowLabel").style.display = "";
 
     if (heldBorder == "right") {
       if (curWidth + deltaX > RESIZE_MIN_WIDTH) {
         if (curWidth + deltaX >= 590){
-          let wlwLabel = document.getElementById("willowLabel");
+          let wlwLabel = document.getElementById("willow-willowLabel");
           wlwLabel.classList.add("willow-anim");
           wlwLabel.classList.remove('shrinkTrans');
           open = true;
         }
         else {
-          let wlwLabel = document.getElementById("willowLabel");
+          let wlwLabel = document.getElementById("willow-willowLabel");
           wlwLabel.classList.add("willow-anim");
           wlwLabel.classList.add('shrinkTrans');
           open = false;
@@ -409,13 +409,13 @@ function enableResizing(rightBorderOnly) {
     } else if (heldBorder == "left") {
       if (curWidth - deltaX > RESIZE_MIN_WIDTH) {
         if (curWidth - deltaX >= 590){
-          let wlwLabel = document.getElementById("willowLabel");
+          let wlwLabel = document.getElementById("willow-willowLabel");
           wlwLabel.classList.add("willow-anim");
           wlwLabel.classList.remove('shrinkTrans');
           open = true;
         }
         else {
-          let wlwLabel = document.getElementById("willowLabel");
+          let wlwLabel = document.getElementById("willow-willowLabel");
           wlwLabel.classList.add("willow-anim");
           wlwLabel.classList.add('shrinkTrans');
           open = false;
@@ -438,7 +438,7 @@ function enableResizing(rightBorderOnly) {
   }
 
   function resizeMouseUp() {
-    document.getElementById("graphInvisLayer").style.zIndex = -1;
+    document.getElementById("willow-graphInvisLayer").style.zIndex = -1;
 
     // end of drag. remove handlers.
     document.onmouseup = null;
@@ -459,9 +459,32 @@ function enableResizing(rightBorderOnly) {
     // notify other tabs with a sync request
     chrome.runtime.sendMessage({ 
       message: "WILLOW_SP_SYNC_REQUEST",
-      action: "WILLOW_SP_SYNC_DOCKED_RESIZE",
-      newWidth: sidePanel.style.width
+      action: "WILLOW_SP_SYNC_RESIZE",
+      newWidth: sidePanel.style.width,
+      newHeight: sidePanel.style.height
     });
+
+    // save as drag if panel location changed
+    if (heldBorder == "left" || heldBorder == "top") {
+      // save new undocked panel location
+      chrome.storage.local.set({
+        WILLOW_SP_UNDOCKED_LOC: {
+          top: sidePanel.style.top,
+          left: sidePanel.style.left
+        }
+      });
+
+      // notify other tabs with a sync request
+      chrome.runtime.sendMessage({ 
+        message: "WILLOW_SP_SYNC_REQUEST",
+        action: "WILLOW_SP_SYNC_DRAG",
+        newPos: {
+          top: sidePanel.style.top,
+          left: sidePanel.style.left
+        }
+      });
+    }
+    
   }
 }
 
@@ -556,8 +579,9 @@ function handleSPSyncRequest(request) {
   } else if (request.action == "WILLOW_SP_SYNC_DRAG") {
     sidePanel.style.top = request.newPos.top;   
     sidePanel.style.left = request.newPos.left; 
-  } else if (request.action == "WILLOW_SP_SYNC_DOCKED_RESIZE") {
+  } else if (request.action == "WILLOW_SP_SYNC_RESIZE") {
     sidePanel.style.width = request.newWidth;
+    sidePanel.style.height = request.newHeight;
   } 
 }
 
@@ -565,16 +589,16 @@ function handleWillowLabelSyncRequest(request){
   
   if (request.action == "WILLOW_LABEL_SYNC_OPEN") {
 
-      label = document.getElementById("willowLabel");
+      label = document.getElementById("willow-willowLabel");
       if (label.classList.contains("shrinkTrans") && label.classList.contains("willow-anim")) {
           label.classList.remove("willow-anim");
           label.classList.remove("shrinkTrans");
          }
 
-      document.getElementById("willowLabel").style.display = "";
+      document.getElementById("willow-willowLabel").style.display = "";
     
   } else if (request.action == "WILLOW_LABEL_SYNC_CLOSE") {
-      document.getElementById("willowLabel").style.display = "none";
+      document.getElementById("willow-willowLabel").style.display = "none";
   }
 
 }
