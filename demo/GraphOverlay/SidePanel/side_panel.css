@@ -16,13 +16,14 @@
   left: 0;
   overflow-x: hidden;
   overflow-y: hidden;
+  display: block !important;
   /*---------------*/
   border-radius: 5px;
 }
 
 #panelHeader {
   width: 100%;
-
+  display: block !important;
   /*---------------*/
   height: 70px;
   text-align: center;
