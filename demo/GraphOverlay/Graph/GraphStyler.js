@@ -42,10 +42,10 @@ function applyStyle() {
                     
             },
             'background-image-containment': ['inside', 'over','over'],
-            'background-width': ['100%', '23%','23%'],
-            'background-height': ['100%', '23%','23%'],
+            'background-width': ['100%', '23%','30%'],
+            'background-height': ['100%', '23%','30%'],
             'background-position-x': ['0.5px', '-12.5px','42.5px'],
-            'background-position-y':['0px', '3px','-1px'],
+            'background-position-y':['0px', '3px','35px'],
             'background-image-opacity': ['1', '1','1'],
             'background-clip': ['node', 'none','none'],
             'bounds-expansion': ['35px','35px','35px','35px'],
