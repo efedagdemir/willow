@@ -64,6 +64,22 @@ function renameSessionWithId(id, name) {
     });
 }
 
+function deleteSessionWithId(id) {
+    if(id == cy.data("id"))
+        return false;
+    else {
+        chrome.storage.local.get({sessions: []}, function (result) {
+            var sessions = result.sessions;
+            sessions = sessions.filter( session => {return session.data.id != id});
+
+            chrome.storage.local.set({sessions: sessions}, function () {
+                console.log("session deleted! New sessions: ", sessions);
+            });
+        });
+        return true;
+    }
+}
+
 function saveCurrentSession() {
     return new Promise( (resolve, reject) => {
         // save the sesssion to chrome's persistent storage
@@ -73,8 +89,7 @@ function saveCurrentSession() {
             // save the png export inside data
             applyStyle();
             cy.style().update();            
-            cy.data("png", cy.png());
-            cy.data("png", cy.png());
+            cy.data("png", cy.png({full:true}));
             
             // set the last updated data
             var now = new Date();
@@ -108,6 +123,8 @@ chrome.runtime.onMessage.addListener(
             loadSessionWithId(request.id);
         } else if (request.message == "WILLOW_HISTORY_RENAME_SESSION") {
             renameSessionWithId(request.id, request.name);
+        } else if (request.message == "WILLOW_HISTORY_DELETE_SESSION"){
+            sendResponse( deleteSessionWithId(request.id));
         } else if (request.message == "WILLOW_HISTORY_SHOW") {
             loadHistoryMenu();
         }

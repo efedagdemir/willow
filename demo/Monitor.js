@@ -37,6 +37,14 @@ function windowClosed() {
  * @param {Tab} tab             The chrome tab object, more info in the link above.
  */
 function tabUpdated(tabId, changeInfo, tab) {
+    
+    let node = cy.getElementById(tabURLs.get(tabId)); 
+    if (node.data("openTabCount") > 0 && changeInfo.url != undefined && changeInfo.url.startsWith("chrome")){
+        
+        tabURLs.set(tabId, changeInfo.url);
+        node.data( "openTabCount", node.data("openTabCount") - 1); 
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+    }
     if (changeInfo.url && !changeInfo.url.startsWith("chrome")) { // do not consider the pages that start with chrome, no history is kept for them.
         urlLoaded(tabId, tab.url);
     }
@@ -71,7 +79,7 @@ async function urlLoaded(tabId, url) {
         let favIconUrl = "chrome://favicon/size/64@1x/" + url;
         let node = cy.add({// add the node to the cy graph
             group: 'nodes',
-            data: {id: url, title_size: '20px', title: "title not loaded :(", width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl, comment: ""},
+            data: {id: url, title_size: '20px', title: "Title loading..", width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl, comment: ""},
             
         });
         newNode = true;
@@ -79,7 +87,7 @@ async function urlLoaded(tabId, url) {
         //! temp
         applyStyle();
         cy.style().update();
-        cy.data("png", cy.png());
+        cy.data("png", cy.png({full:true}));
 
         // get the page's title and add it. this happens asynchronously. //TODO this could be formatted better.
         const getTitle = (url) => {  
@@ -165,7 +173,7 @@ async function urlLoaded(tabId, url) {
 
     // the tab does not contain the old page anymore.
     let oldURL = tabURLs.get(tabId);
-    if(oldURL) {
+    if(oldURL && !oldURL.startsWith("chrome")) {
         let oldURLNode = cy.getElementById(oldURL); // decrement the old page's node's open tab count.
         oldURLNode.data("openTabCount", oldURLNode.data("openTabCount") - 1);
     }
@@ -199,8 +207,13 @@ async function urlLoaded(tabId, url) {
         return new Promise( function (resolve, reject) {
             // request a list of visits to the url.
             chrome.history.getVisits({ url: url }, function (visitItems) {
+                console.log(visitItems);
                 console.log("The page was visited ", visitItems.length, " times.");
                 console.log("Last transition type is ", visitItems[visitItems.length - 1].transition);
+                
+                // if the new url is last visited by "generated", we find that in the second to last entry.
+                if (visitItems.length >= 2 && visitItems[visitItems.length - 2].transition == "generated")
+                    resolve(false);
                 // if the new url is last visited by a link, the new page's node is a child of the node this tab is at.
                 if (visitItems[visitItems.length - 1].transition == "link" ||
                     visitItems[visitItems.length - 1].transition == "form_submit") {

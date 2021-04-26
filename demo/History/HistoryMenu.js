@@ -42,8 +42,16 @@ renameBtn.addEventListener("click", function() {
     );
 });
 deleteBtn.addEventListener("click", function () {
-    // TODO
-    alert("GETCHO ASS UP CEM!");
+   if(confirm("This will remove the session permanently, are you sure?")) {
+    chrome.runtime.sendMessage(
+        {message: "WILLOW_HISTORY_DELETE_SESSION", id: curSession.data.id},
+        (response) => {
+            if(response)
+                location.reload() // reload hist. page after renaming
+            else
+                alert("Active session can not be removed");
+        });
+   }
 });
 
 

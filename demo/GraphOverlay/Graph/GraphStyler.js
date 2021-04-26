@@ -27,18 +27,27 @@ function applyStyle() {
             'text-max-width': '170px',
             'text-justification': 'center',
             'background-image': function (ele) {
-                if (ele.data('openTabCount') > 0 ) 
+                if (ele.data('openTabCount') > 0 && ele.data("comment") == "" ) {
                     return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/active-color4.png')];
-                else 
+                }
+                if(ele.data('openTabCount') > 0 && ele.data("comment") != "" ){
+                    return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/active-color4.png'), chrome.extension.getURL('/GraphOverlay/Graph/post-it.png')];
+                }     
+                if(ele.data('openTabCount') <= 0 && ele.data("comment") != ""){
+                    return[ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/post-it.png')];
+                }                     
+                else{
                     return ele.data('iconURL');
+                }
+                    
             },
-            'background-image-containment': ['inside', 'over'],
-            'background-width': ['100%', '20%'],
-            'background-height': ['100%', '20%'],
-            'background-position-x': ['0.5px', '-10.5px'],
-            'background-position-y':['0px', '3px'],
-            'background-image-opacity': ['1', '1'],
-            'background-clip': ['node', 'none'],
+            'background-image-containment': ['inside', 'over','over'],
+            'background-width': ['100%', '25%','35%'],
+            'background-height': ['100%', '25%','35%'],
+            'background-position-x': ['0.5px', '-10.5px','35.5px'],
+            'background-position-y':['0px', '3px','3px'],
+            'background-image-opacity': ['1', '1','1'],
+            'background-clip': ['node', 'none','none'],
             'bounds-expansion': ['0', '10'],
             'font-family' : 'Open Sans',
             'font-size': 'data(title_size)'
