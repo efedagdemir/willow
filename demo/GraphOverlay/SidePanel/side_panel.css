@@ -19,6 +19,7 @@
   display: block !important;
   /*---------------*/
   border-radius: 5px;
+  /*display: block !important;*/
 }
 
 #panelHeader {
@@ -88,6 +89,14 @@
 }
 
 .headerBtn {
+  /* reset buttons before use */
+  margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
@@ -118,6 +127,7 @@
 
 .btn-close {
   background-image: url('../../icons/close.png');
+  
 }
 
 .btn-undock {
