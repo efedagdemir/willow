@@ -72,7 +72,7 @@ function addSessionElements (session) {
     lastAccDiv.className = "opt"
     
     titleDiv.innerHTML = "<b>" + getSessionTitle(session) + "</b>";
-    lastAccDiv.innerHTML = "<b> Last Access: " + + session.data.lastUpdated + "</b>";
+    lastAccDiv.innerHTML = "<b> Last Access: " + session.data.lastUpdated + "</b>";
 
     rootDiv.appendChild(titleDiv);
     rootDiv.appendChild(lastAccDiv);
