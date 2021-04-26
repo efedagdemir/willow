@@ -38,9 +38,9 @@ function windowClosed() {
  */
 function tabUpdated(tabId, changeInfo, tab) {
     
-    let node = cy.getElementById(tabURLs.get(tabId)); 
-    if (node.data("openTabCount") > 0 && changeInfo.url != undefined && changeInfo.url.startsWith("chrome")){
-        
+    
+    if (tabURLs.get(tabId) && changeInfo.url != undefined && changeInfo.url.startsWith("chrome")){
+        let node = cy.getElementById(tabURLs.get(tabId));
         tabURLs.set(tabId, changeInfo.url);
         node.data( "openTabCount", node.data("openTabCount") - 1); 
         broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
@@ -124,13 +124,13 @@ async function urlLoaded(tabId, url) {
     runLayout();
 
     var instance = cy.layoutUtilities( 
-       {    idealEdgeLength: 10,
-            offset: 10,
+       {    idealEdgeLength: 50,        //10
+            offset: 20,                 //10
             
             desiredAspectRatio: 1,
             polyominoGridSizeFactor: 1,
             utilityFunction: 1,
-            componentSpacing: 10
+            componentSpacing: 30        //10
         });
     
     instance.placeNewNodes(cy.getElementById(url));  

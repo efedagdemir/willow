@@ -23,8 +23,6 @@ var sidePanelHTML = `
 <html>
 <head>
   <link rel="stylesheet" href="${chrome.runtime.getURL("GraphOverlay/SidePanel/side_panel.css")}">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
   
   <script src="cytoscape.min.js"></script>
   <script src="node_modules/dagre/dist/dagre.min.js"></script>
@@ -77,7 +75,7 @@ injectSidePanel();
 
 // read panel state
 chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UNDOCKED_LOC", 
-  "WILLOW_SP_WIDTH", "WILLOW_SP_UD_HEIGHT","WILLOW_OPACITY_UPDATE","WILLOW_OPACITY"], function (res) {
+  "WILLOW_SP_WIDTH", "WILLOW_SP_UD_HEIGHT","WILLOW_OPACITY_UPDATE","WILLOW_OPACITY", "WILLOW_LABEL_OPEN"], function (res) {
   panelWidth = res.WILLOW_SP_WIDTH;
   panelUndockedHeight = res.WILLOW_SP_UD_HEIGHT;
   // The panel is closed and docked by default. Update based on the stored state.
@@ -91,6 +89,14 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
     document.getElementById("willowLabel").style.display = "none";
   if(res.WILLOW_OPACITY_UPDATE)
     updateOpacity(res.WILLOW_OPACITY);
+  
+  if (res.WILLOW_LABEL_OPEN){
+    //document.getElementById("willowLabel").style.width = "210px";
+    document.getElementById("willowLabel").style.display = "";}
+  else  {
+    //document.getElementById("willowLabel").style.width = "0px";
+    document.getElementById("willowLabel").style.display = "none";}
+
 });
 
 // register event handlers
@@ -377,18 +383,21 @@ function enableResizing(rightBorderOnly) {
     var curWidth = parseInt(sidePanel.style.width, 10);
     var curHeight = parseInt(sidePanel.style.height, 10);
 
-    document.getElementById("willowLabel").style.display = "none";
     document.getElementById("willowLabel").style.display = "";
 
     if (heldBorder == "right") {
       if (curWidth + deltaX > RESIZE_MIN_WIDTH) {
         if (curWidth + deltaX >= 590){
           let wlwLabel = document.getElementById("willowLabel");
+          wlwLabel.classList.add("willow-anim");
           wlwLabel.classList.remove('shrinkTrans');
+          open = true;
         }
         else {
           let wlwLabel = document.getElementById("willowLabel");
+          wlwLabel.classList.add("willow-anim");
           wlwLabel.classList.add('shrinkTrans');
+          open = false;
         }
 
         sidePanel.style.width = (curWidth + deltaX) + "px";
@@ -397,11 +406,15 @@ function enableResizing(rightBorderOnly) {
       if (curWidth - deltaX > RESIZE_MIN_WIDTH) {
         if (curWidth - deltaX >= 590){
           let wlwLabel = document.getElementById("willowLabel");
+          wlwLabel.classList.add("willow-anim");
           wlwLabel.classList.remove('shrinkTrans');
+          open = true;
         }
         else {
           let wlwLabel = document.getElementById("willowLabel");
+          wlwLabel.classList.add("willow-anim");
           wlwLabel.classList.add('shrinkTrans');
+          open = false;
         }
 
         sidePanel.style.width = (curWidth - deltaX) + "px";
@@ -428,6 +441,10 @@ function enableResizing(rightBorderOnly) {
     document.onmousemove = null;
 
     panelWidth = sidePanel.style.width;
+    
+    //sync msg of willow label
+    if (open) { labelOpenMessage();}
+    else      { labelCloseMessage();}
 
     // save new panel Width
     chrome.storage.local.set({
@@ -492,10 +509,12 @@ function runLayoutBtn_handler() {
 // listen for sidePanel sync requests
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    if (request.message != "WILLOW_SP_SYNC_REQUEST") {
-        return;
+    if (request.message == "WILLOW_SP_SYNC_REQUEST") {
+        handleSPSyncRequest(request);
     }
-    handleSPSyncRequest(request);
+    else if (request.message == "WILLOW_LABEL_SYNC_REQUEST"){
+        handleWillowLabelSyncRequest(request);
+    }
   }
 );
 
@@ -517,6 +536,43 @@ function handleSPSyncRequest(request) {
     sidePanel.style.width = request.newWidth;
   } 
 }
+
+function handleWillowLabelSyncRequest(request){
+  
+  if (request.action == "WILLOW_LABEL_SYNC_OPEN") {
+
+      label = document.getElementById("willowLabel");
+      if (label.classList.contains("shrinkTrans") && label.classList.contains("willow-anim")) {
+          label.classList.remove("willow-anim");
+          label.classList.remove("shrinkTrans");
+         }
+
+      document.getElementById("willowLabel").style.display = "";
+    
+  } else if (request.action == "WILLOW_LABEL_SYNC_CLOSE") {
+      document.getElementById("willowLabel").style.display = "none";
+  }
+
+}
+
+function labelOpenMessage(){
+
+  chrome.storage.local.set({ WILLOW_LABEL_OPEN: true });
+  // notify other tabs with a sync request
+  chrome.runtime.sendMessage({ 
+    message: "WILLOW_LABEL_SYNC_REQUEST",
+    action: "WILLOW_LABEL_SYNC_OPEN" });
+}
+
+function labelCloseMessage(){
+  
+  chrome.storage.local.set({ WILLOW_LABEL_OPEN: false });
+  // notify other tabs with a sync request
+  chrome.runtime.sendMessage({ 
+    message: "WILLOW_LABEL_SYNC_REQUEST",
+    action: "WILLOW_LABEL_SYNC_CLOSE"});
+}
+
 
 /**
  * The low level design report includes the function sendSyncRequest() in SidePanelSyncer.
