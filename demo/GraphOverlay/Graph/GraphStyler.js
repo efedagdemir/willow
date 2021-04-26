@@ -42,13 +42,13 @@ function applyStyle() {
                     
             },
             'background-image-containment': ['inside', 'over','over'],
-            'background-width': ['100%', '25%','35%'],
-            'background-height': ['100%', '25%','35%'],
-            'background-position-x': ['0.5px', '-10.5px','35.5px'],
-            'background-position-y':['0px', '3px','3px'],
+            'background-width': ['100%', '23%','23%'],
+            'background-height': ['100%', '23%','23%'],
+            'background-position-x': ['0.5px', '-12.5px','42.5px'],
+            'background-position-y':['0px', '3px','-1px'],
             'background-image-opacity': ['1', '1','1'],
             'background-clip': ['node', 'none','none'],
-            'bounds-expansion': ['0', '10'],
+            'bounds-expansion': ['35px','35px','35px','35px'],
             'font-family' : 'Open Sans',
             'font-size': 'data(title_size)'
         })
