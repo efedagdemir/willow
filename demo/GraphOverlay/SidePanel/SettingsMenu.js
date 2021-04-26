@@ -98,7 +98,7 @@ function closeSettingsMenu(isOrigin) {
         document.body.removeChild(menuWrapper);
     }
     menuIsOpen = false;
-    
+
     chrome.storage.local.get(["WILLOW_HOW_TO_OPEN", "WILLOW_INFO_OPEN"], function (res) {
         if (res.WILLOW_INFO_OPEN)
             closeInfoPage(true);
@@ -214,14 +214,7 @@ chrome.runtime.onMessage.addListener(
         else if ( request.message == "WILLOW_RADIO_SYNC_REQUEST"){
             chrome.storage.local.set({ WILLOW_LAYOUT_OPT: request.button_no });  
             document.getElementById("layout_radio" + request.button_no).checked = "checked";
-        } /*else if (request.message == "WILLOW_TOGGLE_SETTINGS_MENU") {
-            console.log("toggle message recv.");
-            if (menuIsOpen) {
-                closeSettingsMenu(true);
-            } else {
-                openSettingsMenu(true);
-            }
-        }*/
+        }
     }
 );
 
