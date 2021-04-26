@@ -8,18 +8,18 @@
     background-color: #041424; /* same as #panelHeader (side_panel.css)*/
     text-align: center;
     border-radius: 20px;
+    overflow: auto;
 }
 
 #menuHeader b {
     color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
-    line-height: 40px;
+    line-height: 60px;
+    font-size: 20px;
 }
 
-#menuHeader hr {
-    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
-    border: 1px solid;
+#menuBody{
+    margin-top: 30px;
 }
-
 .settingElement {
     width: 90%;
     margin: auto;
@@ -29,6 +29,7 @@
     
 }
 .settingElement .label {
+    font-family:  'Century Gothic', sans-serif;
     display: inline-block;
     text-align: left;
     float: left;
@@ -43,9 +44,20 @@
 
 .opt button{
     color:#f4d58d; /* same as #panelHeader a (side_panel.css)*/
-    background-color: cadetblue;
+    background-color: #911111;
+    border-radius: 5px;
+    border: none;
+    font-weight: normal;
+    padding: 3px;
+    width: 100px;
 }
+
+#resetSizesPRBtn {
+    margin-left: 20px;
+}
+
 /*Transparency*/
+/*
 #sliderTrans {
     height: 13px;
     background: #d3d3d3;
@@ -53,23 +65,34 @@
     opacity: 0.7;
     -webkit-transition: .2s;
     transition: opacity .2s;
-  }
+  }*/
   
 /* the four buttons on the bottom */
- .table-buttons {   
+ .table-buttons1, .table-buttons2 {   
     margin: 5px;
-    background-color: #f4d58d;
     background-repeat:no-repeat;
     border: none;
-    color: #041424;
     border-radius: 5px;
-    width: fit-content;
+    /*width: fit-content;*/
+     width: 100px;
     padding: 5px;
     
 }
 
+.table-buttons1 {
+    color:#f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    background-color: #8d0801;
+    font-weight: normal;
+}
+
+.table-buttons2 {
+    background-color: #f4d58d;
+    color: #041424;
+    font-weight: bold;
+}
+
 /* table buttons are in */
-#settings_button_table {
+.willow_tables {
     margin: 0 auto;
     
 }
@@ -97,16 +120,38 @@ tr.space_table_cell>td {
     opacity: 1;
     height: 12px;
     width: 12px;
-    margin-top: 8px;
-    margin-right: 10px; 
+    margin-top: 15px;
+    margin-right: 15px; 
+    
+}
+
+.table-buttons2 {
+    background-color: #041424;
+    background-size: cover;
+    border: none;
+    opacity: 1;
+    height: 24px;
+    width: 24px;
+}
+
+#infoBtn.table-buttons2 {
+  background-image: url('../../icons/information.png');
 }
 
 
-#settings_close_btn:hover {
-opacity: 0.3;
+#howToBtn.table-buttons2 {
+    background-image: url('../../icons/question-mark.png');
+}
+
+#settings_close_btn:hover, .table-buttons1:hover, .table-buttons2:hover, #resetSizesUniBtn:hover, #resetSizesPRBtn:hover {
+    opacity: 0.6;
 }
 
 /*radio buttons*/
 .layout_radio {
     padding: 15px;
+}
+
+#layout_radio_adjust{
+    margin-left: 45px;
 }

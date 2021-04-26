@@ -64,7 +64,10 @@ var infoPageHTML = `
             </p>
         
             <footer id="willow_footer">
-                Version 1.0 - 2021
+                Version 1.0 - 2021 <br>
+                Icons made by "Smashicons"   	from flaticon.com <br>
+                Icons made by "Freepik" 	  	from flaticon.com <br>
+                Icons made by "Pixel perfect" 	from flaticon.com 
             </footer>
 
         </div>    

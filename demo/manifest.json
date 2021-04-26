@@ -54,7 +54,9 @@
         "icons/left-arrow.png",
         "icons/graph.png",
         "icons/settings.png",
-        "icons/new.png"
+        "icons/new.png",
+        "icons/information.png",
+        "icons/question-mark.png"
     ],
     "content_security_policy": "script-src 'self'; object-src 'self'; img-src chrome://favicon data:;"
 }

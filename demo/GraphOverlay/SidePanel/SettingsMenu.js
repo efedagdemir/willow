@@ -23,6 +23,33 @@ function openSettingsMenu(isOrigin) {
     <html>
     <head>
         <link rel="stylesheet" href="${chrome.runtime.getURL("GraphOverlay/SidePanel/settings_menu.css")}">
+        <style>
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.0);
+            border-radius: 10px;
+            
+        }
+       
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888; 
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+        ::-webkit-scrollbar-thumb {
+            border-radius: 20px;
+        }
+        </style>
+
     </head>
 
     <body>
@@ -35,43 +62,46 @@ function openSettingsMenu(isOrigin) {
         </div>
         <div id="menuBody">
             <div class="settingElement" id="resetNodeSizes" class>
-            <div class="label"> <b>Reset node sizes: </b></div>
-            <div id="resetSizesUniBtn" class="opt"> <button title="Set all nodes to the default size" >Uniform</button></div>
-            <div id="resetSizesPRBtn" class="opt">  <button title="Node sizes are set according to their importance on search engine results" >PageRank</button></div>
-        </div>
-        <div class="settingElement" id="runLayout" class>
-            <div class="label"> <b>Run layout: </b></div>
-            <label class="layout_radio">Adjust
-                <input type="radio" name="radio" id="layout_radio1">
-                <span class="span_radio"></span>
-            </label>
-            <label class="layout_radio">Recalculate
-                <input type="radio" name="radio" id="layout_radio2">
-                <span class="span_radio"></span>
-        </div>
-            </label>
-    </div>
-            <div class="settingElement" id ="setTrans" class>
+                <div class="label"> <b>Reset node sizes: </b></div>
+                <div id="resetSizesUniBtn" class="opt"> <button title="Set all nodes to the default size" >Uniform</button></div>
+                <div id="resetSizesPRBtn" class="opt">  <button title="Node sizes are set according to their importance on search engine results" >PageRank</button></div>
+            </div>
+            <div class="settingElement" id="runLayout" class>
+                <div class="label"> <b>Run layout: </b></div>
+                <label class="layout_radio" id="layout_radio_adjust">Adjust
+                    <input type="radio" name="radio" id="layout_radio1">
+                    <span class="span_radio"></span>
+                </label>
+                <label class="layout_radio">Recalculate
+                    <input type="radio" name="radio" id="layout_radio2">
+                    <span class="span_radio"></span>
+                </label>
+            </div>
+            
+            <!--<div class="settingElement" id ="setTrans" class>
                 <div class= "label"> <b>Background opacity: </b></div>
                 <div class = "opt">
                     <input type="range" id="sliderTrans"
                         min="0.75" max="1" step="0.005" value="${getComputedStyle(document.getElementById("canvas")).getPropertyValue("opacity")}"/>
-            </div>
                 </div>
-            <br>
-            <table id="settings_button_table">
+            </div>-->
+            
+            
+            <br><br><br>
+            <table id="settings_button_table1" class="willow_tables">
                 <tr class="space_table_cell">
-                    <td> <button id="exportBtn" class="table-buttons" title="Save the graph as a file">Export Session</button></th>
-                    <td> <button id="importBtn" class="table-buttons" title="Open a Pre-saved Graph from Files">Import Session</button></th>
+                    <td> <button id="exportBtn" class="table-buttons1" title="Save the graph as a file">Export Session</button></th>
+                    <td> <button id="importBtn" class="table-buttons1" title="Open a Pre-saved Graph from Files">Import Session</button></th>
+                    <td> <button id="historyBtn"  class="table-buttons1" title="Show History">History</button></td>
                 </tr> 
+            </table>
+               
+            <table id="settings_button_table2" class="willow_tables">
                 <tr>
-                    <td> <button id="infoBtn"  class="table-buttons" title="Open 'Information' Page">Information</button></th>
-                    <td> <button id="howToBtn" class="table-buttons" title="Open 'How To?' Page">How to?</button></th>
+                    <td> <button id="infoBtn"  class="table-buttons2" title="Open 'Information' Page"></button></th>
+                    <td> <button id="howToBtn" class="table-buttons2" title="Open 'How To?' Page"></button></th>
                 </tr>
-                <tr>
-                    <th> <button id="historyBtn"  class="table-buttons" title="Show History">History</button></th>
-                </tr>
-            <table>
+            </table> 
         </div>
     </div>
     </body>
@@ -107,7 +137,7 @@ function addSettingsMenuListeners() {
     document.getElementById("settings_close_btn").onclick   = () => closeSettingsMenu(true); 
     document.getElementById("resetSizesUniBtn").onclick     = resetSizesUniBtn_handler; 
     document.getElementById("resetSizesPRBtn").onclick      = resetSizesPRBtn_handler;
-    document.getElementById("sliderTrans").oninput          = sliderTrans_handler; 
+   // document.getElementById("sliderTrans").oninput          = sliderTrans_handler; 
     document.getElementById("exportBtn").onclick            = exportBtn_handler; 
     document.getElementById("importBtn").onclick            = importBtn_handler; 
     document.getElementById("historyBtn").onclick           = historyBtn_handler; 
@@ -141,7 +171,7 @@ function resetSizesPRBtn_handler() {
     });
 }
 
-
+/*
 function sliderTrans_handler() {
     var object =  document.getElementById("canvas");
     object.style.opacity = document.getElementById("sliderTrans").value.toString();
@@ -154,7 +184,7 @@ function sliderTrans_handler() {
           });
         
     });
-}
+}*/
 
 function exportBtn_handler(){
     chrome.runtime.sendMessage({

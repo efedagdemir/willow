@@ -9,6 +9,7 @@
     overflow: auto;
     overflow-x: auto;
     overflow-y: auto;
+    font-family:  'Century Gothic', sans-serif;
 }
 
 #willowHowToHeader {
@@ -38,7 +39,7 @@
 }
 
 .nested_summary{
-    color: #d82828;
+    color: #a01515;
     font-weight: bold;
     margin-left: 15px;
     margin-top: 10px;
