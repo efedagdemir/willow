@@ -8,7 +8,7 @@
  * are styling-flexible. The ones above it should not be modified.
  */
 
-#sidePanel {
+#willow-sidePanel {
   height: 100%;
   position: fixed;
   width: 0; /* initially 0 so that we do not see a glimpse of the panel when loading a page*/
@@ -22,7 +22,7 @@
   display: block !important;
 }
 
-#panelHeader {
+#willow-panelHeader {
   width: 100%;
   display: block !important;
   /*---------------*/
@@ -38,7 +38,7 @@
 /* We may want separate styles for the label and the buttons. Then, use 
  * the rulesets .headerBtn and #willowLabel.
  */
-#panelHeader a {
+#willow-panelHeader a {
   /*---------------*/
     
   -webkit-user-select: none;
@@ -89,7 +89,7 @@
   100%  {transform: translateX(0px)}
 }
 
-.headerBtn {
+.willow-headerBtn {
   /* reset buttons before use */
   margin: 0;
 	padding: 0;
@@ -118,47 +118,47 @@
   margin-right: 25px;
 }
 
-.headerBtn:hover {
+.willow-headerBtn:hover {
   opacity: 0.3;
 }
 
-.headerBtn:focus {
+.willow-headerBtn:focus {
   outline: none;
 }
 
-.btn-close {
+.willow-btn-close {
   background-image: url('../../icons/close.png');
   
 }
 
-.btn-undock {
+.willow-btn-undock {
   background-image: url('../../icons/right-arrow.png');
 }
 
-.btn-dock {
+.willow-btn-dock {
   background-image: url('../../icons/left-arrow.png');
 }
 
-.btn-new {
+.willow-btn-new {
   background-image: url('../../icons/new.png');
 }
 
-.btn-layout {
+.willow-btn-layout {
   background-image: url('../../icons/graph.png');
 }
 
-.btn-settings {
+.willow-btn-settings {
   background-image: url('../../icons/settings.png');
 }
 
 
-#willowLabel {
+#willow-willowLabel {
   /*---------------*/
   float: left;
 }
 
 
-#panelBody {
+#willow-panelBody {
   position: absolute;
   bottom: 0%;
   left: 0;
@@ -171,13 +171,13 @@
 /*
  * BORDERS
  */
-.border {
+.willow-border {
   position: absolute;
   /*---------------*/
   background-color: #a8a8a8; /*#5e6472*/
 }
 
-#leftBorder {
+#willow-leftBorder {
   height: 100%;
   top: 0;
   left: 0;
@@ -185,7 +185,7 @@
   width: 3px;
 }
 
-#rightBorder {
+#willow-rightBorder {
   height: 100%;
   top: 0;
   right: 0;
@@ -194,7 +194,7 @@
   width: 3px;
 }
 
-#topBorder {
+#willow-topBorder {
   width: 100%;
   top: 0;
   left: 0;
@@ -202,7 +202,7 @@
   height: 3px;
 }
 
-#bottomBorder {
+#willow-bottomBorder {
   width: 100%;
   bottom: 0;
   left: 0;
@@ -210,7 +210,7 @@
   height: 3px;
 }
 
-#graphFrame {
+#willow-graphFrame {
   position: absolute;
   top: 0;
   left: 0;
@@ -224,7 +224,7 @@
   
 }
 
-#graphInvisLayer {
+#willow-graphInvisLayer {
   position: absolute;
   top: 0;
   left: 0;
@@ -234,7 +234,7 @@
   /*---------------*/
 }
 
-#willowIcon {
+#willow-willowIcon {
   border-radius: 30%;
   margin-top: 10px;
   margin-left: 10px;
