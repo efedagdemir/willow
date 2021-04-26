@@ -2,6 +2,7 @@
  * !!!! An Issue: it seems that the ctx menu options do not think about the sync
  * ! problem at all.
  */
+ 
 
 // cytoscape.warnings(false);
 let canvas = document.getElementById("canvas");
@@ -11,6 +12,7 @@ let contextMenuApplied = false;
 let hoverOverApplied = false;
 updateCytoscape();
 syncViewport();
+//syncNotes();
 
 cy.on('dragfree', 'node', function (evt) {
     // update the node position at the background script
@@ -73,6 +75,36 @@ function onViewport(event) {
              message: "WILLOW_VIEWPORT_SYNC_REQUEST",
         });
     }); 
+}
+
+function onNotes(id){
+   
+    console.log("OnNOTESS");
+    
+    chrome.storage.local.get(["WILLOW_NOTES_OPEN"], function (res) {
+        if (!res.WILLOW_NOTES_OPEN.open) {
+            console.log("notes open is false");
+            chrome.storage.local.set({
+                WILLOW_NOTES_OPEN:{
+                    open:true,
+                    id: id
+                }
+            },function(){
+                console.log("Send message");
+                chrome.runtime.sendMessage({ 
+                     message: "WILLOW_NOTES_SYNC_REQUEST",
+                });
+            });
+        }
+    });
+    
+    /*;*/
+    
+    chrome.runtime.sendMessage({
+         message: "WILLOW_NOTES_SYNC_REQUEST"
+    });
+    
+
 }
 
 function updateCytoscape() {
@@ -148,6 +180,7 @@ function fitViewport() {
 }
 
 function syncViewport() {
+    console.log("SYNC VİEWPORT");
     chrome.storage.local.get(["WILLOW_VIEWPORT"], function (res) {
         //console.log(res.WILLOW_VIEWPORT);
         cy.removeListener("viewport"); // disable to avoid cycles
@@ -156,6 +189,54 @@ function syncViewport() {
     });
 }
 
+function openNotesPage(id){
+    let node = cy.getElementById(id);
+    var modal = document.getElementById("myModal");
+    modal.draggable = 'false';
+                       
+    document.getElementById("comments").value = node.data("comment");
+                     
+    modal.style.display = "block";
+    var span = document.getElementsByClassName("close")[0]; 
+    
+    span.onclick = function() {
+        
+        modal.style.display = "none";
+        let comment_txt = document.getElementById("comments").value;
+        console.log("CLOSING FUNCTION ",comment_txt);
+        node.data("comment",comment_txt);
+            chrome.runtime.sendMessage({
+                message: "WILLOW_BACKGROUND_ADD_COMMENT",
+                nodeId: id,
+                comment: comment_txt
+        });
+        chrome.storage.local.get(["WILLOW_NOTES_OPEN"], function (res) {
+            if (res.WILLOW_NOTES_OPEN.open) {
+                chrome.storage.local.set({ WILLOW_NOTES_OPEN: false}
+                ,function(){
+                    console.log("Send closing message");
+                    chrome.runtime.sendMessage({ 
+                        message: "WILLOW_NOTES_SYNC_REQUEST",
+                    });
+                });
+            } 
+        });
+        
+    }
+
+}
+function syncNotes(){
+    chrome.storage.local.get(["WILLOW_NOTES_OPEN"], function (res) {
+        var modal = document.getElementById("myModal");
+
+        if(res.WILLOW_NOTES_OPEN.open){
+            let id = res.WILLOW_NOTES_OPEN.id;                
+            openNotesPage(id);
+        }else{
+            modal.style.display = "none";
+        }
+    });
+}
 function applyContextMenu() {
     var contextMenu = cy.contextMenus({
         evtType: 'cxttap',
@@ -204,30 +285,8 @@ function applyContextMenu() {
                 onClickFunction: function (event) {
                     let target = event.target || event.cyTarget;
                     let id = target.id();
-                    let node = cy.getElementById(id);
-                    //console.log("Node comment is ", node.data("comment"));
-                    
-                    var modal = document.getElementById("myModal");
-                    modal.draggable = 'false';
-                    var span = document.getElementsByClassName("close")[0];
-                    
-                        
-                    document.getElementById("comments").value = node.data("comment");
-                     
-                    modal.style.display = "block";
-                    
-                   // When the user clicks on <span> (x), close the modal
-                    span.onclick = function() {
-                        let comment_txt = document.getElementById("comments").value;
-                        modal.style.display = "none";
-                        node.data("comment",comment_txt);
-                        chrome.runtime.sendMessage({
-                            message: "WILLOW_BACKGROUND_ADD_COMMENT",
-                            nodeId: id,
-                            comment: comment_txt
-                        });
-                    }
-   
+                    openNotesPage(id);
+                    onNotes(id);
                 },
                 show: true,
                 coreAsWell: true
@@ -534,8 +593,9 @@ chrome.runtime.onMessage.addListener(
             centerViewport();
         } else if (request.message == "WILLOW_VIEWPORT_SYNC_REQUEST") {
             syncViewport();
+        }else if(request.message == "WILLOW_NOTES_SYNC_REQUEST"){
+            syncNotes();
         }
-        
     }
 );
 
