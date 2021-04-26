@@ -124,13 +124,13 @@ async function urlLoaded(tabId, url) {
     runLayout();
 
     var instance = cy.layoutUtilities( 
-       {    idealEdgeLength: 10,
-            offset: 10,
+       {    idealEdgeLength: 50,        //10
+            offset: 20,                 //10
             
             desiredAspectRatio: 1,
             polyominoGridSizeFactor: 1,
             utilityFunction: 1,
-            componentSpacing: 10
+            componentSpacing: 30        //10
         });
     
     instance.placeNewNodes(cy.getElementById(url));  
