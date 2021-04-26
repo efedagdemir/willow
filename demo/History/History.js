@@ -1,4 +1,4 @@
-console.log("alo");
+//console.log("alo");
 
 async function loadHistoryMenu() {
     await saveCurrentSession();
@@ -58,7 +58,7 @@ function renameSessionWithId(id, name) {
         else {
             // update the stored array
             chrome.storage.local.set({sessions: sessions}, function () {
-                console.log("session renamed! New sessions: ", sessions);
+                //console.log("session renamed! New sessions: ", sessions);
             });
         }
     });
@@ -73,7 +73,7 @@ function deleteSessionWithId(id) {
             sessions = sessions.filter( session => {return session.data.id != id});
 
             chrome.storage.local.set({sessions: sessions}, function () {
-                console.log("session deleted! New sessions: ", sessions);
+                //console.log("session deleted! New sessions: ", sessions);
             });
         });
         return true;
@@ -110,7 +110,7 @@ function saveCurrentSession() {
             
             // set the new array value to the same key
             chrome.storage.local.set({sessions: sessions}, function () {
-                console.log("session saved! New sessions: ", sessions);
+                //console.log("session saved! New sessions: ", sessions);
                 resolve();
             });
         });

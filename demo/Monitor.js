@@ -207,9 +207,9 @@ async function urlLoaded(tabId, url) {
         return new Promise( function (resolve, reject) {
             // request a list of visits to the url.
             chrome.history.getVisits({ url: url }, function (visitItems) {
-                console.log(visitItems);
-                console.log("The page was visited ", visitItems.length, " times.");
-                console.log("Last transition type is ", visitItems[visitItems.length - 1].transition);
+                ////console.log(visitItems);
+                ////console.log("The page was visited ", visitItems.length, " times.");
+                ////console.log("Last transition type is ", visitItems[visitItems.length - 1].transition);
                 
                 // if the new url is last visited by "generated", we find that in the second to last entry.
                 if (visitItems.length >= 2 && visitItems[visitItems.length - 2].transition == "generated")

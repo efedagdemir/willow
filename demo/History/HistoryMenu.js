@@ -60,7 +60,7 @@ deleteBtn.addEventListener("click", function () {
  * @param {Object} session A cytoscape export.
  */
 function addSessionElements (session) {
-    console.log(session);
+    //console.log(session);
     // --- create the html elements ---
     let rootDiv = document.createElement("div");
     let titleDiv = document.createElement("div");

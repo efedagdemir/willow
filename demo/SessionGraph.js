@@ -99,7 +99,7 @@ function updateNodePosition(nodeId, newPos) {
 }
 
 function removeNode(nodeId) {
-    console.log("DELETING NODE");
+    ////console.log("DELETING NODE");
     let node = cy.getElementById(nodeId);
     cy.remove(node);
 
@@ -203,14 +203,14 @@ function resetNodeSizes(option) {
 }
 
 function exportJSON() {
-    console.log("exporting JSON");
+    ////console.log("exporting JSON");
     var blob = new Blob([JSON.stringify(cy.json())], {type: 'application/willow'})
     var url = URL.createObjectURL(blob);
 
     var now = new Date();
     var name = "Willow Session " + now.getFullYear()+'-'+String((now.getMonth()+1)).padStart(2,'0')+'-'+ String(now.getDate()).padStart(2,'0') + ' at '
                 + now.getHours() + "." + String(now.getMinutes()).padStart(2,'0') + "." + String(now.getSeconds()).padStart(2,'0');
-    console.log(name);
+    ////console.log(name);
     chrome.downloads.download({
       url: url, // The object URL can be used as download URL
       filename: name + ".willow",
@@ -219,7 +219,7 @@ function exportJSON() {
 }
 
 async function importJSON(json) {
-    console.log("importing JSON");
+    //console.log("importing JSON");
     cy.json(json);
     let nodes = cy.nodes();
 

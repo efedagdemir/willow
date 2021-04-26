@@ -1,10 +1,10 @@
 let textField = document.getElementById("text");
 textField.innerHTML = "";
 
-console.log(chrome.extension.getBackgroundPage().getSessionGraph().entries());
+////console.log(chrome.extension.getBackgroundPage().getSessionGraph().entries());
 
 chrome.extension.getBackgroundPage().getSessionGraph().forEach( (value) => {
-    console.log("hey");
+    ////console.log("hey");
     treePrint(value, "");
 });
 

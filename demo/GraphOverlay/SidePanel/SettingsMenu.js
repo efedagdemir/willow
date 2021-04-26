@@ -1,7 +1,7 @@
 // initialize the menu's open/closee state
 chrome.storage.local.get(["WILLOW_SETTINGS_OPEN","WILLOW_HOW_TO_OPEN", "WILLOW_INFO_OPEN"], function (res) {
   if (res.WILLOW_SETTINGS_OPEN && !res.WILLOW_HOW_TO_OPEN && !res.WILLOW_INFO_OPEN) {
-      console.log("bir")
+      //console.log("bir")
       openSettingsMenu(false);
   }
 });
@@ -248,10 +248,10 @@ chrome.runtime.onMessage.addListener(
 function handleSettingsSyncRequest(request) {
     
     if (request.action == "WILLOW_SETTINGS_SYNC_OPEN") {
-        console.log("sync_open recv.");
+        //console.log("sync_open recv.");
         openSettingsMenu(false);
     } else if (request.action == "WILLOW_SETTINGS_SYNC_CLOSE") {
-        console.log("sync_closed recv.");
+        //console.log("sync_closed recv.");
         closeSettingsMenu(false);    
     }
 }

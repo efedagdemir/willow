@@ -33,7 +33,7 @@ function broadcastSyncRequest(request) {
         selector.active = true;
     }
     chrome.tabs.query(selector, function(tabs) {
-        console.log("----------------: ", tabs.length);
+        //console.log("----------------: ", tabs.length);
         for (let tab of tabs) {
             chrome.tabs.sendMessage(tab.id, request);
         }    

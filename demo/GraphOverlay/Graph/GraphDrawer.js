@@ -52,7 +52,7 @@ var tapholdSelected = false;
 
 cy.on('taphold', 'node', function(event) {
     let target = event.target || event.cyTarget;
-    //console.log('taphold is happening on node');
+    ////console.log('taphold is happening on node');
     target.component().select();
     tapholdSelected = true;
 });
@@ -80,18 +80,18 @@ function onViewport(event) {
 
 function onNotes(id){
    
-    console.log("OnNOTESS");
+    //console.log("OnNOTESS");
     
     chrome.storage.local.get(["WILLOW_NOTES_OPEN"], function (res) {
         if (!res.WILLOW_NOTES_OPEN.open) {
-            console.log("notes open is false");
+            //console.log("notes open is false");
             chrome.storage.local.set({
                 WILLOW_NOTES_OPEN:{
                     open:true,
                     id: id
                 }
             },function(){
-                console.log("Send message");
+                //console.log("Send message");
                 chrome.runtime.sendMessage({ 
                      message: "WILLOW_NOTES_SYNC_REQUEST",
                 });
@@ -110,8 +110,8 @@ function onNotes(id){
 
 function updateCytoscape() {
     chrome.runtime.sendMessage({ type: "getCytoscapeJSON" }, function (response) {
-        //console.log("RESPONSE RECEIVED");
-        //console.log(JSON.stringify(response));
+        ////console.log("RESPONSE RECEIVED");
+        ////console.log(JSON.stringify(response));
         // save current viewport to restore after response json is loaded
         let tmp = {
             zoom: cy.zoom(),
@@ -181,9 +181,9 @@ function fitViewport() {
 }
 
 function syncViewport() {
-    console.log("SYNC VİEWPORT");
+    //console.log("SYNC VİEWPORT");
     chrome.storage.local.get(["WILLOW_VIEWPORT"], function (res) {
-        //console.log(res.WILLOW_VIEWPORT);
+        ////console.log(res.WILLOW_VIEWPORT);
         cy.removeListener("viewport"); // disable to avoid cycles
         cy.viewport(res.WILLOW_VIEWPORT);
         cy.on("viewport", onViewport);  // re-enable 
@@ -207,7 +207,7 @@ function openNotesPage(id){
         
         modal.style.display = "none";
         let comment_txt = document.getElementById("comments").value;
-        console.log("CLOSING FUNCTION ",comment_txt);
+        //console.log("CLOSING FUNCTION ",comment_txt);
         node.data("comment",comment_txt);
             chrome.runtime.sendMessage({
                 message: "WILLOW_BACKGROUND_ADD_COMMENT",
@@ -218,7 +218,7 @@ function openNotesPage(id){
             if (res.WILLOW_NOTES_OPEN.open) {
                 chrome.storage.local.set({ WILLOW_NOTES_OPEN: false}
                 ,function(){
-                    console.log("Send closing message");
+                    //console.log("Send closing message");
                     chrome.runtime.sendMessage({ 
                         message: "WILLOW_NOTES_SYNC_REQUEST",
                     });
@@ -499,7 +499,7 @@ function applyContextMenu() {
         if(!disableCxtMenu){
             var evtTarget = event.target;
             if (evtTarget === cy){
-                //console.log("target is the background");
+                ////console.log("target is the background");
                 contextMenu.hideMenuItem('open');
                 contextMenu.hideMenuItem('open-in-new-tab');
                 contextMenu.hideMenuItem('remove');
@@ -508,7 +508,7 @@ function applyContextMenu() {
                 contextMenu.hideMenuItem('comment');
             }
             else if (evtTarget.isNode()){
-                //console.log("target is a node");
+                ////console.log("target is a node");
                 contextMenu.showMenuItem('open');
                 contextMenu.showMenuItem('open-in-new-tab');
                 contextMenu.showMenuItem('comment');
@@ -518,7 +518,7 @@ function applyContextMenu() {
 
             }
             else if (evtTarget.isEdge()){
-                //console.log("target is an edge");
+                ////console.log("target is an edge");
 
                 contextMenu.hideMenuItem('open');
                 contextMenu.hideMenuItem('open-in-new-tab');
@@ -551,8 +551,8 @@ function changeNodeSize(event, size, increase, title_size){
             tSize = `${tSize - 0.5}px`;
             target.data('title_size', tSize);
         }
-        //console.log("title_size" , title_size);
-        //console.log("TSIXE" , tSize);
+        ////console.log("title_size" , title_size);
+        ////console.log("TSIXE" , tSize);
         let id = target.id();
         target.data('width', size);
         chrome.runtime.sendMessage({
@@ -623,14 +623,14 @@ chrome.runtime.onMessage.addListener(confirmationListener);
 
 function confirmationListener(request){
     if (request.message == "WILLOW_BACKGROUND_NEW_SESSION_CONFIRMATION") {
-        //console.log("confirmation request received");
+        ////console.log("confirmation request received");
         askForConfirmation();
     }
 }
 
 function askForConfirmation() {
     document.getElementById('confirmationDialog').style.display = "block";
-    //console.log("inside ask for confirmation");
+    ////console.log("inside ask for confirmation");
     disableOperations();
 
     document.getElementById('okButton').onclick = function() {
