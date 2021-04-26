@@ -9,7 +9,8 @@ chrome.runtime.onMessage.addListener(
             || request.message == "WILLOW_HOW_TO_DETAILS_SYNC_REQUEST"
             || request.message == "WILLOW_RADIO_SYNC_REQUEST"
             || request.message == "WILLOW_GRAPH_SYNC_REQUEST" 
-            || request.message == "WILLOW_VIEWPORT_SYNC_REQUEST") {
+            || request.message == "WILLOW_VIEWPORT_SYNC_REQUEST"
+            || request.message == "WILLOW_LABEL_SYNC_REQUEST") {
             broadcastSyncRequest(request);
         }
     }

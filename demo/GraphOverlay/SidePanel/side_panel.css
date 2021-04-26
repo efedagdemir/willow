@@ -61,9 +61,14 @@
   white-space: nowrap;
   overflow: hidden;
   transition-property: width, white-space;
+  /*transition-duration: 1.3s;
+  transition-delay: 0.4s;*/
+  font-size: 44px;
+}
+
+.willow-anim {
   transition-duration: 1.3s;
   transition-delay: 0.4s;
-  font-size: 44px;
 }
 
 .willow-label.shrinkTrans {
