@@ -52,7 +52,8 @@
   line-height: 73px;  /*! has to be the same as #panelHeader's height for the text to be vertically centered */ /*70px*/
   /*It seemed vertically more centered (with the added tooltips) when the heights did not match.*/
   
-  font-family:'Montserrat', sans-serif;
+  /*font-family:'Montserrat', sans-serif;*/
+  font-family: 'Century Gothic', sans-serif;
 }
 
 .willow-label{

@@ -23,8 +23,6 @@ var sidePanelHTML = `
 <html>
 <head>
   <link rel="stylesheet" href="${chrome.runtime.getURL("GraphOverlay/SidePanel/side_panel.css")}">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
   
   <script src="cytoscape.min.js"></script>
   <script src="node_modules/dagre/dist/dagre.min.js"></script>
@@ -377,7 +375,6 @@ function enableResizing(rightBorderOnly) {
     var curWidth = parseInt(sidePanel.style.width, 10);
     var curHeight = parseInt(sidePanel.style.height, 10);
 
-    document.getElementById("willowLabel").style.display = "none";
     document.getElementById("willowLabel").style.display = "";
 
     if (heldBorder == "right") {
