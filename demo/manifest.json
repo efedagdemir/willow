@@ -3,13 +3,13 @@
     "description": "Tracking + Side Panel",
     "version": "0.1",
     "manifest_version": 2,
-    "permissions": ["storage", "tabs", "history"],
+    "permissions": ["storage", "tabs", "history", "downloads", "chrome://favicon/*"],
     "content_scripts": [
         {
-          "matches": ["<all_urls>"],
-          "js": ["SidePanel.js"],
-          "run_at": "document_end",
-          "match_about_blank": true
+            "matches": ["<all_urls>"],
+            "js": ["GraphOverlay/SidePanel/SidePanel.js"],
+            "run_at": "document_end",
+            "match_about_blank": true
         },
         {
             "matches": ["<all_urls>"],
@@ -21,9 +21,18 @@
     ],
     "background": {
         "scripts": ["cytoscape.min.js", 
-                    "background.js", 
+                    "node_modules/layout-base/layout-base.js",
+                    "node_modules/cose-base/cose-base.js",
+                    "node_modules/cytoscape-fcose/cytoscape-fcose.js",
+                    "node_modules/cytoscape-layout-utilities/cytoscape-layout-utilities.js",
+            
                     "SyncBroadcaster.js",
-                    "SidePanel_background.js"], 
+                    "GraphOverlay/SidePanel/SidePanel_background.js",
+                    "GraphOverlay/Graph/GraphStyler.js",
+                    "GraphOverlay/Graph/GraphDrawer_background.js",
+                    "SessionGraph.js",
+                    "History/History.js",
+                    "Monitor.js"],
         "persistent": false
     },
     "browser_action": {
@@ -32,10 +41,20 @@
         }
     },
     "web_accessible_resources": [
-        "side_panel.html",
-        "side_panel.css",
-        "side_panel.js",
-        "willowIcon_50x50.jpeg",
-        "GraphDrawer.html"
-    ]
+        "images/willowIcon_50x50.png",
+        "GraphOverlay/SidePanel/side_panel.html",
+        "GraphOverlay/SidePanel/side_panel.css",
+        "GraphOverlay/SidePanel/side_panel.js",
+        "GraphOverlay/SidePanel/settings_menu.css",
+        "GraphOverlay/SidePanel/info_page.css",
+        "GraphOverlay/SidePanel/how_to_page.css",
+        "GraphOverlay/Graph/GraphDrawer.html",
+        "icons/close.png",
+        "icons/right-arrow.png",
+        "icons/left-arrow.png",
+        "icons/graph.png",
+        "icons/settings.png",
+        "icons/new.png"
+    ],
+    "content_security_policy": "script-src 'self'; object-src 'self'; img-src chrome://favicon data:;"
 }

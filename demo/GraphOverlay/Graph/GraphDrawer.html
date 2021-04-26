@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <style>
+        
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            opacity: 0.95;
+        }
+        .contex-menu-item {
+            border-color: rgba(1, 1, 110, 0.877) !important;
+            border-top-left-radius: 15px !important;
+            border-top-right-radius: 15px !important;
+            border-bottom-left-radius: 15px !important;
+            border-bottom-right-radius: 15px !important; 
+            color:rgba(1, 1, 110, 0.877) !important;
+            /*background-color: #f4d58d !important;*/
+            font-weight: bold !important;
+        }                       
+        .contex-menu-item:hover{
+            background-color: #f7dda3 !important;
+        }
+        .context-menu {
+            border-color: rgb(0, 0, 0, 0) !important; 
+                               
+        } 
+        
+        /*MODAL*/
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+        }
+
+/* Modal Content/Box */
+        .modal-content {
+            background-color: #f4d58d;
+            margin: 3% auto; /* 15% from the top and centered */
+            padding: 3px;
+            overflow: auto;
+            text-align: center;
+            border: 1px solid #888;
+            width: 42%; /* Could be more or less, depending on screen size */
+            border-top-left-radius: 14px !important;
+            border-top-right-radius: 14px !important;
+            border-bottom-left-radius: 14px !important;
+            border-bottom-right-radius: 14px !important; 
+        }
+        .myText{
+            color:#041424;
+            font-size: 17px;
+            background-color: #f4d58d;
+            border-color: #f7dda3;
+            font-family:  'Century Gothic', sans-serif;
+            text-align: left;
+            resize: none;
+            border-top-left-radius: 14px !important;
+            border-top-right-radius: 14px !important;
+            border-bottom-left-radius: 14px !important;
+            border-bottom-right-radius: 14px !important; 
+        }
+        .modal-title{
+            color: #041424;
+            font-size: 25px;
+            font-family:"italic";
+        }
+        #modal-header hr {
+            color: #041424; 
+            border: 1px solid;
+        }
+/* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /*Confirmation Dialog*/
+        .session-confirmation {
+            display: none;
+            background-color: #041424;
+            border-radius: 5px;
+            border: 1px solid #a8a8a8;
+            position: fixed;
+            width: 350px;
+            left: 50%;
+            margin-left: -150px;
+            padding: 10px; /*6px 8px 8px;*/
+            box-sizing: border-box;
+            text-align: center;
+            color: #f4d58d;
+            font-family: 'Century Gothic', sans-serif;
+            box-shadow: 2px 2px 5px 2px #8d0801;
+            border-color: #041424;
+            font-size: small;
+            /*font-weight: bold;*/
+        }
+        .confirmation-button {
+            background-color: #f4d58d;
+            display: inline-block;
+            border-radius: 3px;
+            border: 1px solid #a8a8a8;
+            padding: 2px;
+            text-align: center;
+            width: 80px;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            color: #041424;
+            font-family: 'Century Gothic', sans-serif;
+            font-weight: bolder;
+        }
+        /*.confirmation-button.ok {
+            background-color: #708d81;
+        }*/
+        /*.confirmation-button.cancel {
+            background-color: #708d81;
+        }*/
+        .confirmation-button:hover {
+            opacity: 0.3;
+        }
+    </style>
+    <script src="/cytoscape.min.js"></script>
+    <script src="/node_modules/cytoscape-context-menus/cytoscape-context-menus.js"></script>
+    
+    <link href="/node_modules/cytoscape-context-menus/cytoscape-context-menus.css" rel="stylesheet" type="text/css"/>   
+
+    <!-- jQuery Modal -->
+    
+</head>
+
+<body>
+    <div id="canvas"> </div>
+
+    <div class="session-confirmation" id="confirmationDialog"> <h2>Start New Session</h2><p>This will close all of your tabs and start a new session, are you sure you want to continue?</p>
+        <button class="confirmation-button ok" id="okButton"> OK </button>
+        <button class="confirmation-button cancel" id="cancelButton"> Cancel </button>
+    </div>
+
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">  
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <b class = "modal-title">Notes</b>
+                <hr>
+            </div>
+            <span class="modal-text" id="modalText">
+                <textarea class = "myText" type="text" id= "comments" rows="10" cols="20" ></textarea>
+            </span>
+        </div>
+      
+      </div>
+    
+    <script src="GraphStyler.js"></script>
+    <script src="GraphDrawer.js"></script>
+    <script src="/GraphOverlay/SidePanel/InfoPage.js"></script>
+    <script src="/GraphOverlay/SidePanel/howToPage.js"></script>
+    <script src="/GraphOverlay/SidePanel/SettingsMenu.js"></script>
+</body>
+</html>

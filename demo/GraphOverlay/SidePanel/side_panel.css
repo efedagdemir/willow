@@ -1,0 +1,245 @@
+/*
+ * Some of the default dimensions of the side panel are defined
+ * as constants at the very top of SidePanel.js
+ */
+
+/* ! NOTES ON STYLING
+ * In each ruleset, the declarations below the dashed comment line 
+ * are styling-flexible. The ones above it should not be modified.
+ */
+
+#sidePanel {
+  height: 100%;
+  position: fixed;
+  width: 0; /* initially 0 so that we do not see a glimpse of the panel when loading a page*/
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  display: block !important;
+  /*---------------*/
+  border-radius: 5px;
+  display: block !important;
+}
+
+#panelHeader {
+  width: 100%;
+  display: block !important;
+  /*---------------*/
+  height: 70px;
+  text-align: center;
+  background-color: #041424; /*#001d3d*/
+  white-space: nowrap;
+  overflow: hidden;
+  display: block !important;
+}
+
+/* applies to the Willow label, the undock button and the close button */
+/* We may want separate styles for the label and the buttons. Then, use 
+ * the rulesets .headerBtn and #willowLabel.
+ */
+#panelHeader a {
+  /*---------------*/
+    
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  text-decoration: none;
+  cursor: default; /* shows text cursor by default*/
+  margin: 0 auto;
+  font-size: 32px;
+  color: #f4d58d; /*ab0321*/
+  line-height: 73px;  /*! has to be the same as #panelHeader's height for the text to be vertically centered */ /*70px*/
+  /*It seemed vertically more centered (with the added tooltips) when the heights did not match.*/
+  
+  /*font-family:'Montserrat', sans-serif;*/
+  font-family: 'Century Gothic', sans-serif;
+}
+
+.willow-label{
+  width: 210px;
+  white-space: nowrap;
+  overflow: hidden;
+  transition-property: width, white-space;
+  /*transition-duration: 1.3s;
+  transition-delay: 0.4s;*/
+  font-size: 44px;
+}
+
+.willow-anim {
+  transition-duration: 1.3s;
+  transition-delay: 0.4s;
+}
+
+.willow-label.shrinkTrans {
+  width: 0px;
+  white-space: nowrap;
+  overflow: hidden;
+  animation-name: hop;
+  animation-duration: 0.8s;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes hop {
+  0%    {transform: translateX(0px)}
+  50%   {transform: translateX(30px)}
+  100%  {transform: translateX(0px)}
+}
+
+.headerBtn {
+  /* reset buttons before use */
+  margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none; 
+  -o-user-select: none;
+  user-select: none;
+  text-decoration: none;
+  line-height: 70px;
+  float: right;
+  cursor: pointer;
+  background-color: #041424;
+  background-size: cover;
+  border: none;
+  opacity: 1;
+  height: 24px;
+  width: 24px;
+  margin-top: 25px;
+  margin-right: 25px;
+}
+
+.headerBtn:hover {
+  opacity: 0.3;
+}
+
+.headerBtn:focus {
+  outline: none;
+}
+
+.btn-close {
+  background-image: url('../../icons/close.png');
+  
+}
+
+.btn-undock {
+  background-image: url('../../icons/right-arrow.png');
+}
+
+.btn-dock {
+  background-image: url('../../icons/left-arrow.png');
+}
+
+.btn-new {
+  background-image: url('../../icons/new.png');
+}
+
+.btn-layout {
+  background-image: url('../../icons/graph.png');
+}
+
+.btn-settings {
+  background-image: url('../../icons/settings.png');
+}
+
+
+#willowLabel {
+  /*---------------*/
+  float: left;
+}
+
+
+#panelBody {
+  position: absolute;
+  bottom: 0%;
+  left: 0;
+  width: 100%;
+  /*---------------*/
+  top: 70px; /*! has to be the same as #panelHeader's height */
+  user-select: none;
+}
+
+/*
+ * BORDERS
+ */
+.border {
+  position: absolute;
+  /*---------------*/
+  background-color: #a8a8a8; /*#5e6472*/
+}
+
+#leftBorder {
+  height: 100%;
+  top: 0;
+  left: 0;
+  /*---------------*/
+  width: 3px;
+}
+
+#rightBorder {
+  height: 100%;
+  top: 0;
+  right: 0;
+  cursor: ew-resize;
+  /*---------------*/
+  width: 3px;
+}
+
+#topBorder {
+  width: 100%;
+  top: 0;
+  left: 0;
+  /*---------------*/
+  height: 3px;
+}
+
+#bottomBorder {
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  /*---------------*/
+  height: 3px;
+}
+
+#graphFrame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  /*---------------*/
+  background-image: linear-gradient(to right, #f4d58d, #708d81); /*linear-gradient(to right, #cbdcf2, #91bbd9);*/ /*yesil 708d81*/
+  /*background-color: #540B0E;*/
+  opacity: 0.95; /*0.87*/
+  
+}
+
+#graphInvisLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  /*---------------*/
+}
+
+#willowIcon {
+  border-radius: 30%;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  float: left;
+  user-select: none;
+}

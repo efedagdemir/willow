@@ -1,0 +1,112 @@
+
+#settingsMenu {
+    position: absolute;
+    height: 70%;
+    width: 70%;
+    top: 15%;
+    left: 15%;
+    background-color: #041424; /* same as #panelHeader (side_panel.css)*/
+    text-align: center;
+    border-radius: 20px;
+}
+
+#menuHeader b {
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    line-height: 40px;
+}
+
+#menuHeader hr {
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    border: 1px solid;
+}
+
+.settingElement {
+    width: 90%;
+    margin: auto;
+    border: 1px solid #f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    padding: 10px;
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    
+}
+.settingElement .label {
+    display: inline-block;
+    text-align: left;
+    float: left;
+    color: #f4d58d;
+}
+
+.settingElement .opt {
+    display: inline-block;
+    text-align: right;
+    margin-inline: 5px;
+}
+
+.opt button{
+    color:#f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    background-color: cadetblue;
+}
+/*Transparency*/
+#sliderTrans {
+    height: 13px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+  
+/* the four buttons on the bottom */
+ .table-buttons {   
+    margin: 5px;
+    background-color: #f4d58d;
+    background-repeat:no-repeat;
+    border: none;
+    color: #041424;
+    border-radius: 5px;
+    width: fit-content;
+    padding: 5px;
+    
+}
+
+/* table buttons are in */
+#settings_button_table {
+    margin: 0 auto;
+    
+}
+
+tr.space_table_cell>td {
+    padding-bottom: 2em;
+}
+
+/* close button on the top-right corner */
+#settings_close_btn {
+    float: right;
+    background-image: url('../../icons/close.png');
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    text-decoration: none;
+
+    cursor: pointer;
+    background-color: #041424;
+    background-size: cover;
+    border: none;
+    opacity: 1;
+    height: 12px;
+    width: 12px;
+    margin-top: 8px;
+    margin-right: 10px; 
+}
+
+
+#settings_close_btn:hover {
+opacity: 0.3;
+}
+
+/*radio buttons*/
+.layout_radio {
+    padding: 15px;
+}
