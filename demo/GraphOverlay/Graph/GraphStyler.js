@@ -31,10 +31,10 @@ function applyStyle() {
                     return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/active-color4.png')];
                 }
                 if(ele.data('openTabCount') > 0 && ele.data("comment") != "" ){
-                    return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/active-color4.png'), chrome.extension.getURL('/GraphOverlay/Graph/post-it.png')];
+                    return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/active-color4.png'), chrome.extension.getURL('../../icons/note.png')];
                 }     
                 if(ele.data('openTabCount') <= 0 && ele.data("comment") != ""){
-                    return[ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/post-it.png')];
+                    return[ele.data('iconURL'), chrome.extension.getURL('../../icons/note.png')];
                 }                     
                 else{
                     return ele.data('iconURL');
