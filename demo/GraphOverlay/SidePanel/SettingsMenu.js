@@ -37,10 +37,10 @@ function openSettingsMenu(isOrigin) {
             <div class="settingElement" id="resetNodeSizes" class>
             <div class="label"> <b>Reset node sizes: </b></div>
             <div id="resetSizesUniBtn" class="opt"> <button title="Set all nodes to the default size" >Uniform</button></div>
-            <div id="resetSizesPRBtn" class="opt">  <button title="Node sizes are set according to their importance on search engine results" >PageRank</button></div>
+            <div id="resetSizesPRBtn" class="opt">  <button title="Set node sizes according to their topological importance in the graph" >PageRank</button></div>
         </div>
         <div class="settingElement" id="runLayout" class>
-            <div class="label"> <b>Run layout: </b></div>
+            <div class="label"> <b>Layout button behavior: </b></div>
             <label class="layout_radio">Adjust
                 <input type="radio" name="radio" id="layout_radio1">
                 <span class="span_radio"></span>
