@@ -19,7 +19,7 @@
   display: block !important;
   /*---------------*/
   border-radius: 5px;
-  /*display: block !important;*/
+  display: block !important;
 }
 
 #panelHeader {
@@ -31,6 +31,7 @@
   background-color: #041424; /*#001d3d*/
   white-space: nowrap;
   overflow: hidden;
+  display: block !important;
 }
 
 /* applies to the Willow label, the undock button and the close button */
@@ -100,7 +101,7 @@
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
+  -ms-user-select: none; 
   -o-user-select: none;
   user-select: none;
   text-decoration: none;

@@ -16,10 +16,10 @@
         }
         .contex-menu-item {
             border-color: rgba(1, 1, 110, 0.877) !important;
-            border-top-left-radius: 7px !important;
-            border-top-right-radius: 7px !important;
-            border-bottom-left-radius: 7px !important;
-            border-bottom-right-radius: 7px !important; 
+            border-top-left-radius: 15px !important;
+            border-top-right-radius: 15px !important;
+            border-bottom-left-radius: 15px !important;
+            border-bottom-right-radius: 15px !important; 
             color:rgba(1, 1, 110, 0.877) !important;
             /*background-color: #f4d58d !important;*/
             font-weight: bold !important;
@@ -93,6 +93,50 @@
             text-decoration: none;
             cursor: pointer;
         }
+        /*Confirmation Dialog*/
+        .session-confirmation {
+            display: none;
+            background-color: #041424;
+            border-radius: 5px;
+            border: 1px solid #a8a8a8;
+            position: fixed;
+            width: 350px;
+            left: 50%;
+            margin-left: -150px;
+            padding: 10px; /*6px 8px 8px;*/
+            box-sizing: border-box;
+            text-align: center;
+            color: #f4d58d;
+            font-family: 'Century Gothic', sans-serif;
+            box-shadow: 2px 2px 5px 2px #8d0801;
+            border-color: #041424;
+            font-size: small;
+            /*font-weight: bold;*/
+        }
+        .confirmation-button {
+            background-color: #f4d58d;
+            display: inline-block;
+            border-radius: 3px;
+            border: 1px solid #a8a8a8;
+            padding: 2px;
+            text-align: center;
+            width: 80px;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            color: #041424;
+            font-family: 'Century Gothic', sans-serif;
+            font-weight: bolder;
+        }
+        /*.confirmation-button.ok {
+            background-color: #708d81;
+        }*/
+        /*.confirmation-button.cancel {
+            background-color: #708d81;
+        }*/
+        .confirmation-button:hover {
+            opacity: 0.3;
+        }
     </style>
     <script src="/cytoscape.min.js"></script>
     <script src="/node_modules/cytoscape-context-menus/cytoscape-context-menus.js"></script>
@@ -104,9 +148,13 @@
 </head>
 
 <body>
-    <div id="canvas">
+    <div id="canvas"> </div>
 
+    <div class="session-confirmation" id="confirmationDialog"> <h2>Start New Session</h2><p>This will close all of your tabs and start a new session, are you sure you want to continue?</p>
+        <button class="confirmation-button ok" id="okButton"> OK </button>
+        <button class="confirmation-button cancel" id="cancelButton"> Cancel </button>
     </div>
+
     <div id="myModal" class="modal">
 
         <!-- Modal content -->

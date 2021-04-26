@@ -10,6 +10,7 @@ let cy = cytoscape({wheelSensitivity: 0.4});
 cy.mount(canvas);
 let contextMenuApplied = false;
 let hoverOverApplied = false;
+let disableCxtMenu = false;
 updateCytoscape();
 syncViewport();
 //syncNotes();
@@ -238,7 +239,7 @@ function syncNotes(){
     });
 }
 function applyContextMenu() {
-    var contextMenu = cy.contextMenus({
+    contextMenu = cy.contextMenus({
         evtType: 'cxttap',
         menuItems: [
             {
@@ -247,6 +248,7 @@ function applyContextMenu() {
                 tooltipText: 'Open page in the active tab',
                 selector: 'node',
                 hasTrailingDivider: true,
+                image: {src: "../../icons/open.png", width: 16, height: 16, x: 3, y: 2},
                 onClickFunction: function (event) {
                     let target = event.target || event.cyTarget;
                     let id = target.id();
@@ -264,6 +266,7 @@ function applyContextMenu() {
                 tooltipText: 'Open page in new tab',
                 selector: 'node',
                 hasTrailingDivider: true,
+                image: {src: "../../icons/open-in-tab.png", width: 16, height: 16, x: 5, y: 3},
                 onClickFunction: function (event) {
                     let target = event.target || event.cyTarget;
                     let id = target.id();
@@ -282,6 +285,7 @@ function applyContextMenu() {
                 tooltipText: 'See notes',
                 selector: 'node',
                 hasTrailingDivider: true,
+                image: {src: "../../icons/note.png", width: 16, height: 16, x: 4, y: 3},
                 onClickFunction: function (event) {
                     let target = event.target || event.cyTarget;
                     let id = target.id();
@@ -297,6 +301,7 @@ function applyContextMenu() {
                 tooltipText: 'Change the color around the node',
                 selector: 'node',
                 hasTrailingDivider: true,
+                image: {src: "../../icons/color-wheel.png", width: 16, height: 16, x: 4, y: 2},
                 submenu: [
                     {
                         id: 'color-red',
@@ -376,6 +381,7 @@ function applyContextMenu() {
                 tooltipText: 'Change the size of the node',
                 selector: 'node',
                 hasTrailingDivider: true,
+                image: {src: "../../icons/resize.png", width: 16, height: 16, x: 4, y: 2   },
                 submenu: [
                     {
                         id: 'arrange-size',
@@ -441,6 +447,7 @@ function applyContextMenu() {
                 content: 'Remove node',
                 tooltipText: 'Remove node from graph',
                 selector: 'node',
+                image: {src: "../../icons/remove.png", width: 16, height: 16, x: 4, y: 2},
                 onClickFunction: function (event) {
                     let target = event.target || event.cyTarget;
                     let id = target.id();
@@ -458,6 +465,7 @@ function applyContextMenu() {
                 content: 'Center graph',
                 tooltipText: 'Pan the view to the center of the graph',
                 selector: "",
+                image: {src: "../../icons/center.png", width: 14, height: 14, x: 3, y: 3}, //width: 14, height: 14, x: 3, y: 3},
                 onClickFunction: function (event) {
                     centerViewport();
                 },
@@ -465,10 +473,11 @@ function applyContextMenu() {
                 coreAsWell: true
             },
             {
-                d: 'fitGraph',
+                id: 'fitGraph',
                 content: 'Fit graph',
                 tooltipText: 'Have the graph fit the view',
                 selector: "",
+                image: {src: "../../icons/fit.png", width: 14, height: 14, x: 3, y: 3},
                 onClickFunction: function (event) {
                     fitViewport();
                 },
@@ -484,34 +493,36 @@ function applyContextMenu() {
     });
 
     cy.on('cxttap', function (event) {
-        var evtTarget = event.target;
-        if (evtTarget === cy){
-            //console.log("target is the background");
-            contextMenu.hideMenuItem('open');
-            contextMenu.hideMenuItem('open-in-new-tab');
-            contextMenu.hideMenuItem('remove');
-            contextMenu.hideMenuItem('change-border-color');
-            contextMenu.hideMenuItem('change-node-size');
-            contextMenu.hideMenuItem('comment');
-        }
-        else if (evtTarget.isNode()){
-            //console.log("target is a node");
-            contextMenu.showMenuItem('open');
-            contextMenu.showMenuItem('open-in-new-tab');
-            contextMenu.showMenuItem('comment');
-            contextMenu.showMenuItem('remove');
-            contextMenu.showMenuItem('change-border-color');
-            contextMenu.showMenuItem('change-node-size');
+        if(!disableCxtMenu){
+            var evtTarget = event.target;
+            if (evtTarget === cy){
+                //console.log("target is the background");
+                contextMenu.hideMenuItem('open');
+                contextMenu.hideMenuItem('open-in-new-tab');
+                contextMenu.hideMenuItem('remove');
+                contextMenu.hideMenuItem('change-border-color');
+                contextMenu.hideMenuItem('change-node-size');
+                contextMenu.hideMenuItem('comment');
+            }
+            else if (evtTarget.isNode()){
+                //console.log("target is a node");
+                contextMenu.showMenuItem('open');
+                contextMenu.showMenuItem('open-in-new-tab');
+                contextMenu.showMenuItem('comment');
+                contextMenu.showMenuItem('remove');
+                contextMenu.showMenuItem('change-border-color');
+                contextMenu.showMenuItem('change-node-size');
 
-        }
-        else if (evtTarget.isEdge()){
-            //console.log("target is an edge");
+            }
+            else if (evtTarget.isEdge()){
+                //console.log("target is an edge");
 
-            contextMenu.hideMenuItem('open');
-            contextMenu.hideMenuItem('open-in-new-tab');
-            contextMenu.hideMenuItem('remove');
-            contextMenu.hideMenuItem('change-border-color');
-            contextMenu.hideMenuItem('change-node-size');
+                contextMenu.hideMenuItem('open');
+                contextMenu.hideMenuItem('open-in-new-tab');
+                contextMenu.hideMenuItem('remove');
+                contextMenu.hideMenuItem('change-border-color');
+                contextMenu.hideMenuItem('change-node-size');
+            }
         }
     });
 
@@ -602,4 +613,69 @@ chrome.runtime.onMessage.addListener(
 // updates the whole cytoscape instance by requesting the instance from the bacground again
 function handleSyncRequest(request) {
     updateCytoscape();
+}
+
+
+chrome.runtime.onMessage.addListener(confirmationListener);
+
+function confirmationListener(request){
+    if (request.message == "WILLOW_BACKGROUND_NEW_SESSION_CONFIRMATION") {
+        //console.log("confirmation request received");
+        askForConfirmation();
+    }
+}
+
+function askForConfirmation() {
+    document.getElementById('confirmationDialog').style.display = "block";
+    //console.log("inside ask for confirmation");
+    disableOperations();
+
+    document.getElementById('okButton').onclick = function() {
+        document.getElementById('confirmationDialog').style.display = "none";
+        enableOperations();
+        {chrome.runtime.sendMessage({message: "WILLOW_BACKGROUND_CLEAR_SESSION"})};
+    }
+    document.getElementById('cancelButton').onclick = function() {
+        document.getElementById('confirmationDialog').style.display = "none";
+        enableOperations();
+        return;
+    }
+}
+
+function disableOperations() {
+    cy.panningEnabled(false);
+    cy.userPanningEnabled(false);
+    cy.zoomingEnabled(false);
+    cy.userZoomingEnabled(false);
+    cy.boxSelectionEnabled(false);
+    cy.autoungrabify(true);
+    cy.autounselectify(true);
+    disableCxtMenu = true;
+    contextMenu.hideMenuItem('open');
+    contextMenu.hideMenuItem('open-in-new-tab');
+    contextMenu.hideMenuItem('comment');
+    contextMenu.hideMenuItem('change-border-color');
+    contextMenu.hideMenuItem('change-node-size');
+    contextMenu.hideMenuItem('remove');
+    contextMenu.hideMenuItem('centerGraph');
+    contextMenu.hideMenuItem('fitGraph');
+}
+
+function enableOperations() {
+    cy.panningEnabled(true);
+    cy.userPanningEnabled(true);
+    cy.zoomingEnabled(true);
+    cy.userZoomingEnabled(true);
+    cy.boxSelectionEnabled(true);
+    cy.autoungrabify(false);
+    cy.autounselectify(false);
+    disableCxtMenu = false;
+    contextMenu.showMenuItem('open');
+    contextMenu.showMenuItem('open-in-new-tab');
+    contextMenu.showMenuItem('comment');
+    contextMenu.showMenuItem('change-border-color');
+    contextMenu.showMenuItem('change-node-size');
+    contextMenu.showMenuItem('remove');
+    contextMenu.showMenuItem('centerGraph');
+    contextMenu.showMenuItem('fitGraph');
 }

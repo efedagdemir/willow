@@ -101,7 +101,7 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
 document.getElementById("closeBtn").onclick     = () => closeSidePanel(true);
 document.getElementById("undockBtn").onclick    = () => undockSidePanel(null, true);
 document.getElementById("dockBtn").onclick      = () => dockSidePanel(true);
-document.getElementById("newBtn").onclick       = () => {chrome.runtime.sendMessage({message: "WILLOW_BACKGROUND_CLEAR_SESSION"})};
+document.getElementById("newBtn").onclick       = () => startNewSession();
 document.getElementById("layoutBtn").onclick    = () => runLayoutBtn_handler();
 document.getElementById("settingsBtn").onclick  = () => toggleSettingsMenu();
 enableResizing(rightBorderOnly = true);
@@ -264,6 +264,12 @@ function dockSidePanel(isOrigin) {
       action: "WILLOW_SP_SYNC_DOCK",
     });
   }
+}
+
+function startNewSession(){
+  chrome.runtime.sendMessage({
+    message: "WILLOW_BACKGROUND_NEW_SESSION_CONFIRMATION"
+  });
 }
 
 function disableDragging() {
