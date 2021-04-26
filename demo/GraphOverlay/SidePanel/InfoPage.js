@@ -59,7 +59,7 @@ var infoPageHTML = `
                 Bilkent CS Senior Design Project <br> <br>
                 <b> Contact: </b> <br>
                 bilkent-cs-senior-willow@googlegroups.com <br> <br>
-                <b> Supervisor: </b> Uğur Doğrusöz  <br>
+                <b> Supervisor: </b> Ugur Dogrusoz  <br>
                 <b> Github: </b> <a href="https://github.com/efedagdemir/willow">Willow!</a> <br>      
             </p>
         
@@ -96,15 +96,18 @@ function openInfoPage(isOrigin) {
 
 
 function closeInfoPage(isOrigin) {
-    infoWrapper.parentNode.removeChild(infoWrapper);
-    if (isOrigin) {
-        // set global state
-        chrome.storage.local.set({ WILLOW_INFO_OPEN: false });
-        // notify other tabs with a sync request
-        chrome.runtime.sendMessage({ 
-          message: "WILLOW_INFO_SYNC_REQUEST",
-          action: "WILLOW_INFO_SYNC_CLOSE",
-        });
+    
+    if (infoWrapper.parentNode != null){
+        infoWrapper.parentNode.removeChild(infoWrapper);
+        if (isOrigin) {
+            // set global state
+            chrome.storage.local.set({ WILLOW_INFO_OPEN: false });
+            // notify other tabs with a sync request
+            chrome.runtime.sendMessage({ 
+            message: "WILLOW_INFO_SYNC_REQUEST",
+            action: "WILLOW_INFO_SYNC_CLOSE",
+            });
+        }
     }
 }
 

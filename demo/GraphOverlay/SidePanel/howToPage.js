@@ -107,16 +107,19 @@ function openHowToPage(isOrigin) {
 }
 
 function closeHowToPage(isOrigin) {
-    howToWrapper.parentNode.removeChild(howToWrapper);
-    chrome.storage.local.set({ WILLOW_DETAILS_TAGS: "0000000" });
-    if (isOrigin) {
-        // set global state
-        chrome.storage.local.set({ WILLOW_HOW_TO_OPEN: false });
-        // notify other tabs with a sync request
-        chrome.runtime.sendMessage({ 
-          message: "WILLOW_HOW_TO_SYNC_REQUEST",
-          action: "WILLOW_HOW_TO_SYNC_CLOSE",
-        });
+    
+    if (howToWrapper.parentNode != null){
+        howToWrapper.parentNode.removeChild(howToWrapper);
+        chrome.storage.local.set({ WILLOW_DETAILS_TAGS: "0000000" });
+        if (isOrigin) {
+            // set global state
+            chrome.storage.local.set({ WILLOW_HOW_TO_OPEN: false });
+            // notify other tabs with a sync request
+            chrome.runtime.sendMessage({ 
+            message: "WILLOW_HOW_TO_SYNC_REQUEST",
+            action: "WILLOW_HOW_TO_SYNC_CLOSE",
+            });
+        }
     }
 }
 

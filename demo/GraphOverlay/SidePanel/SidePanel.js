@@ -91,10 +91,8 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
     updateOpacity(res.WILLOW_OPACITY);
   
   if (res.WILLOW_LABEL_OPEN){
-    //document.getElementById("willowLabel").style.width = "210px";
     document.getElementById("willowLabel").style.display = "";}
   else  {
-    //document.getElementById("willowLabel").style.width = "0px";
     document.getElementById("willowLabel").style.display = "none";}
 
 });
@@ -462,6 +460,26 @@ function enableResizing(rightBorderOnly) {
 }
 
 function toggleSettingsMenu() {
+  
+  chrome.storage.local.get(["WILLOW_HOW_TO_OPEN", "WILLOW_INFO_OPEN"], function (res) {
+      if (res.WILLOW_INFO_OPEN){
+            chrome.storage.local.set({ WILLOW_INFO_OPEN: false });
+            // notify other tabs with a sync request
+            chrome.runtime.sendMessage({ 
+            message: "WILLOW_INFO_SYNC_REQUEST",
+            action: "WILLOW_INFO_SYNC_CLOSE",
+            });
+      }
+      else if (res.WILLOW_HOW_TO_OPEN) {
+            chrome.storage.local.set({ WILLOW_HOW_TO_OPEN: false });
+            // notify other tabs with a sync request
+            chrome.runtime.sendMessage({ 
+            message: "WILLOW_HOW_TO_SYNC_REQUEST",
+            action: "WILLOW_HOW_TO_SYNC_CLOSE",
+            });
+      }
+  }); 
+
   // initialize the menu's open/closee state
   chrome.storage.local.get(["WILLOW_SETTINGS_OPEN"], function (res) {
     if (res.WILLOW_SETTINGS_OPEN) {
@@ -470,7 +488,7 @@ function toggleSettingsMenu() {
       // broadcast
       chrome.runtime.sendMessage({ 
         message: "WILLOW_SETTINGS_SYNC_REQUEST",
-        action: "WILLOW_SETTINGS_SYNC_CLOSE",
+        action: "WILLOW_SETTINGS_SYNC_CLOSE"
       });
     } else {
       // set global state

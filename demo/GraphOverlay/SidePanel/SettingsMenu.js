@@ -86,28 +86,25 @@ function openSettingsMenu(isOrigin) {
     menuIsOpen = true;
 }
 
-function closeSettingsMenu(isOrigin) {
-    
-    chrome.storage.local.get(["WILLOW_HOW_TO_OPEN", "WILLOW_INFO_OPEN"], function (res) {
-        if (res.WILLOW_INFO_OPEN)
-            closeInfoPage(true);
-        else if (res.WILLOW_HOW_TO_OPEN)
-            closeHowToPage(true);
-    }); 
+function closeSettingsMenu(isCross) {
+
     if (document.body.contains(menuWrapper)) {
         document.body.removeChild(menuWrapper);
+        if (isCross){
+            // set global state
+            chrome.storage.local.set({ WILLOW_SETTINGS_OPEN: false });
+            // broadcast
+            chrome.runtime.sendMessage({ 
+                message: "WILLOW_SETTINGS_SYNC_REQUEST",
+                action: "WILLOW_SETTINGS_SYNC_CLOSE"
+            });
+        }
     }
     menuIsOpen = false;
-
-    chrome.storage.local.get(["WILLOW_HOW_TO_OPEN", "WILLOW_INFO_OPEN"], function (res) {
-        if (res.WILLOW_INFO_OPEN)
-            closeInfoPage(true);
-        else if (res.WILLOW_HOW_TO_OPEN)
-            closeHowToPage(true);
-    }); 
 }
 
 function addSettingsMenuListeners() {
+    document.getElementById("settings_close_btn").onclick   = () => closeSettingsMenu(true); 
     document.getElementById("resetSizesUniBtn").onclick     = resetSizesUniBtn_handler; 
     document.getElementById("resetSizesPRBtn").onclick      = resetSizesPRBtn_handler;
     document.getElementById("sliderTrans").oninput          = sliderTrans_handler; 
@@ -219,6 +216,7 @@ chrome.runtime.onMessage.addListener(
 );
 
 function handleSettingsSyncRequest(request) {
+    
     if (request.action == "WILLOW_SETTINGS_SYNC_OPEN") {
         console.log("sync_open recv.");
         openSettingsMenu(false);
