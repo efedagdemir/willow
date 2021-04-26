@@ -459,9 +459,32 @@ function enableResizing(rightBorderOnly) {
     // notify other tabs with a sync request
     chrome.runtime.sendMessage({ 
       message: "WILLOW_SP_SYNC_REQUEST",
-      action: "WILLOW_SP_SYNC_DOCKED_RESIZE",
-      newWidth: sidePanel.style.width
+      action: "WILLOW_SP_SYNC_RESIZE",
+      newWidth: sidePanel.style.width,
+      newHeight: sidePanel.style.height
     });
+
+    // save as drag if panel location changed
+    if (heldBorder == "left" || heldBorder == "top") {
+      // save new undocked panel location
+      chrome.storage.local.set({
+        WILLOW_SP_UNDOCKED_LOC: {
+          top: sidePanel.style.top,
+          left: sidePanel.style.left
+        }
+      });
+
+      // notify other tabs with a sync request
+      chrome.runtime.sendMessage({ 
+        message: "WILLOW_SP_SYNC_REQUEST",
+        action: "WILLOW_SP_SYNC_DRAG",
+        newPos: {
+          top: sidePanel.style.top,
+          left: sidePanel.style.left
+        }
+      });
+    }
+    
   }
 }
 
@@ -556,8 +579,9 @@ function handleSPSyncRequest(request) {
   } else if (request.action == "WILLOW_SP_SYNC_DRAG") {
     sidePanel.style.top = request.newPos.top;   
     sidePanel.style.left = request.newPos.left; 
-  } else if (request.action == "WILLOW_SP_SYNC_DOCKED_RESIZE") {
+  } else if (request.action == "WILLOW_SP_SYNC_RESIZE") {
     sidePanel.style.width = request.newWidth;
+    sidePanel.style.height = request.newHeight;
   } 
 }
 
