@@ -7,7 +7,7 @@
 // cytoscape.warnings(false);
 let canvas = document.getElementById("canvas");
 let cy = cytoscape({wheelSensitivity: 0.4});
-cy.warnings(false);
+//cy.warnings(false);
 cy.mount(canvas);
 let contextMenuApplied = false;
 let hoverOverApplied = false;
