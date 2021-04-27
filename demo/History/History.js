@@ -34,8 +34,9 @@ async function loadSessionWithId(id) {
                 found = true;
             }
         }
-        if(!found)
-            console.error("Session with id: " + id + " is not found");
+        if(!found) {
+            //console.error("Session with id: " + id + " is not found");
+        }
     });
 }
 
@@ -53,9 +54,10 @@ function renameSessionWithId(id, name) {
                 found = true;
             }
         }
-        if(!found)
-            console.error("Session with id: " + id + " is not found");
-        else {
+        if(!found) {
+            //console.error("Session with id: " + id + " is not found");
+
+        } else {
             // update the stored array
             chrome.storage.local.set({sessions: sessions}, function () {
                 //console.log("session renamed! New sessions: ", sessions);

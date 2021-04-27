@@ -116,7 +116,7 @@ async function urlLoaded(tabId, url) {
                 if(newNode)
                     newEdge.data("discovering", true);
             } else {
-                console.warn( "The parent of the newly loaded page is not in the session graph.");
+                //console.warn( "The parent of the newly loaded page is not in the session graph.");
             }
         }
     }

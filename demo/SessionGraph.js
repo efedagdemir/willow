@@ -43,7 +43,7 @@ async function initializeSG() {
     
     cy.data("id", nextId);
     applyStyle();
-    cy.warnings(false);
+    cytoscape.warnings(false);
 
     // start saving the session graph every 30 seconds.
     interval = setInterval( saveCurrentSession, 30000);
@@ -197,7 +197,7 @@ function resetNodeSizes(option) {
         runLayout();
         broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
     } else {
-        console.error("resetNodeSizes called with invalid option");
+        //console.error("resetNodeSizes called with invalid option");
         return;
     }
 }
@@ -384,7 +384,7 @@ function handleRunLayoutMessage(option) {
         recalcLayout();
         broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
     } else {
-        console.error("run layout request with invalid option");
+        //console.error("run layout request with invalid option");
     }
 }
 
