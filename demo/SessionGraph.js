@@ -43,7 +43,7 @@ async function initializeSG() {
     
     cy.data("id", nextId);
     applyStyle();
-    //cytoscape.warnings(false);
+    cy.warnings(false);
 
     // start saving the session graph every 30 seconds.
     interval = setInterval( saveCurrentSession, 30000);

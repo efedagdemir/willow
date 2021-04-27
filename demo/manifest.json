@@ -1,7 +1,7 @@
 {
-    "name": "Willow Demo",
-    "description": "Tracking + Side Panel",
-    "version": "0.1",
+    "name": "Willow: Graph-Based Browsing",
+    "description": "View and organize your browsing sessions as graph structures in a simple side panel.",
+    "version": "1.0.0",
     "manifest_version": 2,
     "icons": {
         "48": "images/willowIcon_48x48.png",
