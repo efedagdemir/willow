@@ -608,8 +608,10 @@ chrome.runtime.onMessage.addListener(
             centerViewport();
         } else if (request.message == "WILLOW_VIEWPORT_SYNC_REQUEST") {
             syncViewport();
-        }else if(request.message == "WILLOW_NOTES_SYNC_REQUEST"){
+        } else if (request.message == "WILLOW_NOTES_SYNC_REQUEST") {
             syncNotes();
+        } else if (request.message == "WILLOW_CONFIRM_DIALOG_SYNC_REQUEST") {
+            syncConfirmDialog();
         }
     }
 );
@@ -637,11 +639,12 @@ function askForConfirmation() {
     document.getElementById('okButton').onclick = function() {
         document.getElementById('confirmationDialog').style.display = "none";
         enableOperations();
-        {chrome.runtime.sendMessage({message: "WILLOW_BACKGROUND_CLEAR_SESSION"})};
+        chrome.runtime.sendMessage({message: "WILLOW_BACKGROUND_CLEAR_SESSION"});
     }
     document.getElementById('cancelButton').onclick = function() {
         document.getElementById('confirmationDialog').style.display = "none";
         enableOperations();
+        chrome.runtime.sendMessage({message: "WILLOW_CONFIRM_DIALOG_SYNC_REQUEST"});
         return;
     }
 }
@@ -682,4 +685,9 @@ function enableOperations() {
     contextMenu.showMenuItem('remove');
     contextMenu.showMenuItem('centerGraph');
     contextMenu.showMenuItem('fitGraph');
+}
+
+function syncConfirmDialog(){
+    document.getElementById('confirmationDialog').style.display = "none";
+    enableOperations();
 }
