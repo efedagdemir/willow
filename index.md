@@ -8,11 +8,11 @@ Willow is a browser extension that could help to ease the process of browsing vi
 
 ### Project Members
 
-- Efe Dağdemir  (efe.dagdemir@ug.bilkent.edu.tr)
-- Tuana Türkmen (tuana.turkmen@ug.bilkent.edu.tr)
-- Sezin Zeydan  (sezin.zeydan@ug.bilkent.edu.tr)
-- Cem Cebeci    (cem.cebeci@ug.bilkent.edu.tr)
-- Can Cebeci    (can.cebeci@ug.bilkent.edu.tr)
+- Efe Dağdemir  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(efe.dagdemir@ug.bilkent.edu.tr)
+- Tuana Türkmen &nbsp;&nbsp;&nbsp;(tuana.turkmen@ug.bilkent.edu.tr)
+- Sezin Zeydan  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(sezin.zeydan@ug.bilkent.edu.tr)
+- Cem Cebeci    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cem.cebeci@ug.bilkent.edu.tr)
+- Can Cebeci    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(can.cebeci@ug.bilkent.edu.tr)
 
 ### Supervisor
 
