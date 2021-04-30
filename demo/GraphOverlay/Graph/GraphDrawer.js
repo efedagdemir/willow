@@ -605,7 +605,7 @@ chrome.runtime.onMessage.addListener(
         if (request.message == "WILLOW_GRAPH_SYNC_REQUEST") {
             handleSyncRequest(request);
         } else if (request.message == "WILLOW_GRAPH_VIEWPORT_CENTER") {
-            centerViewport();
+            fitViewport();
         } else if (request.message == "WILLOW_VIEWPORT_SYNC_REQUEST") {
             syncViewport();
         } else if (request.message == "WILLOW_NOTES_SYNC_REQUEST") {

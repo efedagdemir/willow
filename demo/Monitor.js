@@ -171,6 +171,8 @@ async function urlLoaded(tabId, url) {
       });
     //end of trial*/
 
+    
+
     // the tab does not contain the old page anymore.
     let oldURL = tabURLs.get(tabId);
     if(oldURL && !oldURL.startsWith("chrome")) {
@@ -181,6 +183,9 @@ async function urlLoaded(tabId, url) {
     // update the URL open in the tab.
     tabURLs.set(tabId, url);
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+    setTimeout( () => chrome.runtime.sendMessage({
+        message: "WILLOW_GRAPH_VIEWPORT_CENTER",
+    }), 200);
     return null;
 
     //--------------------------- helper functions --------------------------------
