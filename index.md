@@ -7,9 +7,7 @@ Willow is a browser extension that could help to ease the process of browsing vi
 </p>
 
 ## Discover Willow
-https://user-images.githubusercontent.com/56072318/116784917-7555a080-aa9f-11eb-95d3-f92fe4fd3f0d.mp4
-
-![FINAL v5 - NAVY SUBSYS - DESIGN - Willow poster v14 - right aligned](https://user-images.githubusercontent.com/56072318/116785740-dbdcbd80-aaa3-11eb-953f-f45f824b0097.png)
+<video src="https://user-images.githubusercontent.com/56072318/116784917-7555a080-aa9f-11eb-95d3-f92fe4fd3f0d.mp4" width="1920" height="10800" controls preload></video>
 
 ### Project Members
 
