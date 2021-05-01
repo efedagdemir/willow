@@ -1,6 +1,6 @@
 ## Willow: Graph-Based Browsing
 
-![Willow Icon](https://user-images.githubusercontent.com/56072318/116729181-8b0b8d00-a9ef-11eb-82d1-a2ca51216b5c.png)
+![Willow Banner](https://user-images.githubusercontent.com/56072318/116783912-0d508b80-aa9a-11eb-9608-77e81c3abe7d.png)
 
 <p align="justify" width="100%">
 Willow is a browser extension that could help to ease the process of browsing via understandable and intuitive visual navigation, filtering techniques and session management features. Willow will be developed for the widely used web browser Google Chrome. It will enable users to efficiently visualize and manage their browsing sessions in a graph-based, interactive structure. The goal of our project is to take the current method of browsing to the next level by providing a visual structure that allows for smooth and intuitive navigation between the web pages browsed by the users as well as management features for browsing sessions.
