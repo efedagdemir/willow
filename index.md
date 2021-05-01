@@ -8,12 +8,17 @@ Willow is a browser extension that could help to ease the process of browsing vi
 
 ### Project Members
 
-- Efe Dağdemir  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(efe.dagdemir@ug.bilkent.edu.tr)
-- Tuana Türkmen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(tuana.turkmen@ug.bilkent.edu.tr)
-- Sezin Zeydan  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(sezin.zeydan@ug.bilkent.edu.tr)
-- Cem Cebeci     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cem.cebeci@ug.bilkent.edu.tr)
 - Can Cebeci     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(can.cebeci@ug.bilkent.edu.tr)
-
+  ![p02_1](https://user-images.githubusercontent.com/56072318/116783722-13923800-aa99-11eb-81dc-2a4209c2428d.jpg)
+- Cem Cebeci     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cem.cebeci@ug.bilkent.edu.tr)
+  ![p02_2](https://user-images.githubusercontent.com/56072318/116783728-1725bf00-aa99-11eb-839c-b86e4c623a74.jpg)
+- Efe Dağdemir  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(efe.dagdemir@ug.bilkent.edu.tr)
+  ![p02_3](https://user-images.githubusercontent.com/56072318/116783729-18ef8280-aa99-11eb-82f7-c83fb1e3949b.jpg)
+- Tuana Türkmen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(tuana.turkmen@ug.bilkent.edu.tr)
+  ![p02_4](https://user-images.githubusercontent.com/56072318/116783732-1ab94600-aa99-11eb-8ac3-3d615c8b69b8.jpg)
+- Sezin Zeydan  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(sezin.zeydan@ug.bilkent.edu.tr)
+  ![p02_5](https://user-images.githubusercontent.com/56072318/116783735-1d1ba000-aa99-11eb-812b-b6ca95287a43.jpg)
+  
 ### Supervisor
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Prof. Uğur Doğrusöz](http://www.cs.bilkent.edu.tr/~ugur/)
