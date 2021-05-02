@@ -47,6 +47,23 @@ function tabUpdated(tabId, changeInfo, tab) {
     }
     if (changeInfo.url && !changeInfo.url.startsWith("chrome")) { // do not consider the pages that start with chrome, no history is kept for them.
         urlLoaded(tabId, tab.url);
+        
+    }
+    else if(changeInfo.title) {
+        let node = cy.getElementById(tab.url);
+        if(node.length>0)
+            setTimeout( () => {
+                node.data("title", changeInfo.title);
+
+                // ! This seems like the correct place for this. Might need to move somewhere else
+                // Notify all tabs of the newly inserted node
+                broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+            }, 30);
+        /*
+         * ChangeInfo contains a title on two different triggers: when the URL changes and when the page's actual title loads.
+         * by doing this in the "else", we guarantee that we will get the actual title and not the URL.
+         * We wait a bit before doing this to make sure the sesisonGraph actually contains the node.
+         */
     }
 }
 
@@ -101,7 +118,8 @@ async function urlLoaded(tabId, url) {
                 return title.innerText;
             });
         };
-        node.data("title", await getTitle(url));
+        
+        getTitle(url).then( (res => {node.data("title", res);}));
     }
     
     // insert the edge if it does not already exist
@@ -187,10 +205,8 @@ async function urlLoaded(tabId, url) {
     
     // update the URL open in the tab.
     tabURLs.set(tabId, url);
+
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
-    setTimeout( () => chrome.runtime.sendMessage({
-        message: "WILLOW_GRAPH_VIEWPORT_CENTER",
-    }), 200);
     return null;
 
     //--------------------------- helper functions --------------------------------
