@@ -321,7 +321,7 @@ function runLayout(){
         randomize: false,
         nodeDimensionsIncludeLabels: true,
         packComponents: true,
-        /*spacingFactor: 0.69,*/
+        spacingFactor: 0.69,
        
         //contraints
         fixedNodeConstraint: undefined, //fixedCon,
@@ -333,6 +333,7 @@ function runLayout(){
                 return 40;
             else return 200;
         },
+        //idealEdgeLength:20,
 
         ready: () => {},
         stop: () => {}                 
