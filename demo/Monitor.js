@@ -67,6 +67,7 @@ function tabRemoved( tabId, removeInfo) {
  * @param {string} url      The URL of the page.
  */
 async function urlLoaded(tabId, url) {
+    let shouldRunLayout = false;
     let node = cy.getElementById(url);
     let newNode = false; // whether or not the node is newly discovered.
 
@@ -76,6 +77,7 @@ async function urlLoaded(tabId, url) {
         //update the open tab count
         node.data( "openTabCount", node.data("openTabCount") + 1); // increment the openTabCount of the node.
     } else {
+        shouldRunLayout = true;
         let favIconUrl = "chrome://favicon/size/64@1x/" + url;
         let node = cy.add({// add the node to the cy graph
             group: 'nodes',
@@ -104,6 +106,7 @@ async function urlLoaded(tabId, url) {
     
     // insert the edge if it does not already exist
     if (await lastVisitIsEdge(url)) {
+        shouldRunLayout = true;
         let sourceURL =  await findActiveNodeURL();
         
         if (cy.edges('edge[source = "' + sourceURL + '"][target = "' + url + '"]').length > 0) {
@@ -121,54 +124,56 @@ async function urlLoaded(tabId, url) {
         }
     }
     
-    runLayout();
+    if(shouldRunLayout) {
+        runLayout();
 
-    var instance = cy.layoutUtilities( 
-       {    idealEdgeLength: 50,        //10
-            offset: 20,                 //10
-            
-            desiredAspectRatio: 1,
-            polyominoGridSizeFactor: 1,
-            utilityFunction: 1,
-            componentSpacing: 30        //10
+        var instance = cy.layoutUtilities( 
+        {    idealEdgeLength: 50,        //10
+                offset: 20,                 //10
+                
+                desiredAspectRatio: 1,
+                polyominoGridSizeFactor: 1,
+                utilityFunction: 1,
+                componentSpacing: 30        //10
+            });
+        
+        instance.placeNewNodes(cy.getElementById(url));  
+        runLayout();
+        //trial 
+        var components = cy.elements().components();
+        var subgraphs = [];
+        components.forEach(function (component) {
+        var subgraph = {};
+        subgraph.nodes = [];
+        subgraph.edges = [];
+
+        component.edges().forEach(function (edge) {
+            var boundingBox = edge.boundingBox();
+            subgraph.edges.push({ startX: boundingBox.x1, startY: boundingBox.y1, endX: boundingBox.x2, endY: boundingBox.y2 });
         });
-    
-    instance.placeNewNodes(cy.getElementById(url));  
-    runLayout();
-    //trial 
-    var components = cy.elements().components();
-    var subgraphs = [];
-    components.forEach(function (component) {
-      var subgraph = {};
-      subgraph.nodes = [];
-      subgraph.edges = [];
+        component.nodes().forEach(function (node) {
+            var boundingBox = node.boundingBox();
+            subgraph.nodes.push({ x: boundingBox.x1, y: boundingBox.y1, width: boundingBox.w, height: boundingBox.h });
+        });
 
-      component.edges().forEach(function (edge) {
-        var boundingBox = edge.boundingBox();
-        subgraph.edges.push({ startX: boundingBox.x1, startY: boundingBox.y1, endX: boundingBox.x2, endY: boundingBox.y2 });
-      });
-      component.nodes().forEach(function (node) {
-        var boundingBox = node.boundingBox();
-        subgraph.nodes.push({ x: boundingBox.x1, y: boundingBox.y1, width: boundingBox.w, height: boundingBox.h });
-      });
+        subgraphs.push(subgraph);
+        });
 
-      subgraphs.push(subgraph);
-    });
-
-    var result = instance.packComponents(subgraphs);
-    components.forEach(function (component, index) {
-        component.nodes().layout({
-          name: 'preset',
-          animate: false,
-          fit: false,
-          transform: (node) => {
-            let position = {};
-            position.x = node.position('x') + result.shifts[index].dx;
-            position.y = node.position('y') + result.shifts[index].dy;
-            return position;
-          }
-        }).run();
-      });
+        var result = instance.packComponents(subgraphs);
+        components.forEach(function (component, index) {
+            component.nodes().layout({
+            name: 'preset',
+            animate: false,
+            fit: false,
+            transform: (node) => {
+                let position = {};
+                position.x = node.position('x') + result.shifts[index].dx;
+                position.y = node.position('y') + result.shifts[index].dy;
+                return position;
+            }
+            }).run();
+        });
+    }
     //end of trial*/
 
     // the tab does not contain the old page anymore.
