@@ -12,6 +12,8 @@ body {
     background-color: #041424; /* same as #panelHeader (side_panel.css)*/
     text-align: right;
     overflow-y: auto;
+    box-shadow: 2px 2px 5px 2px #8d0801;
+    border-radius: 20px;
 }
 
 #previewPane {
@@ -22,6 +24,8 @@ body {
     left: 56%;
     background-color: #041424; /* same as #panelHeader (side_panel.css)*/
     text-align: center;
+    box-shadow: 2px 2px 5px 2px #8d0801;
+    border-radius: 20px;
 }
 #previewPane div{
     margin: 5px;
@@ -30,12 +34,18 @@ body {
 
 #imgBackground {
     background-image: linear-gradient(to right, #f4d58d, #708d81); /*same as #graphFrame (side_panel.css)*/
+    border-radius: 20px;
 }
 
 #previewPane hr{
     color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
     border: 1px solid;
     width: 94%
+}
+
+#curTitle {
+    font-family: 'Century Gothic', sans-serif;
+    font-size: 14px;
 }
 
 #previewImg {
@@ -52,7 +62,12 @@ body {
     color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
     display: flex;
     align-items: center;
+    font-family: 'Century Gothic', sans-serif;
+    font-size: 14px;
+    border-radius: 20px;
+    /*box-shadow: 1px 2px 2px #999;*/
 }
+
 .historyElement .label {
     margin-right: 10px;
     text-align: left;
@@ -64,4 +79,36 @@ body {
     margin-left: auto;
     order: 2;
     text-align: right;
+}
+
+.historyButtonContainer {
+    height: 70px;
+}
+
+.historyButtons{
+    font-family: 'Century Gothic', sans-serif;
+    font-size: 14px;
+    color:#f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    background-color: #8d0801;/*#911111;*/
+    border-radius: 5px;
+    border: none;
+    font-weight: normal;
+    padding: 3px;
+    width: 120px;
+    box-shadow: 1px 2px 2px #f4d58d;
+    text-shadow: 0.5px 0.5px #708d81;
+    margin-right: 10px;
+    margin-top: 5px;
+    /*margin-top: 5px;
+    margin-bottom: 5px;*/
+}
+
+.historyButtons:hover {
+    background-color: #bf0603;
+}
+
+.historyButtons:active {
+    background-color: #bf0603;
+    box-shadow: 1px 1px 2px #f4d58d;
+    transform: translateY(1px);
 }

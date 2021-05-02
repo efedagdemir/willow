@@ -136,7 +136,7 @@ function lockHistElement(e) {
     if (lockedHistElement) {
         lockedHistElement.style.border = "1px solid #f4d58d";
     }
-    e.style.border = "3px solid #bb0909";
+    e.style.border = "3px solid #8d0801";
 }
 
 function getSessionTitle(session) {

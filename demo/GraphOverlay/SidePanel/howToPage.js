@@ -35,9 +35,9 @@ var howToPageHTML = `
 <body>
     <div id="howToPage">
         <div id="willowHowToHeader">       
-            <button type="button" id="how_to_close_btn"></button>
+            <button type="button" id="how_to_close_btn"></button><br>
             <p id="willow_header_how_to"> 
-                <b>How to use Willow?</b>
+                How to use Willow?
             </p>
         </div>
         <div id="willowHowToBody">

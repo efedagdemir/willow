@@ -9,17 +9,34 @@
     text-align: center;
     border-radius: 20px;
     overflow: auto;
+    box-shadow: 2px 2px 5px 2px #8d0801;
+    
+    user-select: none;
 }
 
-#menuHeader b {
+
+#menuHeader p {
+    font-family: 'Century Gothic', sans-serif;
+    text-align: center;
+    align-items: center;
     color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
     line-height: 60px;
-    font-size: 20px;
+    font-size: 32px;
+    text-shadow: 2px 2px #8d0801;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    margin-top: 0px;
 }
 
-#menuBody{
-    margin-top: 30px;
+.settings-close-button {
+    height: 35px;
+    width: 100%;
 }
+
+/*#menuBody{
+    margin-top: 30px;
+}*/
+
 .settingElement {
     width: 90%;
     margin: auto;
@@ -30,11 +47,26 @@
 }
 .settingElement .label {
     font-family:  'Century Gothic', sans-serif;
-    display: inline-block;
+    font-size: 16px;
+    /*display: inline-block;*/
     text-align: left;
     float: left;
     color: #f4d58d;
+    text-shadow: 2px 2px #8d0801;
 }
+
+.label.node-size-choice{
+    margin-top: 7px;
+}
+
+/*.label.layout-choice{
+    padding-top: 4.5px;
+    padding-bottom: 4.5px;
+}*/
+
+/*.settingElement .label .layout-choice{
+    margin-top: 10px;
+}*/
 
 .settingElement .opt {
     display: inline-block;
@@ -43,13 +75,25 @@
 }
 
 .opt button{
+    font-family: 'Century Gothic', sans-serif;
+    font-size: 14px;
     color:#f4d58d; /* same as #panelHeader a (side_panel.css)*/
-    background-color: #911111;
+    background-color: #8d0801;/*#911111;*/
     border-radius: 5px;
     border: none;
     font-weight: normal;
     padding: 3px;
-    width: 100px;
+    width: 120px;
+    box-shadow: 1px 2px 2px #f4d58d;
+    text-shadow: 0.5px 0.5px #708d81;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.opt button:active {
+    background-color: #bf0603;
+    box-shadow: 1px 1px 2px #f4d58d;
+    transform: translateY(1px);
 }
 
 #resetSizesPRBtn {
@@ -74,7 +118,7 @@
     border: none;
     border-radius: 5px;
     /*width: fit-content;*/
-     width: 100px;
+     width: 120px;
     padding: 5px;
     
 }
@@ -83,6 +127,26 @@
     color:#f4d58d; /* same as #panelHeader a (side_panel.css)*/
     background-color: #8d0801;
     font-weight: normal;
+    font-family: 'Century Gothic', sans-serif;
+    font-size: 14px;
+    box-shadow: 1px 2px 2px #f4d58d;
+    text-shadow: 0.5px 0.5px #708d81;
+}
+
+/*.table-buttons1.histBtn{
+    color:#041424; /* same as #panelHeader a (side_panel.css)*//*
+    background-color: #708d81;
+    font-weight: bold;
+    font-family: 'Century Gothic', sans-serif;
+    font-size: 14px;
+    box-shadow: 1px 2px 2px #f4d58d;
+    text-shadow: 0.5px 0.5px #f4d58d;
+}*/
+
+.table-buttons1:active {
+    background-color: #bf0603;
+    box-shadow: 1px 1px 2px #f4d58d;
+    transform: translateY(1px);
 }
 
 .table-buttons2 {
@@ -118,10 +182,12 @@ tr.space_table_cell>td {
     background-size: cover;
     border: none;
     opacity: 1;
-    height: 12px;
-    width: 12px;
+    height: 16px;
+    width: 16px;
+    margin: 0%;
+    padding: 0%;
     margin-top: 15px;
-    margin-right: 15px; 
+    margin-right: 17px; 
     
 }
 
@@ -130,8 +196,8 @@ tr.space_table_cell>td {
     background-size: cover;
     border: none;
     opacity: 1;
-    height: 24px;
-    width: 24px;
+    height: 32px;
+    width: 32px;
 }
 
 #infoBtn.table-buttons2 {
@@ -143,13 +209,22 @@ tr.space_table_cell>td {
     background-image: url('../../icons/question-mark.png');
 }
 
-#settings_close_btn:hover, .table-buttons1:hover, .table-buttons2:hover, #resetSizesUniBtn:hover, #resetSizesPRBtn:hover {
-    opacity: 0.6;
+.table-buttons1:hover, .opt button:hover {
+    /*opacity: 0.6;*/
+    background-color: #bf0603;
+    /*border-radius: 5px;*/
+}
+
+#settings_close_btn:hover, .table-buttons2:hover {
+    opacity: 0.3;
 }
 
 /*radio buttons*/
 .layout_radio {
+    font-family: 'Century Gothic', sans-serif;
+    font-size: 14px;
     padding: 15px;
+    text-shadow: 0.5px 0.5px #8d0801;
 }
 
 #layout_radio_adjust{
