@@ -47,9 +47,9 @@ var infoPageHTML = `
         
         <div id="willowInfoHeader">
             
-            <button type="button" id="info_close_btn"></button>
+            <button type="button" id="info_close_btn"></button><br>
             <p id="firstP"> 
-                <b>Willow: Graph-Based Browsing </b>
+                Willow: Graph-Based Browsing
             </p>
 
         </div>
@@ -58,13 +58,13 @@ var infoPageHTML = `
             <p id="secondP">  
                 Bilkent CS Senior Design Project <br> <br>
                 <b> Contact: </b> <br>
-                bilkent-cs-senior-willow@googlegroups.com <br> <br>
-                <b> Supervisor: </b> Ugur Dogrusoz  <br>
-                <b> Github: </b> <a href="https://github.com/efedagdemir/willow">Willow!</a> <br>      
+                willow.extension@gmail.com <br> <br>
+                <b> Supervisor: </b> <a href="http://www.cs.bilkent.edu.tr/~ugur/">Ugur Dogrusoz</a>  <br>
+                <b> Github: </b> <a href="https://github.com/efedagdemir/willow">Willow</a> <br><br><br><br>     
             </p>
         
             <footer id="willow_footer">
-                Version 1.0.0 - 2021 <br>
+                Version 1.0.0 - 2021 <br><br><br><br><br><br><br><br><br><br><br>   
                 Icons made by "Smashicons"   	from flaticon.com <br>
                 Icons made by "Freepik" 	  	from flaticon.com <br>
                 Icons made by "Pixel perfect" 	from flaticon.com 

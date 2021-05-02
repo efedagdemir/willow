@@ -12,6 +12,8 @@
     overflow-x: auto;
     overflow-y: auto;
     font-family:  'Century Gothic', sans-serif;
+    
+    text-shadow: 1px 1px #a8a8a8; /*yesil 708d81 ten f4d58d*/
 }
 
 #willowInfoHeader {
@@ -29,21 +31,30 @@
 }
 
 #firstP {
-    font-size: 25px;
+
+    font-family: 'Century Gothic', sans-serif;
+    text-align: center;
+    align-items: center;
+    color: #041424; /* same as #panelHeader a (side_panel.css)*/
+    line-height: 60px;
+    font-size: 28px;
+    text-shadow: 2px 2px #a8a8a8; /*yesil 708d81 ten f4d58d*/
+    margin-bottom: 0px;
+
 }
 
 #secondP {
-    font-size: 18px;
+    font-size: 20px;
 }
 
 #willow_footer {
-    font-size: 10px;
+    font-size: 12px;
 }
 
 /* close button */ 
 #info_close_btn {
     float: right;
-    background-image: url('../../icons/close.png');
+    background-image: url('../../icons/close_dark.png');
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -53,12 +64,17 @@
     text-decoration: none;
     
     cursor: pointer;
-    background-color: #041424;
+    background-color: #f4d58d;
     background-size: cover;
     border: none;
     opacity: 1;
-    height: 12px;
-    width: 12px;
+    height: 16px;
+    width: 16px;
+
+    margin: 0%;
+    padding: 0%;
+    margin-top: 5px;
+    margin-right: 10px; 
     
 }
 

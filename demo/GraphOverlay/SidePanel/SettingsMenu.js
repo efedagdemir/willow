@@ -54,20 +54,20 @@ function openSettingsMenu(isOrigin) {
 
     <body>
     <div id="settingsMenu">
-        <div id="menuHeader">
+        <div class="settings-close-button"> <button type="button" id="settings_close_btn"></button>
+        </div><div id="menuHeader">
            
-            <b>SETTINGS</b>
-            <button type="button" id="settings_close_btn"></button>
+            <p>SETTINGS</p>
             
         </div>
         <div id="menuBody">
             <div class="settingElement" id="resetNodeSizes" class>
-                <div class="label"> <b>Reset node sizes: </b></div>
-                <div id="resetSizesUniBtn" class="opt"> <button title="Set all nodes to the default size" >Uniform</button></div>
-                <div id="resetSizesPRBtn" class="opt">  <button title="Node sizes are set according to their importance on search engine results" >PageRank</button></div>
+                <div class="label node-size-choice"> <b>Reset node sizes: </b></div>
+                <div id="resetSizesUniBtn" class="opt"> <button title="Set all nodes to the default size">Uniform</button></div>
+                <div id="resetSizesPRBtn" class="opt">  <button title="Node sizes are set according to their topological importance">PageRank</button></div>
             </div>
             <div class="settingElement" id="runLayout" class>
-                <div class="label"> <b>Run layout: </b></div>
+                <div class="label layout-choice"> <b>Run layout: </b></div>
                 <label class="layout_radio" id="layout_radio_adjust">Adjust
                     <input type="radio" name="radio" id="layout_radio1">
                     <span class="span_radio"></span>
@@ -91,8 +91,8 @@ function openSettingsMenu(isOrigin) {
             <table id="settings_button_table1" class="willow_tables">
                 <tr class="space_table_cell">
                     <td> <button id="exportBtn" class="table-buttons1" title="Save the graph as a file">Export Session</button></th>
-                    <td> <button id="importBtn" class="table-buttons1" title="Open a Pre-saved Graph from Files">Import Session</button></th>
-                    <td> <button id="historyBtn"  class="table-buttons1" title="Show History">History</button></td>
+                    <td> <button id="importBtn" class="table-buttons1" title="Open a pre-saved graph from files">Import Session</button></th>
+                    <td> <button id="historyBtn"  class="table-buttons1 histBtn" title="Show History">History</button></td>
                 </tr> 
             </table>
                
