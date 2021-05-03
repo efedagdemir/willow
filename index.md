@@ -6,6 +6,14 @@
 Willow is a browser extension that could help to ease the process of browsing via understandable and intuitive visual navigation and session management features. Willow aims to enable users to efficiently visualize and manage their browsing sessions in a graph-based, interactive structure. The goal of our project is to take the current method of browsing to the next level by providing a visual structure that allows for smooth and intuitive navigation between the web pages browsed by the users as well as management features for browsing sessions.
 </p>
 
+### Meet Willow
+
+[![New generation browsing methods](http://img.youtube.com/vi/nnXhuCLyehU/0.jpg)](http://www.youtube.com/watch?v=nnXhuCLyehU "Willow: Graph-Based Browsing")
+
+### Checkout our poster!
+
+![FINAL v5 - NAVY SUBSYS - DESIGN - Willow poster v14 - right aligned](https://user-images.githubusercontent.com/56072318/116887415-f4c7a900-ac32-11eb-81db-bd44a2724cd4.png)
+
 ### Project Members
 
 - Can Cebeci     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(can.cebeci@ug.bilkent.edu.tr)
