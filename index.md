@@ -8,6 +8,8 @@ Willow is a browser extension that could help to ease the process of browsing vi
 
 ### Meet Willow
 
+See Willow in action by clicking on the image below &#8595;
+
 [![New generation browsing methods](http://img.youtube.com/vi/nnXhuCLyehU/0.jpg)](http://www.youtube.com/watch?v=nnXhuCLyehU "Willow: Graph-Based Browsing")
 
 ### Checkout our poster!
