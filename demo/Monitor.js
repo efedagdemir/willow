@@ -47,6 +47,23 @@ function tabUpdated(tabId, changeInfo, tab) {
     }
     if (changeInfo.url && !changeInfo.url.startsWith("chrome")) { // do not consider the pages that start with chrome, no history is kept for them.
         urlLoaded(tabId, tab.url);
+        
+    }
+    else if(changeInfo.title) {
+        let node = cy.getElementById(tab.url);
+        if(node.length>0)
+            setTimeout( () => {
+                node.data("title", changeInfo.title);
+
+                // ! This seems like the correct place for this. Might need to move somewhere else
+                // Notify all tabs of the newly inserted node
+                broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+            }, 30);
+        /*
+         * ChangeInfo contains a title on two different triggers: when the URL changes and when the page's actual title loads.
+         * by doing this in the "else", we guarantee that we will get the actual title and not the URL.
+         * We wait a bit before doing this to make sure the sesisonGraph actually contains the node.
+         */
     }
 }
 
@@ -67,6 +84,7 @@ function tabRemoved( tabId, removeInfo) {
  * @param {string} url      The URL of the page.
  */
 async function urlLoaded(tabId, url) {
+    let shouldRunLayout = false;
     let node = cy.getElementById(url);
     let newNode = false; // whether or not the node is newly discovered.
 
@@ -76,6 +94,7 @@ async function urlLoaded(tabId, url) {
         //update the open tab count
         node.data( "openTabCount", node.data("openTabCount") + 1); // increment the openTabCount of the node.
     } else {
+        shouldRunLayout = true;
         let favIconUrl = "chrome://favicon/size/64@1x/" + url;
         let node = cy.add({// add the node to the cy graph
             group: 'nodes',
@@ -99,11 +118,13 @@ async function urlLoaded(tabId, url) {
                 return title.innerText;
             });
         };
-        node.data("title", await getTitle(url));
+        
+        getTitle(url).then( (res => {node.data("title", res);}));
     }
     
     // insert the edge if it does not already exist
     if (await lastVisitIsEdge(url)) {
+        shouldRunLayout = true;
         let sourceURL =  await findActiveNodeURL();
         
         if (cy.edges('edge[source = "' + sourceURL + '"][target = "' + url + '"]').length > 0) {
@@ -121,54 +142,56 @@ async function urlLoaded(tabId, url) {
         }
     }
     
-    runLayout();
+    if(shouldRunLayout) {
+        runLayout();
 
-    var instance = cy.layoutUtilities( 
-       {    idealEdgeLength: 50,        //10
-            offset: 20,                 //10
-            
-            desiredAspectRatio: 1,
-            polyominoGridSizeFactor: 1,
-            utilityFunction: 1,
-            componentSpacing: 30        //10
+        var instance = cy.layoutUtilities( 
+        {    idealEdgeLength: 50,        //10
+                offset: 20,                 //10
+                
+                desiredAspectRatio: 1,
+                polyominoGridSizeFactor: 1,
+                utilityFunction: 1,
+                componentSpacing: 30        //10
+            });
+        
+        instance.placeNewNodes(cy.getElementById(url));  
+        runLayout();
+        //trial 
+        var components = cy.elements().components();
+        var subgraphs = [];
+        components.forEach(function (component) {
+        var subgraph = {};
+        subgraph.nodes = [];
+        subgraph.edges = [];
+
+        component.edges().forEach(function (edge) {
+            var boundingBox = edge.boundingBox();
+            subgraph.edges.push({ startX: boundingBox.x1, startY: boundingBox.y1, endX: boundingBox.x2, endY: boundingBox.y2 });
         });
-    
-    instance.placeNewNodes(cy.getElementById(url));  
-    runLayout();
-    //trial 
-    var components = cy.elements().components();
-    var subgraphs = [];
-    components.forEach(function (component) {
-      var subgraph = {};
-      subgraph.nodes = [];
-      subgraph.edges = [];
+        component.nodes().forEach(function (node) {
+            var boundingBox = node.boundingBox();
+            subgraph.nodes.push({ x: boundingBox.x1, y: boundingBox.y1, width: boundingBox.w, height: boundingBox.h });
+        });
 
-      component.edges().forEach(function (edge) {
-        var boundingBox = edge.boundingBox();
-        subgraph.edges.push({ startX: boundingBox.x1, startY: boundingBox.y1, endX: boundingBox.x2, endY: boundingBox.y2 });
-      });
-      component.nodes().forEach(function (node) {
-        var boundingBox = node.boundingBox();
-        subgraph.nodes.push({ x: boundingBox.x1, y: boundingBox.y1, width: boundingBox.w, height: boundingBox.h });
-      });
+        subgraphs.push(subgraph);
+        });
 
-      subgraphs.push(subgraph);
-    });
-
-    var result = instance.packComponents(subgraphs);
-    components.forEach(function (component, index) {
-        component.nodes().layout({
-          name: 'preset',
-          animate: false,
-          fit: false,
-          transform: (node) => {
-            let position = {};
-            position.x = node.position('x') + result.shifts[index].dx;
-            position.y = node.position('y') + result.shifts[index].dy;
-            return position;
-          }
-        }).run();
-      });
+        var result = instance.packComponents(subgraphs);
+        components.forEach(function (component, index) {
+            component.nodes().layout({
+            name: 'preset',
+            animate: false,
+            fit: false,
+            transform: (node) => {
+                let position = {};
+                position.x = node.position('x') + result.shifts[index].dx;
+                position.y = node.position('y') + result.shifts[index].dy;
+                return position;
+            }
+            }).run();
+        });
+    }
     //end of trial*/
 
     
@@ -182,6 +205,7 @@ async function urlLoaded(tabId, url) {
     
     // update the URL open in the tab.
     tabURLs.set(tabId, url);
+
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
     return null;
 

@@ -321,7 +321,7 @@ function runLayout(){
         randomize: false,
         nodeDimensionsIncludeLabels: true,
         packComponents: true,
-        /*spacingFactor: 0.69,*/
+        //spacingFactor: 0.77,
        
         //contraints
         fixedNodeConstraint: undefined, //fixedCon,
@@ -330,9 +330,10 @@ function runLayout(){
 
         idealEdgeLength: edge => {
             if(edge.data("discovering"))
-                return 40;
-            else return 200;
+                return 20;
+            else return 100;
         },
+        //idealEdgeLength:20,
 
         ready: () => {},
         stop: () => {}                 
