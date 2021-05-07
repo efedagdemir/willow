@@ -250,7 +250,7 @@ background: linear-gradient(90deg, rgba(244,213,141,1) 0%, rgba(112,141,129,1) 1
   z-index: 0;
   /*---------------*/
   /*background-image: linear-gradient(to right, #f4d58d, #708d81);*/ /*linear-gradient(to right, #cbdcf2, #91bbd9);*/ /*yesil 708d81*/
-  /*background-color: #540B0E;*/
+  /*background-color: #f4d58d;*/
   opacity: 0.95; /*0.87*/
   
   box-shadow: inset 0 8px 8px -4px #8d0801;

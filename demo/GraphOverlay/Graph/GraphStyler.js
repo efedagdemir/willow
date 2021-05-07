@@ -31,10 +31,10 @@ function applyStyle() {
                     return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/circle2.png')];
                 }
                 if(ele.data('openTabCount') > 0 && ele.data("comment") != "" ){
-                    return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/circle2.png'), chrome.extension.getURL('../../icons/notes-large.png')];
+                    return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/circle2.png'), chrome.extension.getURL('../../icons/pencil.png')];
                 }     
                 if(ele.data('openTabCount') <= 0 && ele.data("comment") != ""){
-                    return[ele.data('iconURL'), chrome.extension.getURL('../../icons/notes-large.png')];
+                    return[ele.data('iconURL'), chrome.extension.getURL('../../icons/pencil.png')];
                 }                     
                 else{
                     return ele.data('iconURL');
