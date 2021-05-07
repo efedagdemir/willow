@@ -26,7 +26,7 @@ function broadcastSyncRequest(request) {
      * notifyActiveTab is a quick fix to handle some exceptional cases.
      * By default, the active tab is not notified
      */
-    let selector = {currentWindow: true};
+    let selector = {currentWindow: false};
     if (!request.notifyActiveTab) {
         selector.active = false;
     } else if (request.notifyActiveTab == "exclusively") {
