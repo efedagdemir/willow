@@ -14,6 +14,7 @@
     font-family:  'Century Gothic', sans-serif;
     
     text-shadow: 1px 1px #a8a8a8; /*yesil 708d81 ten f4d58d*/
+    cursor: default;
 }
 
 #willowInfoHeader {
@@ -64,7 +65,7 @@
     text-decoration: none;
     
     cursor: pointer;
-    background-color: #f4d58d;
+    /*background-color: #f4d58d;*/
     background-size: cover;
     border: none;
     opacity: 1;
@@ -75,12 +76,18 @@
     padding: 0%;
     margin-top: 5px;
     margin-right: 10px; 
+
+    background-color: transparent;
+    filter: drop-shadow(2px 2px #a8a8a8);
     
 }
 
-
 #info_close_btn:hover {
     opacity: 0.3;
+}
+
+#info_close_btn:active {
+    transform: translateY(2px);
 }
 
 

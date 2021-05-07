@@ -85,7 +85,7 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
   if (res.WILLOW_SP_UNDOCKED) {
     undockSidePanel(res.WILLOW_SP_UNDOCKED_LOC, false);
   }
-  if (parseInt(panelWidth, 10) < 590)
+  if (parseInt(panelWidth, 10) < 540)
     document.getElementById("willow-willowLabel").style.display = "none";
   if(res.WILLOW_OPACITY_UPDATE)
     updateOpacity(res.WILLOW_OPACITY);
@@ -391,7 +391,7 @@ function enableResizing(rightBorderOnly) {
 
     if (heldBorder == "right") {
       if (curWidth + deltaX > RESIZE_MIN_WIDTH) {
-        if (curWidth + deltaX >= 590){
+        if (curWidth + deltaX >= 540){
           let wlwLabel = document.getElementById("willow-willowLabel");
           wlwLabel.classList.add("willow-anim");
           wlwLabel.classList.remove('shrinkTrans');
@@ -408,7 +408,7 @@ function enableResizing(rightBorderOnly) {
       }
     } else if (heldBorder == "left") {
       if (curWidth - deltaX > RESIZE_MIN_WIDTH) {
-        if (curWidth - deltaX >= 590){
+        if (curWidth - deltaX >= 540){
           let wlwLabel = document.getElementById("willow-willowLabel");
           wlwLabel.classList.add("willow-anim");
           wlwLabel.classList.remove('shrinkTrans');

@@ -28,10 +28,18 @@
   /*---------------*/
   height: 70px;
   text-align: center;
-  background-color: #041424; /*#001d3d*/
+  /*background-color: #041424; /*#001d3d*/
   white-space: nowrap;
   overflow: hidden;
   display: block !important;
+
+  /*background: rgb(4,20,36);
+  background: linear-gradient(90deg, rgba(4,20,36,1) 0%, rgba(112,141,129,1) 100%);*/
+
+  background: rgb(112,141,129);
+  background: radial-gradient(circle, rgba(112,141,129,1) 0%, rgba(4,20,36,1) 60%);
+
+
 }
 
 /* applies to the Willow label, the undock button and the close button */
@@ -51,13 +59,20 @@
   cursor: default; /* shows text cursor by default*/
   margin: 0 auto;
   font-size: 32px;
-  color: #f4d58d; /*ab0321*/
   line-height: 73px;  /*! has to be the same as #panelHeader's height for the text to be vertically centered */ /*70px*/
   /*It seemed vertically more centered (with the added tooltips) when the heights did not match.*/
   
   /*font-family:'Montserrat', sans-serif;*/
   font-family: 'Century Gothic', sans-serif;
   border: none;
+  
+  color: #f4d58d; /*ab0321
+  /*background: -webkit-linear-gradient(#8d0801, #a8a8a8);*/
+  /*background: linear-gradient(to right, #708d81 0%, #041424 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;*/
+
 }
 
 .willow-label{
@@ -68,7 +83,8 @@
   /*transition-duration: 1.3s;
   transition-delay: 0.4s;*/
   font-size: 44px;
-  text-shadow: 3px 3px #8d0801;
+  /*text-shadow: 3px 3px #8d0801;*/
+  filter: drop-shadow(3px 3px #8d0801);
 }
 
 .willow-anim {
@@ -110,7 +126,8 @@
   line-height: 70px;
   float: right;
   cursor: pointer;
-  background-color: #041424;
+  background-color: transparent;
+  filter: drop-shadow(2px 2px #8d0801);
   background-size: cover;
   border: none;
   opacity: 1;
@@ -126,6 +143,10 @@
 
 .willow-headerBtn:focus {
   outline: none;
+}
+
+.willow-headerBtn:active {
+  transform: translateY(1px);
 }
 
 .willow-btn-close {
@@ -186,6 +207,8 @@
   left: 0;
   /*---------------*/
   width: 3px;
+  background: rgb(4,20,36);
+background: linear-gradient(180deg, rgba(4,20,36,1) 20%, rgba(244,213,141,1) 100%);
 }
 
 #willow-rightBorder {
@@ -195,6 +218,8 @@
   cursor: ew-resize;
   /*---------------*/
   width: 3px;
+  background: rgb(4,20,36);
+background: linear-gradient(180deg, rgba(4,20,36,1) 20%, rgba(112,141,129,1) 100%);
 }
 
 #willow-topBorder {
@@ -203,6 +228,7 @@
   left: 0;
   /*---------------*/
   height: 3px;
+  background-color: #041424;
 }
 
 #willow-bottomBorder {
@@ -211,6 +237,8 @@
   left: 0;
   /*---------------*/
   height: 3px;
+  background: rgb(244,213,141);
+background: linear-gradient(90deg, rgba(244,213,141,1) 0%, rgba(112,141,129,1) 100%);
 }
 
 #willow-graphFrame {
@@ -221,12 +249,27 @@
   height: 100%;
   z-index: 0;
   /*---------------*/
-  background-image: linear-gradient(to right, #f4d58d, #708d81); /*linear-gradient(to right, #cbdcf2, #91bbd9);*/ /*yesil 708d81*/
+  /*background-image: linear-gradient(to right, #f4d58d, #708d81);*/ /*linear-gradient(to right, #cbdcf2, #91bbd9);*/ /*yesil 708d81*/
   /*background-color: #540B0E;*/
   opacity: 0.95; /*0.87*/
   
   box-shadow: inset 0 8px 8px -4px #8d0801;
   border: none;
+
+  /*background: rgb(244,213,141);
+background: linear-gradient(180deg, rgba(244,213,141,1) 0%, rgba(112,141,129,1) 50%, rgba(4,20,36,1) 100%);*/
+
+/*background: rgb(244,213,141);
+background: linear-gradient(135deg, rgba(244,213,141,1) 0%, rgba(112,141,129,1) 78%, rgba(4,20,36,1) 100%);*/
+
+/* yukardan asagi yesilden kreme*/
+background: rgb(112,141,129);
+background: linear-gradient(180deg, rgba(112,141,129,1) 0%, rgba(244,213,141,1) 100%);
+
+/*background: rgb(112,141,129);
+background: radial-gradient(circle, rgba(112,141,129,1) 0%, rgba(4,20,36,1) 100%);*/
+
+
 }
 
 #willow-graphInvisLayer {

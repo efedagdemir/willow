@@ -10,10 +10,18 @@
     border-radius: 20px;
     overflow: auto;
     box-shadow: 2px 2px 5px 2px #8d0801;
-    
+     
     user-select: none;
+    
+    animation: appear 0.2s ease forwards;
 }
 
+@keyframes appear {
+    0% {opacity: 0;}
+    /*30% {opacity: 0.3;}
+    70% { opacity: 0.7; /*transform: translateY(50%);}*/
+    100% { opacity: 0.95; /*transform: translateY(45%);*/}
+}
 
 #menuHeader p {
     font-family: 'Century Gothic', sans-serif;
@@ -88,6 +96,7 @@
     text-shadow: 0.5px 0.5px #708d81;
     margin-top: 5px;
     margin-bottom: 5px;
+    cursor: pointer;
 }
 
 .opt button:active {
@@ -120,7 +129,7 @@
     /*width: fit-content;*/
      width: 120px;
     padding: 5px;
-    
+    cursor: pointer;
 }
 
 .table-buttons1 {
@@ -155,6 +164,10 @@
     font-weight: bold;
 }
 
+.table-buttons2:active {
+    transform: translateY(2px);
+}
+
 /* table buttons are in */
 .willow_tables {
     margin: 0 auto;
@@ -178,7 +191,7 @@ tr.space_table_cell>td {
     text-decoration: none;
 
     cursor: pointer;
-    background-color: #041424;
+    /*background-color: #041424;*/
     background-size: cover;
     border: none;
     opacity: 1;
@@ -188,7 +201,14 @@ tr.space_table_cell>td {
     padding: 0%;
     margin-top: 15px;
     margin-right: 17px; 
+
+    background-color: transparent;
+    filter: drop-shadow(2px 2px #8d0801);
     
+}
+
+#settings_close_btn:active {
+    transform: translateY(2px);
 }
 
 .table-buttons2 {

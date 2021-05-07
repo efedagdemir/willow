@@ -14,6 +14,7 @@ body {
     overflow-y: auto;
     box-shadow: 2px 2px 5px 2px #8d0801;
     border-radius: 20px;
+    user-select: none;
 }
 
 #previewPane {
@@ -26,6 +27,7 @@ body {
     text-align: center;
     box-shadow: 2px 2px 5px 2px #8d0801;
     border-radius: 20px;
+    user-select: none;
 }
 #previewPane div{
     margin: 5px;
@@ -47,6 +49,7 @@ body {
 #curTitle {
     font-family: 'Century Gothic', sans-serif;
     font-size: 14px;
+    cursor: default;
 }
 
 #previewImg {
@@ -66,7 +69,16 @@ body {
     font-family: 'Century Gothic', sans-serif;
     font-size: 14px;
     border-radius: 20px;
-    /*box-shadow: 1px 2px 2px #999;*/
+    box-shadow: 1px 2px 5px #777;
+    cursor: default;
+}
+
+/*.historyElement:hover {
+    box-shadow: 1px 5px 5px #bf0603; /*8d0801 bf0603*//*
+}*/
+
+.historyElement:active {
+    transform: translateY(1px);
 }
 
 .historyElement .label {
@@ -102,6 +114,7 @@ body {
     margin-top: 5px;
     /*margin-top: 5px;
     margin-bottom: 5px;*/
+    cursor: pointer;
 }
 
 .historyButtons:hover {

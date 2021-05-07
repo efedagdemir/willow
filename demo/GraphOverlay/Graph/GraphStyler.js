@@ -28,29 +28,42 @@ function applyStyle() {
             'text-justification': 'center',
             'background-image': function (ele) {
                 if (ele.data('openTabCount') > 0 && ele.data("comment") == "" ) {
-                    return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/active-color4.png')];
+                    return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/circle2.png')];
                 }
                 if(ele.data('openTabCount') > 0 && ele.data("comment") != "" ){
-                    return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/active-color4.png'), chrome.extension.getURL('../../icons/note.png')];
+                    return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/circle2.png'), chrome.extension.getURL('../../icons/notes-large.png')];
                 }     
                 if(ele.data('openTabCount') <= 0 && ele.data("comment") != ""){
-                    return[ele.data('iconURL'), chrome.extension.getURL('../../icons/note.png')];
+                    return[ele.data('iconURL'), chrome.extension.getURL('../../icons/notes-large.png')];
                 }                     
                 else{
                     return ele.data('iconURL');
                 }
                     
             },
-            'background-image-containment': ['inside', 'over','over'],
+            /*'background-image-containment': ['inside', 'over','over'],
             'background-width': ['100%', '23%','40%'],
             'background-height': ['100%', '23%','40%'],
             'background-position-x': ['0.5px', '-12.5px','62.5px'],
-            'background-position-y':['0px', '3px','35px'],
+            'background-position-y':['0px', '3px','35px'],*/
+
+            'background-image-containment': ['inside', 'over', 'over'],
+            'background-width': ['100%', '40%','40%'],
+            'background-height': ['100%', '40%','40%'],
+            'background-position-x': ['0.5px', '-90%','160%'],
+            'background-position-y':['0px', '0%','160%'],
+
             'background-image-opacity': ['1', '1','1'],
             'background-clip': ['node', 'none','none'],
-            'bounds-expansion': ['35px','35px','35px','35px'],
-            'font-family' : 'Open Sans',
-            'font-size': 'data(title_size)'
+            'bounds-expansion': ['50%','50%','50%','50%'],
+            'font-family' : 'Century Gothic', //Open Sans
+            'font-size': 'data(title_size)',
+            'color': '#041424',
+            'ghost': 'yes',
+            'ghost-offset-x': '1px',
+            'ghost-offset-y': '1px',
+            'ghost-opacity': '0.5',
+
         })
         .selector('edge')
         .style({
@@ -68,7 +81,15 @@ function applyStyle() {
             'width': 2.5,
             'target-arrow-shape': 'triangle-backcurve',
             'curve-style': 'bezier',    // the default curve style does not support arrows
-            'opacity': 0.8
+            'opacity': 1,
+            'ghost': 'yes',
+            'ghost-offset-x': '1px',
+            'ghost-offset-y': '1px',
+            'ghost-opacity': '0.5',
+            'line-fill': 'linear-gradient',
+            'line-gradient-stop-colors': ['#041424', '#8d0801'],
+            'line-gradient-stop-positions': ['0%', '100%'],
+            //'line-gradient-direction': 'to-right'
         })
         .selector(':selected')
         .style({
@@ -90,7 +111,7 @@ function applyStyle() {
             'text-wrap': 'wrap',
             'text-max-width': '170px',
             'text-justification': 'center',
-            'font-family' : 'Open Sans',  
+            'font-family' : 'Century Gothic',  
         })
         .update();   
 

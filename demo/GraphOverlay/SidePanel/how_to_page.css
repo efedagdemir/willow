@@ -13,14 +13,20 @@
     
     text-shadow: 1px 1px #a8a8a8; /*yesil 708d81 ten f4d58d*/
     color:#041424;
+    cursor: default;
+    user-select: none;
 }
 
 #willowHowToHeader {
     padding: 10px;
     background-color: #f4d58d;
     color:#041424;
-    vertical-align: middle;
-    
+    vertical-align: middle;   
+}
+
+#willowHowToBody {
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 #willow_header_how_to {
@@ -42,6 +48,7 @@
 .willow_summary{
     color: #041424;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .nested_summary{
@@ -49,7 +56,7 @@
     font-weight: bold;
     margin-left: 15px;
     margin-top: 10px;
-  
+    cursor: pointer;
 }
 
 .details_p {
@@ -80,7 +87,7 @@ p {
     text-decoration: none;
     
     cursor: pointer;
-    background-color: #f4d58d;
+    /*background-color: #f4d58d;*/
     background-size: cover;
     border: none;
     opacity: 1;
@@ -92,9 +99,15 @@ p {
     margin-top: 5px;
     margin-right: 10px; 
     
+    background-color: transparent;
+    filter: drop-shadow(2px 2px #a8a8a8);
 }
 
 
 #how_to_close_btn:hover {
     opacity: 0.3;
+}
+
+#how_to_close_btn:active {
+    transform: translateY(2px);
 }
