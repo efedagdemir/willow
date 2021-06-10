@@ -535,7 +535,7 @@ function toggleSettingsMenu() {
 function runLayoutBtn_handler() {
   chrome.storage.local.get(["WILLOW_LAYOUT_OPT"], function (res) {
       if (res.WILLOW_LAYOUT_OPT == 1){
-        chrome.runtime.sendMessage({
+        chrome.runtime.sendMessage({ //test
             message: "WILLOW_BACKGROUND_RUN_LAYOUT",
             option: "incremental"
         });
