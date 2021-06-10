@@ -322,7 +322,46 @@ function runLayout(){
         nodeDimensionsIncludeLabels: true,
         packComponents: true,
         //spacingFactor: 0.77,
-       
+
+        //for debuging
+        // False for random, true for greedy sampling
+        samplingType: true,
+        // Sample size to construct distance matrix
+        sampleSize: 25,
+        // Separation amount between nodes
+        // Power iteration tolerance
+        piTol: 0.0000001,
+
+        /* incremental layout options */
+
+        // Node repulsion (non overlapping) multiplier
+        nodeRepulsion: node => 4500,
+        // Ideal edge (non nested) length
+        idealEdgeLength: edge => 50,
+        // Divisor to compute edge forces
+        edgeElasticity: edge => 0.45,
+        // Nesting factor (multiplier) to compute ideal edge length for nested edges
+        nestingFactor: 0.1,
+        // Maximum number of iterations to perform
+        numIter: 2500,
+        // For enabling tiling
+        tile: true,
+        // Represents the amount of the vertical space to put between the zero degree members during the tiling operation(can also be a function)
+        tilingPaddingVertical: 10,
+        // Represents the amount of the horizontal space to put between the zero degree members during the tiling operation(can also be a function)
+        tilingPaddingHorizontal: 10,
+        // Gravity force (constant)
+        gravity: 0.25,
+        // Gravity range (constant) for compounds
+        gravityRangeCompound: 1.5,
+        // Gravity force (constant) for compounds
+        gravityCompound: 1.0,
+        // Gravity range (constant)
+        gravityRange: 3.8,
+        // Initial cooling factor for incremental layout
+        initialEnergyOnIncremental: 0.3,
+        step:"all",
+
         //contraints
         fixedNodeConstraint: undefined, //fixedCon,
         alignmentConstraint: undefined,
@@ -336,40 +375,50 @@ function runLayout(){
         //idealEdgeLength:20,
 
         ready: () => {},
-        stop: () => {}                 
+        stop: () => {}
     }).run();
+    //cy.resize();
+    //cy.fit();
 }
 
 /**
  * Non-incremental version of runLayout()
  */
 function recalcLayout() {
-    cy.layout({
-        
+    var layout = cy.layout({
+
         name: 'fcose',
         quality: "proof",
-        fit: true, 
+        fit: true,
         padding: 30,
         animate: false,
-        randomize: true,
-        nodeDimensionsIncludeLabels: true,
-        packComponents: true,
+        //randomize: true,
+        //nodeDimensionsIncludeLabels: true,
+        //packComponents: true,
         /*spacingFactor: 0.69,*/
-       
-        //contraints
-        fixedNodeConstraint: undefined, //fixedCon,
-        alignmentConstraint: undefined,
-        relativePlacementConstraint: undefined,
 
+        //contraints
+        //fixedNodeConstraint: undefined, //fixedCon,
+        //alignmentConstraint: undefined,
+        //relativePlacementConstraint: undefined,
+/*
         idealEdgeLength: edge => {
             if(edge.data("discovering"))
                 return 40;
             else return 200;
         },
 
+
+
+
+ */
+
         ready: () => {},
-        stop: () => {}                 
+        stop: () => {}
     }).run();
+
+
+
 }
 
 /**
@@ -380,7 +429,7 @@ function recalcLayout() {
 function handleRunLayoutMessage(option) {
     if (option == "incremental") {
         runLayout();
-        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
+         broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
     } else if (option == "recalculate") {
         recalcLayout();
         broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
