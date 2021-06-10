@@ -4,7 +4,7 @@ let openingFromGraph;   // a Map that hanldes a very specific exception. Keys he
 
 
 initialize();
-addListeners();
+addListeners(); //
 
 // initializes the data structures of this background page.
 function initialize() {
