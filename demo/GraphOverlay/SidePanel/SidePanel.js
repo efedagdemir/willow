@@ -158,15 +158,14 @@ function openSidePanel(isOrigin) {
   }
 
   // TODO: When to do this? Surely not everytime a page is loaded.
-  /**
+
   // the graph needs to re-adjust its viewport after the panel is opened.
   // ! A timeout is used temporarily to ensure that the iframe is resized before adjusting the viewport.
   setTimeout(() => {
     chrome.runtime.sendMessage({
-      message: "WILLOW_GRAPH_VIEWPORT_CENTER",
+      message: "WILLOW_GRAPH_VIEWPORT_FIT",
     })
   }, 150);
-  */
 
 }
 

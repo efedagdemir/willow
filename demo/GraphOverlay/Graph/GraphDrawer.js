@@ -126,7 +126,6 @@ function updateCytoscape() {
         
         applyStyle();
         cy.style().update();
-        //alert("in update");
         cy.fit();
 
         if(!contextMenuApplied) {
@@ -616,6 +615,10 @@ chrome.runtime.onMessage.addListener(
             syncNotes();
         } else if (request.message == "WILLOW_CONFIRM_DIALOG_SYNC_REQUEST") {
             syncConfirmDialog();
+        }
+        else if ( request.message == "WILLOW_GRAPH_VIEWPORT_FIT" )
+        {
+            fitViewport();
         }
     }
 );

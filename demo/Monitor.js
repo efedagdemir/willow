@@ -145,6 +145,7 @@ async function urlLoaded(tabId, url) {
     if(shouldRunLayout) {
         runLayout();
 
+
         var instance = cy.layoutUtilities( 
         {    idealEdgeLength: 50,        //10
                 offset: 20,                 //10
