@@ -114,6 +114,14 @@ function updateCytoscape() {
         ////console.log("RESPONSE RECEIVED");
         ////console.log(JSON.stringify(response));
         // save current viewport to restore after response json is loaded
+
+        let tmp = {
+            zoom: cy.zoom(),
+            pan: cy.pan()
+        }
+
+        response.pan = tmp.pan;
+        response.zoom = tmp.zoom;
         cy.json(response);
         
         applyStyle();
