@@ -133,6 +133,10 @@
   
 }
 
+.willow-btn-newTab {
+  background-image: url('../../icons/newTab.png');
+}
+
 .willow-btn-undock {
   background-image: url('../../icons/right-arrow.png');
 }

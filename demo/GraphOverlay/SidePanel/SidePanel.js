@@ -37,6 +37,7 @@ var sidePanelHTML = `
     <a class="willow-label" id="willow-willowLabel" style="display:;">W I L L O W</a>
     
     <button title="Close"         class="willow-headerBtn willow-btn-close"     id="willow-closeBtn"                                </button>
+    <button title="NewTab"         class="willow-headerBtn willow-btn-newTab"     id="willow-newTabBtn"                                </button>
     <button title="Dock"          class="willow-headerBtn willow-btn-dock"      id="willow-dockBtn"      style="display:none;"      </button>
     <button title="Undock"        class="willow-headerBtn willow-btn-undock"    id="willow-undockBtn"                               </button>
     <button title="Settings"      class="willow-headerBtn willow-btn-settings"  id="willow-settingsBtn"                             </button>
