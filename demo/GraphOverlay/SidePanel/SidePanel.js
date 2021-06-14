@@ -13,7 +13,7 @@
 //        CONSTANTS        //
 //-------------------------//
 var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
-var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
+var UNDOCK_DEFAULT_OFFSET_LEFT = "10px"; // TODO Will fix this
 
 var RESIZE_MIN_WIDTH = 350;  // in px
 var RESIZE_MIN_HEIGHT = 350;  // in px
@@ -37,7 +37,7 @@ var sidePanelHTML = `
     <a class="willow-label" id="willow-willowLabel" style="display:;">W I L L O W</a>
     
     <button title="Close"         class="willow-headerBtn willow-btn-close"     id="willow-closeBtn"                                </button>
-    <button title="NewTab"         class="willow-headerBtn willow-btn-newTab"     id="willow-newTabBtn"                                </button>
+    <button title="NewTab"         class="willow-headerBtn willow-btn-newTab"   id="willow-newTabBtn"                               </button>
     <button title="Dock"          class="willow-headerBtn willow-btn-dock"      id="willow-dockBtn"      style="display:none;"      </button>
     <button title="Undock"        class="willow-headerBtn willow-btn-undock"    id="willow-undockBtn"                               </button>
     <button title="Settings"      class="willow-headerBtn willow-btn-settings"  id="willow-settingsBtn"                             </button>
@@ -100,6 +100,7 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
 
 // register event handlers
 document.getElementById("willow-closeBtn").onclick     = () => closeSidePanel(true);
+document.getElementById("willow-newTabBtn").onclick     = () => openInNewTab(true);
 document.getElementById("willow-undockBtn").onclick    = () => undockSidePanel(null, true);
 document.getElementById("willow-dockBtn").onclick      = () => dockSidePanel(true);
 document.getElementById("willow-newBtn").onclick       = () => startNewSession();
@@ -113,6 +114,13 @@ enableResizing(rightBorderOnly = true);
 //------------------------//
 //       FUNCTIONS        //
 //------------------------//
+function openInNewTab()
+{
+  chrome.runtime.sendMessage({
+    message: "WILLOW_SP_SYNC_REQUEST_NEW_TAB",
+    action: "WILLOW_SP_SYNC_OPEN_NEW_TAB",
+  });
+}
 
 // Create and insert sidePanel
 function injectSidePanel() {

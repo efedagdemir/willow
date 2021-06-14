@@ -36,3 +36,13 @@ chrome.browserAction.onClicked.addListener(function(tab) {
         notifyActiveTab: true
     });
 });
+
+//Listen if new tab button is clicked
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.message == 'WILLOW_SP_SYNC_REQUEST_NEW_TAB') {
+        chrome.tabs.create({
+            active: true,
+            url: 'newTab.html'
+        }, null);
+    }
+});
