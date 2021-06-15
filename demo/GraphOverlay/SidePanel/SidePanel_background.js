@@ -74,6 +74,7 @@ chrome.tabs.onRemoved.addListener(function(tabid, removed) {
         {
             chrome.storage.local.set({ WILLOW_WINDOW_OPEN: false })
             chrome.storage.local.set({ WILLOW_SP_OPEN: false })
+            chrome.storage.local.set({ WILLOW_SP_WIDTH: "700px" });
         }
     });
 });

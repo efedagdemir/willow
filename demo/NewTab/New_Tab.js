@@ -29,7 +29,8 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
         document.getElementById("willow-willowLabel").style.display = "none";}
 
 });
-chrome.storage.local.set({ WILLOW_SP_OPEN: true });
+
+chrome.storage.local.set({ WILLOW_SP_WIDTH: "1000px" });
 
 // register event handlers;
 document.getElementById("willow-newBtn").onclick       = () => startNewSession();
@@ -60,7 +61,6 @@ function updateOpacity(willowOpacity){
 
 
 function startNewSession(){
-    alert("here");
     chrome.runtime.sendMessage({
         message: "WILLOW_BACKGROUND_NEW_SESSION_CONFIRMATION"
     });
