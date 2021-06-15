@@ -8,7 +8,7 @@ async function initializeSG() {
     //* This page is not rendered, the container's sole purpose is to enable cytospace.js to work properly.
     let container = document.createElement("div");
     // ! This is problematic! 
-    container.style.width = container.style.height = "300px"; // random values for width and height.
+    container.style.width = container.style.height = "1000px"; // random values for width and height.
     document.body.appendChild(container);
 
 

@@ -73,6 +73,7 @@ chrome.tabs.onRemoved.addListener(function(tabid, removed) {
         if( res.WILLOW_TAB_ID == tabid )
         {
             chrome.storage.local.set({ WILLOW_WINDOW_OPEN: false })
+            chrome.storage.local.set({ WILLOW_SP_OPEN: false })
         }
     });
 });
