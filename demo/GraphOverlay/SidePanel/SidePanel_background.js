@@ -69,19 +69,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 chrome.tabs.onRemoved.addListener(function(tabid, removed) {
-    var found = false;
-    var tabId;
-    chrome.tabs.query({}, function (tabs) {
-        for (var i = 0; i < tabs.length; i++) {
-            if (tabs[i].url.includes("chrome-extension") > -1){
-                found = true;
-                tabId = tabs[i].id;
-            }
-        }
-        if (found == false){
-            alert("good");
-        } else {
-            chrome.storage.local.set({ WILLOW_WINDOW_OPEN: false });
+    chrome.storage.local.get(["WILLOW_TAB_ID"], function (res) {
+        if( res.WILLOW_TAB_ID == tabid )
+        {
+            chrome.storage.local.set({ WILLOW_WINDOW_OPEN: false })
         }
     });
 });
