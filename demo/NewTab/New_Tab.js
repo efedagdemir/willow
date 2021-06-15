@@ -1,20 +1,15 @@
 /**
- * This file contains the implementation of both SidePanel and SidePanelSyncer.
- * We want these two objects to be able to access each other's functions without
- * having to pass messages. As fas as my current knowledge extends, the only way
- * to enable this is to put them in the same file.
+ * This file contains the implementation of both NewTab and NewTabSyncer.
  */
 
 /*****************************************************************************
- **********************    Implementation of SidePanel   **********************
+ **********************    Implementation of NewTab   **********************
  *****************************************************************************/
 
 //------------------------//
 //        VARIABLES       //
 //------------------------//
 var sidePanel;   // the HTML div that is the side panel. Saved here to avoid getting it from the document each time it's needed.
-var panelWidth;  // the width of the panel when open. Initialized according to the stored state.
-var panelUndockedHeight; // the undocked height of the panel
 
 
 //------------------------//
@@ -46,7 +41,6 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
 });
 
 // register event handlers;
-document.getElementById("willow-newTabBtn").onclick     = () => openInNewTab(true);;
 document.getElementById("willow-newBtn").onclick       = () => startNewSession();
 document.getElementById("willow-layoutBtn").onclick    = () => runLayoutBtn_handler();
 document.getElementById("willow-settingsBtn").onclick  = () => toggleSettingsMenu();
@@ -83,6 +77,7 @@ function updateOpacity(willowOpacity){
 
 
 function startNewSession(){
+    alert("here");
     chrome.runtime.sendMessage({
         message: "WILLOW_BACKGROUND_NEW_SESSION_CONFIRMATION"
     });
@@ -287,3 +282,9 @@ function labelCloseMessage(){
  * This function is currently ditched. There does not seem to be much to be abstracted.
  * SidePanel sends the requests directly.
  */
+
+/**
+ New Tab syncer
+ */
+
+

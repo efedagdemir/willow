@@ -64,7 +64,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         }, function(tab){
             createdTabId = tab.id;
             chrome.storage.local.set({ WILLOW_TAB_ID: createdTabId });
-            alert( createdTabId);
         });
     }
 });

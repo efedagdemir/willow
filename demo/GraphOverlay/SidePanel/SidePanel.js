@@ -1,4 +1,5 @@
 /**
+ * This file contains the implementation of both (SidePanel and SidePanelSyncer).
  * We want these two objects to be able to access each other's functions without
  * having to pass messages. As fas as my current knowledge extends, the only way
  * to enable this is to put them in the same file.
@@ -23,7 +24,6 @@ chrome.storage.local.get(["WILLOW_WINDOW_OPEN"], function (res) {
   }
   else
   {
-    alert("here");
 var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
 var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
 
@@ -202,7 +202,6 @@ function closeSidePanel(isOrigin) {
   } else {
     sidePanel.style.transition = "all 0s";
   }*/
-  alert("closing");
   sidePanel.style.width = "0px";
 
   if (isOrigin) {
