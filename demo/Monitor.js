@@ -37,8 +37,9 @@ function windowClosed() {
  * @param {Tab} tab             The chrome tab object, more info in the link above.
  */
 function tabUpdated(tabId, changeInfo, tab) {
-    
-    
+
+
+
     if (tabURLs.get(tabId) && changeInfo.url != undefined && changeInfo.url.startsWith("chrome")){
         let node = cy.getElementById(tabURLs.get(tabId));
         tabURLs.set(tabId, changeInfo.url);

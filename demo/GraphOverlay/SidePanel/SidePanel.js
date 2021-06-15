@@ -1,19 +1,31 @@
 /**
- * This file contains the implementation of both SidePanel and SidePanelSyncer.
- * We want these two objects to be able to access each other's functions without 
+ * We want these two objects to be able to access each other's functions without
  * having to pass messages. As fas as my current knowledge extends, the only way
  * to enable this is to put them in the same file.
  */
 
 /*****************************************************************************
-**********************    Implementation of SidePanel   ********************** 
-*****************************************************************************/
+ **********************    Implementation of SidePanel   **********************
+ *****************************************************************************/
 
 //-------------------------//
 //        CONSTANTS        //
 //-------------------------//
+
+///Check if new tab is open or not
+chrome.storage.local.get(["WILLOW_WINDOW_OPEN"], function (res) {
+  if( res.WILLOW_WINDOW_OPEN)
+  {
+    chrome.runtime.sendMessage({
+      message: "WILLOW_SP_SYNC_REQUEST",
+      action: "WILLOW_WINDOW_ACTIVE",
+    });
+  }
+  else
+  {
+    alert("here");
 var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
-var UNDOCK_DEFAULT_OFFSET_LEFT = "10px"; // TODO Will fix this
+var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
 
 var RESIZE_MIN_WIDTH = 350;  // in px
 var RESIZE_MIN_HEIGHT = 350;  // in px
@@ -28,7 +40,6 @@ var sidePanelHTML = `
   <script src="node_modules/dagre/dist/dagre.min.js"></script>
   <script src="node_modules/cytoscape-dagre/cytoscape-dagre.js"></script>
 </head>
-
 <body>
 <div id="willow-sidePanel">
   <div id="willow-panelHeader">
@@ -75,7 +86,7 @@ var panelUndockedHeight; // the undocked height of the panel
 injectSidePanel();
 
 // read panel state
-chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UNDOCKED_LOC", 
+chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UNDOCKED_LOC",
   "WILLOW_SP_WIDTH", "WILLOW_SP_UD_HEIGHT","WILLOW_OPACITY_UPDATE","WILLOW_OPACITY", "WILLOW_LABEL_OPEN"], function (res) {
   panelWidth = res.WILLOW_SP_WIDTH;
   panelUndockedHeight = res.WILLOW_SP_UD_HEIGHT;
@@ -90,7 +101,7 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
     document.getElementById("willow-willowLabel").style.display = "none";
   if(res.WILLOW_OPACITY_UPDATE)
     updateOpacity(res.WILLOW_OPACITY);
-  
+
   if (res.WILLOW_LABEL_OPEN){
     document.getElementById("willow-willowLabel").style.display = "";}
   else  {
@@ -116,9 +127,11 @@ enableResizing(rightBorderOnly = true);
 //------------------------//
 function openInNewTab()
 {
+  closeSidePanel();
+  chrome.storage.local.set({ WILLOW_WINDOW_OPEN: true });
   chrome.runtime.sendMessage({
-    message: "WILLOW_SP_SYNC_REQUEST_NEW_TAB",
-    action: "WILLOW_SP_SYNC_OPEN_NEW_TAB",
+    message: "WILLOW_SP_SYNC_REQUEST",
+    action: "WILLOW_SYNC_OPEN_NEW_TAB",
   });
 }
 
@@ -145,7 +158,7 @@ function injectSidePanel() {
  * isOrigin indicates whether this page has originated the opening event.
  * It is true if openSidePanel called in reaction to a user action and
  * false if it is reacting to async request.
- */ 
+ */
 function openSidePanel(isOrigin) {
   /*
   if (isOrigin) {
@@ -160,7 +173,7 @@ function openSidePanel(isOrigin) {
     // set global state
     chrome.storage.local.set({ WILLOW_SP_OPEN: true });
     // notify other tabs with a sync request
-    chrome.runtime.sendMessage({ 
+    chrome.runtime.sendMessage({
       message: "WILLOW_SP_SYNC_REQUEST",
       action: "WILLOW_SP_SYNC_OPEN",
     });
@@ -168,19 +181,20 @@ function openSidePanel(isOrigin) {
 
   // TODO: When to do this? Surely not everytime a page is loaded.
 
-  // the graph needs to re-adjust its viewport after the panel is opened.
-  // ! A timeout is used temporarily to ensure that the iframe is resized before adjusting the viewport.
-  setTimeout(() => {
+   // the graph needs to re-adjust its viewport after the panel is opened.
+   // ! A timeout is used temporarily to ensure that the iframe is resized before adjusting the viewport.
+   setTimeout(() => {
     chrome.runtime.sendMessage({
       message: "WILLOW_GRAPH_VIEWPORT_FIT",
     })
   }, 150);
 
+
 }
 
 /**
  * isOrigin has the meaning identical to that in openSidePanel
- */ 
+ */
 function closeSidePanel(isOrigin) {
   /*
   if (isOrigin) {
@@ -188,14 +202,14 @@ function closeSidePanel(isOrigin) {
   } else {
     sidePanel.style.transition = "all 0s";
   }*/
-
+  alert("closing");
   sidePanel.style.width = "0px";
-  
+
   if (isOrigin) {
     // set global state
     chrome.storage.local.set({ WILLOW_SP_OPEN: false });
     // notify other tabs with a sync request
-    chrome.runtime.sendMessage({ 
+    chrome.runtime.sendMessage({
       message: "WILLOW_SP_SYNC_REQUEST",
       action: "WILLOW_SP_SYNC_CLOSE",
     });
@@ -203,11 +217,14 @@ function closeSidePanel(isOrigin) {
 }
 
 function toggleSidePanel(isOrigin) {
-  if (sidePanel.style.width == panelWidth) {
-    closeSidePanel(isOrigin);
-  } else {
-    openSidePanel(isOrigin);
-  }
+  chrome.storage.local.get( ["WILLOW_WINDOW_OPEN"], function (res)
+  {
+    if (sidePanel.style.width == panelWidth) {
+      closeSidePanel(isOrigin);
+    } else {
+      openSidePanel(isOrigin);
+    }
+  })
 }
 
 function updateOpacity(willowOpacity){
@@ -218,7 +235,7 @@ function undockSidePanel(undockedLoc, isOrigin) {
   //sidePanel.style.transition = "all 0s";
 
   if (!(undockedLoc && undockedLoc.left && undockedLoc.top)) { // if called without proper input (sometimes intentionally)
-    // "pop" the panel 
+    // "pop" the panel
     sidePanel.style.top   = UNDOCK_DEFAULT_OFFSET_TOP;
     sidePanel.style.left  = UNDOCK_DEFAULT_OFFSET_LEFT;
   } else {
@@ -243,7 +260,7 @@ function undockSidePanel(undockedLoc, isOrigin) {
       }
     });
     // notify other tabs with a sync request
-    chrome.runtime.sendMessage({ 
+    chrome.runtime.sendMessage({
       message: "WILLOW_SP_SYNC_REQUEST",
       action: "WILLOW_SP_SYNC_UNDOCK",
     });
@@ -267,7 +284,7 @@ function dockSidePanel(isOrigin) {
       WILLOW_SP_UNDOCKED: false
     });
     // notify other tabs with a sync request
-    chrome.runtime.sendMessage({ 
+    chrome.runtime.sendMessage({
       message: "WILLOW_SP_SYNC_REQUEST",
       action: "WILLOW_SP_SYNC_DOCK",
     });
@@ -303,7 +320,7 @@ function enableDragging() {
     e.preventDefault();
 
     let elemBelow = document.elementFromPoint(e.clientX, e.clientY);
-  
+
     // mousemove events may trigger out of the window (when the panel is dragged off-screen)
     // if clientX/clientY are out of the window, then elementFromPoint returns null
     if (!elemBelow) return;
@@ -329,7 +346,7 @@ function enableDragging() {
       }
     });
     // notify other tabs with a sync request
-    chrome.runtime.sendMessage({ 
+    chrome.runtime.sendMessage({
       message: "WILLOW_SP_SYNC_REQUEST",
       action: "WILLOW_SP_SYNC_DRAG",
       newPos: {
@@ -363,7 +380,7 @@ function enableResizing(rightBorderOnly) {
     document.getElementById("willow-topBorder").style.cursor     = "ns-resize";
     document.getElementById("willow-bottomBorder").style.cursor  = "ns-resize";
   }
-  
+
   function resizeMouseDown(e, border) {
     e = e || window.event;
     e.preventDefault();
@@ -383,7 +400,7 @@ function enableResizing(rightBorderOnly) {
     e.preventDefault();
 
     let elemBelow = document.elementFromPoint(e.clientX, e.clientY);
-  
+
     // mousemove events may trigger out of the window (when the panel is dragged off-screen)
     // if clientX/clientY are out of the window, then elementFromPoint returns null
     if (!elemBelow) return;
@@ -442,7 +459,7 @@ function enableResizing(rightBorderOnly) {
         sidePanel.style.height = (curHeight + deltaY) + "px";
       }
     }
-    
+
   }
 
   function resizeMouseUp() {
@@ -453,7 +470,7 @@ function enableResizing(rightBorderOnly) {
     document.onmousemove = null;
 
     panelWidth = sidePanel.style.width;
-    
+
     //sync msg of willow label
     if (open) { labelOpenMessage();}
     else      { labelCloseMessage();}
@@ -465,7 +482,7 @@ function enableResizing(rightBorderOnly) {
     });
 
     // notify other tabs with a sync request
-    chrome.runtime.sendMessage({ 
+    chrome.runtime.sendMessage({
       message: "WILLOW_SP_SYNC_REQUEST",
       action: "WILLOW_SP_SYNC_RESIZE",
       newWidth: sidePanel.style.width,
@@ -483,7 +500,7 @@ function enableResizing(rightBorderOnly) {
       });
 
       // notify other tabs with a sync request
-      chrome.runtime.sendMessage({ 
+      chrome.runtime.sendMessage({
         message: "WILLOW_SP_SYNC_REQUEST",
         action: "WILLOW_SP_SYNC_DRAG",
         newPos: {
@@ -492,30 +509,30 @@ function enableResizing(rightBorderOnly) {
         }
       });
     }
-    
+
   }
 }
 
 function toggleSettingsMenu() {
-  
+
   chrome.storage.local.get(["WILLOW_HOW_TO_OPEN", "WILLOW_INFO_OPEN"], function (res) {
-      if (res.WILLOW_INFO_OPEN){
-            chrome.storage.local.set({ WILLOW_INFO_OPEN: false });
-            // notify other tabs with a sync request
-            chrome.runtime.sendMessage({ 
-            message: "WILLOW_INFO_SYNC_REQUEST",
-            action: "WILLOW_INFO_SYNC_CLOSE",
-            });
-      }
-      else if (res.WILLOW_HOW_TO_OPEN) {
-            chrome.storage.local.set({ WILLOW_HOW_TO_OPEN: false });
-            // notify other tabs with a sync request
-            chrome.runtime.sendMessage({ 
-            message: "WILLOW_HOW_TO_SYNC_REQUEST",
-            action: "WILLOW_HOW_TO_SYNC_CLOSE",
-            });
-      }
-  }); 
+    if (res.WILLOW_INFO_OPEN){
+      chrome.storage.local.set({ WILLOW_INFO_OPEN: false });
+      // notify other tabs with a sync request
+      chrome.runtime.sendMessage({
+        message: "WILLOW_INFO_SYNC_REQUEST",
+        action: "WILLOW_INFO_SYNC_CLOSE",
+      });
+    }
+    else if (res.WILLOW_HOW_TO_OPEN) {
+      chrome.storage.local.set({ WILLOW_HOW_TO_OPEN: false });
+      // notify other tabs with a sync request
+      chrome.runtime.sendMessage({
+        message: "WILLOW_HOW_TO_SYNC_REQUEST",
+        action: "WILLOW_HOW_TO_SYNC_CLOSE",
+      });
+    }
+  });
 
   // initialize the menu's open/closee state
   chrome.storage.local.get(["WILLOW_SETTINGS_OPEN"], function (res) {
@@ -523,7 +540,7 @@ function toggleSettingsMenu() {
       // set global state
       chrome.storage.local.set({ WILLOW_SETTINGS_OPEN: false });
       // broadcast
-      chrome.runtime.sendMessage({ 
+      chrome.runtime.sendMessage({
         message: "WILLOW_SETTINGS_SYNC_REQUEST",
         action: "WILLOW_SETTINGS_SYNC_CLOSE"
       });
@@ -531,82 +548,82 @@ function toggleSettingsMenu() {
       // set global state
       chrome.storage.local.set({ WILLOW_SETTINGS_OPEN: true });
       // broadcast
-      chrome.runtime.sendMessage({ 
+      chrome.runtime.sendMessage({
         message: "WILLOW_SETTINGS_SYNC_REQUEST",
         action: "WILLOW_SETTINGS_SYNC_OPEN",
       });
     }
-    
+
   });
 }
 
 function runLayoutBtn_handler() {
   chrome.storage.local.get(["WILLOW_LAYOUT_OPT"], function (res) {
-      if (res.WILLOW_LAYOUT_OPT == 1){
-        chrome.runtime.sendMessage({ //test
-            message: "WILLOW_BACKGROUND_RUN_LAYOUT",
-            option: "incremental"
-        });
-      }
-      else{
-        chrome.runtime.sendMessage({
-            message: "WILLOW_BACKGROUND_RUN_LAYOUT",
-            option: "recalculate"
-        });
-      }
+    if (res.WILLOW_LAYOUT_OPT == 1){
+      chrome.runtime.sendMessage({
+        message: "WILLOW_BACKGROUND_RUN_LAYOUT",
+        option: "incremental"
+      });
+    }
+    else{
+      chrome.runtime.sendMessage({
+        message: "WILLOW_BACKGROUND_RUN_LAYOUT",
+        option: "recalculate"
+      });
+    }
   });
 }
 
 /*****************************************************************************
-*******************    Implementation of SidePanelSyncer   ******************* 
-*****************************************************************************/
+ *******************    Implementation of SidePanelSyncer   *******************
+ *****************************************************************************/
 
 // listen for sidePanel sync requests
 chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if (request.message == "WILLOW_SP_SYNC_REQUEST") {
+    function(request, sender, sendResponse) {
+      if (request.message == "WILLOW_SP_SYNC_REQUEST") {
         handleSPSyncRequest(request);
-    }
-    else if (request.message == "WILLOW_LABEL_SYNC_REQUEST"){
+      }
+      else if (request.message == "WILLOW_LABEL_SYNC_REQUEST"){
         handleWillowLabelSyncRequest(request);
+      }
     }
-  }
 );
 
 function handleSPSyncRequest(request) {
   if (request.action == "WILLOW_SP_SYNC_OPEN") {
     openSidePanel(false);
   } else if (request.action == "WILLOW_SP_SYNC_CLOSE") {
-    closeSidePanel(false);    
+    closeSidePanel(false);
   } else if (request.action == "WILLOW_SP_SYNC_TOGGLE") {
     toggleSidePanel(false);
   } else if (request.action == "WILLOW_SP_SYNC_UNDOCK") {
-    undockSidePanel(null, false);    
+    undockSidePanel(null, false);
   } else if (request.action == "WILLOW_SP_SYNC_DOCK") {
-    dockSidePanel(false);    
+    dockSidePanel(false);
   } else if (request.action == "WILLOW_SP_SYNC_DRAG") {
-    sidePanel.style.top = request.newPos.top;   
-    sidePanel.style.left = request.newPos.left; 
+    sidePanel.style.top = request.newPos.top;
+    sidePanel.style.left = request.newPos.left;
   } else if (request.action == "WILLOW_SP_SYNC_RESIZE") {
     sidePanel.style.width = request.newWidth;
     sidePanel.style.height = request.newHeight;
-  } 
+  }
 }
 
 function handleWillowLabelSyncRequest(request){
-  
+
   if (request.action == "WILLOW_LABEL_SYNC_OPEN") {
 
-      label = document.getElementById("willow-willowLabel");
-      if (label.classList.contains("shrinkTrans") && label.classList.contains("willow-anim")) {
-          label.classList.remove("willow-anim");
-          label.classList.remove("shrinkTrans");
-         }
+    label = document.getElementById("willow-willowLabel");
+    if (label.classList.contains("shrinkTrans") && label.classList.contains("willow-anim")) {
+      label.classList.remove("willow-anim");
+      label.classList.remove("shrinkTrans");
+    }
 
-      document.getElementById("willow-willowLabel").style.display = "";
-    
+    document.getElementById("willow-willowLabel").style.display = "";
+
   } else if (request.action == "WILLOW_LABEL_SYNC_CLOSE") {
-      document.getElementById("willow-willowLabel").style.display = "none";
+    document.getElementById("willow-willowLabel").style.display = "none";
   }
 
 }
@@ -615,16 +632,16 @@ function labelOpenMessage(){
 
   chrome.storage.local.set({ WILLOW_LABEL_OPEN: true });
   // notify other tabs with a sync request
-  chrome.runtime.sendMessage({ 
+  chrome.runtime.sendMessage({
     message: "WILLOW_LABEL_SYNC_REQUEST",
     action: "WILLOW_LABEL_SYNC_OPEN" });
 }
 
 function labelCloseMessage(){
-  
+
   chrome.storage.local.set({ WILLOW_LABEL_OPEN: false });
   // notify other tabs with a sync request
-  chrome.runtime.sendMessage({ 
+  chrome.runtime.sendMessage({
     message: "WILLOW_LABEL_SYNC_REQUEST",
     action: "WILLOW_LABEL_SYNC_CLOSE"});
 }
@@ -635,3 +652,6 @@ function labelCloseMessage(){
  * This function is currently ditched. There does not seem to be much to be abstracted.
  * SidePanel sends the requests directly.
  */
+
+  }
+});
