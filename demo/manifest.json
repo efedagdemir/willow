@@ -1,13 +1,13 @@
 {
     "name": "Willow: Graph-Based Browsing",
     "description": "View and organize your browsing sessions as graph structures in a simple side panel.",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "manifest_version": 2,
     "icons": {
         "48": "images/willowIcon_48x48.png",
         "128": "images/willowIcon_128x128.png"
     },
-    "permissions": ["storage", "tabs", "history", "downloads", "chrome://favicon/*"],
+    "permissions": ["storage", "tabs", "history", "downloads", "chrome://favicon/*", "activeTab"],
     "content_scripts": [
         {
             "matches": ["<all_urls>"],

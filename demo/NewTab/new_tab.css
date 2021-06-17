@@ -130,6 +130,10 @@ body
 .willow-btn-settings {
     background-image: url('../icons/settings.png');
 }
+.willow-btn-back
+{
+    background-image: url( '../icons/back.png');
+}
 
 
 #willow-willowLabel {

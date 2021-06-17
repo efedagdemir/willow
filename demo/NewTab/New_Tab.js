@@ -32,10 +32,12 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
 
 chrome.storage.local.set({ WILLOW_SP_WIDTH: "1000px" });
 
-// register event handlers;
+// register event handlers;willow-backBtn
 document.getElementById("willow-newBtn").onclick       = () => startNewSession();
 document.getElementById("willow-layoutBtn").onclick    = () => runLayoutBtn_handler();
 document.getElementById("willow-settingsBtn").onclick  = () => toggleSettingsMenu();
+document.getElementById("willow-backBtn").onclick  = () => showAsSidePanel();
+
 
 // -- end of script
 
@@ -59,8 +61,15 @@ function updateOpacity(willowOpacity){
     document.getElementById("willow-graphFrame").style.opacity = willowOpacity.opacity;
 }
 
+function showAsSidePanel()
+{
+    chrome.runtime.sendMessage({
+        message: "WILLOW_SHOW_AS_SIDE_PANEL"
+    });
+}
 
-function startNewSession(){
+function startNewSession()
+{
     chrome.runtime.sendMessage({
         message: "WILLOW_BACKGROUND_NEW_SESSION_CONFIRMATION"
     });

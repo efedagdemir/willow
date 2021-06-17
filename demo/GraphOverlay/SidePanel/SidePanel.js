@@ -9,27 +9,9 @@
  **********************    Implementation of SidePanel   **********************
  *****************************************************************************/
 
-//-------------------------//
-//        CONSTANTS        //
-//-------------------------//
-
-///Check if new tab is open or not
-chrome.storage.local.get(["WILLOW_WINDOW_OPEN"], function (res) {
-  if( res.WILLOW_WINDOW_OPEN)
-  {
-    chrome.runtime.sendMessage({
-      message: "WILLOW_SP_SYNC_REQUEST",
-      action: "WILLOW_WINDOW_ACTIVE",
-    });
-  }
-  else
-  {
-var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
-var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
-
-var RESIZE_MIN_WIDTH = 350;  // in px
-var RESIZE_MIN_HEIGHT = 350;  // in px
-
+//--------------------------------//
+//        Global CONSTANTS        //
+//--------------------------------//
 var sidePanelHTML = `
 <!DOCTYPE html>
 <html>
@@ -48,7 +30,7 @@ var sidePanelHTML = `
     <a class="willow-label" id="willow-willowLabel" style="display:;">W I L L O W</a>
     
     <button title="Close"         class="willow-headerBtn willow-btn-close"     id="willow-closeBtn"                                </button>
-    <button title="NewTab"         class="willow-headerBtn willow-btn-newTab"   id="willow-newTabBtn"                               </button>
+    <button title="View in Dedicated Tab"         class="willow-headerBtn willow-btn-newTab"   id="willow-newTabBtn"                               </button>
     <button title="Dock"          class="willow-headerBtn willow-btn-dock"      id="willow-dockBtn"      style="display:none;"      </button>
     <button title="Undock"        class="willow-headerBtn willow-btn-undock"    id="willow-undockBtn"                               </button>
     <button title="Settings"      class="willow-headerBtn willow-btn-settings"  id="willow-settingsBtn"                             </button>
@@ -68,6 +50,69 @@ var sidePanelHTML = `
 </body>
 </html>
 `
+alert("side panel running");
+//variables
+///----------------
+var sidePanel;   // the HTML div that is the side panel. Saved here to avoid getting it from the document each time it's needed.
+
+//Script-------------
+injectSidePanel();
+
+//functions---------
+// Create and insert sidePanel
+function injectSidePanel() {
+
+  var panelWrapper = document.createElement('div');
+  panelWrapper.id = "willowPanelWrapper";
+  panelWrapper.innerHTML = sidePanelHTML;
+  document.body.append(panelWrapper); // TODO: consider removing panelWrapper and inserting sidePanel only.
+
+  // save sidePanel
+  sidePanel = document.getElementById("willow-sidePanel");
+
+  document.body.zIndex = -1;
+  sidePanel.style.zIndex = 2147483647; // how to choose this number? (to see the problem, set this to 1 and do a google search.)
+  //document.body.append(sidePanel); // part of upper TODO
+}
+
+//---------------------------------//
+//---------------------------------//
+//---------------------------------//
+///Check if new tab is open or not
+//---------------------------------//
+//---------------------------------//
+//---------------------------------//
+chrome.storage.local.get(["WILLOW_WINDOW_OPEN", "WILLOW_SP_PSEUDO_OPEN"], function (res) {
+
+  console.log("do we even come here?");
+  if( res.WILLOW_WINDOW_OPEN)
+  {
+    //Psuedo open
+      sidePanel.style.width = 0;
+
+      // set global state
+    if( !res.WILLOW_SP_PSEUDO_OPEN)
+    {
+      chrome.storage.local.set({WILLOW_SP_PSEUDO_OPEN: true});
+    }
+
+    alert( res.WILLOW_SP_PSEUDO_OPEN  + " ?");
+    // notify other tabs with a sync request
+       chrome.runtime.sendMessage({
+          message: "WILLOW_SP_SYNC_REQUEST",
+          action: "WILLOW_SP_SYNC_OPEN",
+        });
+  }
+  else
+  {
+
+      var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
+      var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
+
+      var RESIZE_MIN_WIDTH = 350;  // in px
+      var RESIZE_MIN_HEIGHT = 350;  // in px
+
+
 
 // end of constants
 
@@ -75,7 +120,6 @@ var sidePanelHTML = `
 //------------------------//
 //        VARIABLES       //
 //------------------------//
-var sidePanel;   // the HTML div that is the side panel. Saved here to avoid getting it from the document each time it's needed.
 var panelWidth;  // the width of the panel when open. Initialized according to the stored state.
 var panelUndockedHeight; // the undocked height of the panel
 
@@ -83,7 +127,6 @@ var panelUndockedHeight; // the undocked height of the panel
 //------------------------//
 //         SCRIPT         //
 //------------------------//
-injectSidePanel();
 
 // read panel state
 chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UNDOCKED_LOC",
@@ -91,6 +134,7 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
   panelWidth = res.WILLOW_SP_WIDTH;
   panelUndockedHeight = res.WILLOW_SP_UD_HEIGHT;
   // The panel is closed and docked by default. Update based on the stored state.
+  console.log( "WILLOW_SP_OPEN:" +res.WILLOW_SP_OPEN);
   if (res.WILLOW_SP_OPEN) {
     openSidePanel(false);
   }
@@ -127,7 +171,8 @@ enableResizing(rightBorderOnly = true);
 //------------------------//
 function openInNewTab()
 {
-  closeSidePanel();
+  console.log("openInNewTab");
+  closeSidePanel(true);
   chrome.storage.local.set({ WILLOW_WINDOW_OPEN: true });
   chrome.runtime.sendMessage({
     message: "WILLOW_SP_SYNC_REQUEST",
@@ -135,20 +180,7 @@ function openInNewTab()
   });
 }
 
-// Create and insert sidePanel
-function injectSidePanel() {
-  var panelWrapper = document.createElement('div');
-  panelWrapper.id = "willowPanelWrapper";
-  panelWrapper.innerHTML = sidePanelHTML;
-  document.body.append(panelWrapper); // TODO: consider removing panelWrapper and inserting sidePanel only.
 
-  // save sidePanel
-  sidePanel = document.getElementById("willow-sidePanel");
-
-  document.body.zIndex = -1;
-  sidePanel.style.zIndex = 2147483647; // how to choose this number? (to see the problem, set this to 1 and do a google search.)
-  //document.body.append(sidePanel); // part of upper TODO
-}
 
 // ----------------------------------- //
 // Opening and closing the side panel  //
@@ -159,6 +191,7 @@ function injectSidePanel() {
  * It is true if openSidePanel called in reaction to a user action and
  * false if it is reacting to async request.
  */
+console.log("in side panel js");
 function openSidePanel(isOrigin) {
   /*
   if (isOrigin) {
@@ -166,10 +199,12 @@ function openSidePanel(isOrigin) {
   } else {
     sidePanel.style.transition = "all 0s";
   } */
+  console.log("openSidePanel");
 
   sidePanel.style.width = panelWidth;
 
   if (isOrigin) {
+    console.log("when origin is true");
     // set global state
     chrome.storage.local.set({ WILLOW_SP_OPEN: true });
     // notify other tabs with a sync request
@@ -204,6 +239,7 @@ function closeSidePanel(isOrigin) {
   }*/
   sidePanel.style.width = "0px";
 
+  console.log( "closed");
   if (isOrigin) {
     // set global state
     chrome.storage.local.set({ WILLOW_SP_OPEN: false });
@@ -216,15 +252,13 @@ function closeSidePanel(isOrigin) {
 }
 
 function toggleSidePanel(isOrigin) {
-  chrome.storage.local.get( ["WILLOW_WINDOW_OPEN"], function (res)
-  {
     if (sidePanel.style.width == panelWidth) {
       closeSidePanel(isOrigin);
     } else {
       openSidePanel(isOrigin);
     }
-  })
 }
+
 
 function updateOpacity(willowOpacity){
   document.getElementById("willow-graphFrame").style.opacity = willowOpacity.opacity;
@@ -577,7 +611,7 @@ function runLayoutBtn_handler() {
  *******************    Implementation of SidePanelSyncer   *******************
  *****************************************************************************/
 
-// listen for sidePanel sync requests
+// listen for sidePanel sync request
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       if (request.message == "WILLOW_SP_SYNC_REQUEST") {
@@ -585,6 +619,25 @@ chrome.runtime.onMessage.addListener(
       }
       else if (request.message == "WILLOW_LABEL_SYNC_REQUEST"){
         handleWillowLabelSyncRequest(request);
+      }
+      else if( request.message == "WILLOW_SHOW_AS_SIDE_PANEL")
+      {
+       // alert("message recieved");
+        sidePanel.style.width = panelWidth;
+        return Promise.resolve({response: "Hi from content script"});
+        //sendResponse({farewell: "goodbye"});
+        /*
+        chrome.storage.local.get(["WILLOW_SP_PSEUDO_OPEN"], function (res)
+        {
+          alert(res.WILLOW_SP_PSEUDO_OPEN);
+          if( res.WILLOW_SP_PSEUDO_OPEN ) {
+            chrome.storage.local.set({WILLOW_SP_PSEUDO_OPEN: false});
+
+            openSidePanel(true);
+          }
+        });
+
+         */
       }
     }
 );
@@ -607,6 +660,7 @@ function handleSPSyncRequest(request) {
     sidePanel.style.width = request.newWidth;
     sidePanel.style.height = request.newHeight;
   }
+
 }
 
 function handleWillowLabelSyncRequest(request){

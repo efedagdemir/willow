@@ -12,7 +12,7 @@ chrome.runtime.onMessage.addListener(
             // || request.message == "WILLOW_HOW_TO_SYNC_REQUEST"
             // || request.message == "WILLOW_HOW_TO_DETAILS_SYNC_REQUEST"
             || request.message == "WILLOW_RADIO_SYNC_REQUEST"
-            || request.message == "WILLOW_GRAPH_SYNC_REQUEST" 
+            || request.message == "WILLOW_GRAPH_SYNC_REQUEST"
             || request.message == "WILLOW_VIEWPORT_SYNC_REQUEST"
             || request.message == "WILLOW_LABEL_SYNC_REQUEST") {
             broadcastSyncRequest(request);
@@ -26,16 +26,42 @@ function broadcastSyncRequest(request) {
      * notifyActiveTab is a quick fix to handle some exceptional cases.
      * By default, the active tab is not notified
      */
-    let selector = {currentWindow: true};
-    if (!request.notifyActiveTab) {
-        selector.active = false;
-    } else if (request.notifyActiveTab == "exclusively") {
-        selector.active = true;
-    }
-    chrome.tabs.query(selector, function(tabs) {
-        //console.log("----------------: ", tabs.length);
-        for (let tab of tabs) {
-            chrome.tabs.sendMessage(tab.id, request);
-        }    
+
+    chrome.windows.getAll({populate:true},function(windows){
+        windows.forEach(function(window){
+            window.tabs.forEach(function(tab){
+                //collect all of the urls here, I will just log them instead
+               // alert(tab.id+ " " + tab.title);
+                chrome.tabs.sendMessage(tab.id, request);
+            });
+        });
     });
+}
+
+// broadcast received message to the inactive tabs in the current window.
+function broadcastSyncRequestOnePage(request) {
+    /**
+     * notifyActiveTab is a quick fix to handle some exceptional cases.
+     * By default, the active tab is not notified
+     */
+
+    chrome.windows.getAll({populate:true},function(windows){
+        windows.forEach(function(window){
+            window.tabs.forEach(function(tab){
+                //collect all of the urls here, I will just log them instead
+                // alert(tab.id+ " " + tab.title);
+            }).then(senMessageToOpenSidePanel()).catch(onerror);
+        });
+    });
+}
+function senMessageToOpenSidePanel(tabs)
+{
+    for (let tab of tabs)
+    {
+        chrome.tabs.sendMessage(tab.id, request).then(response => {
+        console.log("Message from the content script:");
+        console.log(response.response);
+    }).catch(onError);;
+    }
+
 }
