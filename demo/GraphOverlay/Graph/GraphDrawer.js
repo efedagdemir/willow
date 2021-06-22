@@ -121,6 +121,7 @@ function updateCytoscape() {
         
         applyStyle();
         cy.style().update();
+    //    alert(cy.width() + " form update");
         cy.fit();
         //alert( cy.zoom());
         if(!contextMenuApplied) {
