@@ -10,7 +10,7 @@ async function initializeSG() {
     // ! This is problematic! 
     //container.style.width = container.style.height = '100'; // random values for width and height.
     document.body.appendChild(container);
-
+    container.id ="container";
 
     let nextId;
     await new Promise((resolve, reject) => {chrome.storage.local.get("nextId", function (result) {

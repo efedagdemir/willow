@@ -157,6 +157,11 @@
   background-image: url('../../icons/settings.png');
 }
 
+.willow-btn-search
+{
+   background-image: url('../../icons/search.png');
+}
+
 
 #willow-willowLabel {
   /*---------------*/

@@ -39,14 +39,20 @@ var sidePanelHTML = `
     <img title="Willow: Graph-Based Browsing" id="willow-willowIcon" src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
     <a class="willow-label" id="willow-willowLabel" style="display:;">W I L L O W</a>
     
-    <button title="Close"         class="willow-headerBtn willow-btn-close"     id="willow-closeBtn"                                </button>
-    <button title="View in Dedicated Tab"         class="willow-headerBtn willow-btn-newTab"   id="willow-newTabBtn"                               </button>
-    <button title="Dock"          class="willow-headerBtn willow-btn-dock"      id="willow-dockBtn"      style="display:none;"      </button>
-    <button title="Undock"        class="willow-headerBtn willow-btn-undock"    id="willow-undockBtn"                               </button>
-    <button title="Settings"      class="willow-headerBtn willow-btn-settings"  id="willow-settingsBtn"                             </button>
-    <button title="New Session"   class="willow-headerBtn willow-btn-new"       id="willow-newBtn"                                  </button>
-    <button title="Run Layout"    class="willow-headerBtn willow-btn-layout"    id="willow-layoutBtn"                               </button>
-    
+    <button title="Close"         class="willow-headerBtn willow-btn-close"     id="willow-closeBtn"  >                              </button>
+    <button title="View in Dedicated Tab"         class="willow-headerBtn willow-btn-newTab"   id="willow-newTabBtn"   >             </button>
+    <button title="Dock"          class="willow-headerBtn willow-btn-dock"      id="willow-dockBtn"      style="display:none;">      </button>
+    <button title="Undock"        class="willow-headerBtn willow-btn-undock"    id="willow-undockBtn"              >                 </button>
+    <button title="Settings"      class="willow-headerBtn willow-btn-settings"  id="willow-settingsBtn" >                            </button>
+    <button title="New Session"   class="willow-headerBtn willow-btn-new"       id="willow-newBtn" >                                 </button>
+    <button title="Run Layout"    class="willow-headerBtn willow-btn-layout"    id="willow-layoutBtn">                               </button>
+    <button title="Search"    class="willow-headerBtn willow-btn-search"    id="willow-search-URL">                               </button>
+<!--
+    <form action="" class="willow-headerBtn">
+      <input type="text" placeholder="Search.." >
+      <button  class="willow-search"> </button>
+    </form>
+    -->
   </div>
   <div id="willow-panelBody">
     <iframe id="willow-graphFrame" src="${chrome.runtime.getURL("GraphOverlay/Graph/GraphDrawer.html")}"></iframe>
