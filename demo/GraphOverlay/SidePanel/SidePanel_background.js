@@ -101,7 +101,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         });
 
         chrome.tabs.update(prevId, {selected: true});
-        
+
         /*
         broadcastSyncRequest({
                     message: "WILLOW_SP_SYNC_REQUEST",

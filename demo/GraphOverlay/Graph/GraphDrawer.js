@@ -115,19 +115,14 @@ function updateCytoscape() {
         ////console.log(JSON.stringify(response));
         // save current viewport to restore after response json is loaded
 
-        let tmp = {
-            zoom: cy.zoom(),
-            pan: cy.pan()
-        }
-
-        response.pan = tmp.pan;
-        response.zoom = tmp.zoom;
+        //alert('update');
+       // response.zoom = tmp.zoom;
         cy.json(response);
         
         applyStyle();
         cy.style().update();
         cy.fit();
-
+        //alert( cy.zoom());
         if(!contextMenuApplied) {
             applyContextMenu();
             contextMenuApplied = true;
