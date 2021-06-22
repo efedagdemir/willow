@@ -101,14 +101,20 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         });
 
         chrome.tabs.update(prevId, {selected: true});
-
-       // sendMessageToOpenSidePanel( prevTabID, request);
-                broadcastSyncRequest({
+        
+        /*
+        broadcastSyncRequest({
                     message: "WILLOW_SP_SYNC_REQUEST",
                     action: "WILLOW_SP_SYNC_TOGGLE",
                     notifyActiveTab: true
-                });
+        });
 
+         */
+        broadcastSyncRequest2( {
+            message: "WILLOW_SP_SYNC_REQUEST",
+            action: "WILLOW_SP_SYNC_TOGGLE",
+            prevId: prevId
+        })
 
 
     }

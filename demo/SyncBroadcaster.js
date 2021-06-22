@@ -48,44 +48,11 @@ function broadcastSyncRequest2(request) {
             window.tabs.forEach(function(tab){
                 //collect all of the urls here, I will just log them instead
                 // alert(tab.id+ " " + tab.title);
-                chrome.tabs.sendMessage(tab.id, request);
+                if (tab.id == request.prevId)
+                {
+                    chrome.tabs.sendMessage(tab.id, request);
+                }
             });
         });
     });
 }
-// broadcast received message to the inactive tabs in the current window.
-/*
-function broadcastSyncRequestOnePage(request) {
-    /**
-     * notifyActiveTab is a quick fix to handle some exceptional cases.
-     * By default, the active tab is not notified
-     */
-
-    /*
-    chrome.windows.getAll({populate:true},function(windows){
-        windows.forEach(function(window){
-            window.tabs.forEach(function(tab){
-                //collect all of the urls here, I will just log them instead
-                // alert(tab.id+ " " + tab.title);
-            }).then(senMessageToOpenSidePanel()).catch(onerror);
-        });
-    });
-
-    chrome.tabs.query({currentWindow: true } ).then(sendMessageToOpenSidePanel).catch(onerror);
-}
-
-
-function sendMessageToOpenSidePanel(id, request)
-{
-    alert( id);
-    var tmp = id;
-    chrome.tabs.update(id, {selected: true});
-   //chrome.tabs.sendMessage(0, request);
-    chrome.tabs.getSelected(null, function(tab) {
-        var code = 'window.location.reload();';
-        chrome.tabs.executeScript(tab.id, {code: code});
-    });
-
-}
-
- */
