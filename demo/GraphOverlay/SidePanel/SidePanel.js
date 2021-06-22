@@ -12,6 +12,16 @@
 //--------------------------------//
 //        Global CONSTANTS        //
 //--------------------------------//
+chrome.storage.local.get(["WILLOW_WINDOW_OPEN", "WILLOW_SP_PSEUDO_OPEN"], function (res) {
+
+  if( res.WILLOW_WINDOW_OPEN)
+  {
+
+  }
+  else
+  {
+
+
 var sidePanelHTML = `
 <!DOCTYPE html>
 <html>
@@ -50,7 +60,7 @@ var sidePanelHTML = `
 </body>
 </html>
 `
-alert("side panel running");
+
 //variables
 ///----------------
 var sidePanel;   // the HTML div that is the side panel. Saved here to avoid getting it from the document each time it's needed.
@@ -82,29 +92,8 @@ function injectSidePanel() {
 //---------------------------------//
 //---------------------------------//
 //---------------------------------//
-chrome.storage.local.get(["WILLOW_WINDOW_OPEN", "WILLOW_SP_PSEUDO_OPEN"], function (res) {
 
-  console.log("do we even come here?");
-  if( res.WILLOW_WINDOW_OPEN)
-  {
-    //Psuedo open
-      sidePanel.style.width = 0;
 
-      // set global state
-    if( !res.WILLOW_SP_PSEUDO_OPEN)
-    {
-      chrome.storage.local.set({WILLOW_SP_PSEUDO_OPEN: true});
-    }
-
-    alert( res.WILLOW_SP_PSEUDO_OPEN  + " ?");
-    // notify other tabs with a sync request
-       chrome.runtime.sendMessage({
-          message: "WILLOW_SP_SYNC_REQUEST",
-          action: "WILLOW_SP_SYNC_OPEN",
-        });
-  }
-  else
-  {
 
       var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
       var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
@@ -134,8 +123,9 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
   panelWidth = res.WILLOW_SP_WIDTH;
   panelUndockedHeight = res.WILLOW_SP_UD_HEIGHT;
   // The panel is closed and docked by default. Update based on the stored state.
-  console.log( "WILLOW_SP_OPEN:" +res.WILLOW_SP_OPEN);
+ // alert( "WILLOW_SP_OPEN:" +res.WILLOW_SP_OPEN);
   if (res.WILLOW_SP_OPEN) {
+   // alert("it is open");
     openSidePanel(false);
   }
   if (res.WILLOW_SP_UNDOCKED) {
@@ -199,7 +189,7 @@ function openSidePanel(isOrigin) {
   } else {
     sidePanel.style.transition = "all 0s";
   } */
-  console.log("openSidePanel");
+  //alert("openSidePanel");
 
   sidePanel.style.width = panelWidth;
 
@@ -251,12 +241,19 @@ function closeSidePanel(isOrigin) {
   }
 }
 
-function toggleSidePanel(isOrigin) {
-    if (sidePanel.style.width == panelWidth) {
-      closeSidePanel(isOrigin);
-    } else {
-      openSidePanel(isOrigin);
-    }
+function toggleSidePanel(isOrigin)
+{
+    //alert("toggle!");
+    chrome.storage.local.get( ["WILLOW_WINDOW_OPEN"],function (res) {
+      if( !res.WILLOW_WINDOW_OPEN)
+      {
+        if (sidePanel.style.width == panelWidth) {
+          closeSidePanel(isOrigin);
+        } else {
+          openSidePanel(isOrigin);
+        }
+      }
+    } );
 }
 
 
@@ -610,44 +607,30 @@ function runLayoutBtn_handler() {
 /*****************************************************************************
  *******************    Implementation of SidePanelSyncer   *******************
  *****************************************************************************/
-
 // listen for sidePanel sync request
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
+
       if (request.message == "WILLOW_SP_SYNC_REQUEST") {
         handleSPSyncRequest(request);
+       // alert("heard smth" + request.message + " " + request.action);
+
       }
       else if (request.message == "WILLOW_LABEL_SYNC_REQUEST"){
         handleWillowLabelSyncRequest(request);
       }
-      else if( request.message == "WILLOW_SHOW_AS_SIDE_PANEL")
-      {
-       // alert("message recieved");
-        sidePanel.style.width = panelWidth;
-        return Promise.resolve({response: "Hi from content script"});
-        //sendResponse({farewell: "goodbye"});
-        /*
-        chrome.storage.local.get(["WILLOW_SP_PSEUDO_OPEN"], function (res)
-        {
-          alert(res.WILLOW_SP_PSEUDO_OPEN);
-          if( res.WILLOW_SP_PSEUDO_OPEN ) {
-            chrome.storage.local.set({WILLOW_SP_PSEUDO_OPEN: false});
-
-            openSidePanel(true);
-          }
-        });
-
-         */
-      }
+      return  true;
     }
 );
 
 function handleSPSyncRequest(request) {
   if (request.action == "WILLOW_SP_SYNC_OPEN") {
+   // alert( "Sync requests");
     openSidePanel(false);
   } else if (request.action == "WILLOW_SP_SYNC_CLOSE") {
     closeSidePanel(false);
   } else if (request.action == "WILLOW_SP_SYNC_TOGGLE") {
+   // alert("message recieved");
     toggleSidePanel(false);
   } else if (request.action == "WILLOW_SP_SYNC_UNDOCK") {
     undockSidePanel(null, false);

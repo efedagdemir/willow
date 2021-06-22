@@ -2,7 +2,6 @@
 chrome.runtime.onInstalled.addListener(function () {
     chrome.storage.local.set({  
         WILLOW_SP_OPEN: false,
-        WILLOW_SP_PSEUDO_OPEN: false,
         WILLOW_WINDOW_OPEN: false,
         WILLOW_TAB_ID: -1,
         WILLOW_SP_UNDOCKED: false,  
@@ -21,13 +20,25 @@ chrome.runtime.onInstalled.addListener(function () {
     });
 });
 
+var prevId = 0;
 // register browserAction listener (extension icon in the toolbar)
 chrome.browserAction.onClicked.addListener(function(tab) {
     // read and toggle global panel state
+
     var bool = false;
     chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_WINDOW_OPEN"], function (res) {
-        if( !res.WILLOW_WINDOW_OPEN && !res.WILLOW_SP_PSEUDO_OPEN && !res.WILLOW_WINDOW_OPEN  ) {
+        if( !res.WILLOW_WINDOW_OPEN &&  !res.WILLOW_WINDOW_OPEN  ) {
             chrome.storage.local.set({WILLOW_WINDOW_OPEN: true});
+            chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+                //console.log("----------------: ", tabs.length);
+                for (let tab of tabs) {
+                  //  alert(tab.id);
+                    prevId = tab.id;
+                }
+
+
+                } );
+            setTimeout(() => {
             chrome.tabs.create({
                 active: true,
                 url: 'NewTab/newTab.html'
@@ -35,6 +46,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
                 createdTabId = tab.id;
                 chrome.storage.local.set({WILLOW_TAB_ID: createdTabId});
             });
+            }, 150);
         }
         if( res.WILLOW_WINDOW_OPEN )
         {
@@ -57,15 +69,13 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 
 });
 
-//To get last active tab
 var curTabID = 0;
-var prevTabID = 0;
+var prevTabId = 0;
 
 chrome.tabs.onSelectionChanged.addListener(function(tabId, selectInfo) {
-    prevTabID = curTabID;
+    prevTabId = curTabID
     curTabID = tabId;
 });
-
 
 
 //Listen if new tab button is clicked
@@ -85,31 +95,34 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         chrome.storage.local.get(["WILLOW_TAB_ID"], function (res) {
             chrome.tabs.remove(res.WILLOW_TAB_ID);
         });
-        chrome.tabs.update(prevTabID, {selected: true});
-       // alert(prevTabID);
-        setTimeout(() => {
-            broadcastSyncbroadcastSyncRequestOnePageRequest({
-            message: "WILLOW_SHOW_AS_SIDE_PANEL",
-            action: "WILLOW_SP_SYNC_TOGGLE",
-            notifyActiveTab: true
+
+        chrome.storage.local.get(["WILLOW_WINDOW_OPEN"], function (res) {
+        //    alert(res.WILLOW_WINDOW_OPEN + " is it still open");
         });
-        }, 150);
+
+        chrome.tabs.update(prevId, {selected: true});
+
+       // sendMessageToOpenSidePanel( prevTabID, request);
+                broadcastSyncRequest({
+                    message: "WILLOW_SP_SYNC_REQUEST",
+                    action: "WILLOW_SP_SYNC_TOGGLE",
+                    notifyActiveTab: true
+                });
+
 
 
     }
     return true;
 });
 
-
-
-
 chrome.tabs.onRemoved.addListener(function(tabid, removed) {
     chrome.storage.local.get(["WILLOW_TAB_ID"], function (res) {
         if( res.WILLOW_TAB_ID == tabid )
         {
-            console.log("tab removoed:(");
-            chrome.storage.local.set({ WILLOW_WINDOW_OPEN: false })
+            chrome.storage.local.set({ WILLOW_WINDOW_OPEN: false });
+            chrome.storage.local.set({ WILLOW_SP_OPEN: true });
             chrome.storage.local.set({ WILLOW_SP_WIDTH: "700px" });
+            chrome.tabs.update(0, {selected: true});
         }
     });
 });
