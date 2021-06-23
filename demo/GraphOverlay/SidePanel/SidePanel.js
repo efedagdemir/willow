@@ -22,9 +22,9 @@ async function runSidePanel() {
     await checkIfWindowOpen(windowOpen);
 
 
-//--------------------------------//
-//        Global CONSTANTS        //
-//--------------------------------//
+    //--------------------------------//
+    //        Global CONSTANTS        //
+    //--------------------------------//
     let sidePanelHTML = `
         <!DOCTYPE html>
         <html>
@@ -620,7 +620,7 @@ async function runSidePanel() {
         } else if (request.action == "WILLOW_SP_SYNC_CLOSE") {
             closeSidePanel(false);
         } else if (request.action == "WILLOW_SP_SYNC_TOGGLE") {
-            alert("message recieved");
+         //   alert("message recieved");
             toggleSidePanel(false);
         } else if (request.action == "WILLOW_SP_SYNC_UNDOCK") {
             undockSidePanel(null, false);

@@ -8,8 +8,8 @@ chrome.runtime.onMessage.addListener(
              * repeated. This is problematic for the following three so they
              * are commented out now.
              */
-            // || request.message == "WILLOW_INFO_SYNC_REQUEST"
-            // || request.message == "WILLOW_HOW_TO_SYNC_REQUEST"
+            // ||request.message == "WILLOW_INFO_SYNC_REQUEST"
+            // ||request.message == "WILLOW_HOW_TO_SYNC_REQUEST"
             // || request.message == "WILLOW_HOW_TO_DETAILS_SYNC_REQUEST"
             || request.message == "WILLOW_RADIO_SYNC_REQUEST"
             || request.message == "WILLOW_GRAPH_SYNC_REQUEST"
@@ -30,27 +30,22 @@ function broadcastSyncRequest(request) {
     chrome.windows.getAll({populate:true},function(windows){
         windows.forEach(function(window){
             window.tabs.forEach(function(tab){
-                //collect all of the urls here, I will just log them instead
-               // alert(tab.id+ " " + tab.title);
                 chrome.tabs.sendMessage(tab.id, request);
             });
         });
     });
 }
-function broadcastSyncRequest2(request) {
-    /**
-     * notifyActiveTab is a quick fix to handle some exceptional cases.
-     * By default, the active tab is not notified
-     */
 
+/**
+ * Notify last seen tab to open side panel
+ */
+function broadcastSyncRequest2(request) {
     chrome.windows.getAll({populate:true},function(windows){
         windows.forEach(function(window){
-            window.tabs.forEach( async function(tab){
-                //collect all of the urls here, I will just log them instead
-               //  alert(tab.id+ " " + tab.title);
-                if (tab.id === request.prevId)
+            window.tabs.forEach( async function(tab)
+            {
+                if (tab.id === request.prevId) //Send only to last seen tab
                 {
-                    alert("found");
                    await chrome.tabs.sendMessage(tab.id, request);
                 }
             });

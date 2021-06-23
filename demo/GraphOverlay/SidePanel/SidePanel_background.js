@@ -1,4 +1,6 @@
-// initalize stored state
+/**
+ *Initialize locally stored data in chrome
+ */
 chrome.runtime.onInstalled.addListener(function () {
     chrome.storage.local.set({
         WILLOW_SP_OPEN: false,
@@ -19,33 +21,41 @@ chrome.runtime.onInstalled.addListener(function () {
         WILLOW_DETAILS_TAGS: '0000000' //a basic way of showing which details are opened, used only for initialization
     });
 });
-
-var curTabID = 0;
-var prevTabId = 0;
+//--------------------------------//
+//        Global variables        //
+//--------------------------------//
+let curTabID = 0;
+let prevTabId = 0;
 let createdTabId  = 0;
+let prev = 0;
 
+
+//--------------------------------//
+//   Events and event handlers    //
+//--------------------------------//
+/**
+ * This is to keep track of last seen tab so we can redirect to it when
+ * dedicated tab is closed
+ */
 chrome.tabs.onSelectionChanged.addListener(function (tabId, selectInfo) {
-
-
     prevTabId = curTabID;
     curTabID = tabId;
-    alert("changed "+ prevTabId);
 });
 
-var prev = 0;
-// register browserAction listener (extension icon in the toolbar)
-chrome.browserAction.onClicked.addListener(function (tab) {
-    // read and toggle global panel state
 
-    var bool = false;
+/**
+ * This is to open willow in dedicated tab when icon is clicked in chrome
+ * or to direct to the dedicated tab if it is already open
+ */
+chrome.browserAction.onClicked.addListener(function (tab)
+{
+    // read and toggle global panel state
     chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_WINDOW_OPEN"], function (res) {
         if (!res.WILLOW_WINDOW_OPEN && !res.WILLOW_WINDOW_OPEN) {
             chrome.storage.local.set({WILLOW_WINDOW_OPEN: true});
-            chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-                //console.log("----------------: ", tabs.length);
 
-            });
-            setTimeout(() => {
+            setTimeout(() =>
+            {
                 chrome.tabs.create({
                     active: true,
                     url: 'NewTab/newTab.html'
@@ -61,25 +71,13 @@ chrome.browserAction.onClicked.addListener(function (tab) {
             });
         }
     });
-
-    // notify tabs through the broadcaster
-    /*
-    setTimeout(() => {
-        if(bool) {
-            broadcastSyncRequest({
-                message: "WILLOW_SP_SYNC_REQUEST",
-                action: "WILLOW_SP_SYNC_TOGGLE",
-                notifyActiveTab: true
-            });
-        }
-    }, 150);
-
-     */
-
 });
 
 
-//Listen if new tab button is clicked
+/**
+ * This is to open willow in dedicated tab when icon is clicked in side panel
+ * and open side panel in last seen tab when icon is clicked in dedicated tab
+ */
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.action == 'WILLOW_SYNC_OPEN_NEW_TAB') {
         chrome.tabs.create({
@@ -96,25 +94,15 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         chrome.storage.local.get(["WILLOW_TAB_ID"], function (res) {
             chrome.tabs.remove(res.WILLOW_TAB_ID);
         });
-    }
-    return true;
-});
-
-chrome.tabs.onRemoved.addListener(function(tabid, removed) {
-    chrome.storage.local.get(["WILLOW_TAB_ID"], function (res) {
-       // alert("removed");
-        if( res.WILLOW_TAB_ID == tabid )
-        {
-            chrome.storage.local.set({ WILLOW_WINDOW_OPEN: false });
-            chrome.storage.local.set({ WILLOW_SP_OPEN: true });
-            chrome.storage.local.set({ WILLOW_SP_WIDTH: "700px" });
-            setTimeout(() => {
-               // alert("waited " + prevTabId);
+        chrome.storage.local.set({ WILLOW_SP_OPEN: true });
+        setTimeout(() => {
             broadcastSyncRequest2( {
                 message: "WILLOW_SP_SYNC_REQUEST",
                 action: "WILLOW_SP_SYNC_TOGGLE",
                 prevId: prev
             });  }, 150);
-        }
-    });
+
+    }
+    return true;
 });
+
