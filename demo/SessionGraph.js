@@ -95,7 +95,9 @@ function getCytoscapeJSON(){
 function updateNodePosition(nodeId, newPos) {
     cy.getElementById(nodeId).position(newPos);
     //addFixedNodes(nodeId, newPos, 0);
+  //  alert("dragging");
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
+    //alert("done dragging");
 }
 
 function removeNode(nodeId) {
@@ -128,13 +130,6 @@ function openPage(nodeId) {
     return true;
 }
 
-function openPageInNewTab(nodeId) {
-    chrome.tabs.create({url: nodeId}, function () {
-        // sync after callback
-        //broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
-    });
-    return true;
-}
 
 function removeEdge(source, target) {
     //! Bu henüz olmuyo.
@@ -266,7 +261,7 @@ async function importJSON(json) {
     
     chrome.tabs.query( {active:true, currentWindow: true}, (tabs) => { chrome.tabs.remove(tabs[0].id)});
 
-    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
 }
 
 function addComment(nodeId,comment){
@@ -315,7 +310,7 @@ function runLayout(){
 
         name: 'fcose',
         quality: "proof",
-        fit: true,
+       // fit: true,
         padding: 30,
         animate: false,
         randomize: false,
@@ -349,7 +344,7 @@ function recalcLayout() {
 
         name: 'fcose',
         quality: "proof",
-        fit: true,
+      //  fit: true,
         padding: 30,
         animate: false,
         randomize: true,
@@ -381,11 +376,11 @@ function handleRunLayoutMessage(option) {
     if (option == "incremental") {
         runLayout();
        // alert("how is it");
-         broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
+         broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab:true});
     } else if (option == "recalculate") {
         recalcLayout();
         //alert("how is it");
-        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab:true});
     } else {
         //console.error("run layout request with invalid option");
     }

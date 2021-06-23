@@ -44,7 +44,7 @@ function tabUpdated(tabId, changeInfo, tab) {
         let node = cy.getElementById(tabURLs.get(tabId));
         tabURLs.set(tabId, changeInfo.url);
         node.data( "openTabCount", node.data("openTabCount") - 1); 
-        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
     }
     if (changeInfo.url && !changeInfo.url.startsWith("chrome")) { // do not consider the pages that start with chrome, no history is kept for them.
         urlLoaded(tabId, tab.url);
@@ -58,7 +58,7 @@ function tabUpdated(tabId, changeInfo, tab) {
 
                 // ! This seems like the correct place for this. Might need to move somewhere else
                 // Notify all tabs of the newly inserted node
-                broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+                broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
             }, 30);
         /*
          * ChangeInfo contains a title on two different triggers: when the URL changes and when the page's actual title loads.
@@ -74,7 +74,7 @@ function tabRemoved( tabId, removeInfo) {
 
     if(node.length > 0) { //! Sketchy
         node.data( "openTabCount", node.data("openTabCount") - 1); // decrement the openTabCount of the node.
-        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
     }
     tabURLs.delete(tabId);
 }
@@ -208,7 +208,7 @@ async function urlLoaded(tabId, url) {
     // update the URL open in the tab.
     tabURLs.set(tabId, url);
 
-    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
     return null;
 
     //--------------------------- helper functions --------------------------------

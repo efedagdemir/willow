@@ -109,21 +109,35 @@ function onNotes(id){
 
 }
 
-function updateCytoscape() {
+function updateCytoscape(drag) {
     chrome.runtime.sendMessage({ type: "getCytoscapeJSON" }, function (response) {
         ////console.log("RESPONSE RECEIVED");
         ////console.log(JSON.stringify(response));
         // save current viewport to restore after response json is loaded
 
-        //alert('update');
+       // alert('update1');
        // response.zoom = tmp.zoom;
-        cy.json(response);
-        
+        if( !drag)
+        {
+            alert("don't drag");
+            cy.json(response);
+            cy.fit();
+
+        }
+        else
+        {
+            let tmp = {
+                zoom: cy.zoom(),
+                pan: cy.pan()
+            }
+            response.pan = tmp.pan;
+            response.zoom = tmp.zoom;
+            cy.json(response);
+        }
+
         applyStyle();
         cy.style().update();
-    //    alert(cy.width() + " form update");
-        cy.fit();
-        //alert( cy.zoom());
+      
         if(!contextMenuApplied) {
             applyContextMenu();
             contextMenuApplied = true;
@@ -132,7 +146,9 @@ function updateCytoscape() {
             applyHoverOver();
             hoverOverApplied = true;
         }
+       // alert('update3');
     });
+
 }
 
 
@@ -140,7 +156,7 @@ function updateCytoscape() {
  * Sets the camera position to center the graph.
  */
  function centerViewport() {
-    cy.resize() // make sure that cytoscape is up-to-date with its container size.
+  //  cy.resize() // make sure that cytoscape is up-to-date with its container size.
 
     /**
      * We have a few alternatives, we can choose any and comment out the rest
@@ -176,7 +192,7 @@ function updateCytoscape() {
 }
 
 function fitViewport() {
-    cy.resize();
+    //cy.resize();
     cy.fit();
 }
 
@@ -192,7 +208,7 @@ function syncViewport() {
 
 function openNotesPage(id){
     let node = cy.getElementById(id);
-    var modal = document.getElementById("myModal");
+    let modal = document.getElementById("myModal");
     modal.draggable = 'false';
                        
     document.getElementById("comments").value = node.data("comment");
@@ -201,7 +217,7 @@ function openNotesPage(id){
     }
                      
     modal.style.display = "block";
-    var span = document.getElementsByClassName("close")[0]; 
+    let span = document.getElementsByClassName("close")[0];
     
     span.onclick = function() {
         
@@ -231,7 +247,7 @@ function openNotesPage(id){
 }
 function syncNotes(){
     chrome.storage.local.get(["WILLOW_NOTES_OPEN"], function (res) {
-        var modal = document.getElementById("myModal");
+        let modal = document.getElementById("myModal");
 
         if(res.WILLOW_NOTES_OPEN.open){
             let id = res.WILLOW_NOTES_OPEN.id;                
@@ -497,7 +513,7 @@ function applyContextMenu() {
 
     cy.on('cxttap', function (event) {
         if(!disableCxtMenu){
-            var evtTarget = event.target;
+            let evtTarget = event.target;
             if (evtTarget === cy){
                 ////console.log("target is the background");
                 contextMenu.hideMenuItem('open');
@@ -540,7 +556,7 @@ function changeNodeSize(event, size, increase, title_size){
     if (size >= 10 && size <= 130) {
 
         let target = event.target || event.cyTarget;
-        var tSize = parseInt( title_size, 10);
+        let tSize = parseInt( title_size, 10);
         
         if (increase){
             tSize = `${tSize + 0.5}px`;
@@ -601,34 +617,45 @@ function applyHoverOver(){
 // listen for Graph sync requests
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-        if (request.message == "WILLOW_GRAPH_SYNC_REQUEST") {
-            handleSyncRequest(request);
-        } else if (request.message == "WILLOW_GRAPH_VIEWPORT_CENTER") {
+        if (request.message === "WILLOW_GRAPH_SYNC_REQUEST") {
+             updateCytoscape(true);
+        } else if (request.message === "WILLOW_GRAPH_VIEWPORT_CENTER") {
             centerViewport();
-        } else if (request.message == "WILLOW_VIEWPORT_SYNC_REQUEST") {
+        } else if (request.message === "WILLOW_VIEWPORT_SYNC_REQUEST") {
             syncViewport();
-        } else if (request.message == "WILLOW_NOTES_SYNC_REQUEST") {
+        } else if (request.message === "WILLOW_NOTES_SYNC_REQUEST") {
             syncNotes();
-        } else if (request.message == "WILLOW_CONFIRM_DIALOG_SYNC_REQUEST") {
+        } else if (request.message === "WILLOW_CONFIRM_DIALOG_SYNC_REQUEST") {
             syncConfirmDialog();
         }
-        else if ( request.message == "WILLOW_GRAPH_VIEWPORT_FIT" )
+        else if ( request.message === "WILLOW_GRAPH_VIEWPORT_FIT" )
         {
             fitViewport();
+        }
+        else if(request.message === "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL")
+        {
+            updateCytoscape(false);
         }
     }
 );
 
 // updates the whole cytoscape instance by requesting the instance from the bacground again
-function handleSyncRequest(request) {
-    updateCytoscape();
+async  function handleSyncRequest(request) {
+    if(request.message === "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL")
+    {
+       await updateCytoscape(false);
+    }
+    else if(request.message === "WILLOW_GRAPH_SYNC_REQUEST")
+    {
+       await updateCytoscape(true);
+    }
 }
 
 
 chrome.runtime.onMessage.addListener(confirmationListener);
 
 function confirmationListener(request){
-    if (request.message == "WILLOW_BACKGROUND_NEW_SESSION_CONFIRMATION") {
+    if (request.message === "WILLOW_BACKGROUND_NEW_SESSION_CONFIRMATION") {
         ////console.log("confirmation request received");
         askForConfirmation();
     }

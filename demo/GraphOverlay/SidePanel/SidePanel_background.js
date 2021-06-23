@@ -51,7 +51,7 @@ chrome.browserAction.onClicked.addListener(function (tab)
 {
     // read and toggle global panel state
     chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_WINDOW_OPEN"], function (res) {
-        if (!res.WILLOW_WINDOW_OPEN && !res.WILLOW_WINDOW_OPEN) {
+        if (!res.WILLOW_WINDOW_OPEN && !res.WILLOW_SP_OPEN) {
             chrome.storage.local.set({WILLOW_WINDOW_OPEN: true});
 
             setTimeout(() =>
@@ -106,3 +106,16 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     return true;
 });
 
+/**
+ * When dedicated tab for willow is closed change locally stored parameters
+ */
+chrome.tabs.onRemoved.addListener(function(tabid, removed) {
+    chrome.storage.local.get(["WILLOW_TAB_ID"], function (res) {
+        if( res.WILLOW_TAB_ID == tabid )
+        {
+            chrome.storage.local.set({WILLOW_WINDOW_OPEN: false});
+            chrome.storage.local.set({WILLOW_SP_OPEN: true});
+
+        }
+    });
+});
