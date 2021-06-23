@@ -61,7 +61,8 @@
         "icons/new.png",
         "icons/information.png",
         "icons/question-mark.png",
-        "icons/newTab.png"
+        "icons/newTab.png",
+        "icons/search.png"
 
     ],
     "content_security_policy": "script-src 'self'; object-src 'self'; img-src chrome://favicon data:;"
