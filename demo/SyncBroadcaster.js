@@ -45,12 +45,13 @@ function broadcastSyncRequest2(request) {
 
     chrome.windows.getAll({populate:true},function(windows){
         windows.forEach(function(window){
-            window.tabs.forEach(function(tab){
+            window.tabs.forEach( async function(tab){
                 //collect all of the urls here, I will just log them instead
-                // alert(tab.id+ " " + tab.title);
-                if (tab.id == request.prevId)
+               //  alert(tab.id+ " " + tab.title);
+                if (tab.id === request.prevId)
                 {
-                    chrome.tabs.sendMessage(tab.id, request);
+                    alert("found");
+                   await chrome.tabs.sendMessage(tab.id, request);
                 }
             });
         });
