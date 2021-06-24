@@ -44,7 +44,7 @@ cy.on('doubleTap', function(event, originalTap) {
     let target = originalTap.target || originalTap.cyTarget;
     let id = target.id();
     chrome.runtime.sendMessage({
-        message: "WILLOW_BACKGROUND_OPEN_PAGE",
+        message: "WILLOW_BACKGROUND_OPEN_PAGE_IN_NEW_TAB",
         nodeId: id
     });
 });
@@ -109,46 +109,41 @@ function onNotes(id){
 
 }
 
-function updateCytoscape(drag) {
-    chrome.runtime.sendMessage({ type: "getCytoscapeJSON" }, function (response) {
+ function updateCytoscape(drag) {
+    chrome.runtime.sendMessage({ type: "getCytoscapeJSON" }, async function (response) {
         ////console.log("RESPONSE RECEIVED");
         ////console.log(JSON.stringify(response));
         // save current viewport to restore after response json is loaded
 
-       // alert('update1');
-       // response.zoom = tmp.zoom;
-        if( !drag)
-        {
-            alert("don't drag");
+        // alert('update1');
+        // response.zoom = tmp.zoom;
+        if (!drag) {
+            // alert("don't drag");
             cy.json(response);
             cy.fit();
-
-        }
-        else
-        {
+        } else {
             let tmp = {
                 zoom: cy.zoom(),
                 pan: cy.pan()
             }
             response.pan = tmp.pan;
             response.zoom = tmp.zoom;
-            cy.json(response);
+             cy.json(response);
         }
 
         applyStyle();
         cy.style().update();
-      
-        if(!contextMenuApplied) {
+
+        if (!contextMenuApplied) {
             applyContextMenu();
             contextMenuApplied = true;
         }
-        if(!hoverOverApplied) {
+        if (!hoverOverApplied) {
             applyHoverOver();
             hoverOverApplied = true;
         }
-       // alert('update3');
+        // alert('update3');
     });
-
 }
 
 
@@ -619,6 +614,7 @@ chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.message === "WILLOW_GRAPH_SYNC_REQUEST") {
              updateCytoscape(true);
+           //  alert( "end");
         } else if (request.message === "WILLOW_GRAPH_VIEWPORT_CENTER") {
             centerViewport();
         } else if (request.message === "WILLOW_VIEWPORT_SYNC_REQUEST") {
@@ -634,7 +630,9 @@ chrome.runtime.onMessage.addListener(
         }
         else if(request.message === "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL")
         {
+          //  alert( "beginnig");
             updateCytoscape(false);
+           // alert( "end");
         }
     }
 );

@@ -8,7 +8,7 @@ async function initializeSG() {
     //* This page is not rendered, the container's sole purpose is to enable cytospace.js to work properly.
     let container = document.createElement("div");
     // ! This is problematic! 
-    //container.style.width = container.style.height = '100'; // random values for width and height.
+   // container.style.width = container.style.height = "700px"; // random values for width and height.
     document.body.appendChild(container);
     container.id ="container";
 
@@ -126,6 +126,13 @@ function openPage(nodeId) {
             // sync after callback
             //broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
         });
+    });
+    return true;
+}
+function openPageInNewTab(nodeId) {
+    chrome.tabs.create({url: nodeId}, function () {
+        // sync after callback
+        //broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
     });
     return true;
 }
