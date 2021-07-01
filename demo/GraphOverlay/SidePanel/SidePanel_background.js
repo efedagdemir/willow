@@ -28,6 +28,7 @@ let curTabID = 0;
 let prevTabId = 0;
 let createdTabId  = 0;
 let prev = 0;
+let openSidePanel = false;
 
 
 //--------------------------------//
@@ -51,7 +52,7 @@ chrome.browserAction.onClicked.addListener(function (tab)
 {
     // read and toggle global panel state
     chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_WINDOW_OPEN"], function (res) {
-        if (!res.WILLOW_WINDOW_OPEN && !res.WILLOW_SP_OPEN) {
+        if (!res.WILLOW_WINDOW_OPEN && !res.WILLOW_SP_OPEN) { //when opening willow by default
             chrome.storage.local.set({WILLOW_WINDOW_OPEN: true});
 
             setTimeout(() =>
@@ -65,11 +66,22 @@ chrome.browserAction.onClicked.addListener(function (tab)
                 });
             }, 150);
         }
-        if (res.WILLOW_WINDOW_OPEN) {
+        else if (res.WILLOW_WINDOW_OPEN) { //When dedicated tab is already open
             chrome.storage.local.get(["WILLOW_TAB_ID"], function (res) {
                 chrome.tabs.update(res.WILLOW_TAB_ID, {selected: true});
             });
         }
+        else if (res.WILLOW_SP_OPEN ) //Open side panel is open
+        {
+            chrome.storage.local.set({ WILLOW_SP_OPEN: true});
+        }
+
+        broadcastSyncRequest({
+            message: "WILLOW_SP_SYNC_REQUEST",
+            action: "WILLOW_SP_SYNC_TOGGLE",
+            notifyActiveTab: true
+        });
+
     });
 });
 
@@ -79,7 +91,7 @@ chrome.browserAction.onClicked.addListener(function (tab)
  * and open side panel in last seen tab when icon is clicked in dedicated tab
  */
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.action == 'WILLOW_SYNC_OPEN_NEW_TAB') {
+    if (request.action === 'WILLOW_SYNC_OPEN_NEW_TAB') {
         chrome.tabs.create({
             active: true,
             url: 'NewTab/newTab.html'
@@ -87,9 +99,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             createdTabId = tab.id;
             chrome.storage.local.set({WILLOW_TAB_ID: createdTabId});
         });
-    } else if (request.message == 'WILLOW_SHOW_AS_SIDE_PANEL') {
-        chrome.storage.local.set({WILLOW_WINDOW_OPEN: false});
+    } else if (request.message === 'WILLOW_SHOW_AS_SIDE_PANEL') {
         prev = prevTabId;
+        openSidePanel = true;
         chrome.tabs.update(prevTabId, {selected: true});
         chrome.storage.local.get(["WILLOW_TAB_ID"], function (res) {
             chrome.tabs.remove(res.WILLOW_TAB_ID);
@@ -98,7 +110,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         setTimeout(() => {
             broadcastSyncRequest2( {
                 message: "WILLOW_SP_SYNC_REQUEST",
-                action: "WILLOW_SP_SYNC_TOGGLE",
+                action: "WILLOW_WINDOW_TO_SP",
                 prevId: prev
             });  }, 150);
 
@@ -110,12 +122,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
  * When dedicated tab for willow is closed change locally stored parameters
  */
 chrome.tabs.onRemoved.addListener(function(tabid, removed) {
-    chrome.storage.local.get(["WILLOW_TAB_ID"], function (res) {
-        if( res.WILLOW_TAB_ID == tabid )
+    chrome.storage.local.get(["WILLOW_TAB_ID"], async function (res) {
+        if( res.WILLOW_TAB_ID === tabid )
         {
-            chrome.storage.local.set({WILLOW_WINDOW_OPEN: false});
-            chrome.storage.local.set({WILLOW_SP_OPEN: true});
-
+           await chrome.storage.local.set({WILLOW_WINDOW_OPEN: false});
+           await chrome.storage.local.set({WILLOW_SP_OPEN: openSidePanel});
         }
+        openSidePanel = false;
     });
 });
