@@ -613,7 +613,14 @@ function applyHoverOver(){
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.message === "WILLOW_GRAPH_SYNC_REQUEST") {
-             updateCytoscape(true);
+            if(request.action === "CHANGE_NODE_SIZE")
+            {
+                updateCytoscape(false);
+            }
+            else
+            {
+                updateCytoscape(true);
+            }
            //  alert( "end");
         } else if (request.message === "WILLOW_GRAPH_VIEWPORT_CENTER") {
             centerViewport();

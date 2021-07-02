@@ -175,7 +175,7 @@ function changeNodeSize(nodeId, size, tSize) {
     let node = cy.getElementById(nodeId); 
     node.data("width", size);
     node.data("title_size", tSize);
-    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", action: "CHANGE_NODE_SIZE"});
 }
 
 var UNIFORM_DEFAULT_SIZE = 35;
@@ -189,7 +189,7 @@ function resetNodeSizes(option) {
             ele.data('title_size', UNIFORM_TITLE_SIZE);
         });
         runLayout();
-        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", action: "CHANGE_NODE_SIZE",notifyActiveTab:true});
     } else if (option == "pagerank") {
         var pr = cy.elements().pageRank();
         cy.nodes().forEach(function( ele ){
@@ -197,7 +197,7 @@ function resetNodeSizes(option) {
             ele.data('tite_size', PAGERANK_AVG_TITLE_SIZE);
         });
         runLayout();
-        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", action: "CHANGE_NODE_SIZE", notifyActiveTab:true});
     } else {
         //console.error("resetNodeSizes called with invalid option");
         return;
