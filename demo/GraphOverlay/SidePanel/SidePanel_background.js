@@ -51,6 +51,7 @@ chrome.tabs.onSelectionChanged.addListener(function (tabId, selectInfo) {
  */
 chrome.browserAction.onClicked.addListener(  function (tab)
 {
+    let action = "WILLOW_SP_SYNC_TOGGLE";
     // read and toggle global panel state
     chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_WINDOW_OPEN"], function (res) {
         if (!res.WILLOW_WINDOW_OPEN && !res.WILLOW_SP_OPEN) { //when opening willow by default
@@ -74,11 +75,12 @@ chrome.browserAction.onClicked.addListener(  function (tab)
         else if (res.WILLOW_SP_OPEN ) //Open side panel is open
         {
             chrome.storage.local.set({ WILLOW_SP_OPEN: true});
+            action = "WILLOW_WINDOW_TO_SP";
         }
 
         broadcastSyncRequest({
             message: "WILLOW_SP_SYNC_REQUEST",
-            action: "WILLOW_SP_SYNC_TOGGLE",
+            action: action,
             notifyActiveTab: true
         });
 

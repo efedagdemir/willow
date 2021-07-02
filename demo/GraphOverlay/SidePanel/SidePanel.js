@@ -110,10 +110,7 @@ async function runSidePanel() {
     }
     console.log( "sidepanel "+ sidePanelOpen);
     console.log( "window " + windowOpen);
-    if( sidePanelOpen && windowOpen)
-    {
-        alert("both open");
-    }
+
 
         function injectSidePanel() {
 
