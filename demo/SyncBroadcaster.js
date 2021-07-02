@@ -26,6 +26,7 @@ function broadcastSyncRequest(request) {
      * notifyActiveTab is a quick fix to handle some exceptional cases.
      * By default, the active tab is not notified
      */
+    chrome.storage.local.set({WILLOW_SP_WIDTH: "700px"});
 
     chrome.windows.getAll({populate:true},function(windows){
         windows.forEach(function(window){
@@ -34,6 +35,7 @@ function broadcastSyncRequest(request) {
             });
         });
     });
+
 }
 
 /**

@@ -1,13 +1,13 @@
 var cy = null;          // The variable that holds the cytoscape object.
 var interval = null;    // A setInterval() result that updates the session graph every 30 seconds.
+let container = document.createElement("div");
 /**
  * Initalizes the session graph as a cytoscape object with no elements.
  */
 async function initializeSG() {
     // create an HTML container for the graph in the background page
     //* This page is not rendered, the container's sole purpose is to enable cytospace.js to work properly.
-    let container = document.createElement("div");
-    // ! This is problematic! 
+    // ! This is problematic!
    // container.style.width = container.style.height = "700px"; // random values for width and height.
     document.body.appendChild(container);
     container.id ="container";
@@ -98,6 +98,7 @@ function updateNodePosition(nodeId, newPos) {
   //  alert("dragging");
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
     //alert("done dragging");
+   // alert("updateNodePosition " + cy.width());
 }
 
 function removeNode(nodeId) {
@@ -278,41 +279,47 @@ function addComment(nodeId,comment){
 }
 
 function messageReceived(request, sender, sendResponse) {
-    if (request.type == "getCytoscapeJSON") {
+    if (request.type ==="getCytoscapeJSON") {
         sendResponse(this.getCytoscapeJSON());
-    } else if (request.message == "WILLOW_BACKGROUND_UPDATE_NODE_POS") {
+    } else if (request.message === "WILLOW_BACKGROUND_UPDATE_NODE_POS") {
         updateNodePosition(request.nodeId, request.newPos);
-    } else if (request.message == "WILLOW_BACKGROUND_REMOVE_NODE") {
+    } else if (request.message === "WILLOW_BACKGROUND_REMOVE_NODE") {
         removeNode(request.nodeId);
-    } else if (request.message == "WILLOW_BACKGROUND_OPEN_PAGE") {
+    } else if (request.message === "WILLOW_BACKGROUND_OPEN_PAGE") {
         openPage(request.nodeId);
-    } else if (request.message == "WILLOW_BACKGROUND_OPEN_PAGE_IN_NEW_TAB") {
+    } else if (request.message === "WILLOW_BACKGROUND_OPEN_PAGE_IN_NEW_TAB") {
         openPageInNewTab(request.nodeId);
-    } else if (request.message == "WILLOW_BACKGROUND_REMOVE_EDGE") {
+    } else if (request.message === "WILLOW_BACKGROUND_REMOVE_EDGE") {
         removeEdge(request.source, request.target);
-    } else if (request.message == "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR") {
+    } else if (request.message === "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR") {
         changeBorderColor(request.nodeId, request.color);
-    } else if (request.message == "WILLOW_BACKGROUND_CHANGE_NODE_SIZE"){
+    } else if (request.message === "WILLOW_BACKGROUND_CHANGE_NODE_SIZE"){
         changeNodeSize(request.nodeId, request.size, request.tSize);
-    } else if (request.message == "WILLOW_BACKGROUND_RESET_NODE_SIZES") {
+    } else if (request.message === "WILLOW_BACKGROUND_RESET_NODE_SIZES") {
         resetNodeSizes(request.option);
-    } else if (request.message == "WILLOW_BACKGROUND_RUN_LAYOUT") {
+    } else if (request.message === "WILLOW_BACKGROUND_RUN_LAYOUT") {
+      //  alert("updateNodePosition " + cy.width());
+        // alert("here");
         handleRunLayoutMessage(request.option); // func. def. explains weird naming.
-    } else if (request.message == "WILLOW_BACKGROUND_CLEAR_SESSION") {
+    } else if (request.message === "WILLOW_BACKGROUND_CLEAR_SESSION") {
         clearSG();
-    } else if (request.message == "WILLOW_BACKGROUND_EXPORT") {
+    } else if (request.message === "WILLOW_BACKGROUND_EXPORT") {
         exportJSON();
-    } else if (request.message == "WILLOW_BACKGROUND_IMPORT") {
+    } else if (request.message === "WILLOW_BACKGROUND_IMPORT") {
         importJSON( request.json);
-    } else if(request.message == "WILLOW_BACKGROUND_ADD_COMMENT"){
+    } else if(request.message === "WILLOW_BACKGROUND_ADD_COMMENT"){
         addComment(request.nodeId, request.comment);
+    }
+    else if(request.message === "WILLOW_SP_OPEN_WINDOW")
+    {
+
     }
 }
 
 
 function runLayout(){
-
-   // alert(cy.width());
+    //container.style.width = '300px';
+    console.log(cy.width());
     cy.layout({
 
         name: 'fcose',
@@ -347,8 +354,8 @@ function runLayout(){
  * Non-incremental version of runLayout()
  */
 function recalcLayout() {
+  //  container.style.width = '300px';
      cy.layout({
-
         name: 'fcose',
         quality: "proof",
       //  fit: true,
@@ -371,6 +378,7 @@ function recalcLayout() {
         },
 
     }).run();
+    console.log(cy.width());
 
 }
 
@@ -380,13 +388,13 @@ function recalcLayout() {
  * I'm leaving it as it is in order not to confuse the rest of the team.
  */
 function handleRunLayoutMessage(option) {
-    if (option == "incremental") {
+    if (option === "incremental") {
         runLayout();
-       // alert("how is it");
+     //   alert("hande run layout"+cy.width());
          broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab:true});
-    } else if (option == "recalculate") {
+    } else if (option === "recalculate") {
         recalcLayout();
-        //alert("how is it");
+      //  alert("how is it");
         broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab:true});
     } else {
         //console.error("run layout request with invalid option");

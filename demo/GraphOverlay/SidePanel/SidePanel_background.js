@@ -29,6 +29,7 @@ let prevTabId = 0;
 let createdTabId  = 0;
 let prev = 0;
 let openSidePanel = false;
+let dedicatedTabOpen = false;
 
 
 //--------------------------------//
@@ -48,23 +49,22 @@ chrome.tabs.onSelectionChanged.addListener(function (tabId, selectInfo) {
  * This is to open willow in dedicated tab when icon is clicked in chrome
  * or to direct to the dedicated tab if it is already open
  */
-chrome.browserAction.onClicked.addListener(function (tab)
+chrome.browserAction.onClicked.addListener(  function (tab)
 {
     // read and toggle global panel state
     chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_WINDOW_OPEN"], function (res) {
         if (!res.WILLOW_WINDOW_OPEN && !res.WILLOW_SP_OPEN) { //when opening willow by default
             chrome.storage.local.set({WILLOW_WINDOW_OPEN: true});
 
-            setTimeout(() =>
-            {
                 chrome.tabs.create({
-                    active: true,
+                    active: false,
                     url: 'NewTab/newTab.html'
                 }, function (tab) {
                     createdTabId = tab.id;
                     chrome.storage.local.set({WILLOW_TAB_ID: createdTabId});
+                    dedicatedTabOpen = true;
                 });
-            }, 150);
+
         }
         else if (res.WILLOW_WINDOW_OPEN) { //When dedicated tab is already open
             chrome.storage.local.get(["WILLOW_TAB_ID"], function (res) {

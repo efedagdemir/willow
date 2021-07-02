@@ -143,20 +143,20 @@ function runLayoutBtn_handler() {
 // listen for newtab sync requests
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        if (request.message == "WILLOW_SP_SYNC_REQUEST") {
+        if (request.message === "WILLOW_SP_SYNC_REQUEST") {
             handleTabSyncRequest(request);
         }
-        else if (request.message == "WILLOW_LABEL_SYNC_REQUEST"){
+        else if (request.message === "WILLOW_LABEL_SYNC_REQUEST"){
             handleWillowLabelSyncRequestWINDOW(request);
         }
     }
 );
 
 function handleTabSyncRequest(request) {
-     if (request.action == "WILLOW_SP_SYNC_DRAG") {
+     if (request.action === "WILLOW_SP_SYNC_DRAG") {
         sidePanel.style.top = request.newPos.top;
         sidePanel.style.left = request.newPos.left;
-    } else if (request.action == "WILLOW_SP_SYNC_RESIZE") {
+    } else if (request.action === "WILLOW_SP_SYNC_RESIZE") {
         sidePanel.style.width = request.newWidth;
         sidePanel.style.height = request.newHeight;
     }
@@ -164,7 +164,7 @@ function handleTabSyncRequest(request) {
 
 function handleWillowLabelSyncRequestWINDOW(request){
 
-    if (request.action == "WILLOW_LABEL_SYNC_OPEN") {
+    if (request.action === "WILLOW_LABEL_SYNC_OPEN") {
 
         label = document.getElementById("willow-willowLabel");
         if (label.classList.contains("shrinkTrans") && label.classList.contains("willow-anim")) {
@@ -174,7 +174,7 @@ function handleWillowLabelSyncRequestWINDOW(request){
 
         document.getElementById("willow-willowLabel").style.display = "";
 
-    } else if (request.action == "WILLOW_LABEL_SYNC_CLOSE") {
+    } else if (request.action === "WILLOW_LABEL_SYNC_CLOSE") {
         document.getElementById("willow-willowLabel").style.display = "none";
     }
 
