@@ -105,8 +105,15 @@ async function runSidePanel() {
     if (!windowOpen && sidePanelOpen) {
         console.log("injecting");
         injectSidePanel();
+        injectOnClickListeners();
+        readPanelState();
     }
-
+    console.log( "sidepanel "+ sidePanelOpen);
+    console.log( "window " + windowOpen);
+    if( sidePanelOpen && windowOpen)
+    {
+        alert("both open");
+    }
 
         function injectSidePanel() {
 
@@ -129,6 +136,7 @@ async function runSidePanel() {
         //------------------------//
 
         // read panel state
+    function readPanelState() {
         chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UNDOCKED_LOC",
             "WILLOW_SP_WIDTH", "WILLOW_SP_UD_HEIGHT", "WILLOW_OPACITY_UPDATE", "WILLOW_OPACITY", "WILLOW_LABEL_OPEN"], function (res) {
             panelWidth = res.WILLOW_SP_WIDTH;
@@ -154,9 +162,10 @@ async function runSidePanel() {
             }
 
         });
+    }
 
         // register event handlers
-    if (!windowOpen && sidePanelOpen)
+    function injectOnClickListeners()
     {
         document.getElementById("willow-closeBtn").onclick = () => closeSidePanel(true);
         document.getElementById("willow-newTabBtn").onclick = () => openInNewTab(true);
@@ -182,6 +191,10 @@ async function runSidePanel() {
                 message: "WILLOW_SP_SYNC_REQUEST",
                 action: "WILLOW_SYNC_OPEN_NEW_TAB",
             });
+            setTimeout(() => {
+            let element = document.getElementById("willowPanelWrapper");
+            element.parentNode.removeChild(element);
+            }, 150);
         }
 
 
@@ -599,8 +612,10 @@ async function runSidePanel() {
         }
 
         function runLayoutBtn_handler() {
+
             chrome.storage.local.get(["WILLOW_LAYOUT_OPT"], function (res) {
-                if (res.WILLOW_LAYOUT_OPT == 1) {
+                console.log("run layout");
+                if (res.WILLOW_LAYOUT_OPT === 1) {
                     chrome.runtime.sendMessage({
                         message: "WILLOW_BACKGROUND_RUN_LAYOUT",
                         option: "incremental"
@@ -634,12 +649,10 @@ async function runSidePanel() {
 
         function handleSPSyncRequest(request) {
             if (request.action === "WILLOW_SP_SYNC_OPEN") {
-                // alert( "Sync requests");
                 openSidePanel(false);
             } else if (request.action === "WILLOW_SP_SYNC_CLOSE") {
                 closeSidePanel(false);
             } else if (request.action === "WILLOW_SP_SYNC_TOGGLE") {
-                //   alert("message recieved");
                 // openSidePanel(false);
                 toggleSidePanel(false);
             } else if (request.action === "WILLOW_SP_SYNC_UNDOCK") {
@@ -655,9 +668,11 @@ async function runSidePanel() {
             }
             else if( request.action === "WILLOW_WINDOW_TO_SP")
             {
-                alert("here");
+               // alert("here");
                 injectSidePanel();
                 openSidePanel(true);
+                injectOnClickListeners();
+                readPanelState();
             }
 
         }
