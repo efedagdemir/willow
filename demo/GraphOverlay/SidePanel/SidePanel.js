@@ -63,7 +63,7 @@ async function runSidePanel() {
             <button title="Settings"      class="willow-headerBtn willow-btn-settings"  id="willow-settingsBtn" >                            </button>
             <button title="New Session"   class="willow-headerBtn willow-btn-new"       id="willow-newBtn" >                                 </button>
             <button title="Run Layout"    class="willow-headerBtn willow-btn-layout"    id="willow-layoutBtn">                               </button>
-            <button title="Search"    class="willow-headerBtn willow-btn-search"    id="willow-search-URL">                               </button>
+            <button title="Developer mood"    class="willow-headerBtn willow-btn-devMood"    id="willow-devMood">                               </button>
         <!--
             <form action="" class="willow-headerBtn">
               <input type="text" placeholder="Search.." >
@@ -172,6 +172,7 @@ async function runSidePanel() {
         document.getElementById("willow-layoutBtn").onclick = () => runLayoutBtn_handler();
         document.getElementById("willow-settingsBtn").onclick = () => toggleSettingsMenu();
         enableResizing(rightBorderOnly = true);
+        document.getElementById("willow-devMood").onclick = () => toggleDevMood();
     }
 
         // -- end of script
@@ -192,6 +193,30 @@ async function runSidePanel() {
             let element = document.getElementById("willowPanelWrapper");
             element.parentNode.removeChild(element);
             }, 150);
+        }
+
+        function  toggleDevMood()
+        {
+            chrome.storage.local.get(["WILLOW_CRAWLER_OPEN"], function (res) {
+                if (res.WILLOW_CRAWLER_OPEN) {
+                    // set global state
+                    chrome.storage.local.set({WILLOW_CRAWLER_OPEN: false});
+                    // broadcast
+                    chrome.runtime.sendMessage({
+                        message: "WILLOW_CRAWLER_SYNC_REQUEST",
+                        action: "WILLOW_CRAWLER_CLOSE"
+                    });
+                } else {
+                    // set global state
+                    chrome.storage.local.set({WILLOW_CRAWLER_OPEN: true});
+                    // broadcast
+                    chrome.runtime.sendMessage({
+                        message: "WILLOW_CRAWLER_SYNC_REQUEST",
+                        action: "WILLOW_CRAWLER_OPEN",
+                    });
+                }
+
+            });
         }
 
 

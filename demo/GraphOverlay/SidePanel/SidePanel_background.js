@@ -10,6 +10,7 @@ chrome.runtime.onInstalled.addListener(function () {
         WILLOW_SP_UNDOCKED_LOC: null,
         WILLOW_SP_WIDTH: "700px",
         WILLOW_SP_UD_HEIGHT: "600px",
+        WILLOW_CRAWLER_OPEN: false,
 
         WILLOW_LABEL_OPEN: true,
         WILLOW_OPACITY_UPDATE: false,
@@ -27,6 +28,8 @@ chrome.runtime.onInstalled.addListener(function () {
 let curTabID = 0;
 let prevTabId = 0;
 let createdTabId  = 0;
+let preWindowID = 0;
+let currentWindowID = 0;
 let prev = 0;
 let openSidePanel = false;
 let dedicatedTabOpen = false;
@@ -42,7 +45,15 @@ let dedicatedTabOpen = false;
 chrome.tabs.onSelectionChanged.addListener(function (tabId, selectInfo) {
     prevTabId = curTabID;
     curTabID = tabId;
+   // alert(prevTabId);
+    chrome.windows.getCurrent(function(win)
+    {
+        preWindowID = currentWindowID;
+        currentWindowID = win.id;
+    });
+
 });
+
 
 
 /**
@@ -104,7 +115,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else if (request.message === 'WILLOW_SHOW_AS_SIDE_PANEL') {
         prev = prevTabId;
         openSidePanel = true;
-        chrome.tabs.update(prevTabId, {selected: true});
+        chrome.windows.update(preWindowID, {focused: true}, (window) => {
+            chrome.tabs.update(prevTabId, {active: true})
+        })
+        //chrome.tabs.update(prevTabId, {selected: true});
         chrome.storage.local.get(["WILLOW_TAB_ID"], function (res) {
             chrome.tabs.remove(res.WILLOW_TAB_ID);
         });
@@ -116,6 +130,15 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 prevId: prev
             });  }, 150);
 
+    }
+    else if( request.message === "WILLOW_SYNC_OPEN_DEV_MOOD") //On Dev mood
+    {
+        chrome.tabs.create({
+            active: true,
+            url: 'devMood/devMood.html'
+        }, function (tab) {
+            createdTabId = tab.id;
+        });
     }
     return true;
 });
