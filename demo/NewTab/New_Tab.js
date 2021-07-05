@@ -37,7 +37,7 @@ document.getElementById("willow-newBtn").onclick       = () => startNewSession()
 document.getElementById("willow-layoutBtn").onclick    = () => runLayoutBtn_handler();
 document.getElementById("willow-settingsBtn").onclick  = () => toggleSettingsMenu();
 document.getElementById("willow-backBtn").onclick  = () => showAsSidePanel();
-document.getElementById("willow-devMood").onclick = () => openDevMood();
+document.getElementById("willow-devMood").onclick = () => toggleDevMood();
 
 
 
@@ -76,13 +76,27 @@ function startNewSession()
         message: "WILLOW_BACKGROUND_NEW_SESSION_CONFIRMATION"
     });
 }
-function  openDevMood()
+function  toggleDevMood()
 {
-    // TO-DO close dedicated tab TODO
-    chrome.storage.local.set({WILLOW_DEV_MOOD_OPEN: true});
-    chrome.runtime.sendMessage({
-        message: "WILLOW_SYNC_OPEN_DEV_MOOD",
-        action: "WILLOW_SYNC_OPEN_DEV_MOOD",
+    chrome.storage.local.get(["WILLOW_CRAWLER_OPEN"], function (res) {
+        if (res.WILLOW_CRAWLER_OPEN) {
+            // set global state
+            chrome.storage.local.set({WILLOW_CRAWLER_OPEN: false});
+            // broadcast
+            chrome.runtime.sendMessage({
+                message: "WILLOW_CRAWLER_SYNC_REQUEST",
+                action: "WILLOW_CRAWLER_CLOSE"
+            });
+        } else {
+            // set global state
+            chrome.storage.local.set({WILLOW_CRAWLER_OPEN: true});
+            // broadcast
+            chrome.runtime.sendMessage({
+                message: "WILLOW_CRAWLER_SYNC_REQUEST",
+                action: "WILLOW_CRAWLER_OPEN",
+            });
+        }
+
     });
 }
 
