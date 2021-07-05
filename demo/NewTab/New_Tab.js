@@ -37,7 +37,7 @@ document.getElementById("willow-newBtn").onclick       = () => startNewSession()
 document.getElementById("willow-layoutBtn").onclick    = () => runLayoutBtn_handler();
 document.getElementById("willow-settingsBtn").onclick  = () => toggleSettingsMenu();
 document.getElementById("willow-backBtn").onclick  = () => showAsSidePanel();
-document.getElementById("willow-devMood").onclick = () => toggleDevMood();
+document.getElementById("willow-devMood").onclick = () => toggleDevMoodInTab();
 
 
 
@@ -76,7 +76,7 @@ function startNewSession()
         message: "WILLOW_BACKGROUND_NEW_SESSION_CONFIRMATION"
     });
 }
-function  toggleDevMood()
+function  toggleDevMoodInTab()
 {
     chrome.storage.local.get(["WILLOW_CRAWLER_OPEN"], function (res) {
         if (res.WILLOW_CRAWLER_OPEN) {

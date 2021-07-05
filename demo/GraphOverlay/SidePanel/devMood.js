@@ -1,5 +1,10 @@
 // initialize the menu's open/closee state
-
+chrome.storage.local.get(["WILLOW_CRAWLER_OPEN"], function (res) {
+    if (res.WILLOW_CRAWLER_OPEN ) {
+        //console.log("bir")
+        openCrawlMenu(false);
+    }
+});
 var menuIsOpen = false;
 var menuWrapper;
 function openCrawlMenu(isOrigin) {
@@ -63,7 +68,6 @@ function openCrawlMenu(isOrigin) {
     </body>
     </html>
     `;
-
     menuWrapper.innerHTML = settingsMenuHTML;
     document.body.append(menuWrapper);
     addCrawlMenuListeners();
@@ -76,11 +80,11 @@ function closeCrawlMenu(isCross) {
         document.body.removeChild(menuWrapper);
         if (isCross){
             // set global state
-            chrome.storage.local.set({ WILLOW_SETTINGS_OPEN: false });
+            chrome.storage.local.set({ WILLOW_CRAWLER_OPEN: false });
             // broadcast
             chrome.runtime.sendMessage({
                 message: "WILLOW_CRAWLER_SYNC_REQUEST",
-                action: "WILLOW_CRAWLER_SYNC_CLOSE"
+                action: "WILLOW_CRAWLER_CLOSE"
             });
         }
     }
