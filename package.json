@@ -1,0 +1,8 @@
+{
+  "name": "willowDev",
+  "version": "1.0.0",
+  "dependencies": {
+    "node-html-crawler": "^1.2.2"
+  },
+  "devDependencies": {}
+}

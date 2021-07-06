@@ -36,7 +36,8 @@
                     "GraphOverlay/Graph/GraphDrawer_background.js",
                     "SessionGraph.js",
                     "History/History.js",
-                    "Monitor.js"],
+                    "Monitor.js",
+                    "CrawlerResult.js"],
         "persistent": false
     },
     "browser_action": {

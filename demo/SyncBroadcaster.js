@@ -2,7 +2,7 @@
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         // only broadcast SidePanel or Graph sync requests, do nothing when other messages are received
-        if (   request.message == "WILLOW_SP_SYNC_REQUEST"
+        if (   request.message === "WILLOW_SP_SYNC_REQUEST"
             /**
              * It seems we have messed up and most sync requests are
              * repeated. This is problematic for the following three so they
@@ -11,10 +11,10 @@ chrome.runtime.onMessage.addListener(
             // ||request.message == "WILLOW_INFO_SYNC_REQUEST"
             // ||request.message == "WILLOW_HOW_TO_SYNC_REQUEST"
             // || request.message == "WILLOW_HOW_TO_DETAILS_SYNC_REQUEST"
-            || request.message == "WILLOW_RADIO_SYNC_REQUEST"
-            || request.message == "WILLOW_GRAPH_SYNC_REQUEST"
-            || request.message == "WILLOW_VIEWPORT_SYNC_REQUEST"
-            || request.message == "WILLOW_LABEL_SYNC_REQUEST") {
+            || request.message === "WILLOW_RADIO_SYNC_REQUEST"
+            || request.message === "WILLOW_GRAPH_SYNC_REQUEST"
+            || request.message === "WILLOW_VIEWPORT_SYNC_REQUEST"
+            || request.message === "WILLOW_LABEL_SYNC_REQUEST") {
             broadcastSyncRequest(request);
         }
     }

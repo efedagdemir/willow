@@ -54,7 +54,7 @@ function openCrawlMenu(isOrigin) {
         <div id="menuBody">
            
                 <div class="topnav">
-                    <input type="text" placeholder="Search..">
+                    <input type="text" placeholder="Crawl.." id="URL" >
                 </div>
           
             <br><br><br>
@@ -93,6 +93,12 @@ function closeCrawlMenu(isCross) {
 
 function crawlGivenURL()
 {
+    var URLToCrawl = document.getElementById("URL").value;
+
+    chrome.runtime.sendMessage({
+        message: "WILLOW_CRAWL",
+        URL: URLToCrawl
+    });
 
 }
 
