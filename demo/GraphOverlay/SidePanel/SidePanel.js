@@ -238,7 +238,7 @@ async function runSidePanel() {
               sidePanel.style.transition = "all 0s";
             } */
             //alert("openSidePanel");
-
+            
             sidePanel.style.width = panelWidth;
 
             if (isOrigin) {
@@ -690,11 +690,12 @@ async function runSidePanel() {
             }
             else if( request.action === "WILLOW_WINDOW_TO_SP")
             {
-               // alert("here");
                 injectSidePanel();
-                openSidePanel(true);
-                injectOnClickListeners();
                 readPanelState();
+                injectOnClickListeners();
+                openSidePanel(true);
+
+
             }
 
         }
