@@ -85,7 +85,7 @@ async function runSidePanel() {
         `
 
     var UNDOCK_DEFAULT_OFFSET_TOP = "10px";
-    var UNDOCK_DEFAULT_OFFSET_LEFT = "10px";
+    var UNDOCK_DEFAULT_OFFSET_RIGHT = "10px";
 
     var RESIZE_MIN_WIDTH = 350;  // in px
     var RESIZE_MIN_HEIGHT = 350;  // in px
@@ -238,7 +238,7 @@ async function runSidePanel() {
               sidePanel.style.transition = "all 0s";
             } */
             //alert("openSidePanel");
-            
+
             sidePanel.style.width = panelWidth;
 
             if (isOrigin) {
@@ -313,10 +313,10 @@ async function runSidePanel() {
             if (!(undockedLoc && undockedLoc.left && undockedLoc.top)) { // if called without proper input (sometimes intentionally)
                 // "pop" the panel
                 sidePanel.style.top = UNDOCK_DEFAULT_OFFSET_TOP;
-                sidePanel.style.left = UNDOCK_DEFAULT_OFFSET_LEFT;
+                sidePanel.style.right = UNDOCK_DEFAULT_OFFSET_RIGHT;
             } else {
                 sidePanel.style.top = undockedLoc.top;
-                sidePanel.style.left = undockedLoc.left;
+                sidePanel.style.right = undockedLoc.left;
             }
             sidePanel.style.height = panelUndockedHeight;
             //sidePanel.style.width  = panelWidth;
@@ -346,7 +346,7 @@ async function runSidePanel() {
         function dockSidePanel(isOrigin) {
             // put the panel back in its place
             sidePanel.style.top = "0px";
-            sidePanel.style.left = "0px";
+            sidePanel.style.right = "0px";
             sidePanel.style.height = "100%";
 
             document.getElementById("willow-dockBtn").style.display = "none";
