@@ -63,7 +63,7 @@ async function runSidePanel() {
             <button title="Settings"      class="willow-headerBtn willow-btn-settings"  id="willow-settingsBtn" >                            </button>
             <button title="New Session"   class="willow-headerBtn willow-btn-new"       id="willow-newBtn" >                                 </button>
             <button title="Run Layout"    class="willow-headerBtn willow-btn-layout"    id="willow-layoutBtn">                               </button>
-            <button title="Developer mood"    class="willow-headerBtn willow-btn-devMood"    id="willow-devMood">                               </button>
+            <button title="Developer mode"    class="willow-headerBtn willow-btn-devMood"    id="willow-devMood">                               </button>
         <!--
             <form action="" class="willow-headerBtn">
               <input type="text" placeholder="Search.." >
@@ -172,7 +172,7 @@ async function runSidePanel() {
         document.getElementById("willow-layoutBtn").onclick = () => runLayoutBtn_handler();
         document.getElementById("willow-settingsBtn").onclick = () => toggleSettingsMenu();
         enableResizing(rightBorderOnly = true);
-        document.getElementById("willow-devMood").onclick = () => toggleDevMood();
+        document.getElementById("willow-devMode").onclick = () => toggleDevMode();
     }
 
         // -- end of script
@@ -195,7 +195,7 @@ async function runSidePanel() {
             }, 150);
         }
 
-        function  toggleDevMood()
+        function  toggleDevMode()
         {
             chrome.storage.local.get(["WILLOW_CRAWLER_OPEN"], function (res) {
                 if (res.WILLOW_CRAWLER_OPEN) {

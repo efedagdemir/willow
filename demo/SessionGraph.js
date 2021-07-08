@@ -319,7 +319,7 @@ function messageReceived(request, sender, sendResponse) {
 
 function runLayout(){
     //container.style.width = '300px';
-    console.log(cy.width());
+    //console.log(cy.width());
     cy.layout({
 
         name: 'fcose',

@@ -131,15 +131,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             });  }, 150);
 
     }
-    else if( request.message === "WILLOW_SYNC_OPEN_DEV_MOOD") //On Dev mood
-    {
-        chrome.tabs.create({
-            active: true,
-            url: 'devMood/devMood.html'
-        }, function (tab) {
-            createdTabId = tab.id;
-        });
-    }
     return true;
 });
 

@@ -14,7 +14,7 @@ function openCrawlMenu(isOrigin) {
     <!DOCTYPE html>
     <html>
     <head>
-        <link rel="stylesheet" href="${chrome.runtime.getURL("GraphOverlay/SidePanel/devMood.css")}">
+        <link rel="stylesheet" href="${chrome.runtime.getURL("GraphOverlay/SidePanel/devMode.css")}">
         <style>
         /* width */
         ::-webkit-scrollbar {
