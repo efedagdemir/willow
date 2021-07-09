@@ -37,7 +37,7 @@ document.getElementById("willow-newBtn").onclick       = () => startNewSession()
 document.getElementById("willow-layoutBtn").onclick    = () => runLayoutBtn_handler();
 document.getElementById("willow-settingsBtn").onclick  = () => toggleSettingsMenu();
 document.getElementById("willow-backBtn").onclick  = () => showAsSidePanel();
-document.getElementById("willow-devMood").onclick = () => toggleDevModeInTab();
+document.getElementById("willow-devMode").onclick = () => toggleDevModeInTab();
 
 
 
