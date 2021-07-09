@@ -37,7 +37,8 @@
                     "SessionGraph.js",
                     "History/History.js",
                     "Monitor.js",
-                    "CrawlerResult.js"],
+                    "CrawlerResult.js",
+                    "GraphOverlay/SidePanel/devMode.js"],
         "persistent": false
     },
     "browser_action": {
@@ -65,7 +66,7 @@
         "icons/question-mark.png",
         "icons/newTab.png",
         "icons/search.png",
-        "icons/devMood.png"
+        "icons/devMode.png"
 
     ],
     "content_security_policy": "script-src 'self'; object-src 'self'; img-src chrome://favicon data:;"

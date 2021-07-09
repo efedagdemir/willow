@@ -24,23 +24,27 @@ function initialize() {
  */
 function addListeners() {
     chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab) {
-        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            // find the corresponding node.
-            if( tabs[0].id !== newTabID && newTabCreates)
-            {
-                clicked_On_Open_In_New_Tab = true;
-            }
-        });
+        try {
+                // The old listener handler moves here
+                chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+                    // find the corresponding node.
+                    if (tabs[0].id !== newTabID && newTabCreates) {
+                        clicked_On_Open_In_New_Tab = true;
+                    }
+                });
 
-        tabUpdated( tabId, changeInfo, tab);
+                tabUpdated(tabId, changeInfo, tab);
 
-        if(  changeInfo.status === "complete" && dedicatedTabOpen === true)
-        {
-            setTimeout(  () => {
-                    chrome.tabs.update(createdTabId, {selected: true});
-                }, 150);
-            dedicatedTabOpen = false;
+                if (changeInfo.status === "complete" && dedicatedTabOpen === true) {
+                    setTimeout(() => {
+                        chrome.tabs.update(createdTabId, {selected: true});
+                    }, 150);
+                    dedicatedTabOpen = false;
 
+                }
+        }
+        catch(err){
+            alert(err);
         }
     });
 

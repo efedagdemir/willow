@@ -63,7 +63,7 @@ async function runSidePanel() {
             <button title="Settings"      class="willow-headerBtn willow-btn-settings"  id="willow-settingsBtn" >                            </button>
             <button title="New Session"   class="willow-headerBtn willow-btn-new"       id="willow-newBtn" >                                 </button>
             <button title="Run Layout"    class="willow-headerBtn willow-btn-layout"    id="willow-layoutBtn">                               </button>
-            <button title="Developer mode"    class="willow-headerBtn willow-btn-devMood"    id="willow-devMood">                               </button>
+            <button title="Developer mode"    class="willow-headerBtn willow-btn-devMode"    id="willow-devMode">                               </button>
         <!--
             <form action="" class="willow-headerBtn">
               <input type="text" placeholder="Search.." >
