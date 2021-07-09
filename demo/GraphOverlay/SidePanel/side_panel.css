@@ -221,7 +221,16 @@
   /*---------------*/
   height: 3px;
 }
-
+#willow-background
+{
+  position: absolute;
+  background-image: linear-gradient(to right, #f4d58d, #708d81); /*linear-gradient(to right, #cbdcf2, #91bbd9);*/ /*yesil 708d81*/
+  opacity: 0.70; /*0.87*/
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
 #willow-graphFrame {
   position: absolute;
   top: 0;
@@ -230,10 +239,8 @@
   height: 100%;
   z-index: 0;
   /*---------------*/
-  background-image: linear-gradient(to right, #f4d58d, #708d81); /*linear-gradient(to right, #cbdcf2, #91bbd9);*/ /*yesil 708d81*/
   /*background-color: #540B0E;*/
-  opacity: 0.87; /*0.87*/
-  
+
   box-shadow: inset 0 8px 8px -4px #8d0801;
   border: none;
 }

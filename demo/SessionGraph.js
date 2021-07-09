@@ -184,14 +184,12 @@ var PAGERANK_AVG_SIZE = 55;
 var PAGERANK_AVG_TITLE_SIZE = '22px';
 function resetNodeSizes(option) {
     if (option === "uniform") {
-        alert("reset uniform");
         cy.nodes().forEach(function( ele ){
             ele.data("width", UNIFORM_DEFAULT_SIZE);
             ele.data('title_size', UNIFORM_TITLE_SIZE);
         });
         broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST",notifyActiveTab:true});
     } else if (option === "pagerank") {
-        alert("reset pagerank");
         var pr = cy.elements().pageRank();
         cy.nodes().forEach(function( ele ){
             ele.data("width", pr.rank(ele) * PAGERANK_AVG_SIZE * cy.nodes().size());

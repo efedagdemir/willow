@@ -72,6 +72,7 @@ async function runSidePanel() {
             -->
           </div>
           <div id="willow-panelBody">
+            <div id="willow-background"> </div>
             <iframe id="willow-graphFrame" src="${chrome.runtime.getURL("GraphOverlay/Graph/GraphDrawer.html")}"></iframe>
             <div id="willow-graphInvisLayer"></div>
           </div>
