@@ -183,21 +183,21 @@ var UNIFORM_TITLE_SIZE = '20px';
 var PAGERANK_AVG_SIZE = 55;
 var PAGERANK_AVG_TITLE_SIZE = '22px';
 function resetNodeSizes(option) {
-    if (option == "uniform") {
+    if (option === "uniform") {
+        alert("reset uniform");
         cy.nodes().forEach(function( ele ){
             ele.data("width", UNIFORM_DEFAULT_SIZE);
             ele.data('title_size', UNIFORM_TITLE_SIZE);
         });
-        runLayout();
-        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", action: "CHANGE_NODE_SIZE",notifyActiveTab:true});
-    } else if (option == "pagerank") {
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST",notifyActiveTab:true});
+    } else if (option === "pagerank") {
+        alert("reset pagerank");
         var pr = cy.elements().pageRank();
         cy.nodes().forEach(function( ele ){
             ele.data("width", pr.rank(ele) * PAGERANK_AVG_SIZE * cy.nodes().size());
             ele.data('tite_size', PAGERANK_AVG_TITLE_SIZE);
         });
-        runLayout();
-        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", action: "CHANGE_NODE_SIZE", notifyActiveTab:true});
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
     } else {
         //console.error("resetNodeSizes called with invalid option");
         return;
@@ -293,7 +293,7 @@ function messageReceived(request, sender, sendResponse) {
         removeEdge(request.source, request.target);
     } else if (request.message === "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR") {
         changeBorderColor(request.nodeId, request.color);
-    } else if (request.message === "WILLOW_BACKGROUND_CHANGE_NODE_SIZE"){
+    } else if (request.message === "CHANGE_NODE_SIZE"){
         changeNodeSize(request.nodeId, request.size, request.tSize);
     } else if (request.message === "WILLOW_BACKGROUND_RESET_NODE_SIZES") {
         resetNodeSizes(request.option);

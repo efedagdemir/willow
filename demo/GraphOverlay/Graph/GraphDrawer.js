@@ -570,7 +570,7 @@ function changeNodeSize(event, size, increase, title_size){
             message: "WILLOW_BACKGROUND_CHANGE_NODE_SIZE",
             nodeId: id,
             size: size,
-            tSize: tSize
+            tSize: tSize,
         });
     }
 }
