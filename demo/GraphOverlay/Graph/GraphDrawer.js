@@ -299,7 +299,7 @@ function applyContextMenu() {
                 tooltipText: 'See notes',
                 selector: 'node',
                 hasTrailingDivider: true,
-                image: {src: "../../icons/note.png", width: 16, height: 16, x: 4, y: 3},
+                image: {src: "../../icons/notes.svg", width: 16, height: 16, x: 4, y: 3},
                 onClickFunction: function (event) {
                     let target = event.target || event.cyTarget;
                     let id = target.id();
