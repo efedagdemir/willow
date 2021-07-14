@@ -96,13 +96,17 @@ function applyStyle() {
                 {
                     return [ele.data('iconURL'), renderNode(ele.data('brokenLinks'), ele).svg];
                 }
-                if (ele.data('openTabCount') > 0 && ele.data("comment") === "" ) {
+                if( ele.data('brokenLinks') === 0)
+                {
+                    return ele.data('iconURL');
+                }
+                if (ele.data('brokenLinks') < 0 && ele.data('openTabCount') > 0 && ele.data("comment") === "" ) {
                     return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/active-color4.png')];
                 }
-                if(ele.data('openTabCount') > 0 && ele.data("comment") !== "" ){
+                if(ele.data('brokenLinks') < 0 && ele.data('openTabCount') > 0 && ele.data("comment") !== "" ){
                     return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/active-color4.png'), chrome.extension.getURL('../../icons/notes.svg')];
                 }     
-                if(ele.data('openTabCount') <= 0 && ele.data("comment") !== ""){
+                if(ele.data('brokenLinks') < 0 && ele.data('openTabCount') <= 0 && ele.data("comment") !== ""){
                     return[ele.data('iconURL'), chrome.extension.getURL('../../icons/notes.svg')];
                 }                     
                 else{
