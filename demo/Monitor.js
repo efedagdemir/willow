@@ -131,10 +131,10 @@ async function urlLoaded(tabId, url) {
         node.data( "openTabCount", node.data("openTabCount") + 1); // increment the openTabCount of the node.
     } else {
         shouldRunLayout = true;
-        let favIconUrl = "chrome://favicon/size/64@1x/" + url;
+        let favIconUrl = "chrome://favicon/size/128@1x/" + url;
         let node = cy.add({// add the node to the cy graph
             group: 'nodes',
-            data: {id: url, title_size: '20px', title: "Title loading..", width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl, comment: ""},
+            data: {id: url, title_size: '20px', title: "Title loading..", width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl, comment: "", brokenLinks: -1},
             
         });
         newNode = true;

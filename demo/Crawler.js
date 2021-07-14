@@ -148,10 +148,10 @@ const crawl = async ({ url, ignore, host, protocol, parent }) => {
 
   if(  errorHasOccured)
   {
-      let node = cy.getElementById(parent);
+      c
       node.data( 'brokenLinks', node.data('brokenLinks') + 1);
       errorHasOccured = false;
-      runLayout();
+      applyStyle();
       return;
   }
     const html = await responseURL.text();
