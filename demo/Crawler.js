@@ -20,6 +20,7 @@ async function crawlHelper(URL)
 {
     const { host, protocol } = await urlParser.parse(URL);
     console.log("host", host);
+    console.log("protocol", protocol);
     mainURL =  URL;
   await  crawl({
         url: URL,
@@ -121,7 +122,8 @@ function handleErrors(response) {
     return response;
 }
 const crawl = async ({ url, ignore, host, protocol, parent }) => {
-    let node = cy.getElementById(url);
+    console.log("in crawler");
+    let node = await cy.getElementById(url);
     if( node.length > 0)
     {
         return;
@@ -131,7 +133,6 @@ const crawl = async ({ url, ignore, host, protocol, parent }) => {
     seenUrls[url] = true;
     let errorHasOccured = false;
     node.data( 'brokenLinks', 0);
-
 
     // console.log("host", host);
     //console.log("mainURL", mainURL);

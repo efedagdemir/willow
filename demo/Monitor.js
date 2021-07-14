@@ -28,7 +28,7 @@ function addListeners() {
                 // The old listener handler moves here
                 chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
                     // find the corresponding node.
-                    if (tabs[0].id !== newTabID && newTabCreates) {
+                    if (tabs[0] !== undefined && tabs[0].id !== newTabID && newTabCreates) {
                         clicked_On_Open_In_New_Tab = true;
                     }
                 });

@@ -16,7 +16,7 @@ async function loadHistoryMenu() {
 
 chrome.tabs.onActivated.addListener( (activeInfo) => {
     chrome.tabs.get(activeInfo.tabId, function (tab) {
-        if(tab.url == chrome.extension.getURL("/History/HistoryMenu.html")) {
+        if(tab !== undefined && tab.url == chrome.extension.getURL("/History/HistoryMenu.html")) {
             loadHistoryMenu();
         }
     })
