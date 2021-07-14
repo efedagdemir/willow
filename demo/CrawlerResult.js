@@ -21,6 +21,7 @@ async function crawlHelper(URL)
 {
     const { host, protocol } = await urlParser.parse(URL);
     console.log("host", host);
+    console.log("protocol", protocol);
     mainURL =  URL;
   await  crawl({
         url: URL,
@@ -34,16 +35,24 @@ console.log( "all done!");
 }
 async function buildGraph( parentURL,childURL, title )
 {
-    let favIconUrl = "chrome://favicon/size/64@1x/" + childURL;
-    let node = cy.add({// add the node to the cy graph
-        group: 'nodes',
-        data: {id: childURL, title_size: '20px', title: title, width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl, comment: ""},
+    let addedNode = await cy.getElementById(childURL);
+    let newNode = true;
+    if( addedNode.length > 0)
+    {
+        newNode = false;
+    }
+    else
+    {
+        let favIconUrl = "chrome://favicon/size/64@1x/" + childURL;
+        let node = cy.add({// add the node to the cy graph
+            group: 'nodes',
+            data: {id: childURL, title_size: '20px', title: title, width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl, comment: ""},
 
-    });
+        });
+    }
 
     //Set parent broken link
-    node.data( 'brokenLinks', 0);
-    let newNode = true;
+    addedNode.data( 'brokenLinks', 0);
     cy.data("png", cy.png({full:true}));
 
 
@@ -122,17 +131,17 @@ function handleErrors(response) {
     return response;
 }
 const crawl = async ({ url, ignore, host, protocol, parent }) => {
-    let node = cy.getElementById(url);
-    if( node.length > 0)
+    console.log("in crawler");
+    let node = await cy.getElementById(url);
+    if (seenUrls[url])
     {
+        console.log("seen");
         return;
     }
-    if (seenUrls[url]) return;
     console.log("crawling", url);
     seenUrls[url] = true;
     let errorHasOccured = false;
     node.data( 'brokenLinks', 0);
-
 
     // console.log("host", host);
     //console.log("mainURL", mainURL);
@@ -149,10 +158,9 @@ const crawl = async ({ url, ignore, host, protocol, parent }) => {
 
   if(  errorHasOccured)
   {
-      let node = cy.getElementById(parent);
       node.data( 'brokenLinks', node.data('brokenLinks') + 1);
       errorHasOccured = false;
-      runLayout();
+      applyStyle();
       return;
   }
     const html = await responseURL.text();
