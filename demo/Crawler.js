@@ -45,8 +45,7 @@ async function buildGraph( parentURL,childURL, title )
         let favIconUrl = "chrome://favicon/size/64@1x/" + childURL;
         let node = cy.add({// add the node to the cy graph
             group: 'nodes',
-            data: {id: childURL, title_size: '20px', title: title, width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl, comment: ""},
-
+            data: {id: childURL, title_size: '20px', title: title, width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl, comment: "", brokenLinks: 0},
         });
     }
 
@@ -157,9 +156,14 @@ const crawl = async ({ url, ignore, host, protocol, parent }) => {
 
   if(  errorHasOccured)
   {
-      node.data( 'brokenLinks', node.data('brokenLinks') + 1);
-      errorHasOccured = false;
-      applyStyle();
+      if(parent !== null)
+      {
+          let parentNode = cy.getElementById(parent);
+          let broken =  parseInt(parentNode.data('brokenLinks')) + 1;
+          await parentNode.data( 'brokenLinks',  broken);
+          errorHasOccured = false;
+          applyStyle();
+      }
       return;
   }
     const html = await responseURL.text();
