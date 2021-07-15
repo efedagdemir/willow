@@ -19,6 +19,15 @@ const getUrl = (link, host, protocol) => {
 };
 async function crawlHelper(URL)
 {
+    if(!URL.startsWith("http") && URL.startsWith("www.") )
+    {
+        URL = "https://" + URL;
+    }
+    else if( !URL.startsWith("http") && !URL.startsWith("www.") )
+    {
+        URL = "https://www." + URL;
+    }
+
     const { host, protocol } = await urlParser.parse(URL);
     console.log("host", host);
     console.log("protocol", protocol);
