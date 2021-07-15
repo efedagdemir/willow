@@ -42,7 +42,9 @@ let dedicatedTabOpen = false;
  * This is to keep track of last seen tab so we can redirect to it when
  * dedicated tab is closed
  */
-chrome.tabs.onSelectionChanged.addListener(function (tabId, selectInfo) {
+/*
+chrome.tabs.onSelectionChanged.addListener( (tabId, selectInfo) => {
+    setTimeout(() => {
     prevTabId = curTabID;
     curTabID = tabId;
    // alert(prevTabId);
@@ -51,8 +53,10 @@ chrome.tabs.onSelectionChanged.addListener(function (tabId, selectInfo) {
         preWindowID = currentWindowID;
         currentWindowID = win.id;
     });
-
+    }, 500);
 });
+
+ */
 
 
 

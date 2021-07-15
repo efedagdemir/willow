@@ -23,8 +23,12 @@ function initialize() {
  *       A better implementation would be to have a separate message handler script which loads last.
  */
 function addListeners() {
-    chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab) {
-        try {
+
+    chrome.tabs.onUpdated.addListener( (tabId, changeInfo, tab) => {
+       // alert("updating");
+        setTimeout(() => {
+            // code
+            try {
                 // The old listener handler moves here
                 chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
                     // find the corresponding node.
@@ -42,10 +46,10 @@ function addListeners() {
                     dedicatedTabOpen = false;
 
                 }
-        }
-        catch(err){
-            alert(err);
-        }
+            } catch (err) {
+                alert(err);
+            }
+        }, 1500);
     });
 
     chrome.tabs.onRemoved.addListener(tabRemoved);  

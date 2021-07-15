@@ -14,12 +14,15 @@ async function loadHistoryMenu() {
     });
 }
 
-chrome.tabs.onActivated.addListener( (activeInfo) => {
+chrome.tabs.onActivated.addListener((activeInfo) => {
+    // alert("updating");
+    setTimeout(() => {
     chrome.tabs.get(activeInfo.tabId, function (tab) {
         if(tab !== undefined && tab.url == chrome.extension.getURL("/History/HistoryMenu.html")) {
             loadHistoryMenu();
         }
     })
+    }, 1500);
 });
 
 async function loadSessionWithId(id) {
