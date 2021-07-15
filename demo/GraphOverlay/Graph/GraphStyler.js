@@ -90,9 +90,9 @@ function applyStyle() {
             'background-position-y': ['0px', '3px','35px'],
             'background-image': function (ele)
             {
-                //alert(ele.data('brokenLinks'));
                 if( ele.data('brokenLinks') > 0)
                 {
+                   // alert(ele.data('brokenLinks'));
                     return [ele.data('iconURL'), renderNode(ele.data('brokenLinks'), ele).svg];
                 }
                 else if( ele.data('brokenLinks') === 0)

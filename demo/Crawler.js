@@ -8,12 +8,13 @@ const seenUrls = {};
 let crawlerURLs = {};
 
 const getUrl = (link, host, protocol) => {
-    if (link.includes("https")) {
+    console.log(link);
+    if (link.includes("http")) {
         return link;
     } else if (link.startsWith("/")) {
         return `${protocol}//${host}${link}`;
     } else {
-        return `${protocol}//${host}/${link}`;
+        return `${mainURL}/${link}`;
     }
 };
 async function crawlHelper(URL)
@@ -147,7 +148,7 @@ const crawl = async ({ url, ignore, host, protocol, parent }) => {
   await  fetch(url).then(handleErrors)
         .then(function(response) {
             responseURL = response;
-            console.log("ok");
+          // console.log("ok");
         }).catch(function(error) {
            crawlerURLs[parent]++;
            console.log("incremented for " + parent);
@@ -167,19 +168,40 @@ const crawl = async ({ url, ignore, host, protocol, parent }) => {
       return;
   }
     const html = await responseURL.text();
-    const $ = cheerio.load(html);
+    const $ = await cheerio.load(html);
     const links = $("a")
         .map((i, link) => link.attribs.href)
         .get();
 
     const title = await $("title").text();
-    console.log(title + " title");
+    console.log("title", title);
     await buildGraph(parent, url, title);
+
+
     // console.log("links",links);
+    const  result = links.filter( (link) => ( (parent === null && getUrl(link, host, protocol).startsWith(mainURL)) || getUrl(link, host, protocol).startsWith(parent) ));
+    console.log("result", result);
+    console.log("parent", parent);
+
+    for ( const link of result)
+    {
+        console.log(link);
+       await crawl({
+            url: getUrl(link, host, protocol),
+            ignore: ignore,
+            host: host,
+            protocol: protocol,
+            parent : url
+        });
+    }
+
+
+/*
     links
-        .filter((link) => (link.startsWith(mainURL) || getUrl(link, host, protocol).startsWith(mainURL)) )
-        .forEach((link) => {
-            crawl({
+        .filter(  (link) => (link.startsWith(mainURL) || getUrl(link, host, protocol).startsWith(mainURL) || !link.startsWith("http")) )
+        .forEach( (link) => {
+           // console.log("link",link);
+               crawl({
                 url: getUrl(link, host, protocol),
                 ignore: ignore,
                 host: host,
@@ -187,6 +209,8 @@ const crawl = async ({ url, ignore, host, protocol, parent }) => {
                 parent : url
             });
         });
+
+ */
     // console.log("blank space", "    ");
 };
 
