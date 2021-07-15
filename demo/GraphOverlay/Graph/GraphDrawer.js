@@ -255,6 +255,7 @@ function syncNotes(){
 function applyContextMenu() {
     contextMenu = cy.contextMenus({
         evtType: 'cxttap',
+        border: 'none',
         menuItems: [
             {
                 id: 'open',
