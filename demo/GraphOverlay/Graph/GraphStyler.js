@@ -70,10 +70,10 @@ function applyStyle() {
                     return ele.data('iconURL');
                 }
                 else if (ele.data('openTabCount') > 0 && ele.data("comment") === "" ) {
-                    return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/active-color4.png')];
+                    return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/current_active.svg')];
                 }
                 else if(ele.data('openTabCount') > 0 && ele.data("comment") !== "" ){
-                    return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/active-color4.png'), chrome.extension.getURL('../../icons/notes.svg')];
+                    return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/current_active.svg'), chrome.extension.getURL('../../icons/notes.svg')];
                 }     
                 else if(ele.data('openTabCount') <= 0 && ele.data("comment") !== ""){
                     return[ele.data('iconURL'), chrome.extension.getURL('../../icons/notes.svg')];
