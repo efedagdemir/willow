@@ -181,7 +181,7 @@ const crawl = async ({ url, ignore, host, protocol, parent }) => {
           let broken =  parseInt(parentNode.data('brokenLinks')) + 1;
           await parentNode.data( 'brokenLinks',  broken);
           errorHasOccured = false;
-          applyStyle();
+          broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
       }
       return;
   }
