@@ -40,6 +40,7 @@ function applyStyle() {
             'border-height': 'data(width)',
             'border-opacity': 1,
             'border-color':'data(border_color)',
+            'shape':'roundrectangle',
             'content': function (ele) {
                 let limit = 45
                 if (ele.data('title').length > limit){
