@@ -174,14 +174,19 @@ const crawl = async ({ url, ignore, host, protocol, parent }) => {
 
   if(  errorHasOccured)
   {
+      console.log("error has occured");
       if(parent !== null)
       {
           let parentNode = cy.getElementById(parent);
           let broken =  parseInt(parentNode.data('brokenLinks')) + 1;
           await parentNode.data( 'brokenLinks',  broken);
-          errorHasOccured = false;
           broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
       }
+      else
+      {
+          alert("Error: URL to crawl is invalid. Please enter a valid URL");
+      }
+      errorHasOccured = false;
       return;
   }
     const html = await responseURL.text();
