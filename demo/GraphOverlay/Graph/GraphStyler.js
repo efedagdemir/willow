@@ -54,8 +54,8 @@ function applyStyle() {
             'text-wrap': 'wrap',
             'text-max-width': '170px',
             'text-justification': 'center',
-            'background-width': ['100%', '23%','40%'],
-            'background-height': ['100%', '23%','40%'],
+            'background-width': ['100%', '23%','23%'],
+            'background-height': ['100%', '23%','23%'],
             'background-position-x': ['0.5px', '-12.5px','35.5px'],
             'background-position-y': ['0px', '3px','35px'],
             'background-image': function (ele)
@@ -76,7 +76,7 @@ function applyStyle() {
                     return [ele.data('iconURL'), chrome.extension.getURL('/GraphOverlay/Graph/current_active.svg'), chrome.extension.getURL('../../icons/notes.svg')];
                 }     
                 else if(ele.data('openTabCount') <= 0 && ele.data("comment") !== ""){
-                    return[ele.data('iconURL'), chrome.extension.getURL('../../icons/notes.svg')];
+                    return[ele.data('iconURL'),null, chrome.extension.getURL('../../icons/notes.svg')];
                 }                     
                 else{
                     return ele.data('iconURL');
