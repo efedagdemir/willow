@@ -3,7 +3,7 @@
 const cheerio = require('cheerio');
 const fetch = require('node-fetch');
 const urlParser = require('url');
-let mainURL;
+var mainURL;
 const seenUrls = {};
 let crawlerURLs = {};
 
@@ -27,20 +27,28 @@ async function crawlHelper(URL)
     {
         URL = "https://www." + URL;
     }
-
-    const { host, protocol } = await urlParser.parse(URL);
-    console.log("host", host);
-    console.log("protocol", protocol);
     mainURL =  URL;
-  await  crawl({
+    await chrome.runtime.sendMessage({
+        message: "WILLOW_SPINNER_SYNC_REQUEST",
+        action: "WILLOW_SPINNER_OPEN",
+        URL: mainURL
+    });
+    const { host, protocol } = await urlParser.parse(URL);
+    //console.log("host", host);
+    //console.log("protocol", protocol);
+    await  crawl({
         url: URL,
         ignore: "/search",
         host: host,
         protocol: protocol,
       parent: null
     });
-console.log( "all done!");
-
+    console.log( "all done!");
+    await chrome.runtime.sendMessage({
+        message: "WILLOW_SPINNER_SYNC_REQUEST",
+        action: "WILLOW_SPINNER_CLOSE",
+        URL: URL
+    });
 }
 async function buildGraph( parentURL,childURL, title )
 {

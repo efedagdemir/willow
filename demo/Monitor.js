@@ -300,7 +300,8 @@ async function urlLoaded(tabId, url) {
                 ////console.log("Last transition type is ", visitItems[visitItems.length - 1].transition);
                 
                 // if the new url is last visited by "generated", we find that in the second to last entry.
-                if (visitItems.length >= 2 && visitItems[visitItems.length - 2].transition === "generated")
+                if (visitItems.length >= 2 && visitItems[visitItems.length - 2].transition !== undefined && visitItems[visitItems.length - 2].transition === "generated")
+                if (visitItems.length >= 2 && visitItems[visitItems.length - 2].transition !== undefined && visitItems[visitItems.length - 2].transition === "generated")
                     resolve(false);
                 // if the new url is last visited by a link, the new page's node is a child of the node this tab is at.
                 if (visitItems[visitItems.length - 1].transition === "link" ||

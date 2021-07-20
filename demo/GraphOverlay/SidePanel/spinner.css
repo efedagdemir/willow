@@ -1,0 +1,193 @@
+
+#spinner {
+    position: absolute;
+    background-color: #041424; /* same as #panelHeader (side_panel.css)*/
+    text-align: center;
+    border-radius: 20px;
+    overflow: auto;
+    box-shadow: 2px 2px 5px 2px #8d0801;
+    user-select: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px;
+}
+
+
+#menuHeader p {
+    font-family: 'Century Gothic', sans-serif;
+    text-align: center;
+    align-items: center;
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    line-height: 60px;
+    font-size: 32px;
+    text-shadow: 2px 2px #8d0801;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    margin-top: 0px;
+}
+
+.spinner-close-button {
+    height: 35px;
+    width: 100%;
+}
+
+/*#menuBody{
+    margin-top: 30px;
+}*/
+
+.spinnerElement {
+    width: 90%;
+    margin: auto;
+    padding: 10px;
+    position: relative;
+
+}
+.spinnerElement .label {
+    font-family:  'Century Gothic', sans-serif;
+    font-size: 16px;
+    /*display: inline-block;*/
+    text-align: left;
+    float: left;
+    color: #f4d58d;
+    text-shadow: 2px 2px #8d0801;
+    display: inline;
+}
+
+.label.node-size-choice{
+    margin-top: 7px;
+}
+
+
+.spinnerElement .opt {
+    position: relative;
+    display: inline-block;
+}
+
+
+
+.table-buttons1 {
+    color:#f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    background-color: #8d0801;
+    font-weight: normal;
+    font-family: 'Century Gothic', sans-serif;
+    font-size: 14px;
+    box-shadow: 1px 2px 2px #f4d58d;
+    text-shadow: 0.5px 0.5px #708d81;
+}
+
+/*.table-buttons1.histBtn{
+    color:#041424; /* same as #panelHeader a (side_panel.css)*//*
+    background-color: #708d81;
+    font-weight: bold;
+    font-family: 'Century Gothic', sans-serif;
+    font-size: 14px;
+    box-shadow: 1px 2px 2px #f4d58d;
+    text-shadow: 0.5px 0.5px #f4d58d;
+}*/
+
+.table-buttons1:active {
+    background-color: #bf0603;
+    box-shadow: 1px 1px 2px #f4d58d;
+    transform: translateY(1px);
+}
+
+.table-buttons2 {
+    background-color: #f4d58d;
+    color: #041424;
+    font-weight: bold;
+}
+
+/* table buttons are in */
+.willow_tables {
+    margin: 0 auto;
+
+}
+
+tr.space_table_cell>td {
+    padding-bottom: 2em;
+}
+
+/* close button on the top-right corner */
+#spinner_close_btn {
+    float: right;
+    background-image: url('../../icons/close.png');
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    text-decoration: none;
+
+    cursor: pointer;
+    background-color: #041424;
+    background-size: cover;
+    border: none;
+    opacity: 1;
+    height: 16px;
+    width: 16px;
+    margin: 0%;
+    padding: 0%;
+    margin-top: 15px;
+    margin-right: 17px;
+
+}
+
+.table-buttons2 {
+    background-color: #041424;
+    background-size: cover;
+    border: none;
+    opacity: 1;
+    height: 32px;
+    width: 32px;
+}
+
+
+.table-buttons1:hover, .opt button:hover {
+    /*opacity: 0.6;*/
+    background-color: #bf0603;
+    /*border-radius: 5px;*/
+}
+
+#spinner_close_btn:hover, .table-buttons2:hover {
+    opacity: 0.3;
+}
+
+.topnav {
+    margin: 10px;
+}
+.topnav input[type=text] {
+    float: right;
+    padding: 6px;
+    margin: 10px;
+    font-size: 17px;
+    border: 1px solid red;
+    background-color: #041424 ;
+    color: white;
+}
+
+.lds-dual-ring {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+}
+.lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid #fff;
+    border-color: #fff transparent #fff transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

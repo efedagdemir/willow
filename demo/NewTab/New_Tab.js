@@ -99,6 +99,13 @@ function  toggleDevModeInTab()
 
     });
 }
+function sendMessageToSpinner()
+{
+    chrome.runtime.sendMessage({
+        message: "WILLOW_SPINNER_SYNC_REQUEST",
+        action: "WILLOW_SPINNER_OPEN"
+    });
+}
 
 function toggleSettingsMenu() {
 

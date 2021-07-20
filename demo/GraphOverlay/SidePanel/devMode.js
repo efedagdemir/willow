@@ -1,15 +1,9 @@
 // initialize the menu's open/closee state
-chrome.storage.local.get(["WILLOW_CRAWLER_OPEN"], function (res) {
-    if (res.WILLOW_CRAWLER_OPEN ) {
-        //console.log("bir")
-        openCrawlMenu(false);
-    }
-});
 var menuIsOpen = false;
 var menuWrapper;
 function openCrawlMenu(isOrigin) {
     menuWrapper = document.createElement('div');
-    menuWrapper.id = "willowSettingsMenuWrapper";
+    menuWrapper.id = "willowCrawlerMenuWrapper";
     var settingsMenuHTML = `
     <!DOCTYPE html>
     <html>
@@ -99,6 +93,7 @@ function crawlGivenURL()
         message: "WILLOW_CRAWL",
         URL: URLToCrawl
     });
+    closeCrawlMenu(true);
 
 }
 
@@ -115,7 +110,7 @@ function addCrawlMenuListeners() {
 // listen for settings menu sync requests
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        if (request.message == "WILLOW_CRAWLER_SYNC_REQUEST") {
+        if (request.message === "WILLOW_CRAWLER_SYNC_REQUEST") {
             handleCrawlerSyncRequest(request);
         }
     }
@@ -131,3 +126,10 @@ function handleCrawlerSyncRequest(request) {
         closeCrawlMenu(false);
     }
 }
+chrome.storage.local.get(["WILLOW_CRAWLER_OPEN"], function (res) {
+    if (res.WILLOW_CRAWLER_OPEN ) {
+        //console.log("bir")
+        openCrawlMenu(false);
+    }
+
+});
