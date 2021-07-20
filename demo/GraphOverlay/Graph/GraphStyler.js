@@ -54,40 +54,9 @@ function applyStyle() {
             'text-wrap': 'wrap',
             'text-max-width': '170px',
             'text-justification': 'center',
-            'background-width': /*function (ele)
-            {
-                if(ele.data('brokenLinks') > 0)
-                {
-                    return ['100%', '80%','40%'];
-                }
-                else
-                {
-                    return ['100%', '23%','40%'];
-                }
-            },*/
-             ['100%', '23%','40%'],
-            'background-height': /*function (ele)
-            {
-                if( ele.data('brokenLinks') > 0)
-                {
-                    return ['100%', '80%','40%'];
-                }
-                else{
-                    return ['100%', '23%','40%']
-                }
-            },
-            */
-                ['100%', '23%','40%'],
-            'background-position-x': /*function (ele)
-            {
-                if( ele.data('brokenLinks') > 0)
-                {
-                    return ['0.5px', '-20px','62.5px'];
-                }
-                else{
-                    return ['0.5px', '-12.5px','62.5px'];
-                }
-            },*/['0.5px', '-12.5px','62.5px'],
+            'background-width': ['100%', '23%','40%'],
+            'background-height': ['100%', '23%','40%'],
+            'background-position-x': ['0.5px', '-12.5px','35.5px'],
             'background-position-y': ['0px', '3px','35px'],
             'background-image': function (ele)
             {
