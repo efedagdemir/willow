@@ -139,7 +139,10 @@ body
     background-image: url('../icons/crawlHTML.png');
 }
 
-
+.willow-btn-search
+{
+    background-image: url('../icons/search.png');
+}
 
 #willow-willowLabel {
     /*---------------*/

@@ -64,6 +64,8 @@ async function runSidePanel() {
             <button title="New Session"   class="willow-headerBtn willow-btn-new"       id="willow-newBtn" >                                 </button>
             <button title="Run Layout"    class="willow-headerBtn willow-btn-layout"    id="willow-layoutBtn">                               </button>
             <button title="Developer mode"    class="willow-headerBtn willow-btn-devMode"    id="willow-devMode">                               </button>
+            <button title="Search"    class="willow-headerBtn willow-btn-search"    id="willow-search">                               </button>
+
         <!--
             <form action="" class="willow-headerBtn">
               <input type="text" placeholder="Search.." >
@@ -174,6 +176,8 @@ async function runSidePanel() {
         document.getElementById("willow-settingsBtn").onclick = () => toggleSettingsMenu();
         enableResizing(rightBorderOnly = true);
         document.getElementById("willow-devMode").onclick = () => toggleDevMode();
+        document.getElementById("willow-search").onclick = () => openSearch();
+
     }
 
         // -- end of script
@@ -182,6 +186,29 @@ async function runSidePanel() {
         //------------------------//
         //       FUNCTIONS        //
         //------------------------//
+        function openSearch()
+        {
+            chrome.storage.local.get(["WILLOW_SEARCH_OPEN"], function (res) {
+                if (res.WILLOW_SEARCH_OPEN) {
+                    // set global state
+                    chrome.storage.local.set({WILLOW_SEARCH_OPEN: false});
+                    // broadcast
+                    chrome.runtime.sendMessage({
+                        message: "WILLOW_SEARCH_SYNC_REQUEST",
+                        action: "WILLOW_SEARCH_CLOSE"
+                    });
+                } else {
+                    // set global state
+                    chrome.storage.local.set({WILLOW_SEARCH_OPEN: true});
+                    // broadcast
+                    chrome.runtime.sendMessage({
+                        message: "WILLOW_SEARCH_SYNC_REQUEST",
+                        action: "WILLOW_SEARCH_OPEN",
+                    });
+                }
+
+            });
+        }
         function openInNewTab() {
             console.log("openInNewTab");
             closeSidePanel(true);

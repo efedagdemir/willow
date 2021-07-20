@@ -39,7 +39,8 @@
                     "Monitor.js",
                     "CrawlerResult.js",
                     "GraphOverlay/SidePanel/devMode.js",
-                    "GraphOverlay/SidePanel/spinner.js"],
+                    "GraphOverlay/SidePanel/spinner.js",
+                    "GraphOverlay/SidePanel/search.js"],
         "persistent": false
     },
     "browser_action": {
@@ -55,6 +56,7 @@
         "GraphOverlay/SidePanel/settings_menu.css",
         "GraphOverlay/SidePanel/devMood.css",
         "GraphOverlay/SidePanel/spinner.css",
+        "GraphOverlay/SidePanel/search.css",
         "GraphOverlay/SidePanel/info_page.css",
         "GraphOverlay/SidePanel/how_to_page.css",
         "GraphOverlay/Graph/GraphDrawer.html",

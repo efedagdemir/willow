@@ -38,6 +38,7 @@ document.getElementById("willow-layoutBtn").onclick    = () => runLayoutBtn_hand
 document.getElementById("willow-settingsBtn").onclick  = () => toggleSettingsMenu();
 document.getElementById("willow-backBtn").onclick  = () => showAsSidePanel();
 document.getElementById("willow-devMode").onclick = () => toggleDevModeInTab();
+document.getElementById("willow-search").onclick = () => openSearch();
 
 
 
@@ -58,6 +59,29 @@ document.getElementById("willow-devMode").onclick = () => toggleDevModeInTab();
  * false if it is reacting to async request.
  */
 
+function openSearch()
+{
+    chrome.storage.local.get(["WILLOW_SEARCH_OPEN"], function (res) {
+        if (res.WILLOW_SEARCH_OPEN) {
+            // set global state
+            chrome.storage.local.set({WILLOW_SEARCH_OPEN: false});
+            // broadcast
+            chrome.runtime.sendMessage({
+                message: "WILLOW_SEARCH_SYNC_REQUEST",
+                action: "WILLOW_SEARCH_CLOSE"
+            });
+        } else {
+            // set global state
+            chrome.storage.local.set({WILLOW_SEARCH_OPEN: true});
+            // broadcast
+            chrome.runtime.sendMessage({
+                message: "WILLOW_SEARCH_SYNC_REQUEST",
+                action: "WILLOW_SEARCH_OPEN",
+            });
+        }
+
+    });
+}
 
 function updateOpacity(willowOpacity){
     document.getElementById("willow-graphFrame").style.opacity = willowOpacity.opacity;

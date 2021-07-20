@@ -6,7 +6,7 @@ function openSpinner()
 {
    // alert("open");
     spinnerWrapper = document.createElement('div');
-    menuWrapper.id = "willowSpinnerWrapper";
+    spinnerWrapper.id = "willowSpinnerWrapper";
     spinnerWrapper.innerHTML = `
     <!DOCTYPE html>
     <html>
