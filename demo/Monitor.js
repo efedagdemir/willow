@@ -38,7 +38,7 @@ function addListeners() {
                 });
 
                 tabUpdated(tabId, changeInfo, tab);
-
+/*
                 if (changeInfo.status === "complete" && dedicatedTabOpen === true) {
                     setTimeout(() => {
                         chrome.tabs.update(createdTabId, {selected: true});
@@ -46,10 +46,12 @@ function addListeners() {
                     dedicatedTabOpen = false;
 
                 }
+
+ */
             } catch (err) {
                 alert(err);
             }
-        }, 1500);
+        }, 500);
     });
 
     chrome.tabs.onRemoved.addListener(tabRemoved);  

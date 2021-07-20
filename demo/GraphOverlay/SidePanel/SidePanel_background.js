@@ -71,9 +71,8 @@ chrome.browserAction.onClicked.addListener(  function (tab)
     chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_WINDOW_OPEN"], function (res) {
         if (!res.WILLOW_WINDOW_OPEN && !res.WILLOW_SP_OPEN) { //when opening willow by default
             chrome.storage.local.set({WILLOW_WINDOW_OPEN: true});
-
                 chrome.tabs.create({
-                    active: false,
+                    active: true,
                     url: 'NewTab/newTab.html'
                 }, function (tab) {
                     createdTabId = tab.id;
