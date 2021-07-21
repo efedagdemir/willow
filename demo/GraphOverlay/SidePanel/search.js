@@ -1,6 +1,6 @@
 
 let searchWrapper;
-function openSearch()
+function searchOpen()
 {
    // alert("open");
     searchWrapper = document.createElement('div');
@@ -43,9 +43,9 @@ function openSearch()
 
     <body>
     <div id="search">
-        <div class="search-close-button"> <button type="button" id=search_close_btn"></button>
-        </div><div id="menuHeader">
-           
+        <div class="search-close-button"> <button type="button" id="search_close_btn"></button>
+        </div>
+        <div id="menuHeader">
             <p>Search</p>
         </div>
         <div id="menuBody">
@@ -57,7 +57,7 @@ function openSearch()
             <br><br><br>
             <table id="settings_button_table1" class="willow_tables">
                 <tr class="space_table_cell">
-                    <td> <button id="crawl" class="table-buttons1" title="Search">Search</button></th>
+                    <td> <button id="search_URL" class="table-buttons1" title="Search">Search</button></th>
                 </tr> 
             </table>
         </div>
@@ -69,7 +69,8 @@ function openSearch()
     `;
     document.body.append(searchWrapper);
     //alert(spinnerOpen);
-    chrome.storage.local.set({ WILLOW_SEARCH_OPEN: true });
+    addSearchListeners();
+    chrome.storage.local.set({ WILLOW_SEARCH_OPEN_REQUEST: true });
 }
 
 function closeSearch(isCross) {
@@ -78,7 +79,7 @@ function closeSearch(isCross) {
         document.body.removeChild(searchWrapper);
         if (isCross){
             // set global state
-            chrome.storage.local.set({ WILLOW_CRAWLER_OPEN: false });
+            chrome.storage.local.set({ WILLOW_SEARCH_OPEN_REQUEST: false });
             // broadcast
             /*
             chrome.runtime.sendMessage({
@@ -91,17 +92,23 @@ function closeSearch(isCross) {
     }
 }
 function addSearchListeners() {
-    document.getElementById("crawler_close_btn").onclick   = () => closeCrawlMenu(true);
-    document.getElementById("crawl").onclick   = () => crawlGivenURL();
+    document.getElementById("search_close_btn").onclick   = () => closeSearch(true);
+    document.getElementById("search_URL").onclick   = () => searchGiven();
 }
 
-chrome.storage.local.get(["WILLOW_SEARCH_OPEN"], function (res) {
-    if (res.WILLOW_SEARCH_OPEN ) {
+function searchGiven()
+{
+
+}
+
+chrome.storage.local.get(["WILLOW_SEARCH_OPEN_REQUEST"], function (res) {
+    if (res.WILLOW_SEARCH_OPEN_REQUEST ) {
         //console.log("bir")
-        openSearch();
+        searchOpen();
     }
 
 });
+
 
 async function handleSearchSyncRequest(request)
 {
@@ -110,7 +117,7 @@ async function handleSearchSyncRequest(request)
     if( request.action === "WILLOW_SEARCH_OPEN")
     {
         //  alert("heard from open");
-        await openSearch();
+        await searchOpen();
     }
     else if(request.action === "WILLOW_SEARCH_CLOSE" )
     {
@@ -120,6 +127,7 @@ async function handleSearchSyncRequest(request)
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if (request.message === "WILLOW_SEARCH_SYNC_REQUEST") {
+            //alert("heard");
             handleSearchSyncRequest(request);
         }
     }

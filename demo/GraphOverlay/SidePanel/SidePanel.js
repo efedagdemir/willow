@@ -8,6 +8,7 @@
 /*****************************************************************************
  **********************    Implementation of SidePanel   **********************
  *****************************************************************************/
+
 let windowOpen = false;
 let sidePanelOpen = false;
 runSidePanel();
@@ -63,7 +64,7 @@ async function runSidePanel() {
             <button title="Settings"      class="willow-headerBtn willow-btn-settings"  id="willow-settingsBtn" >                            </button>
             <button title="New Session"   class="willow-headerBtn willow-btn-new"       id="willow-newBtn" >                                 </button>
             <button title="Run Layout"    class="willow-headerBtn willow-btn-layout"    id="willow-layoutBtn">                               </button>
-            <button title="Developer mode"    class="willow-headerBtn willow-btn-devMode"    id="willow-devMode">                               </button>
+            <button title="Crawl"    class="willow-headerBtn willow-btn-devMode"    id="willow-devMode">                               </button>
             <button title="Search"    class="willow-headerBtn willow-btn-search"    id="willow-search">                               </button>
 
         <!--
@@ -188,10 +189,10 @@ async function runSidePanel() {
         //------------------------//
         function openSearch()
         {
-            chrome.storage.local.get(["WILLOW_SEARCH_OPEN"], function (res) {
-                if (res.WILLOW_SEARCH_OPEN) {
+            chrome.storage.local.get(["WILLOW_SEARCH_OPEN_REQUEST"], function (res) {
+                if (res.WILLOW_SEARCH_OPEN_REQUEST) {
                     // set global state
-                    chrome.storage.local.set({WILLOW_SEARCH_OPEN: false});
+                    chrome.storage.local.set({WILLOW_SEARCH_OPEN_REQUEST: false});
                     // broadcast
                     chrome.runtime.sendMessage({
                         message: "WILLOW_SEARCH_SYNC_REQUEST",
@@ -199,7 +200,7 @@ async function runSidePanel() {
                     });
                 } else {
                     // set global state
-                    chrome.storage.local.set({WILLOW_SEARCH_OPEN: true});
+                    chrome.storage.local.set({WILLOW_SEARCH_OPEN_REQUEST: true});
                     // broadcast
                     chrome.runtime.sendMessage({
                         message: "WILLOW_SEARCH_SYNC_REQUEST",

@@ -26,40 +26,8 @@
 .search-close-button {
     height: 35px;
     width: 100%;
-    float: right;
-    background-image: url('../../icons/close.png');
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-    text-decoration: none;
-
-    cursor: pointer;
-    background-color: #041424;
-    background-size: cover;
-    border: none;
-    opacity: 1;
-    height: 16px;
-    width: 16px;
-    margin: 0%;
-    padding: 0%;
-    margin-top: 15px;
-    margin-right: 17px;
 }
 
-/*#menuBody{
-    margin-top: 30px;
-}*/
-
-.searchElement {
-    width: 90%;
-    margin: auto;
-    padding: 10px;
-    position: relative;
-
-}
 .searchElement .label {
     font-family:  'Century Gothic', sans-serif;
     font-size: 16px;
@@ -175,10 +143,8 @@ tr.space_table_cell>td {
     opacity: 1;
     height: 16px;
     width: 16px;
-    margin: 0%;
-    padding: 0%;
-    margin-top: 15px;
-    margin-right: 17px;
+    padding: 0;
+    margin: 15px 17px 0 0;
 
 }
 

@@ -5,7 +5,13 @@
 /*****************************************************************************
  **********************    Implementation of NewTab   **********************
  *****************************************************************************/
+chrome.storage.local.get(["WILLOW_SEARCH_OPEN_REQUEST"], function (res) {
+    if (res.WILLOW_SEARCH_OPEN_REQUEST ) {
+        //console.log("bir")
+        alert("IN new tab it is true");
+    }
 
+});
 //------------------------//
 //        VARIABLES       //
 //------------------------//
@@ -38,7 +44,7 @@ document.getElementById("willow-layoutBtn").onclick    = () => runLayoutBtn_hand
 document.getElementById("willow-settingsBtn").onclick  = () => toggleSettingsMenu();
 document.getElementById("willow-backBtn").onclick  = () => showAsSidePanel();
 document.getElementById("willow-devMode").onclick = () => toggleDevModeInTab();
-document.getElementById("willow-search").onclick = () => openSearch();
+document.getElementById("willow-search_in_new_tab").onclick = () => openSearchInNewTab();
 
 
 
@@ -48,7 +54,29 @@ document.getElementById("willow-search").onclick = () => openSearch();
 //------------------------//
 //       FUNCTIONS        //
 //------------------------//
+function openSearchInNewTab()
+{
+    chrome.storage.local.get(["WILLOW_SEARCH_OPEN_REQUEST"], function (res) {
+        if (res.WILLOW_SEARCH_OPEN_REQUEST) {
+            // set global state
+            chrome.storage.local.set({WILLOW_SEARCH_OPEN_REQUEST: false});
+            // broadcast
+            chrome.runtime.sendMessage({
+                message: "WILLOW_SEARCH_SYNC_REQUEST",
+                action: "WILLOW_SEARCH_CLOSE"
+            });
+        } else {
+            // set global state
+            chrome.storage.local.set({WILLOW_SEARCH_OPEN_REQUEST: true});
+            // broadcast
+            chrome.runtime.sendMessage({
+                message: "WILLOW_SEARCH_SYNC_REQUEST",
+                action: "WILLOW_SEARCH_OPEN",
+            });
+        }
 
+    });
+}
 // ----------------------------------- //
 // Opening and closing the side panel  //
 // ----------------------------------- //
@@ -59,29 +87,7 @@ document.getElementById("willow-search").onclick = () => openSearch();
  * false if it is reacting to async request.
  */
 
-function openSearch()
-{
-    chrome.storage.local.get(["WILLOW_SEARCH_OPEN"], function (res) {
-        if (res.WILLOW_SEARCH_OPEN) {
-            // set global state
-            chrome.storage.local.set({WILLOW_SEARCH_OPEN: false});
-            // broadcast
-            chrome.runtime.sendMessage({
-                message: "WILLOW_SEARCH_SYNC_REQUEST",
-                action: "WILLOW_SEARCH_CLOSE"
-            });
-        } else {
-            // set global state
-            chrome.storage.local.set({WILLOW_SEARCH_OPEN: true});
-            // broadcast
-            chrome.runtime.sendMessage({
-                message: "WILLOW_SEARCH_SYNC_REQUEST",
-                action: "WILLOW_SEARCH_OPEN",
-            });
-        }
 
-    });
-}
 
 function updateOpacity(willowOpacity){
     document.getElementById("willow-graphFrame").style.opacity = willowOpacity.opacity;

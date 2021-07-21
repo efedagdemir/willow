@@ -41,7 +41,8 @@ function openCrawlMenu(isOrigin) {
     <body>
     <div id="devMenu">
         <div class="crawler-close-button"> <button type="button" id="crawler_close_btn"></button>
-        </div><div id="menuHeader">
+        </div>
+        <div id="menuHeader">
            
             <p>Crawler</p>
         </div>
