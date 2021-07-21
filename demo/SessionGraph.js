@@ -18,7 +18,7 @@ async function initializeSG() {
         chrome.storage.local.set({nextId: nextId + 1});
         resolve();
     })});
-    
+
     cy = cytoscape({
         container: container,
         style: [ // the stylesheet for the graph
@@ -45,6 +45,29 @@ async function initializeSG() {
     applyStyle();
     cytoscape.warnings(false);
 
+    //Adding highlight style
+    var options = {
+        highlightStyles: [
+            { node: { 'border-color': '#0b9bcd',  'border-width': 3 }, edge: {'line-color': '#0b9bcd', 'source-arrow-color': '#0b9bcd', 'target-arrow-color': '#0b9bcd', 'width' : 3} },
+            { node: { 'border-color': '#04f06a',  'border-width': 3 }, edge: {'line-color': '#04f06a', 'source-arrow-color': '#04f06a', 'target-arrow-color': '#04f06a', 'width' : 3} },
+        ],
+        selectStyles: {
+            node: {'border-color': 'black', 'border-width': 3, 'background-color': 'lightgrey'},
+            edge: {'line-color': 'black', 'source-arrow-color': 'black', 'target-arrow-color': 'black', 'width' : 3}
+        },
+        setVisibilityOnHide: false, // whether to set visibility on hide/show
+        setDisplayOnHide: true, // whether to set display on hide/show
+        zoomAnimationDuration: 1500, // default duration for zoom animation speed
+        neighbor: function(ele){
+            return ele.closedNeighborhood();
+        },
+        neighborSelectTime: 500,
+        lassoStyle: {lineColor: "#d67614", lineWidth: 3}, // default lasso line color, dark orange, and default line width
+        htmlElem4marqueeZoom: '', // should be string like `#cy` or `.cy`. `#cy` means get element with the ID 'cy'. `.cy` means the element with class 'cy'
+        marqueeZoomCursor: 'se-resize', // the cursor that should be used when marquee zoom is enabled. It can also be an image if a URL to an image is given
+        isShowEdgesBetweenVisibleNodes: true // When showing elements, show edges if both source and target nodes become visible
+    };
+    var instance = cy.viewUtilities(options);
     // start saving the session graph every 30 seconds.
     interval = setInterval( saveCurrentSession, 30000);
 }
@@ -321,7 +344,7 @@ async function searchURL( word)
     word = word.toLowerCase();
     //Remove highlighted(found) nodes if any
     await cy.nodes().forEach(function( ele ){
-        if(ele.data("foundBySearch"))
+        if(ele.data("foundBySearch") === 1)
         {
             ele.data("foundBySearch", 0);
         }
