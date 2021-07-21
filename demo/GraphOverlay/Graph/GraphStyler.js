@@ -140,4 +140,10 @@ function applyStyle() {
             'background-height': ['100%', '100%','40%'],
             'background-position-x': ['0.5px', '-20px','62.5px'],
         } );
+
+        cy.nodes('[foundBySearch = 1]').style(
+            {
+                'border-color':'yellow',
+            }
+        )
 }

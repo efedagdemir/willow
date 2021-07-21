@@ -315,17 +315,33 @@ function messageReceived(request, sender, sendResponse) {
     }
 }
 
-function searchURL( word)
+async function searchURL( word)
 {
     console.log("word", word );
     word = word.toLowerCase();
-    cy.nodes().forEach(function( ele ){
+    //Remove highlighted(found) nodes if any
+    await cy.nodes().forEach(function( ele ){
+        if(ele.data("foundBySearch"))
+        {
+            ele.data("foundBySearch", 0);
+        }
+    });
+    await broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
+
+
+    //Mark matched nodes
+    await cy.nodes().forEach(function( ele ){
         let lowerCaseURL = ele.id().toLowerCase();
         if( lowerCaseURL.includes(word) )
         {
             console.log( ele.id() );
+            ele.data("foundBySearch", 1);
+            console.log( ele.id(), ele.data("foundBySearch") );
         }
     });
+
+    await broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
+
 }
 
 function runLayout(){

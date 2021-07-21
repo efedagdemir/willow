@@ -64,7 +64,7 @@ async function buildGraph( parentURL,childURL, title )
         let favIconUrl = "chrome://favicon/size/64@1x/" + childURL;
         let node = cy.add({// add the node to the cy graph
             group: 'nodes',
-            data: {id: childURL, title_size: '20px', title: title, width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl, comment: "", brokenLinks: 0},
+            data: {id: childURL, title_size: '20px', title: title, width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl, comment: "", brokenLinks: 0, foundBySearch: 0},
         });
     }
 

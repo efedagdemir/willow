@@ -140,7 +140,7 @@ async function urlLoaded(tabId, url) {
         let favIconUrl = "chrome://favicon/size/128@1x/" + url;
         let node = cy.add({// add the node to the cy graph
             group: 'nodes',
-            data: {id: url, title_size: '20px', title: "Title loading..", width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl, comment: "", brokenLinks: -1},
+            data: {id: url, title_size: '20px', title: "Title loading..", width: 35, border_color: "#808080", openTabCount:1, iconURL: favIconUrl, comment: "", brokenLinks: -1, foundBySearch: 0},
             
         });
         newNode = true;
