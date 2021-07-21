@@ -308,12 +308,25 @@ function messageReceived(request, sender, sendResponse) {
     } else if(request.message === "WILLOW_BACKGROUND_ADD_COMMENT"){
         addComment(request.nodeId, request.comment);
     }
-    else if(request.message === "WILLOW_SP_OPEN_WINDOW")
+    else if(request.message === "WILLOW_SEARCH_URL")
     {
-
+        console.log("URL_TO_SEARCH", request.URL_TO_SEARCH );
+        searchURL(request.URL_TO_SEARCH);
     }
 }
 
+function searchURL( word)
+{
+    console.log("word", word );
+    word = word.toLowerCase();
+    cy.nodes().forEach(function( ele ){
+        let lowerCaseURL = ele.id().toLowerCase();
+        if( lowerCaseURL.includes(word) )
+        {
+            console.log( ele.id() );
+        }
+    });
+}
 
 function runLayout(){
     //container.style.width = '300px';

@@ -51,13 +51,13 @@ function searchOpen()
         <div id="menuBody">
            
                 <div class="topnav">
-                    <input type="text" placeholder="Search" id="URL" >
+                    <input type="text" placeholder="Search" id="search_URL" >
                 </div>
           
             <br><br><br>
             <table id="settings_button_table1" class="willow_tables">
                 <tr class="space_table_cell">
-                    <td> <button id="search_URL" class="table-buttons1" title="Search">Search</button></th>
+                    <td> <button id="search_URL_btn" class="table-buttons1" title="Search">Search</button></th>
                 </tr> 
             </table>
         </div>
@@ -93,12 +93,19 @@ function closeSearch(isCross) {
 }
 function addSearchListeners() {
     document.getElementById("search_close_btn").onclick   = () => closeSearch(true);
-    document.getElementById("search_URL").onclick   = () => searchGiven();
+    document.getElementById("search_URL_btn").onclick   = () => searchGiven();
 }
 
 function searchGiven()
 {
+    var URLToSearch = document.getElementById("search_URL").value;
 
+  //  alert(URLToSearch);
+    chrome.runtime.sendMessage({
+        message: "WILLOW_SEARCH_URL",
+        URL_TO_SEARCH: URLToSearch
+    });
+    closeSearch(true);
 }
 
 chrome.storage.local.get(["WILLOW_SEARCH_OPEN_REQUEST"], function (res) {
