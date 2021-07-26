@@ -45,8 +45,12 @@ async function runSidePanel() {
         <html>
         <head>
           <link rel="stylesheet" href="${chrome.runtime.getURL("GraphOverlay/SidePanel/side_panel.css")}">
-          
+          <script src="https://unpkg.com/layout-base/layout-base.js"></script>
+          <script src="https://unpkg.com/cose-base/cose-base.js"></script>
+            <script src="https://unpkg.com/cytoscape-undo-redo/cytoscape-undo-redo.js"></script>
+            <script src="https://unpkg.com/geometric@2.2.3/build/geometric.min.js"></script>
           <script src="cytoscape.min.js"></script>
+          
           <script src="node_modules/dagre/dist/dagre.min.js"></script>
           <script src="node_modules/cytoscape-dagre/cytoscape-dagre.js"></script>
         </head>

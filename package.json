@@ -6,5 +6,7 @@
     "node-fetch": "^2.6.1",
     "node-html-crawler": "^1.2.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "cytoscape-view-utilities": "^6.0.0"
+  }
 }

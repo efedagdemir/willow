@@ -1,6 +1,8 @@
 var cy = null;          // The variable that holds the cytoscape object.
 var interval = null;    // A setInterval() result that updates the session graph every 30 seconds.
 let container = document.createElement("div");
+
+
 /**
  * Initalizes the session graph as a cytoscape object with no elements.
  */
@@ -40,7 +42,6 @@ async function initializeSG() {
             // ready 1
         }
     });
-    
     cy.data("id", nextId);
     applyStyle();
     cytoscape.warnings(false);
@@ -351,7 +352,30 @@ async function searchURL( word)
     });
     await broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
 
-
+    var api = cy.viewUtilities({
+        highlightStyles: [
+            { node: { 'border-color': '#0b9bcd',  'border-width': 3 }, edge: {'line-color': '#0b9bcd', 'source-arrow-color': '#0b9bcd', 'target-arrow-color': '#0b9bcd', 'width' : 3} },
+            { node: { 'border-color': '#04f06a',  'border-width': 3 }, edge: {'line-color': '#04f06a', 'source-arrow-color': '#04f06a', 'target-arrow-color': '#04f06a', 'width' : 3} },
+            { node: { 'border-color': '#f5e663',  'border-width': 3 }, edge: {'line-color': '#f5e663', 'source-arrow-color': '#f5e663', 'target-arrow-color': '#f5e663', 'width' : 3} },
+            { node: { 'border-color': '#bf0603',  'border-width': 3 }, edge: {'line-color': '#bf0603', 'source-arrow-color': '#bf0603', 'target-arrow-color': '#bf0603', 'width' : 3} },
+        ],
+        selectStyles: {
+            node: {'border-color': 'black', 'border-width': 3, 'background-color': 'lightgrey'},
+            edge: {'line-color': 'black', 'source-arrow-color': 'black', 'target-arrow-color': 'black', 'width' : 3}
+        },
+        setVisibilityOnHide: false, // whether to set visibility on hide/show
+        setDisplayOnHide: true, // whether to set display on hide/show
+        zoomAnimationDuration: 1500, //default duration for zoom animation speed
+        neighbor: function(ele){
+            if (ele.isNode()) {
+                return ele.closedNeighborhood();
+            }
+            else if (ele.isEdge()) {
+                return ele.source().closedNeighborhood().union(ele.target().closedNeighborhood());
+            }
+        },
+        neighborSelectTime: 1000
+    })
     //Mark matched nodes
     await cy.nodes().forEach(function( ele ){
         let lowerCaseURL = ele.id().toLowerCase();

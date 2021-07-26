@@ -29,7 +29,9 @@
                     "node_modules/cose-base/cose-base.js",
                     "node_modules/cytoscape-fcose/cytoscape-fcose.js",
                     "node_modules/cytoscape-layout-utilities/cytoscape-layout-utilities.js",
-            
+                    "cytoscape-view-utilities.js",
+                    "geometric.min.js",
+
                     "SyncBroadcaster.js",
                     "GraphOverlay/SidePanel/SidePanel_background.js",
                     "GraphOverlay/Graph/GraphStyler.js",
