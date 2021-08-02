@@ -7,6 +7,6 @@
     "node-html-crawler": "^1.2.2"
   },
   "devDependencies": {
-    "cytoscape-view-utilities": "^6.0.0"
+
   }
 }

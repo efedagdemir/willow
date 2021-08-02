@@ -35,9 +35,10 @@ function applyStyle() {
     cy.style()/*.fromJson({'wheelSensitivity': '0.1'})*/
         .selector('node')
         .style({
+            'visibility': 'visible',
             'width': 'data(width)',
             'height': 'data(width)',
-            'border-width': 5, 
+            'border-width': 5,
             'border-height': 'data(width)',
             'border-opacity': 1,
             'border-color':'data(border_color)',
@@ -138,4 +139,38 @@ function applyStyle() {
             'background-position-x': ['0.5px', '-20px','62.5px'],
         } );
 
+}
+function addRemoveHighlight(collection, remove)
+{
+    //alert("here");
+    let options = {
+        highlightStyles: [
+            { node: { 'border-color': '#0b9bcd',  'border-width': 3 }, edge: {'line-color': '#0b9bcd', 'source-arrow-color': '#0b9bcd', 'target-arrow-color': '#0b9bcd', 'width' : 3} },
+            { node: { 'border-color': '#04f06a',  'border-width': 3 }, edge: {'line-color': '#04f06a', 'source-arrow-color': '#04f06a', 'target-arrow-color': '#04f06a', 'width' : 3} },
+        ],
+        selectStyles: {
+            node: {'border-color': 'black', 'border-width': 3, 'background-color': 'lightgrey'},
+            edge: {'line-color': 'black', 'source-arrow-color': 'black', 'target-arrow-color': 'black', 'width' : 3}
+        },
+        setVisibilityOnHide: false, // whether to set visibility on hide/show
+        setDisplayOnHide: true, // whether to set display on hide/show
+        zoomAnimationDuration: 1500, // default duration for zoom animation speed
+        neighbor: function (ele) { // return desired neighbors of tapheld element
+            return false;
+        },
+        neighborSelectTime: 500, // ms, time to taphold to select desired neighbors in addition to the taphold event detect time by cytoscape
+        lassoStyle: {lineColor: "#d67614", lineWidth: 3} // default lasso line color, dark orange, and default line width
+    };
+
+    let instance = cy.viewUtilities(options);
+
+    if(!remove)
+    {
+         instance.highlight(cy,collection);
+    }
+    else
+    {
+        instance.removeHighlights(cy,collection);
+
+    }
 }

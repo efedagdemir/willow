@@ -20,7 +20,19 @@
             "js": ["cytoscape.min.js"],
             "run_at": "document_end",
             "match_about_blank": true
-        }
+        },
+      {
+        "matches": ["<all_urls>"],
+        "js": ["cytoscape-view-utilities.js"],
+        "run_at": "document_end",
+        "match_about_blank": true
+      },
+      {
+        "matches": ["<all_urls>"],
+        "js": ["geometric.min.js"],
+        "run_at": "document_end",
+        "match_about_blank": true
+      }
 
     ],
     "background": {
@@ -31,6 +43,7 @@
                     "node_modules/cytoscape-layout-utilities/cytoscape-layout-utilities.js",
                     "cytoscape-view-utilities.js",
                     "geometric.min.js",
+
 
                     "SyncBroadcaster.js",
                     "GraphOverlay/SidePanel/SidePanel_background.js",
