@@ -111,12 +111,8 @@ function applyStyle() {
         })
         .selector(':selected')
         .style({
-            'border-color': 'black',
-            'background-color': 'black',
-            'line-color': 'black',
-            'target-arrow-color': 'black',
-            'source-arrow-color': 'black',
-            'opacity': 1
+            'overlay-color': '#2f2f2f',
+            'overlay-opacity': 0.4,
         })
         .selector('.faded')
         .css({
