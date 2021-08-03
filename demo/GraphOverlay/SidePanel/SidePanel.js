@@ -348,7 +348,7 @@ async function runSidePanel() {
                 sidePanel.style.right = UNDOCK_DEFAULT_OFFSET_RIGHT;
             } else {
                 sidePanel.style.top = undockedLoc.top;
-                sidePanel.style.right = undockedLoc.left;
+                sidePanel.style.right = undockedLoc.right;
             }
             sidePanel.style.height = panelUndockedHeight;
             //sidePanel.style.width  = panelWidth;
@@ -364,7 +364,7 @@ async function runSidePanel() {
                     WILLOW_SP_UNDOCKED: true,
                     WILLOW_SP_UNDOCKED_LOC: {
                         top: sidePanel.style.top,
-                        left: sidePanel.style.left
+                        right: sidePanel.style.right
                     }
                 });
                 // notify other tabs with a sync request
@@ -424,6 +424,7 @@ async function runSidePanel() {
             }
 
             function dragMouseMove(e) {
+                console.log("dragging");
                 e = e || window.event;
                 e.preventDefault();
 
@@ -438,7 +439,7 @@ async function runSidePanel() {
                 lastX = e.clientX;
                 lastY = e.clientY;
                 sidePanel.style.top = (parseInt(sidePanel.style.top, 10) + deltaY) + "px";
-                sidePanel.style.left = (parseInt(sidePanel.style.left, 10) + deltaX) + "px";
+                sidePanel.style.right = (parseInt(sidePanel.style.right, 10) - deltaX) + "px";
             }
 
             function dragMouseUp() {
@@ -446,11 +447,11 @@ async function runSidePanel() {
                 document.onmouseup = null;
                 document.onmousemove = null;
 
-                // save new undocked panel location
+                // save new undocked panel locatio
                 chrome.storage.local.set({
                     WILLOW_SP_UNDOCKED_LOC: {
                         top: sidePanel.style.top,
-                        left: sidePanel.style.left
+                        right: sidePanel.style.right
                     }
                 });
                 // notify other tabs with a sync request
@@ -459,7 +460,7 @@ async function runSidePanel() {
                     action: "WILLOW_SP_SYNC_DRAG",
                     newPos: {
                         top: sidePanel.style.top,
-                        left: sidePanel.style.left
+                        right: sidePanel.style.right
                     }
                 });
             }
@@ -537,6 +538,8 @@ async function runSidePanel() {
                         }
 
                         sidePanel.style.width = (curWidth + deltaX) + "px";
+                        sidePanel.style.right = (parseInt(sidePanel.style.right, 10) - deltaX) + "px";
+
                     }
                 } else if (heldBorder == "left") {
                     if (curWidth - deltaX > RESIZE_MIN_WIDTH) {
@@ -599,12 +602,12 @@ async function runSidePanel() {
                 });
 
                 // save as drag if panel location changed
-                if (heldBorder == "left" || heldBorder == "top") {
+                if (heldBorder == "right" || heldBorder == "top") {
                     // save new undocked panel location
                     chrome.storage.local.set({
                         WILLOW_SP_UNDOCKED_LOC: {
                             top: sidePanel.style.top,
-                            left: sidePanel.style.left
+                            right: sidePanel.style.right
                         }
                     });
 
@@ -614,7 +617,7 @@ async function runSidePanel() {
                         action: "WILLOW_SP_SYNC_DRAG",
                         newPos: {
                             top: sidePanel.style.top,
-                            left: sidePanel.style.left
+                            right: sidePanel.style.right
                         }
                     });
                 }
@@ -715,7 +718,7 @@ async function runSidePanel() {
                 dockSidePanel(false);
             } else if (request.action === "WILLOW_SP_SYNC_DRAG") {
                 sidePanel.style.top = request.newPos.top;
-                sidePanel.style.left = request.newPos.left;
+                sidePanel.style.right = request.newPos.right;
             } else if (request.action === "WILLOW_SP_SYNC_RESIZE") {
                 sidePanel.style.width = request.newWidth;
                 sidePanel.style.height = request.newHeight;
