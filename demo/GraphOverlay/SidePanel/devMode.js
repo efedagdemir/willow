@@ -44,18 +44,16 @@ function openCrawlMenu(isOrigin) {
         </div>
         <div id="menuHeader">
            
-            <p>Crawler</p>
+            <p>Discover web page map</p>
         </div>
         <div id="menuBody">
            
                 <div class="topnav">
-                    <input type="text" placeholder="Crawl.." id="URL" >
+                    <input type="text" placeholder="URL..." id="URL" >
                 </div>
-          
-            <br><br><br>
             <table id="settings_button_table1" class="willow_tables">
                 <tr class="space_table_cell">
-                    <td> <button id="crawl" class="table-buttons1" title="Crawl the URL">Crawl the URL</button></th>
+                    <td> <button id="crawl" class="table-buttons1" title="Start">Start</button></th>
                 </tr> 
             </table>
         </div>

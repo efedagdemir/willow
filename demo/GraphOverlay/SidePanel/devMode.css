@@ -10,6 +10,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 
@@ -18,8 +20,8 @@
     text-align: center;
     align-items: center;
     color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
-    line-height: 60px;
-    font-size: 32px;
+    line-height: 40px;
+    font-size: 25px;
     text-shadow: 2px 2px #8d0801;
     letter-spacing: 1px;
     margin-bottom: 15px;
@@ -185,14 +187,14 @@ tr.space_table_cell>td {
 }
 
 .topnav {
-    margin: 10px;
+    margin: 5px;
 }
 .topnav input[type=text] {
-    float: right;
     padding: 6px;
-    margin: 10px;
+    margin: 15px;
     font-size: 17px;
     border: 1px solid red;
     background-color: #041424 ;
     color: white;
+    width: 60%;
 }
