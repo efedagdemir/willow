@@ -90,7 +90,7 @@ async function buildGraph( parentURL,childURL, title )
         }
     }
 
-    runLayout();
+   // runLayout();
     var instance = cy.layoutUtilities(
         {    idealEdgeLength: 50,        //10
             offset: 20,                 //10
@@ -102,7 +102,7 @@ async function buildGraph( parentURL,childURL, title )
         });
 
     instance.placeNewNodes(cy.getElementById(childURL));
-    runLayout();
+    //runLayout();
     //trial
     var components = cy.elements().components();
     var subgraphs = [];
@@ -124,6 +124,7 @@ async function buildGraph( parentURL,childURL, title )
     });
 
     var result = instance.packComponents(subgraphs);
+
     components.forEach(function (component, index) {
         component.nodes().layout({
             name: 'preset',
@@ -137,7 +138,7 @@ async function buildGraph( parentURL,childURL, title )
             }
         }).run();
     });
-    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
+    //broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
     return null;
 }
 function handleErrors(response) {

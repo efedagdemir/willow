@@ -614,7 +614,7 @@ function applyHoverOver(){
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.message === "WILLOW_GRAPH_SYNC_REQUEST") {
-            if(request.action === "CHANGE_NODE_SIZE")
+            if(request.action === "CHANGE_NODE_SIZE" || request.action === "DISCOVERING" )
             {
                 updateCytoscape(false);
             }
