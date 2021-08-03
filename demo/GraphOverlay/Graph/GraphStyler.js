@@ -122,7 +122,9 @@ function applyStyle() {
         })
         .selector('.hovered')
         .css({
-             content : 'data(title)',
+             content : function (ele) {
+                 return ele.data('title') +'\n'+ele.data('id');
+                 },
             'text-wrap': 'wrap',
             'text-max-width': '170px',
             'text-justification': 'center',
