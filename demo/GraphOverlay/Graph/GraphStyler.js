@@ -17,7 +17,7 @@ function renderNode( numOfBrokenLinks, ele) {
     const iconTranslate = iconResize / 2 / scale;
     const backgroundColor = `#33362F`;
 
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
  <style>
     .small { font: italic 13px sans-serif; }
     .heavy { font: bold 30px sans-serif; }
@@ -136,7 +136,7 @@ function applyStyle() {
             'border-color':'red',
             'background-width': ['100%', '100%','40%'],
             'background-height': ['100%', '100%','40%'],
-            'background-position-x': ['0.5px', '-20px','62.5px'],
+            'background-position-x': ['0.5px', '-30px','62.5px'],
         } );
 
 }
