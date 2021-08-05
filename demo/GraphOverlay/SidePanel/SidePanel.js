@@ -60,6 +60,7 @@ async function runSidePanel() {
             <img title="Willow: Graph-Based Browsing" id="willow-willowIcon" src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
             <a class="willow-label" id="willow-willowLabel" style="display:;">W I L L O W</a>
             
+            <button title="Help"         class="willow-headerBtn willow-btn-help"     id="willow-help"  >                              </button>
             <button title="Close"         class="willow-headerBtn willow-btn-close"     id="willow-closeBtn"  >                              </button>
             <button title="View in Dedicated Tab"         class="willow-headerBtn willow-btn-newTab"   id="willow-newTabBtn"   >             </button>
             <button title="Dock"          class="willow-headerBtn willow-btn-dock"      id="willow-dockBtn"      style="display:none;">      </button>
@@ -171,6 +172,7 @@ async function runSidePanel() {
         // register event handlers
     function injectOnClickListeners()
     {
+        document.getElementById("willow-help").onclick = () => openHelp(true);
         document.getElementById("willow-closeBtn").onclick = () => closeSidePanel(true);
         document.getElementById("willow-newTabBtn").onclick = () => openInNewTab(true);
         document.getElementById("willow-undockBtn").onclick = () => undockSidePanel(null, true);
@@ -190,6 +192,29 @@ async function runSidePanel() {
         //------------------------//
         //       FUNCTIONS        //
         //------------------------//
+    function openHelp() {
+            //alert("here")
+        chrome.storage.local.get(["WILLOW_HELP_OPEN"], function (res) {
+             if (res.WILLOW_HELP_OPEN) {
+                chrome.storage.local.set({WILLOW_HELP_OPEN: false});
+                // notify other tabs with a sync request
+                chrome.runtime.sendMessage({
+                    message: "WILLOW_HELP_SYNC_REQUEST",
+                    action: "WILLOW_HELP_SYNC_CLOSE",
+                });
+            }
+             else
+             {
+                 chrome.storage.local.set({WILLOW_HELP_OPEN: true});
+                 // broadcast
+                 chrome.runtime.sendMessage({
+                     message: "WILLOW_HELP_SYNC_REQUEST",
+                     action: "WILLOW_HELP_SYNC_OPEN",
+                 });
+             }
+        });
+    }
+
         function openSearch()
         {
             chrome.storage.local.get(["WILLOW_SEARCH_OPEN_REQUEST"], function (res) {

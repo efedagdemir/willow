@@ -74,13 +74,12 @@ function windowClosed() {
  * @param {Tab} tab             The chrome tab object, more info in the link above.
  */
   function tabUpdated(tabId, changeInfo, tab) {
-   // alert(tab.url);
     if (tabURLs.get(tabId) && changeInfo.url !== undefined && changeInfo.url.startsWith("chrome")){
 
-      //  alert("here");
         let node = cy.getElementById(tabURLs.get(tabId));
         tabURLs.set(tabId, changeInfo.url);
         node.data( "openTabCount", node.data("openTabCount") - 1);
+       // alert("monitor 82");
          broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
     }
     if ((changeInfo.url && !changeInfo.url.startsWith("chrome")) || ( !dedicatedTab && tab.url.startsWith("chrome-extension")) )
@@ -92,6 +91,8 @@ function windowClosed() {
        }
     }
     else if(changeInfo.title) {
+      //  alert("here");
+       // alert("here in else if");
         let node = cy.getElementById(tab.url);
         if(node.length>0)
             setTimeout(  () => {
@@ -99,7 +100,18 @@ function windowClosed() {
 
                 // ! This seems like the correct place for this. Might need to move somewhere else
                 // Notify all tabs of the newly inserted node
-                broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
+                if(!willowNodeClicked)
+                {
+                  ///  alert("monitor 105")
+                    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
+                }
+                else
+                {
+                    //alert(willowNodeClicked);
+                    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", action: "WILLOW_NODE_CLICKED"});
+                    willowNodeClicked = false;
+
+                }
             }, 30);
         /*
          * ChangeInfo contains a title on two different triggers: when the URL changes and when the page's actual title loads.
@@ -115,6 +127,7 @@ function tabRemoved( tabId, removeInfo) {
 
     if(node.length > 0) { //! Sketchy
         node.data( "openTabCount", node.data("openTabCount") - 1); // decrement the openTabCount of the node.
+      //  alert("monitor 130");
         broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
     }
     tabURLs.delete(tabId);
@@ -269,6 +282,7 @@ async function urlLoaded(tabId, url) {
     // update the URL open in the tab.
     tabURLs.set(tabId, url);
 
+        //alert("monitor 286")
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
     return null;
 

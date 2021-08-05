@@ -39,6 +39,7 @@ chrome.storage.local.get(["WILLOW_SP_OPEN", "WILLOW_SP_UNDOCKED", "WILLOW_SP_UND
 chrome.storage.local.set({ WILLOW_SP_WIDTH: "1000px" });
 
 // register event handlers;willow-backBtn
+document.getElementById("willow-help").onclick = () => openHelp(true);
 document.getElementById("willow-newBtn").onclick       = () => startNewSession();
 document.getElementById("willow-layoutBtn").onclick    = () => runLayoutBtn_handler();
 document.getElementById("willow-settingsBtn").onclick  = () => toggleSettingsMenu();
@@ -54,6 +55,26 @@ document.getElementById("willow-search_in_new_tab").onclick = () => openSearchIn
 //------------------------//
 //       FUNCTIONS        //
 //------------------------//
+function openHelp() {
+    //alert("here")
+    chrome.storage.local.get(["WILLOW_HELP_OPEN"], function (res) {
+        if (res.WILLOW_HELP_OPEN) {
+            chrome.storage.local.set({WILLOW_HELP_OPEN: false});
+            // notify other tabs with a sync request
+            chrome.runtime.sendMessage({
+                message: "WILLOW_HELP_SYNC_REQUEST",
+                action: "WILLOW_HELP_SYNC_CLOSE",
+            });
+        } else {
+            chrome.storage.local.set({WILLOW_HELP_OPEN: true});
+            // broadcast
+            chrome.runtime.sendMessage({
+                message: "WILLOW_HELP_SYNC_REQUEST",
+                action: "WILLOW_HELP_SYNC_OPEN",
+            });
+        }
+    });
+}
 function openSearchInNewTab()
 {
     chrome.storage.local.get(["WILLOW_SEARCH_OPEN_REQUEST"], function (res) {

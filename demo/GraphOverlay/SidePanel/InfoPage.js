@@ -6,8 +6,6 @@ chrome.storage.local.get(["WILLOW_INFO_OPEN"], function (res) {
         openInfoPage(false);
     }
   });
-
-
 var infoPageHTML = `
 <!DOCTYPE html>
 <html>
@@ -78,7 +76,7 @@ var infoPageHTML = `
    
 
 function openInfoPage(isOrigin) {
-   
+   alert("here");
     infoWrapper = document.createElement('div');
     infoWrapper.id = "willowInfoPageWrapper";
     infoWrapper.innerHTML = infoPageHTML;

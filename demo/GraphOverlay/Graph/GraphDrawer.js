@@ -13,6 +13,7 @@ let contextMenuApplied = false;
 let hoverOverApplied = false;
 let disableCxtMenu = false;
 updateCytoscape();
+console.log("in graph Drawer")
 syncViewport();
 syncNotes();
 
@@ -110,16 +111,18 @@ function onNotes(id){
 }
 
  function updateCytoscape(drag) {
+    console.log(  "caller is " + updateCytoscape.caller);
     chrome.runtime.sendMessage({ type: "getCytoscapeJSON" }, async function (response) {
         ////console.log("RESPONSE RECEIVED");
         ////console.log(JSON.stringify(response));
         // save current viewport to restore after response json is loaded
 
-        // alert('update1');
+      //  alert('update1');
+
         // response.zoom = tmp.zoom;
         if (!drag) {
-            // alert("don't drag");
             cy.json(response);
+            //alert('update1');
             cy.fit();
         } else {
             let tmp = {
@@ -609,18 +612,20 @@ function applyHoverOver(){
 /*****************************************************************************
 *******************    Implementation of GraphSyncer   ******************* 
 *****************************************************************************/
-
+let nodeCLicked = false;
 // listen for Graph sync requests
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.message === "WILLOW_GRAPH_SYNC_REQUEST") {
-            if(request.action === "CHANGE_NODE_SIZE" || request.action === "DISCOVERING" )
+            if(request.action === "CHANGE_NODE_SIZE" || request.action === "DISCOVERING")
             {
+                //alert( "line 620");
                 updateCytoscape(false);
             }
             else
             {
                 updateCytoscape(true);
+
             }
            //  alert( "end");
         } else if (request.message === "WILLOW_GRAPH_VIEWPORT_CENTER") {
@@ -636,10 +641,9 @@ chrome.runtime.onMessage.addListener(
         {
             fitViewport();
         }
-        else if(request.message === "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL")
+        else if(request.message === "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL" )
         {
-          //  alert( "beginnig");
-            updateCytoscape(false);
+                updateCytoscape(false);
            // alert( "end");
         }
     }
@@ -649,10 +653,12 @@ chrome.runtime.onMessage.addListener(
 async  function handleSyncRequest(request) {
     if(request.message === "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL")
     {
-       await updateCytoscape(false);
+        alert( "line 655");
+        await updateCytoscape(false);
     }
     else if(request.message === "WILLOW_GRAPH_SYNC_REQUEST")
     {
+        alert( "line 660");
        await updateCytoscape(true);
     }
 }

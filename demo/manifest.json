@@ -69,7 +69,8 @@
         "GraphOverlay/SidePanel/side_panel.css",
         "GraphOverlay/SidePanel/side_panel.js",
         "GraphOverlay/SidePanel/settings_menu.css",
-        "GraphOverlay/SidePanel/devMood.css",
+      "GraphOverlay/SidePanel/how_to_page.css",
+      "GraphOverlay/SidePanel/devMood.css",
         "GraphOverlay/SidePanel/spinner.css",
         "GraphOverlay/SidePanel/search.css",
         "GraphOverlay/SidePanel/info_page.css",
@@ -86,7 +87,8 @@
         "icons/newTab.png",
         "icons/search.png",
         "icons/crawlHTML.png",
-        "icons/notes.svg"
+        "icons/notes.svg",
+        "icons/question.png"
 
     ],
     "content_security_policy": "script-src 'self'; object-src 'self'; img-src chrome://favicon data:;"

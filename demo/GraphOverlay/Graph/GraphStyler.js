@@ -144,7 +144,7 @@ function applyStyle() {
 }
 function addRemoveHighlight(collection, remove)
 {
-    //alert("here");
+
     let options = {
         highlightStyles: [
             { node: { 'border-color': '#0b9bcd',  'border-width': 3 }, edge: {'line-color': '#0b9bcd', 'source-arrow-color': '#0b9bcd', 'target-arrow-color': '#0b9bcd', 'width' : 3} },

@@ -95,13 +95,7 @@ function openSettingsMenu(isOrigin) {
                     <td> <button id="historyBtn"  class="table-buttons1 histBtn" title="Show History">History</button></td>
                 </tr> 
             </table>
-               
-            <table id="settings_button_table2" class="willow_tables">
-                <tr>
-                    <td> <button id="infoBtn"  class="table-buttons2" title="Open 'Information' Page"></button></th>
-                    <td> <button id="howToBtn" class="table-buttons2" title="Open 'How To?' Page"></button></th>
-                </tr>
-            </table> 
+         
         </div>
     </div>
     </body>
@@ -235,6 +229,7 @@ function radiBtn_handler(button_no){
 // listen for settings menu sync requests
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
+        //alert("here in sett");
         if (request.message == "WILLOW_SETTINGS_SYNC_REQUEST") {
             handleSettingsSyncRequest(request);
         }
@@ -248,6 +243,7 @@ chrome.runtime.onMessage.addListener(
 function handleSettingsSyncRequest(request) {
     
     if (request.action == "WILLOW_SETTINGS_SYNC_OPEN") {
+        console.log("here in sett");
         //console.log("sync_open recv.");
         openSettingsMenu(false);
     } else if (request.action == "WILLOW_SETTINGS_SYNC_CLOSE") {

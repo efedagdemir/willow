@@ -1,16 +1,13 @@
 #howToPage {
     position: absolute;
-    height: 70%;
-    width: 70%;
-    top: 15%;
-    left: 15%;
+    top: 50%;
+    left: 50%;
+    padding-bottom: 25px;
     background-color: #f4d58d; /* same as #panelHeader (side_panel.css)*/
     border-radius: 20px;
     overflow: auto;
-    overflow-x: auto;
-    overflow-y: auto;
     font-family:  'Century Gothic', sans-serif;
-    
+    transform: translate(-50%, -50%);
     text-shadow: 1px 1px #a8a8a8; /*yesil 708d81 ten f4d58d*/
     color:#041424;
 }

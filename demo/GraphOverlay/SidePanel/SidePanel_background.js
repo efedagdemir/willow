@@ -13,6 +13,8 @@ chrome.runtime.onInstalled.addListener(function () {
         WILLOW_CRAWLER_OPEN: false,
         WILLOW_SPINNER_OPEN: false,
         WILLOW_SEARCH_OPEN_REQUEST: false,
+        WILLOW_HELP_OPEN: false,
+
 
         WILLOW_LABEL_OPEN: true,
         WILLOW_OPACITY_UPDATE: false,

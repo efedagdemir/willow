@@ -143,11 +143,16 @@ body
 {
     background-image: url('../icons/search.png');
 }
+.willow-btn-help
+{
+    background-image: url('../icons/question.png');
+}
 
 #willow-willowLabel {
     /*---------------*/
     float: left;
 }
+
 
 
 #willow-panelBody {

@@ -1,6 +1,7 @@
 var cy = null;          // The variable that holds the cytoscape object.
 var interval = null;    // A setInterval() result that updates the session graph every 30 seconds.
 let container = document.createElement("div");
+let willowNodeClicked = false;
 
 /**
  * Initalizes the session graph as a cytoscape object with no elements.
@@ -133,9 +134,9 @@ function openPage(nodeId) {
     return true;
 }
 function openPageInNewTab(nodeId) {
+    willowNodeClicked = true;
     chrome.tabs.create({url: nodeId}, function () {
-        // sync after callback
-        //broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+         //sync after callback
     });
     return true;
 }
@@ -298,8 +299,6 @@ function messageReceived(request, sender, sendResponse) {
     } else if (request.message === "WILLOW_BACKGROUND_RESET_NODE_SIZES") {
         resetNodeSizes(request.option);
     } else if (request.message === "WILLOW_BACKGROUND_RUN_LAYOUT") {
-      //  alert("updateNodePosition " + cy.width());
-        // alert("here");
         handleRunLayoutMessage(request.option); // func. def. explains weird naming.
     } else if (request.message === "WILLOW_BACKGROUND_CLEAR_SESSION") {
         clearSG();
@@ -421,11 +420,11 @@ function recalcLayout() {
 function handleRunLayoutMessage(option) {
     if (option === "incremental") {
         runLayout();
-     //   alert("hande run layout"+cy.width());
+        // alert("hande run layout");
          broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab:true});
     } else if (option === "recalculate") {
         recalcLayout();
-      //  alert("how is it");
+        // alert("how is it");
         broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab:true});
     } else {
         //console.error("run layout request with invalid option");
