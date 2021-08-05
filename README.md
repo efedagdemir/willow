@@ -10,6 +10,8 @@ In order to use this project as an extension to Google Chrome:
   - Click ```Load unpacked``` button and choose ```willow/demo/``` as the extension directory
 
 After these steps, the extension should be loaded and ready to use. To see any implememented changes during the develepment process, click the reload button.
+
+
 <img width="755" alt="Screen Shot 2021-08-05 at 10 46 15" src="https://user-images.githubusercontent.com/63513562/128313019-f1525839-8c3a-4e1e-bce0-83417e895b16.png">
 
 
