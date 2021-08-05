@@ -21,7 +21,10 @@ After these steps, the extension should be loaded and ready to use. To see any i
 
 <img width="778" alt="Screen Shot 2021-08-05 at 10 33 19" src="https://user-images.githubusercontent.com/63513562/128310730-72ff752e-fe81-4ed5-a32e-d2cbb85311c3.png">
 
-- When extension icon clicked by default the extension window will be opened in a new dedicated tab. The user may also choose the view Willow as side panel
+- When extension icon clicked by default the extension window will be opened in a new dedicated tab. The user may also choose the view Willow as side panel. The side panel is movable and resizable. 
+
+<img width="1440" alt="Screen Shot 2021-08-05 at 16 51 49" src="https://user-images.githubusercontent.com/63513562/128361709-ba42f967-e627-447e-be9a-d08d6162f8ce.png">
+
 
 - Users can revisit the desired website easier by clicking on the node or restore any previous session and visit the desired webpage from that session. 
 
