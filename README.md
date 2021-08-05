@@ -25,6 +25,9 @@ After these steps, the extension should be loaded and ready to use. To see any i
 
 - Willow also provides a tool to crawl a particular URL and find all webpages underneath the given page. After the crawling has finished the node will display the number of broken links in its page(if any). This should be especially useful for web site developers.
 
+<img width="748" alt="Screen Shot 2021-08-05 at 11 42 41" src="https://user-images.githubusercontent.com/63513562/128320391-5a54cb2a-426e-4601-a5df-73f8cb329274.png">
+
+
 
 # Team 
 [Can Cebeci](https://github.com/CanCebeci), [Cem Cebeci](https://github.com/DraculAlucard), [Efe Dagdemir](https://github.com/efedagdemir), [](https://github.com/CanCebeci), [Tuana Turkmen](https://github.com/tuanaturkmen), [Selbi Ereshova](https://github.com/SelbiEreshova), and [Ugur Dogrusoz](https://github.com/ugurdogrusoz)
