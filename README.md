@@ -17,10 +17,13 @@ After these steps, the extension should be loaded and ready to use. To see any i
 
 
 # Usage
-After the extension is loaded, users can browse through the internet as they please and whevener they want to see the current graph of their browsing, the extension icon on the top right corner will present the browse history as a graph. Willow also provides a tool to crawl a particular URL and find all webpages underneath the given page. This should be especially useful for web site developers.
+- After the extension is loaded, users can browse through the internet as they please and whevener they want to see the current graph of their browsing, the extension icon on the top right corner will present the browse history as a graph. 
 
 <img width="778" alt="Screen Shot 2021-08-05 at 10 33 19" src="https://user-images.githubusercontent.com/63513562/128310730-72ff752e-fe81-4ed5-a32e-d2cbb85311c3.png">
 
+- Users can revisit the desired website easier or restore any previous session and visit the desired webpage from that session. 
+
+- Willow also provides a tool to crawl a particular URL and find all webpages underneath the given page. After the crawling has finished the node will display the number of broken links in its page(if any). This should be especially useful for web site developers.
 
 
 # Team 
