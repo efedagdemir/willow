@@ -30,6 +30,10 @@ After these steps, the extension should be loaded and ready to use. To see any i
 - User can search a keyword  usinf the search tool and the nodes whose URL contain the keyword will be highlighted
 
 
+# Annotation
+- The green arrow indicated the current active page in the tab
+- Notes icon indicates that a note has been added to the node
+<img width="473" alt="Screen Shot 2021-08-05 at 13 34 42" src="https://user-images.githubusercontent.com/63513562/128336494-9b0c6e12-91d2-41b4-85fa-c4bc7b8a4185.png">
 
 
 # Team 
