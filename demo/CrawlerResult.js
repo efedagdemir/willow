@@ -5,7 +5,7 @@ const cheerio = require('cheerio');
 const fetch = require('node-fetch');
 const urlParser = require('url');
 var mainURL;
-const seenUrls = {};
+let seenUrls = {};
 let crawlerURLs = {};
 
 const getUrl = (link, host, protocol) => {
@@ -44,7 +44,8 @@ async function crawlHelper(URL)
         protocol: protocol,
       parent: null
     });
-    console.log( "all done!");
+    seenUrls = {};
+    alert( "all done!");
     await chrome.runtime.sendMessage({
         message: "WILLOW_SPINNER_SYNC_REQUEST",
         action: "WILLOW_SPINNER_CLOSE",
