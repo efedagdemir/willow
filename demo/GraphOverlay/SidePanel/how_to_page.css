@@ -1,23 +1,30 @@
-#howToPage {
+#howToMenu
+{
     position: absolute;
-    top: 50%;
-    left: 50%;
-    padding-right: 20px;
-    padding-bottom: 25px;
-    background-color: #f4d58d; /* same as #panelHeader (side_panel.css)*/
+    background-color: #041424; /* same as #panelHeader (side_panel.css)*/
     border-radius: 20px;
     overflow: auto;
-    font-family:  'Century Gothic', sans-serif;
+    box-shadow: 2px 2px 5px 2px #8d0801;
+    user-select: none;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    text-shadow: 1px 1px #a8a8a8; /*yesil 708d81 ten f4d58d*/
-    color:#041424;
-}
+    padding-right: 10px;
+    padding-bottom: 30px;
 
-#willowHowToHeader {
-    padding: 10px;
-    background-color: #f4d58d;
-    color:#041424;
-    vertical-align: middle;
+
+}
+#menuHeader {
+    font-family: 'Century Gothic', sans-serif;
+    text-align: center;
+    align-items: center;
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    line-height: 40px;
+    font-size: 25px;
+    text-shadow: 2px 2px #8d0801;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    margin-top: 0px;
     
 }
 
@@ -25,7 +32,9 @@
     text-align: center;
     font-size: 28px;
     line-height: 60px;
-    text-shadow: 2px 2px #a8a8a8; /*yesil 708d81 ten f4d58d*/
+    text-shadow: 2px 2px #8d0801;
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
+
 }
 
 
@@ -35,34 +44,43 @@
     margin-top: 10px;
     margin-left: 20px;
     font-size: 16px;
+    text-shadow: 2px 2px #8d0801;
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
 }
 
 .willow_summary{
     color: #041424;
     font-weight: bold;
+    text-shadow: 2px 2px #8d0801;
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
 }
 
 .nested_summary{
-    color: #a01515;
     font-weight: bold;
     margin-left: 15px;
     margin-top: 10px;
+    text-shadow: 2px 2px #8d0801;
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
   
 }
 
 .details_p {
     padding: 7px;
     margin-left: 15px;
-    color:#041424;
+    text-shadow: 2px 2px #8d0801;
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
 }
 
 .nested_p {
     padding: 5px;
     margin-left: 15px;
+    text-shadow: 2px 2px #8d0801;
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
 }
 
 p {
-    color: #041424;
+    text-shadow: 2px 2px #8d0801;
+    color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
 }
 
 /* close button */ 
@@ -78,7 +96,7 @@ p {
     text-decoration: none;
     
     cursor: pointer;
-    background-color: #f4d58d;
+    background-color: #041424;
     background-size: cover;
     border: none;
     opacity: 1;

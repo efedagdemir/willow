@@ -7,50 +7,56 @@ chrome.storage.local.get(["WILLOW_HELP_OPEN"], function (res) {
 let howToWrapper;
 var howToPageHTML = `
 <!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="${chrome.runtime.getURL("GraphOverlay/SidePanel/how_to_page.css")}">
-    <style>
+    <html>
+    <head>
+        <link rel="stylesheet" href="${chrome.runtime.getURL("GraphOverlay/SidePanel/how_to_page.css")}">
+        <style>
+        /* width */
         ::-webkit-scrollbar {
             width: 10px;
         }
 
+        /* Track */
         ::-webkit-scrollbar-track {
             background: rgba(0, 0, 0, 0.0);
-            border-radius: 20px;
+            border-radius: 10px;
+            
         }
        
+        /* Handle */
         ::-webkit-scrollbar-thumb {
             background: #888; 
-            border-radius: 40px;
         }
 
+        /* Handle on hover */
         ::-webkit-scrollbar-thumb:hover {
             background: #555; 
         }
-    </style>
-</head>
+        ::-webkit-scrollbar-thumb {
+            border-radius: 20px;
+        }
+        </style>
 
-<body>
-    <div id="howToPage">
-        <div id="willowHowToHeader">       
-            <button type="button" id="how_to_close_btn"></button><br>
-            <p id="willow_header_how_to"> 
-                Info and help
-            </p>
+    </head>
+
+    <body>
+    <div id="howToMenu">
+        <div class="how_to_close_btn"> <button type="button" id="how_to_close_btn"></button>
         </div>
-        <div id="willowHowToBody">
-         <details class="willow_detail" id="det1">
+        <div id="menuHeader">
+           
+            <p> Info & Help</p>
+        </div>
+        <div id="menuBody">
+                <details class="willow_detail" id="det1">
                 <summary class="willow_summary">About us</summary>
                     <div id="infoPage"> 
                         <div id="willowInfoHeader">
-                        <p id="firstP"> 
-                            Willow: Graph-Based Browsing
-                           </p>
-
-                         </div>
+                            <p id="firstP"> 
+                                Willow: Graph-Based Browsing
+                            </p>
+                        </div>
                          <div id="willowInfoBody">
-            
                          <p id="secondP">  
                              Bilkent CS Senior Design Project <br> <br>
                            <b> Contact: </b> <br>
@@ -59,18 +65,17 @@ var howToPageHTML = `
                                      <b> Github: </b> <a href="https://github.com/efedagdemir/willow">Willow</a>     
                             </p>
         
-            <footer id="willow_footer">
-                Version 2.0.0 - 2021 <br>  
+                        <footer id="willow_footer">
+                            Version 2.0.0 - 2021 <br>  
                 
-                 <br> 
-                Icons made by "Smashicons"   	from flaticon.com <br>
-                Icons made by "Freepik" 	  	from flaticon.com <br>
-                Icons made by "Pixel perfect" 	from flaticon.com 
-            </footer>
-            <br> 
-
-        </div>    
-    </div>
+                            <br> 
+                            Icons made by "Smashicons"   \tfrom flaticon.com <br>
+                            Icons made by "Freepik" \t  \tfrom flaticon.com <br>
+                            Icons made by "Pixel perfect" \tfrom flaticon.com 
+                        </footer>
+                            <br> 
+                        </div>    
+                    </div>
             </details>
             <details class="willow_detail" id="det1">
                 <summary class="willow_summary">What is the purpose of Willow?</summary>
@@ -110,10 +115,9 @@ var howToPageHTML = `
                 the <b>Export</b> option. Similarly they can re-open any exported session from their files with the 
                 <b>Import</b> option. The active tabs on the saved graph are opened in the browser during the import process. </p>
             </details>
-        </div>
     </div>
-</body>
-</html>
+    </body>
+    </html>
 `;
 
 function openHowToPage(isOrigin) {
