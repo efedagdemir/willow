@@ -27,7 +27,7 @@ function broadcastSyncRequest(request) {
      * By default, the active tab is not notified
      */
 
-    chrome.storage.local.set({WILLOW_SP_WIDTH: "700px"});
+    chrome.storage.local.set({WILLOW_SP_WIDTH: "750px"});
     chrome.windows.getAll({populate:true},function(windows){
         windows.forEach(function(window){
             window.tabs.forEach(function(tab){
