@@ -48,8 +48,6 @@ async function runSidePanel() {
           <script src="https://unpkg.com/layout-base/layout-base.js"></script>
           <script src="https://unpkg.com/cose-base/cose-base.js"></script>
           <script src="cytoscape.min.js"></script>
-          <script src="cytoscape-view-utilities.js"></script>
-          <script src="geometric.min.js"></script>
           <script src="node_modules/dagre/dist/dagre.min.js"></script>
           <script src="node_modules/cytoscape-dagre/cytoscape-dagre.js"></script>
         </head>
