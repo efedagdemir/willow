@@ -49,7 +49,7 @@ function openCrawlMenu(isOrigin) {
         <div id="menuBody">
            
                 <div class="topnav">
-                    <input type="text" placeholder="URL..." id="URL" >
+                    <input id="crawl_text" type="text" placeholder="URL..." id="URL" >
                 </div>
             <table id="settings_button_table1" class="willow_tables">
                 <tr class="space_table_cell">
@@ -65,8 +65,11 @@ function openCrawlMenu(isOrigin) {
     document.body.append(menuWrapper);
     addCrawlMenuListeners();
     menuIsOpen = true;
+    setFocusToTextBoxCrawl();
 }
-
+function setFocusToTextBoxCrawl(){
+    document.getElementById("crawl_text").focus();
+}
 function closeCrawlMenu(isCross) {
 
     if (document.body.contains(menuWrapper)) {

@@ -51,7 +51,7 @@ function searchOpen()
         <div id="menuBody">
            
                 <div class="topnav">
-                    <input type="text" placeholder="Keyword" id="search_URL" >
+                    <input id= "searchKeyword" type="text" placeholder="Keyword" id="search_URL" >
                 </div>
           
             <br><br><br>
@@ -70,9 +70,12 @@ function searchOpen()
     document.body.append(searchWrapper);
     //alert(spinnerOpen);
     addSearchListeners();
+    setFocusToTextBoxSearch();
     chrome.storage.local.set({ WILLOW_SEARCH_OPEN_REQUEST: true });
 }
-
+function setFocusToTextBoxSearch(){
+    document.getElementById("searchKeyword").focus();
+}
 function closeSearch(isCross) {
 
     if (document.body.contains(searchWrapper)) {
