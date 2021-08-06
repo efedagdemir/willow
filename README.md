@@ -32,7 +32,10 @@ After these steps, the extension should be loaded and ready to use. To see any i
 
 <img width="748" alt="Screen Shot 2021-08-05 at 11 42 41" src="https://user-images.githubusercontent.com/63513562/128320391-5a54cb2a-426e-4601-a5df-73f8cb329274.png">
 
-- User can search a keyword  usinf the search tool and the nodes whose URL contain the keyword will be highlighted
+- User can search a keyword  using the search tool and the nodes whose URL contain the keyword will be highlighted
+
+<img width="926" alt="Screen Shot 2021-08-06 at 13 12 40" src="https://user-images.githubusercontent.com/63513562/128495405-72105481-7ccf-460f-b1c8-7c0e772a0b0e.png">
+
 
 
 # Annotation
