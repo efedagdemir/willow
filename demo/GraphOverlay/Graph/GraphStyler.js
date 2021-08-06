@@ -32,6 +32,8 @@ function renderNode( numOfBrokenLinks, ele) {
 }
 
 function applyStyle() {
+    //alert("in style");
+
     cy.style()/*.fromJson({'wheelSensitivity': '0.1'})*/
         .selector('node')
         .style({
@@ -90,7 +92,29 @@ function applyStyle() {
             'background-clip': ['node', 'none','none'],
             'bounds-expansion': ['35px','35px','35px','35px'],
             'font-family' : 'Open Sans',
-            'font-size': 'data(title_size)'
+            'font-size': 'data(title_size)',
+            'overlay-color': function (ele)
+            {
+                if( ele.data('foundBySearch') === 0)
+                {
+                    return;
+                }
+                else if( ele.data('foundBySearch') === 1)
+                {
+                    return 'yellow';
+                }
+            },
+            'overlay-opacity':function (ele)
+            {
+                if( ele.data('foundBySearch') === 0)
+                {
+                    return;
+                }
+                else if( ele.data('foundBySearch') === 1)
+                {
+                    return 0.4;
+                }
+            }
         })
         .selector('edge')
         .style({
@@ -140,6 +164,7 @@ function applyStyle() {
             'background-height': ['100%', '100%','40%'],
             'background-position-x': ['0.5px', '-30px','62.5px'],
         } );
+
 
 }
 function addRemoveHighlight(collection, remove)

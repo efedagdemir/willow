@@ -51,7 +51,7 @@ function searchOpen()
         <div id="menuBody">
            
                 <div class="topnav">
-                    <input type="text" placeholder="Search" id="search_URL" >
+                    <input type="text" placeholder="Keyword" id="search_URL" >
                 </div>
           
             <br><br><br>

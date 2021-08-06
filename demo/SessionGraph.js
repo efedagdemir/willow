@@ -314,6 +314,11 @@ function messageReceived(request, sender, sendResponse) {
         console.log("URL_TO_SEARCH", request.URL_TO_SEARCH );
         searchURL(request.URL_TO_SEARCH);
     }
+    else if(request.message === "WILLOW_REMOVE_ALL_HIGHLIGHTS" )
+    {
+        removeAllHighlights();
+    }
+
 }
 
 async function searchURL( word)
@@ -323,30 +328,49 @@ async function searchURL( word)
     word = word.toLowerCase();
 
     //Remove highlighted(found) nodes if any
-    let collectionToRemoveHighlight = cy.elements('node[foundBySearch = 1]');
-    addRemoveHighlight(collectionToRemoveHighlight, true);
-    await cy.nodes().forEach(function( ele ){
+    //let collectionToRemoveHighlight = cy.elements('node[foundBySearch = 1]');
+    //addRemoveHighlight(collectionToRemoveHighlight, true);
+      cy.nodes().forEach(function( ele )
+    {
         if(ele.data("foundBySearch") === 1)
         {
             ele.data("foundBySearch", 0);
+            console.log("already highlighted",ele.id(),ele.data("foundBySearch"));
         }
     });
 
     //Highlight matched nodes
+    let found = false;
     cy.nodes().forEach(function( ele ){
         let lowerCaseURL = ele.id().toLowerCase();
         if( lowerCaseURL.includes(word) )
         {
+            found = true;
             ele.data("foundBySearch", 1);
             console.log(ele.id());
         }
     });
-    let collectionToHighlight = cy.elements('node[foundBySearch = 1]');
-    addRemoveHighlight(collectionToHighlight, false);
-    
-    cy.style().update();
+    if(!found)
+    {
+        alert("Nothing found");
+    }
+    //let collectionToHighlight = cy.elements('node[foundBySearch = 1]');
+    //addRemoveHighlight(collectionToHighlight, false);
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
 }
+function removeAllHighlights()
+{
+    cy.nodes().forEach(function( ele )
+    {
+        if(ele.data("foundBySearch") === 1)
+        {
+            ele.data("foundBySearch", 0);
+            console.log("already highlighted trying to remove",ele.id(),ele.data("foundBySearch"));
+        }
+    });
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
 
+}
 function runLayout(){
     //container.style.width = '300px';
     //console.log(cy.width());

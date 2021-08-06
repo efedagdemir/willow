@@ -255,6 +255,14 @@ function syncNotes(){
         }
     });
 }
+
+function requestToremoveAllHighlights()
+{
+    chrome.runtime.sendMessage({
+        message: "WILLOW_REMOVE_ALL_HIGHLIGHTS"
+    });
+
+}
 function applyContextMenu() {
     contextMenu = cy.contextMenus({
         evtType: 'cxttap',
@@ -498,6 +506,18 @@ function applyContextMenu() {
                 image: {src: "../../icons/fit.png", width: 14, height: 14, x: 3, y: 3},
                 onClickFunction: function (event) {
                     fitViewport();
+                },
+                show: true,
+                coreAsWell: true
+            },
+            {
+                id: 'removeHighlights',
+                content: 'Remove all highlights',
+                tooltipText: 'Remove all highlights from search',
+                selector: "",
+                image: {src: "../../icons/remove_highlight.png", width: 14, height: 14, x: 3, y: 3},
+                onClickFunction: function (event) {
+                    requestToremoveAllHighlights();
                 },
                 show: true,
                 coreAsWell: true
