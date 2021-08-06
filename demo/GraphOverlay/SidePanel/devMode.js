@@ -49,7 +49,7 @@ function openCrawlMenu(isOrigin) {
         <div id="menuBody">
            
                 <div class="topnav">
-                    <input id="crawl_text" type="text" placeholder="URL..." id="URL" >
+                    <input type="text" placeholder="URL..." id="URL" >
                 </div>
             <table id="settings_button_table1" class="willow_tables">
                 <tr class="space_table_cell">
@@ -68,7 +68,7 @@ function openCrawlMenu(isOrigin) {
     setFocusToTextBoxCrawl();
 }
 function setFocusToTextBoxCrawl(){
-    document.getElementById("crawl_text").focus();
+    document.getElementById("URL").focus();
 }
 function closeCrawlMenu(isCross) {
 
@@ -102,6 +102,13 @@ function crawlGivenURL()
 function addCrawlMenuListeners() {
     document.getElementById("crawler_close_btn").onclick   = () => closeCrawlMenu(true);
     document.getElementById("crawl").onclick   = () => crawlGivenURL();
+    document.getElementById("URL")
+        .addEventListener("keyup", function(event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                document.getElementById("crawl").click();
+            }
+        });
 }
 
 
