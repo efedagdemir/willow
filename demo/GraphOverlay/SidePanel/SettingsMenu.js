@@ -1,9 +1,9 @@
 // initialize the menu's open/closee state
 chrome.storage.local.get(["WILLOW_SETTINGS_OPEN","WILLOW_HOW_TO_OPEN", "WILLOW_INFO_OPEN"], function (res) {
-  if (res.WILLOW_SETTINGS_OPEN && !res.WILLOW_HOW_TO_OPEN && !res.WILLOW_INFO_OPEN) {
-      //console.log("bir")
-      openSettingsMenu(false);
-  }
+    if (res.WILLOW_SETTINGS_OPEN && !res.WILLOW_HOW_TO_OPEN && !res.WILLOW_INFO_OPEN) {
+        //console.log("bir")
+        openSettingsMenu(false);
+    }
 });
 
 var menuIsOpen = false;
@@ -28,7 +28,6 @@ function openSettingsMenu(isOrigin) {
         ::-webkit-scrollbar {
             width: 10px;
         }
-
         /* Track */
         ::-webkit-scrollbar-track {
             background: rgba(0, 0, 0, 0.0);
@@ -40,7 +39,6 @@ function openSettingsMenu(isOrigin) {
         ::-webkit-scrollbar-thumb {
             background: #888; 
         }
-
         /* Handle on hover */
         ::-webkit-scrollbar-thumb:hover {
             background: #555; 
@@ -49,9 +47,7 @@ function openSettingsMenu(isOrigin) {
             border-radius: 20px;
         }
         </style>
-
     </head>
-
     <body>
     <div id="settingsMenu">
         <div class="settings-close-button"> <button type="button" id="settings_close_btn"></button>
@@ -95,17 +91,18 @@ function openSettingsMenu(isOrigin) {
                     <td> <button id="historyBtn"  class="table-buttons1 histBtn" title="Show History">History</button></td>
                 </tr> 
             </table>
-         
+               
+          
         </div>
     </div>
     </body>
     </html>
     `;
-    
+
     menuWrapper.innerHTML = settingsMenuHTML;
     document.body.append(menuWrapper);
     addSettingsMenuListeners();
-    arrangeLayoutRadioButton(); 
+    arrangeLayoutRadioButton();
 
     menuIsOpen = true;
 }
@@ -118,7 +115,7 @@ function closeSettingsMenu(isCross) {
             // set global state
             chrome.storage.local.set({ WILLOW_SETTINGS_OPEN: false });
             // broadcast
-            chrome.runtime.sendMessage({ 
+            chrome.runtime.sendMessage({
                 message: "WILLOW_SETTINGS_SYNC_REQUEST",
                 action: "WILLOW_SETTINGS_SYNC_CLOSE"
             });
@@ -128,15 +125,13 @@ function closeSettingsMenu(isCross) {
 }
 
 function addSettingsMenuListeners() {
-    document.getElementById("settings_close_btn").onclick   = () => closeSettingsMenu(true); 
-    document.getElementById("resetSizesUniBtn").onclick     = resetSizesUniBtn_handler; 
+    document.getElementById("settings_close_btn").onclick   = () => closeSettingsMenu(true);
+    document.getElementById("resetSizesUniBtn").onclick     = resetSizesUniBtn_handler;
     document.getElementById("resetSizesPRBtn").onclick      = resetSizesPRBtn_handler;
-   // document.getElementById("sliderTrans").oninput          = sliderTrans_handler; 
-    document.getElementById("exportBtn").onclick            = exportBtn_handler; 
-    document.getElementById("importBtn").onclick            = importBtn_handler; 
-    document.getElementById("historyBtn").onclick           = historyBtn_handler; 
-    document.getElementById("infoBtn").onclick     = () =>    openInfoPage(true);      //defined in InfoPage.js
-    document.getElementById("howToBtn").onclick    = () =>    openHowToPage(true);     //defined in HowToPage.js
+    // document.getElementById("sliderTrans").oninput          = sliderTrans_handler;
+    document.getElementById("exportBtn").onclick            = exportBtn_handler;
+    document.getElementById("importBtn").onclick            = importBtn_handler;
+    document.getElementById("historyBtn").onclick           = historyBtn_handler;
     document.getElementById("layout_radio1").addEventListener("change", function(event) {radiBtn_handler(1)});
     document.getElementById("layout_radio2").addEventListener("change", function(event) {radiBtn_handler(2)});
 }
@@ -146,7 +141,7 @@ function arrangeLayoutRadioButton(){
     chrome.storage.local.get(["WILLOW_LAYOUT_OPT"], function (res) {
         if (res.WILLOW_LAYOUT_OPT == 1)
             document.getElementById("layout_radio1").checked = "checked";
-        else 
+        else
             document.getElementById("layout_radio2").checked = "checked";
     });
 }
@@ -176,7 +171,7 @@ function sliderTrans_handler() {
               opacity : document.getElementById("sliderTrans").value.toString()
             }
           });
-        
+
     });
 }*/
 
@@ -209,13 +204,13 @@ function historyBtn_handler() {
     });
 }
 
-/* Sends synchronization message about 
+/* Sends synchronization message about
    which radio button was checked     */
 function radiBtn_handler(button_no){
 
     chrome.storage.local.set({ WILLOW_LAYOUT_OPT: button_no });
     // notify other tabs with a sync request
-    chrome.runtime.sendMessage({ 
+    chrome.runtime.sendMessage({
         message: "WILLOW_RADIO_SYNC_REQUEST",
         button_no: button_no
     });
@@ -229,25 +224,23 @@ function radiBtn_handler(button_no){
 // listen for settings menu sync requests
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        //alert("here in sett");
         if (request.message == "WILLOW_SETTINGS_SYNC_REQUEST") {
             handleSettingsSyncRequest(request);
         }
         else if ( request.message == "WILLOW_RADIO_SYNC_REQUEST"){
-            chrome.storage.local.set({ WILLOW_LAYOUT_OPT: request.button_no });  
+            chrome.storage.local.set({ WILLOW_LAYOUT_OPT: request.button_no });
             document.getElementById("layout_radio" + request.button_no).checked = "checked";
         }
     }
 );
 
 function handleSettingsSyncRequest(request) {
-    
+
     if (request.action == "WILLOW_SETTINGS_SYNC_OPEN") {
-        console.log("here in sett");
         //console.log("sync_open recv.");
         openSettingsMenu(false);
     } else if (request.action == "WILLOW_SETTINGS_SYNC_CLOSE") {
         //console.log("sync_closed recv.");
-        closeSettingsMenu(false);    
+        closeSettingsMenu(false);
     }
 }
