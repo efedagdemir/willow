@@ -61,8 +61,8 @@ var howToPageHTML = `
                              Bilkent CS Senior Design Project <br> <br>
                            <b> Contact: </b> <br>
                                 willow.extension@gmail.com <br> <br>
-                                    <b> Supervisor: </b> <a href="http://www.cs.bilkent.edu.tr/~ugur/">Ugur Dogrusoz</a>  <br>
-                                     <b> Github: </b> <a href="https://github.com/efedagdemir/willow">Willow</a>     
+                                    <b> Supervisor: </b> <a id="link" href="http://www.cs.bilkent.edu.tr/~ugur/">Ugur Dogrusoz</a>  <br>
+                                     <b> Github: </b> <a id="link" href="https://github.com/efedagdemir/willow">Willow</a>     
                             </p>
         
                         <footer id="willow_footer">

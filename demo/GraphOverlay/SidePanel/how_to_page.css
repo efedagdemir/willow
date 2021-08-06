@@ -63,6 +63,10 @@
     color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
   
 }
+#link
+{
+    color: white;
+}
 
 .details_p {
     padding: 7px;
@@ -86,7 +90,7 @@ p {
 /* close button */ 
 #how_to_close_btn {
     float: right;
-    background-image: url('../../icons/close_dark.png');
+    background-image: url('../../icons/close.png');
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -94,7 +98,7 @@ p {
     -o-user-select: none;
     user-select: none;
     text-decoration: none;
-    
+
     cursor: pointer;
     background-color: #041424;
     background-size: cover;
@@ -102,11 +106,10 @@ p {
     opacity: 1;
     height: 16px;
     width: 16px;
-
     margin: 0%;
     padding: 0%;
-    margin-top: 5px;
-    margin-right: 10px; 
+    margin-top: 15px;
+    margin-right: 17px;
     
 }
 
