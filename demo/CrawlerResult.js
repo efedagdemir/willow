@@ -37,6 +37,7 @@ async function crawlHelper(URL)
     const { host, protocol } = await urlParser.parse(URL);
     //console.log("host", host);
     //console.log("protocol", protocol);
+    cy.startBatch();
     await  crawl({
         url: URL,
         ignore: "/search",
@@ -45,12 +46,17 @@ async function crawlHelper(URL)
       parent: null
     });
     seenUrls = {};
-    alert( "all done!");
+    cy.endBatch();
+    //alert( "all done!");
+    runLayout();
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL"});
+
     await chrome.runtime.sendMessage({
         message: "WILLOW_SPINNER_SYNC_REQUEST",
         action: "WILLOW_SPINNER_CLOSE",
         URL: URL
     });
+
 }
 async function buildGraph( parentURL,childURL, title )
 {
@@ -92,7 +98,7 @@ async function buildGraph( parentURL,childURL, title )
         }
     }
 
-    runLayout();
+    //runLayout();
     var instance = cy.layoutUtilities(
         {    idealEdgeLength: 50,        //10
             offset: 20,                 //10
@@ -104,7 +110,7 @@ async function buildGraph( parentURL,childURL, title )
         });
 
     instance.placeNewNodes(cy.getElementById(childURL));
-    runLayout();
+    //runLayout();
     //trial
     var components = cy.elements().components();
     var subgraphs = [];
@@ -139,7 +145,8 @@ async function buildGraph( parentURL,childURL, title )
             }
         }).run();
     });
-    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
+   // alert("sync please");
+    //broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", action:"WILLOW_ONLY_STYLE"});
     return null;
 }
 function handleErrors(response) {
@@ -182,7 +189,7 @@ const crawl = async ({ url, ignore, host, protocol, parent }) => {
           let parentNode = cy.getElementById(parent);
           let broken =  parseInt(parentNode.data('brokenLinks')) + 1;
           await parentNode.data( 'brokenLinks',  broken);
-          broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
+          //broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", action:"WILLOW_ONLY_STYLE"});
       }
       else
       {

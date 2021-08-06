@@ -111,7 +111,7 @@ function onNotes(id){
 }
 
  function updateCytoscape(drag) {
-    console.log(  "caller is " + updateCytoscape.caller);
+   // console.log(  "caller is " + updateCytoscape.caller);
     chrome.runtime.sendMessage({ type: "getCytoscapeJSON" }, async function (response) {
         ////console.log("RESPONSE RECEIVED");
         ////console.log(JSON.stringify(response));
@@ -135,8 +135,6 @@ function onNotes(id){
         }
 
         applyStyle();
-        cy.style().update();
-
         if (!contextMenuApplied) {
             applyContextMenu();
             contextMenuApplied = true;
@@ -642,11 +640,17 @@ chrome.runtime.onMessage.addListener(
                 //alert( "line 620");
                 updateCytoscape(false);
             }
+            else if( request.action === "WILLOW_ONLY_STYLE")
+            {
+                updateCytoscape(true);
+
+            }
             else
             {
                 updateCytoscape(true);
 
             }
+
            //  alert( "end");
         } else if (request.message === "WILLOW_GRAPH_VIEWPORT_CENTER") {
             centerViewport();
@@ -664,7 +668,7 @@ chrome.runtime.onMessage.addListener(
         else if(request.message === "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL" )
         {
                 updateCytoscape(false);
-           // alert( "end");
+              // alert( "end");
         }
     }
 );

@@ -282,7 +282,6 @@ async function urlLoaded(tabId, url) {
     // update the URL open in the tab.
     tabURLs.set(tabId, url);
 
-        //alert("monitor 286")
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
     return null;
 
