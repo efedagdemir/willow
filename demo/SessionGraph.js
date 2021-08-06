@@ -343,7 +343,8 @@ async function searchURL( word)
     let found = false;
     cy.nodes().forEach(function( ele ){
         let lowerCaseURL = ele.id().toLowerCase();
-        if( lowerCaseURL.includes(word) )
+        let lowerCaseTitle = ele.data('title').toLowerCase();
+        if( lowerCaseURL.includes(word) || lowerCaseTitle.includes(word) )
         {
             found = true;
             ele.data("foundBySearch", 1);
