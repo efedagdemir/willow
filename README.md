@@ -53,5 +53,7 @@ The user may also search a keyword using the Search tool availble in the toolbar
 <img width="200" alt="Screen Shot 2021-08-05 at 13 34 42" src="https://user-images.githubusercontent.com/63513562/128336494-9b0c6e12-91d2-41b4-85fa-c4bc7b8a4185.png">
 </p>
 
+The users are also allowed to change each node's border color, size, etc. for classification purposes.
+
 # Team 
 [Can Cebeci](https://github.com/CanCebeci), [Cem Cebeci](https://github.com/DraculAlucard), [Efe Dagdemir](https://github.com/efedagdemir), [](https://github.com/CanCebeci), [Tuana Turkmen](https://github.com/tuanaturkmen), [Selbi Ereshova](https://github.com/SelbiEreshova), and [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [Computer Engineering Department](http://www.cs.bilkent.edu.tr) at Bilkent University.
