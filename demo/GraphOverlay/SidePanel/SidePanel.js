@@ -58,8 +58,8 @@ async function runSidePanel() {
             <img title="Willow: Graph-Based Browsing" id="willow-willowIcon" src="${chrome.extension.getURL("../../images/willowIcon_50x50.png")}" alt="Willow">
             <a class="willow-label" id="willow-willowLabel" style="display:;">W I L L O W</a>
             
-            <button title="Help"         class="willow-headerBtn willow-btn-help"     id="willow-help"  >                              </button>
             <button title="Close"         class="willow-headerBtn willow-btn-close"     id="willow-closeBtn"  >                              </button>
+            <button title="Help"         class="willow-headerBtn willow-btn-help"     id="willow-help"  >                              </button>
             <button title="View in Dedicated Tab"         class="willow-headerBtn willow-btn-newTab"   id="willow-newTabBtn"   >             </button>
             <button title="Dock"          class="willow-headerBtn willow-btn-dock"      id="willow-dockBtn"      style="display:none;">      </button>
             <button title="Undock"        class="willow-headerBtn willow-btn-undock"    id="willow-undockBtn"              >                 </button>
