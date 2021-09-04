@@ -1,10 +1,17 @@
 # Willow
 Willow was originally desinged and implemented as a Bilkent CS Senior Design Project. Later it was improved with new features and bug fixes.
 
+# Dependencies  
+-[Cheerio npm](https://www.npmjs.com/package/cheerio)
+-[node-fetch npm](https://www.npmjs.com/package/node-fetch)
+
 # Installation 
 
 In order to use this project as an extension to Google Chrome:
   - Download/clone the project from this repository
+  - Install the following dependicies in the repository
+           -[Cheerio npm](https://www.npmjs.com/package/cheerio)
+           -[node-fetch npm](https://www.npmjs.com/package/node-fetch)
   - Navigate to ```chrome://extensions``` or **Chrome menu > More Tools > Extensions** or **Extensions menu button > Manage Extensions**
   - Make sure ```Developer mode``` is enabled (toggle switch on the top right) 
   - Click ```Load unpacked``` button and choose ```willow/demo/``` as the extension directory
