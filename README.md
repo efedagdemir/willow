@@ -5,7 +5,7 @@ Willow was originally desinged and implemented as a Bilkent CS Senior Design Pro
 
 In order to use this project as an extension to Google Chrome:
   - Download/clone the project from this repository
-  - Naviate to ```chrome://extensions``` or **Chrome menu > More Tools > Extensions** or **Extensions menu button > Manage Extensions**
+  - Navigate to ```chrome://extensions``` or **Chrome menu > More Tools > Extensions** or **Extensions menu button > Manage Extensions**
   - Make sure ```Developer mode``` is enabled (toggle switch on the top right) 
   - Click ```Load unpacked``` button and choose ```willow/demo/``` as the extension directory
 
@@ -22,7 +22,7 @@ Once the extension is loaded, the user can browse through the Internet as they p
 <img width="600" alt="Screen Shot 2021-08-05 at 10 33 19" src="https://user-images.githubusercontent.com/63513562/128310730-72ff752e-fe81-4ed5-a32e-d2cbb85311c3.png">
 </p>
 
-When the extension icon is clicked, by default the Willow extension window will be opened in a new dedicated tab. The user may also choose the view Willow on a side panel. This side panel is movable and resizable. 
+When the extension icon is clicked, by default the Willow extension window will be opened in a new dedicated tab. The user may also choose to view Willow on a side panel. This side panel is movable and resizable. 
 
 <p align="center">
 <img width="800" alt="Screen Shot 2021-08-05 at 16 51 49" src="https://user-images.githubusercontent.com/63513562/128361709-ba42f967-e627-447e-be9a-d08d6162f8ce.png">
@@ -56,4 +56,4 @@ The user may also search a keyword using the Search tool availble in the toolbar
 The users are also allowed to change each node's border color, size, etc. for classification purposes.
 
 # Team 
-[Can Cebeci](https://github.com/CanCebeci), [Cem Cebeci](https://github.com/DraculAlucard), [Efe Dagdemir](https://github.com/efedagdemir), [](https://github.com/CanCebeci), [Tuana Turkmen](https://github.com/tuanaturkmen), [Selbi Ereshova](https://github.com/SelbiEreshova), and [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [Computer Engineering Department](http://www.cs.bilkent.edu.tr) at Bilkent University.
+[Can Cebeci](https://github.com/cemcebeci), [Efe Dagdemir](https://github.com/efedagdemir), [Tuana Turkmen](https://github.com/tuanaturkmen), [Sezin Zeydan](https://github.com/sezinzeydan), [Selbi Ereshova](https://github.com/SelbiEreshova), and [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [Computer Engineering Department](http://www.cs.bilkent.edu.tr) at Bilkent University.
