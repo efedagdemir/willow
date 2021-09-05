@@ -1,16 +1,18 @@
 var cy = null;          // The variable that holds the cytoscape object.
 var interval = null;    // A setInterval() result that updates the session graph every 30 seconds.
+let container = document.createElement("div");
+let willowNodeClicked = false;
+
 /**
  * Initalizes the session graph as a cytoscape object with no elements.
  */
 async function initializeSG() {
     // create an HTML container for the graph in the background page
     //* This page is not rendered, the container's sole purpose is to enable cytospace.js to work properly.
-    let container = document.createElement("div");
-    // ! This is problematic! 
-    container.style.width = container.style.height = "300px"; // random values for width and height.
+    // ! This is problematic!
+   // container.style.width = container.style.height = "700px"; // random values for width and height.
     document.body.appendChild(container);
-
+    container.id ="container";
 
     let nextId;
     await new Promise((resolve, reject) => {chrome.storage.local.get("nextId", function (result) {
@@ -18,7 +20,7 @@ async function initializeSG() {
         chrome.storage.local.set({nextId: nextId + 1});
         resolve();
     })});
-    
+
     cy = cytoscape({
         container: container,
         style: [ // the stylesheet for the graph
@@ -40,10 +42,11 @@ async function initializeSG() {
             // ready 1
         }
     });
-    
     cy.data("id", nextId);
     applyStyle();
     cytoscape.warnings(false);
+
+    //Adding highlight style
 
     // start saving the session graph every 30 seconds.
     interval = setInterval( saveCurrentSession, 30000);
@@ -95,7 +98,10 @@ function getCytoscapeJSON(){
 function updateNodePosition(nodeId, newPos) {
     cy.getElementById(nodeId).position(newPos);
     //addFixedNodes(nodeId, newPos, 0);
+  //  alert("dragging");
     broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
+    //alert("done dragging");
+   // alert("updateNodePosition " + cy.width());
 }
 
 function removeNode(nodeId) {
@@ -118,7 +124,6 @@ function removeNode(nodeId) {
 function openPage(nodeId) {
     //! This results in an edge because the transition type of the visit caused by this function is "link".
     openingFromGraph.set(nodeId, true);
-
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         var tab = tabs[0];
         chrome.tabs.update(tab.id, {url: nodeId}, function() {
@@ -128,14 +133,14 @@ function openPage(nodeId) {
     });
     return true;
 }
-
 function openPageInNewTab(nodeId) {
+    willowNodeClicked = true;
     chrome.tabs.create({url: nodeId}, function () {
-        // sync after callback
-        //broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+         //sync after callback
     });
     return true;
 }
+
 
 function removeEdge(source, target) {
     //! Bu henüz olmuyo.
@@ -173,7 +178,7 @@ function changeNodeSize(nodeId, size, tSize) {
     let node = cy.getElementById(nodeId); 
     node.data("width", size);
     node.data("title_size", tSize);
-    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST"});
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", action: "CHANGE_NODE_SIZE"});
 }
 
 var UNIFORM_DEFAULT_SIZE = 35;
@@ -181,20 +186,18 @@ var UNIFORM_TITLE_SIZE = '20px';
 var PAGERANK_AVG_SIZE = 55;
 var PAGERANK_AVG_TITLE_SIZE = '22px';
 function resetNodeSizes(option) {
-    if (option == "uniform") {
+    if (option === "uniform") {
         cy.nodes().forEach(function( ele ){
             ele.data("width", UNIFORM_DEFAULT_SIZE);
             ele.data('title_size', UNIFORM_TITLE_SIZE);
         });
-        runLayout();
-        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
-    } else if (option == "pagerank") {
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST",notifyActiveTab:true});
+    } else if (option === "pagerank") {
         var pr = cy.elements().pageRank();
         cy.nodes().forEach(function( ele ){
             ele.data("width", pr.rank(ele) * PAGERANK_AVG_SIZE * cy.nodes().size());
             ele.data('tite_size', PAGERANK_AVG_TITLE_SIZE);
         });
-        runLayout();
         broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
     } else {
         //console.error("resetNodeSizes called with invalid option");
@@ -267,7 +270,7 @@ async function importJSON(json) {
     
     chrome.tabs.query( {active:true, currentWindow: true}, (tabs) => { chrome.tabs.remove(tabs[0].id)});
 
-    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab: true});
 }
 
 function addComment(nodeId,comment){
@@ -277,52 +280,113 @@ function addComment(nodeId,comment){
 }
 
 function messageReceived(request, sender, sendResponse) {
-    if (request.type == "getCytoscapeJSON") {
+    if (request.type ==="getCytoscapeJSON") {
         sendResponse(this.getCytoscapeJSON());
-    } else if (request.message == "WILLOW_BACKGROUND_UPDATE_NODE_POS") {
+    } else if (request.message === "WILLOW_BACKGROUND_UPDATE_NODE_POS") {
         updateNodePosition(request.nodeId, request.newPos);
-    } else if (request.message == "WILLOW_BACKGROUND_REMOVE_NODE") {
+    } else if (request.message === "WILLOW_BACKGROUND_REMOVE_NODE") {
         removeNode(request.nodeId);
-    } else if (request.message == "WILLOW_BACKGROUND_OPEN_PAGE") {
+    } else if (request.message === "WILLOW_BACKGROUND_OPEN_PAGE") {
         openPage(request.nodeId);
-    } else if (request.message == "WILLOW_BACKGROUND_OPEN_PAGE_IN_NEW_TAB") {
+    } else if (request.message === "WILLOW_BACKGROUND_OPEN_PAGE_IN_NEW_TAB") {
         openPageInNewTab(request.nodeId);
-    } else if (request.message == "WILLOW_BACKGROUND_REMOVE_EDGE") {
+    } else if (request.message === "WILLOW_BACKGROUND_REMOVE_EDGE") {
         removeEdge(request.source, request.target);
-    } else if (request.message == "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR") {
+    } else if (request.message === "WILLOW_BACKGROUND_CHANGE_BORDER_COLOR") {
         changeBorderColor(request.nodeId, request.color);
-    } else if (request.message == "WILLOW_BACKGROUND_CHANGE_NODE_SIZE"){
+    } else if (request.message === "CHANGE_NODE_SIZE"){
         changeNodeSize(request.nodeId, request.size, request.tSize);
-    } else if (request.message == "WILLOW_BACKGROUND_RESET_NODE_SIZES") {
+    } else if (request.message === "WILLOW_BACKGROUND_RESET_NODE_SIZES") {
         resetNodeSizes(request.option);
-    } else if (request.message == "WILLOW_BACKGROUND_RUN_LAYOUT") {
+    } else if (request.message === "WILLOW_BACKGROUND_RUN_LAYOUT") {
         handleRunLayoutMessage(request.option); // func. def. explains weird naming.
-    } else if (request.message == "WILLOW_BACKGROUND_CLEAR_SESSION") {
+    } else if (request.message === "WILLOW_BACKGROUND_CLEAR_SESSION") {
         clearSG();
-    } else if (request.message == "WILLOW_BACKGROUND_EXPORT") {
+    } else if (request.message === "WILLOW_BACKGROUND_EXPORT") {
         exportJSON();
-    } else if (request.message == "WILLOW_BACKGROUND_IMPORT") {
+    } else if (request.message === "WILLOW_BACKGROUND_IMPORT") {
         importJSON( request.json);
-    } else if(request.message == "WILLOW_BACKGROUND_ADD_COMMENT"){
+    } else if(request.message === "WILLOW_BACKGROUND_ADD_COMMENT"){
         addComment(request.nodeId, request.comment);
     }
+    else if(request.message === "WILLOW_SEARCH_URL")
+    {
+        console.log("URL_TO_SEARCH", request.URL_TO_SEARCH );
+        searchURL(request.URL_TO_SEARCH);
+    }
+    else if(request.message === "WILLOW_REMOVE_ALL_HIGHLIGHTS" )
+    {
+        removeAllHighlights();
+    }
+
 }
 
+async function searchURL( word)
+{
+    //alert("searching");
+    console.log("word", word );
+    word = word.toLowerCase();
 
+    //Remove highlighted(found) nodes if any
+    //let collectionToRemoveHighlight = cy.elements('node[foundBySearch = 1]');
+    //addRemoveHighlight(collectionToRemoveHighlight, true);
+      cy.nodes().forEach(function( ele )
+    {
+        if(ele.data("foundBySearch") === 1)
+        {
+            ele.data("foundBySearch", 0);
+            console.log("already highlighted",ele.id(),ele.data("foundBySearch"));
+        }
+    });
+
+    //Highlight matched nodes
+    let found = false;
+    cy.nodes().forEach(function( ele ){
+        let lowerCaseURL = ele.id().toLowerCase();
+        let lowerCaseTitle = ele.data('title').toLowerCase();
+        if( lowerCaseURL.includes(word) || lowerCaseTitle.includes(word) )
+        {
+            found = true;
+            ele.data("foundBySearch", 1);
+            console.log(ele.id());
+        }
+    });
+    if(!found)
+    {
+        alert("Nothing found");
+    }
+    //let collectionToHighlight = cy.elements('node[foundBySearch = 1]');
+    //addRemoveHighlight(collectionToHighlight, false);
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+}
+function removeAllHighlights()
+{
+    cy.nodes().forEach(function( ele )
+    {
+        if(ele.data("foundBySearch") === 1)
+        {
+            ele.data("foundBySearch", 0);
+            console.log("already highlighted trying to remove",ele.id(),ele.data("foundBySearch"));
+        }
+    });
+    broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab: true});
+
+}
 function runLayout(){
-
+    //container.style.width = '300px';
+    //console.log(cy.width());
     cy.layout({
-        
+
         name: 'fcose',
         quality: "proof",
-        fit: true, 
+       // fit: true,
         padding: 30,
         animate: false,
         randomize: false,
         nodeDimensionsIncludeLabels: true,
         packComponents: true,
         //spacingFactor: 0.77,
-       
+
         //contraints
         fixedNodeConstraint: undefined, //fixedCon,
         alignmentConstraint: undefined,
@@ -336,26 +400,27 @@ function runLayout(){
         //idealEdgeLength:20,
 
         ready: () => {},
-        stop: () => {}                 
+        stop: () => {}
     }).run();
+
 }
 
 /**
  * Non-incremental version of runLayout()
  */
 function recalcLayout() {
-    cy.layout({
-        
+  //  container.style.width = '300px';
+     cy.layout({
         name: 'fcose',
         quality: "proof",
-        fit: true, 
+      //  fit: true,
         padding: 30,
         animate: false,
         randomize: true,
         nodeDimensionsIncludeLabels: true,
         packComponents: true,
         /*spacingFactor: 0.69,*/
-       
+
         //contraints
         fixedNodeConstraint: undefined, //fixedCon,
         alignmentConstraint: undefined,
@@ -367,9 +432,9 @@ function recalcLayout() {
             else return 200;
         },
 
-        ready: () => {},
-        stop: () => {}                 
     }).run();
+    console.log(cy.width());
+
 }
 
 /**
@@ -378,12 +443,14 @@ function recalcLayout() {
  * I'm leaving it as it is in order not to confuse the rest of the team.
  */
 function handleRunLayoutMessage(option) {
-    if (option == "incremental") {
+    if (option === "incremental") {
         runLayout();
-        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
-    } else if (option == "recalculate") {
+        // alert("hande run layout");
+         broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab:true});
+    } else if (option === "recalculate") {
         recalcLayout();
-        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST", notifyActiveTab:true});
+        // alert("how is it");
+        broadcastSyncRequest({message: "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL", notifyActiveTab:true});
     } else {
         //console.error("run layout request with invalid option");
     }

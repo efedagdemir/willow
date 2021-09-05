@@ -13,6 +13,7 @@ let contextMenuApplied = false;
 let hoverOverApplied = false;
 let disableCxtMenu = false;
 updateCytoscape();
+console.log("in graph Drawer")
 syncViewport();
 syncNotes();
 
@@ -44,7 +45,7 @@ cy.on('doubleTap', function(event, originalTap) {
     let target = originalTap.target || originalTap.cyTarget;
     let id = target.id();
     chrome.runtime.sendMessage({
-        message: "WILLOW_BACKGROUND_OPEN_PAGE",
+        message: "WILLOW_BACKGROUND_OPEN_PAGE_IN_NEW_TAB",
         nodeId: id
     });
 });
@@ -109,30 +110,40 @@ function onNotes(id){
 
 }
 
-function updateCytoscape() {
-    chrome.runtime.sendMessage({ type: "getCytoscapeJSON" }, function (response) {
+ function updateCytoscape(drag) {
+   // console.log(  "caller is " + updateCytoscape.caller);
+    chrome.runtime.sendMessage({ type: "getCytoscapeJSON" }, async function (response) {
         ////console.log("RESPONSE RECEIVED");
         ////console.log(JSON.stringify(response));
         // save current viewport to restore after response json is loaded
-        let tmp = {
-            zoom: cy.zoom(),
-            pan: cy.pan()
-        }
-        response.pan = tmp.pan;
-        response.zoom = tmp.zoom;
-        cy.json(response);
-        
-        applyStyle();
-        cy.style().update();
 
-        if(!contextMenuApplied) {
+      //  alert('update1');
+
+        // response.zoom = tmp.zoom;
+        if (!drag) {
+            cy.json(response);
+            //alert('update1');
+            cy.fit();
+        } else {
+            let tmp = {
+                zoom: cy.zoom(),
+                pan: cy.pan()
+            }
+            response.pan = tmp.pan;
+            response.zoom = tmp.zoom;
+             cy.json(response);
+        }
+
+        applyStyle();
+        if (!contextMenuApplied) {
             applyContextMenu();
             contextMenuApplied = true;
         }
-        if(!hoverOverApplied) {
+        if (!hoverOverApplied) {
             applyHoverOver();
             hoverOverApplied = true;
         }
+        // alert('update3');
     });
 }
 
@@ -141,7 +152,7 @@ function updateCytoscape() {
  * Sets the camera position to center the graph.
  */
  function centerViewport() {
-    cy.resize() // make sure that cytoscape is up-to-date with its container size.
+  //  cy.resize() // make sure that cytoscape is up-to-date with its container size.
 
     /**
      * We have a few alternatives, we can choose any and comment out the rest
@@ -177,7 +188,7 @@ function updateCytoscape() {
 }
 
 function fitViewport() {
-    cy.resize();
+    //cy.resize();
     cy.fit();
 }
 
@@ -193,7 +204,7 @@ function syncViewport() {
 
 function openNotesPage(id){
     let node = cy.getElementById(id);
-    var modal = document.getElementById("myModal");
+    let modal = document.getElementById("myModal");
     modal.draggable = 'false';
                        
     document.getElementById("comments").value = node.data("comment");
@@ -202,7 +213,7 @@ function openNotesPage(id){
     }
                      
     modal.style.display = "block";
-    var span = document.getElementsByClassName("close")[0]; 
+    let span = document.getElementsByClassName("close")[0];
     
     span.onclick = function() {
         
@@ -232,7 +243,7 @@ function openNotesPage(id){
 }
 function syncNotes(){
     chrome.storage.local.get(["WILLOW_NOTES_OPEN"], function (res) {
-        var modal = document.getElementById("myModal");
+        let modal = document.getElementById("myModal");
 
         if(res.WILLOW_NOTES_OPEN.open){
             let id = res.WILLOW_NOTES_OPEN.id;                
@@ -242,9 +253,18 @@ function syncNotes(){
         }
     });
 }
+
+function requestToremoveAllHighlights()
+{
+    chrome.runtime.sendMessage({
+        message: "WILLOW_REMOVE_ALL_HIGHLIGHTS"
+    });
+
+}
 function applyContextMenu() {
     contextMenu = cy.contextMenus({
         evtType: 'cxttap',
+        border: 'none',
         menuItems: [
             {
                 id: 'open',
@@ -289,7 +309,7 @@ function applyContextMenu() {
                 tooltipText: 'See notes',
                 selector: 'node',
                 hasTrailingDivider: true,
-                image: {src: "../../icons/note.png", width: 16, height: 16, x: 4, y: 3},
+                image: {src: "../../icons/notes.svg", width: 16, height: 16, x: 4, y: 3},
                 onClickFunction: function (event) {
                     let target = event.target || event.cyTarget;
                     let id = target.id();
@@ -487,6 +507,18 @@ function applyContextMenu() {
                 },
                 show: true,
                 coreAsWell: true
+            },
+            {
+                id: 'removeHighlights',
+                content: 'Remove all highlights',
+                tooltipText: 'Remove all highlights from search',
+                selector: "",
+                image: {src: "../../icons/remove_highlight.png", width: 14, height: 14, x: 3, y: 3},
+                onClickFunction: function (event) {
+                    requestToremoveAllHighlights();
+                },
+                show: true,
+                coreAsWell: true
             }
 
         ],
@@ -498,7 +530,7 @@ function applyContextMenu() {
 
     cy.on('cxttap', function (event) {
         if(!disableCxtMenu){
-            var evtTarget = event.target;
+            let evtTarget = event.target;
             if (evtTarget === cy){
                 ////console.log("target is the background");
                 contextMenu.hideMenuItem('open');
@@ -541,7 +573,7 @@ function changeNodeSize(event, size, increase, title_size){
     if (size >= 10 && size <= 130) {
 
         let target = event.target || event.cyTarget;
-        var tSize = parseInt( title_size, 10);
+        let tSize = parseInt( title_size, 10);
         
         if (increase){
             tSize = `${tSize + 0.5}px`;
@@ -560,7 +592,7 @@ function changeNodeSize(event, size, increase, title_size){
             message: "WILLOW_BACKGROUND_CHANGE_NODE_SIZE",
             nodeId: id,
             size: size,
-            tSize: tSize
+            tSize: tSize,
         });
     }
 }
@@ -598,34 +630,68 @@ function applyHoverOver(){
 /*****************************************************************************
 *******************    Implementation of GraphSyncer   ******************* 
 *****************************************************************************/
-
+let nodeCLicked = false;
 // listen for Graph sync requests
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-        if (request.message == "WILLOW_GRAPH_SYNC_REQUEST") {
-            handleSyncRequest(request);
-        } else if (request.message == "WILLOW_GRAPH_VIEWPORT_CENTER") {
+        if (request.message === "WILLOW_GRAPH_SYNC_REQUEST") {
+            if(request.action === "CHANGE_NODE_SIZE" || request.action === "DISCOVERING")
+            {
+                //alert( "line 620");
+                updateCytoscape(false);
+            }
+            else if( request.action === "WILLOW_ONLY_STYLE")
+            {
+                updateCytoscape(true);
+
+            }
+            else
+            {
+                updateCytoscape(true);
+
+            }
+
+           //  alert( "end");
+        } else if (request.message === "WILLOW_GRAPH_VIEWPORT_CENTER") {
             centerViewport();
-        } else if (request.message == "WILLOW_VIEWPORT_SYNC_REQUEST") {
+        } else if (request.message === "WILLOW_VIEWPORT_SYNC_REQUEST") {
             syncViewport();
-        } else if (request.message == "WILLOW_NOTES_SYNC_REQUEST") {
+        } else if (request.message === "WILLOW_NOTES_SYNC_REQUEST") {
             syncNotes();
-        } else if (request.message == "WILLOW_CONFIRM_DIALOG_SYNC_REQUEST") {
+        } else if (request.message === "WILLOW_CONFIRM_DIALOG_SYNC_REQUEST") {
             syncConfirmDialog();
+        }
+        else if ( request.message === "WILLOW_GRAPH_VIEWPORT_FIT" )
+        {
+            fitViewport();
+        }
+        else if(request.message === "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL" )
+        {
+                updateCytoscape(false);
+              // alert( "end");
         }
     }
 );
 
 // updates the whole cytoscape instance by requesting the instance from the bacground again
-function handleSyncRequest(request) {
-    updateCytoscape();
+async  function handleSyncRequest(request) {
+    if(request.message === "WILLOW_GRAPH_SYNC_REQUEST_WINDOW_PANEL")
+    {
+        alert( "line 655");
+        await updateCytoscape(false);
+    }
+    else if(request.message === "WILLOW_GRAPH_SYNC_REQUEST")
+    {
+        alert( "line 660");
+       await updateCytoscape(true);
+    }
 }
 
 
 chrome.runtime.onMessage.addListener(confirmationListener);
 
 function confirmationListener(request){
-    if (request.message == "WILLOW_BACKGROUND_NEW_SESSION_CONFIRMATION") {
+    if (request.message === "WILLOW_BACKGROUND_NEW_SESSION_CONFIRMATION") {
         ////console.log("confirmation request received");
         askForConfirmation();
     }

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <link rel="stylesheet" href="new_tab.css">
+
+    <script src="../cytoscape.min.js"></script>
+    <script src="../node_modules/dagre/dist/dagre.min.js"></script>
+    <script src="../node_modules/cytoscape-dagre/cytoscape-dagre.js"></script>
+</head>
+
+<body>
+    <div id="willow-panelHeader">
+        <img title="Willow: Graph-Based Browsing" id="willow-willowIcon" src= "../images/willowIcon_50x50.png" alt="Willow">
+        <a class="willow-label" id="willow-willowLabel" >W I L L O W</a>
+
+        <button title="Help"         class="willow-headerBtn willow-btn-help"     id="willow-help"  >                              </button>
+        <button title="View As Side Panel"      class="willow-headerBtn willow-btn-back"  id="willow-backBtn"> </button>
+        <button title="Settings"      class="willow-headerBtn willow-btn-settings"  id="willow-settingsBtn"> </button>
+        <button title="New Session"   class="willow-headerBtn willow-btn-new"       id="willow-newBtn" ></button>
+        <button title="Run Layout"    class="willow-headerBtn willow-btn-layout"    id="willow-layoutBtn" ></button>
+        <button title="Discover web page map"    class="willow-headerBtn willow-btn-devMode"    id="willow-devMode"> </button>
+        <button title="Search"    class="willow-headerBtn willow-btn-search"    id="willow-search_in_new_tab">                               </button>
+        
+    </div>
+    <div id="willow-panelBody">
+        <div id="willow-background_new_Tab"> </div>
+        <iframe id="willow-graphFrame" src="../GraphOverlay/Graph/GraphDrawer.html"></iframe>
+        <div id="willow-graphInvisLayer"></div>
+    </div>
+    <script src="New_Tab.js"></script>
+</body>
+</html>

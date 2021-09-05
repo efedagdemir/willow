@@ -28,7 +28,7 @@
             background-color: #f7dda3 !important;
         }
         .context-menu {
-            border-color: rgb(0, 0, 0, 0) !important; 
+
                                
         } 
         
@@ -46,13 +46,17 @@
 
 /* Modal Content/Box */
         .modal-content {
+            position: absolute;
             background-color: #f4d58d;
-            margin: 3% auto; /* 15% from the top and centered */
             padding: 3px;
+            top: 30%;
+            left: 50%;
+            margin-top: -50px;
+            margin-left: -50px;
             overflow: auto;
+            display: inline-block;
             text-align: center;
             border: 1px solid #888;
-            width: 42%; /* Could be more or less, depending on screen size */
             border-top-left-radius: 14px !important;
             border-top-right-radius: 14px !important;
             border-bottom-left-radius: 14px !important;
@@ -139,9 +143,9 @@
         }
     </style>
     <script src="/cytoscape.min.js"></script>
+    <script src="/geometric.min.js"></script>
     <script src="/node_modules/cytoscape-context-menus/cytoscape-context-menus.js"></script>
-    
-    <link href="/node_modules/cytoscape-context-menus/cytoscape-context-menus.css" rel="stylesheet" type="text/css"/>   
+    <link href="/node_modules/cytoscape-context-menus/cytoscape-context-menus.css" rel="stylesheet" type="text/css"/>
 
     <!-- jQuery Modal -->
     
@@ -173,8 +177,10 @@
     
     <script src="GraphStyler.js"></script>
     <script src="GraphDrawer.js"></script>
-    <script src="/GraphOverlay/SidePanel/InfoPage.js"></script>
     <script src="/GraphOverlay/SidePanel/howToPage.js"></script>
     <script src="/GraphOverlay/SidePanel/SettingsMenu.js"></script>
+    <script src="/GraphOverlay/SidePanel/devMode.js"></script>
+    <script src="/GraphOverlay/SidePanel/spinner.js"></script>
+    <script src="/GraphOverlay/SidePanel/search.js"></script>
 </body>
 </html>

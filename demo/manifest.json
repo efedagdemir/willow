@@ -1,13 +1,13 @@
 {
     "name": "Willow: Graph-Based Browsing",
     "description": "View and organize your browsing sessions as graph structures in a simple side panel.",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "manifest_version": 2,
     "icons": {
         "48": "images/willowIcon_48x48.png",
         "128": "images/willowIcon_128x128.png"
     },
-    "permissions": ["storage", "tabs", "history", "downloads", "chrome://favicon/*"],
+    "permissions": ["storage", "tabs", "history", "downloads", "chrome://favicon/*", "activeTab"],
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
@@ -29,14 +29,18 @@
                     "node_modules/cose-base/cose-base.js",
                     "node_modules/cytoscape-fcose/cytoscape-fcose.js",
                     "node_modules/cytoscape-layout-utilities/cytoscape-layout-utilities.js",
-            
+
                     "SyncBroadcaster.js",
                     "GraphOverlay/SidePanel/SidePanel_background.js",
                     "GraphOverlay/Graph/GraphStyler.js",
                     "GraphOverlay/Graph/GraphDrawer_background.js",
                     "SessionGraph.js",
                     "History/History.js",
-                    "Monitor.js"],
+                    "Monitor.js",
+                    "CrawlerResult.js",
+                    "GraphOverlay/SidePanel/devMode.js",
+                    "GraphOverlay/SidePanel/spinner.js",
+                    "GraphOverlay/SidePanel/search.js"],
         "persistent": false
     },
     "browser_action": {
@@ -50,6 +54,10 @@
         "GraphOverlay/SidePanel/side_panel.css",
         "GraphOverlay/SidePanel/side_panel.js",
         "GraphOverlay/SidePanel/settings_menu.css",
+      "GraphOverlay/SidePanel/how_to_page.css",
+      "GraphOverlay/SidePanel/devMood.css",
+        "GraphOverlay/SidePanel/spinner.css",
+        "GraphOverlay/SidePanel/search.css",
         "GraphOverlay/SidePanel/info_page.css",
         "GraphOverlay/SidePanel/how_to_page.css",
         "GraphOverlay/Graph/GraphDrawer.html",
@@ -60,7 +68,13 @@
         "icons/settings.png",
         "icons/new.png",
         "icons/information.png",
-        "icons/question-mark.png"
+        "icons/question-mark.png",
+        "icons/newTab.png",
+        "icons/search.png",
+        "icons/crawlHTML.png",
+        "icons/notes.svg",
+        "icons/question.png"
+
     ],
     "content_security_policy": "script-src 'self'; object-src 'self'; img-src chrome://favicon data:;"
 }

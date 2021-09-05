@@ -1,46 +1,82 @@
 /* Initializes the state of 'How To?' page */
-chrome.storage.local.get(["WILLOW_HOW_TO_OPEN"], function (res) {
-    if (res.WILLOW_HOW_TO_OPEN) {
-        openSettingsMenu(false);
+chrome.storage.local.get(["WILLOW_HELP_OPEN"], function (res) {
+    if (res.WILLOW_HELP_OPEN) {
         openHowToPage(false);
     }
 });
-  
+let howToWrapper;
 var howToPageHTML = `
 <!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="${chrome.runtime.getURL("GraphOverlay/SidePanel/how_to_page.css")}">
-    <style>
+    <html>
+    <head>
+        <link rel="stylesheet" href="${chrome.runtime.getURL("GraphOverlay/SidePanel/how_to_page.css")}">
+        <style>
+        /* width */
         ::-webkit-scrollbar {
             width: 10px;
         }
 
+        /* Track */
         ::-webkit-scrollbar-track {
             background: rgba(0, 0, 0, 0.0);
-            border-radius: 20px;
+            border-radius: 10px;
+            
         }
        
+        /* Handle */
         ::-webkit-scrollbar-thumb {
             background: #888; 
-            border-radius: 40px;
         }
 
+        /* Handle on hover */
         ::-webkit-scrollbar-thumb:hover {
             background: #555; 
         }
-    </style>
-</head>
+        ::-webkit-scrollbar-thumb {
+            border-radius: 20px;
+        }
+        </style>
 
-<body>
-    <div id="howToPage">
-        <div id="willowHowToHeader">       
-            <button type="button" id="how_to_close_btn"></button><br>
-            <p id="willow_header_how_to"> 
-                How to use Willow?
-            </p>
+    </head>
+
+    <body>
+    <div id="howToMenu">
+        <div class="how_to_close_btn"> <button type="button" id="how_to_close_btn"></button>
         </div>
-        <div id="willowHowToBody">
+        <div id="menuHeader">
+           
+            <p> Info & Help</p>
+        </div>
+        <div id="menuBody">
+                <details class="willow_detail" id="det1">
+                <summary class="willow_summary">About us</summary>
+                    <div id="infoPage"> 
+                        <div id="willowInfoHeader">
+                            <p id="firstP"> 
+                                Willow: Graph-Based Browsing
+                            </p>
+                        </div>
+                         <div id="willowInfoBody">
+                         <p id="secondP">  
+                             Bilkent CS Senior Design Project <br> <br>
+                           <b> Contact: </b> <br>
+                                willow.extension@gmail.com <br> <br>
+                                    <b> Supervisor: </b> <a id="link" href="http://www.cs.bilkent.edu.tr/~ugur/">Ugur Dogrusoz</a>  <br>
+                                     <b> Github: </b> <a id="link" href="https://github.com/efedagdemir/willow">Willow</a>     
+                            </p>
+        
+                        <footer id="willow_footer">
+                            Version 2.0.0 - 2021 <br>  
+                
+                            <br> 
+                            Icons made by "Smashicons"   \tfrom flaticon.com <br>
+                            Icons made by "Freepik" \t  \tfrom flaticon.com <br>
+                            Icons made by "Pixel perfect" \tfrom flaticon.com 
+                        </footer>
+                            <br> 
+                        </div>    
+                    </div>
+            </details>
             <details class="willow_detail" id="det1">
                 <summary class="willow_summary">What is the purpose of Willow?</summary>
                 <p class="details_p"> 
@@ -79,15 +115,14 @@ var howToPageHTML = `
                 the <b>Export</b> option. Similarly they can re-open any exported session from their files with the 
                 <b>Import</b> option. The active tabs on the saved graph are opened in the browser during the import process. </p>
             </details>
-        </div>
     </div>
-</body>
-</html>
+    </body>
+    </html>
 `;
 
 function openHowToPage(isOrigin) {
-    
-    howToWrapper = document.createElement('div');
+   // alert("here in open how to");
+   howToWrapper = document.createElement('div');
     howToWrapper.id = "willowHowToPageWrapper";
     howToWrapper.innerHTML = howToPageHTML;
 
@@ -98,11 +133,11 @@ function openHowToPage(isOrigin) {
     
     if (isOrigin) {
         // set global state
-        chrome.storage.local.set({ WILLOW_HOW_TO_OPEN: true });
+        chrome.storage.local.set({ WILLOW_HELP_OPEN: true });
         // notify other tabs with a sync request
         chrome.runtime.sendMessage({ 
-          message: "WILLOW_HOW_TO_SYNC_REQUEST",
-          action: "WILLOW_HOW_TO_SYNC_OPEN",
+          message: "WILLOW_HELP_REQUEST",
+          action: "WILLOW_HELP_SYNC_OPEN",
         });
     }   
 }
@@ -114,11 +149,11 @@ function closeHowToPage(isOrigin) {
         chrome.storage.local.set({ WILLOW_DETAILS_TAGS: "0000000" });
         if (isOrigin) {
             // set global state
-            chrome.storage.local.set({ WILLOW_HOW_TO_OPEN: false });
+            chrome.storage.local.set({ WILLOW_HELP_OPEN: false });
             // notify other tabs with a sync request
             chrome.runtime.sendMessage({ 
-            message: "WILLOW_HOW_TO_SYNC_REQUEST",
-            action: "WILLOW_HOW_TO_SYNC_CLOSE",
+            message: "WILLOW_HELP_SYNC_REQUEST",
+            action: "WILLOW_HELP_SYNC_CLOSE",
             });
         }
     }
@@ -154,7 +189,7 @@ function arrangeDetailsTags(){
     });
 }
 
-/* Sends the message of which details tag 
+/* Sends the message of which details tag
    is opened and sets the details string */
 function detailClicked(detail_no, open){
     
@@ -180,20 +215,23 @@ function detailClicked(detail_no, open){
 
 /*Listening synchronization requets*/
 chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        if (request.message == "WILLOW_HOW_TO_SYNC_REQUEST") {
+   function(request, sender, sendResponse) {
+       //alert("listening");
+        if (request.message === "WILLOW_HELP_SYNC_REQUEST") {
+
             handleHowToPageSyncRequest(request);
         }
-        else if ( request.message == "WILLOW_HOW_TO_DETAILS_SYNC_REQUEST"){
+        else if ( request.message === "WILLOW_HOW_TO_DETAILS_SYNC_REQUEST"){
             document.getElementById("det" + request.detail_no).open = request.open;
         } 
     }
 );
 
 function handleHowToPageSyncRequest(request) {
-    if (request.action == "WILLOW_HOW_TO_SYNC_OPEN") {
+  //  alert("hello?");
+    if (request.action === "WILLOW_HELP_SYNC_OPEN") {
         openHowToPage(false);
-    } else if (request.action == "WILLOW_HOW_TO_SYNC_CLOSE") {
+    } else if (request.action === "WILLOW_HELP_SYNC_CLOSE") {
         closeHowToPage(false);    
     }
 }

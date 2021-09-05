@@ -1,17 +1,18 @@
 
 #settingsMenu {
     position: absolute;
-    height: 70%;
-    width: 70%;
-    top: 15%;
-    left: 15%;
     background-color: #041424; /* same as #panelHeader (side_panel.css)*/
     text-align: center;
     border-radius: 20px;
     overflow: auto;
     box-shadow: 2px 2px 5px 2px #8d0801;
-    
     user-select: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 10px;
 }
 
 
@@ -43,6 +44,7 @@
     border: 1px solid #f4d58d; /* same as #panelHeader a (side_panel.css)*/
     padding: 10px;
     color: #f4d58d; /* same as #panelHeader a (side_panel.css)*/
+    position: relative;
     
 }
 .settingElement .label {
@@ -53,6 +55,7 @@
     float: left;
     color: #f4d58d;
     text-shadow: 2px 2px #8d0801;
+    display: inline;
 }
 
 .label.node-size-choice{
@@ -69,9 +72,8 @@
 }*/
 
 .settingElement .opt {
+    position: relative;
     display: inline-block;
-    text-align: right;
-    margin-inline: 5px;
 }
 
 .opt button{
@@ -83,11 +85,13 @@
     border: none;
     font-weight: normal;
     padding: 3px;
-    width: 120px;
+    width: 100%;
     box-shadow: 1px 2px 2px #f4d58d;
     text-shadow: 0.5px 0.5px #708d81;
     margin-top: 5px;
     margin-bottom: 5px;
+    display: inline-block;
+    text-align: center;
 }
 
 .opt button:active {
