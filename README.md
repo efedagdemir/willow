@@ -62,4 +62,4 @@ The user may also search a keyword using the Search tool availble in the toolbar
 The users are also allowed to change each node's border color, size, etc. for classification purposes.
 
 # Team 
-[Can Cebeci](https://github.com/cemcebeci), [Efe Dagdemir](https://github.com/efedagdemir), [Tuana Turkmen](https://github.com/tuanaturkmen), [Sezin Zeydan](https://github.com/sezinzeydan), [Selbi Ereshova](https://github.com/SelbiEreshova), and [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [Computer Engineering Department](http://www.cs.bilkent.edu.tr) at Bilkent University.
+[Cem Cebeci](https://github.com/cemcebeci), [Can Cebeci](https://github.com/cancebeci), [Efe Dagdemir](https://github.com/efedagdemir), [Tuana Turkmen](https://github.com/tuanaturkmen), [Sezin Zeydan](https://github.com/sezinzeydan), [Selbi Ereshova](https://github.com/SelbiEreshova), and [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [Computer Engineering Department](http://www.cs.bilkent.edu.tr) at Bilkent University.
